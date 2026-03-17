@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.claude/
+*.log
+.env
+.env.local
+.DS_Store
+Thumbs.db
+*.zip
+*.bat
+*.ps1
+proxy-server.js

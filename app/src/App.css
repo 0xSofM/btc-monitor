@@ -1,0 +1,145 @@
+/* BTC定投指标监控系统样式 */
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* 动画效果 */
+@keyframes pulse-green {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+  }
+}
+
+.signal-active {
+  animation: pulse-green 2s infinite;
+}
+
+/* 卡片悬停效果 */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* 价格变化动画 */
+@keyframes price-up {
+  0% {
+    color: inherit;
+  }
+  50% {
+    color: #22c55e;
+  }
+  100% {
+    color: inherit;
+  }
+}
+
+@keyframes price-down {
+  0% {
+    color: inherit;
+  }
+  50% {
+    color: #ef4444;
+  }
+  100% {
+    color: inherit;
+  }
+}
+
+.price-up {
+  animation: price-up 1s ease;
+}
+
+.price-down {
+  animation: price-down 1s ease;
+}
+
+/* 响应式表格 */
+@media (max-width: 768px) {
+  .responsive-table {
+    font-size: 0.875rem;
+  }
+  
+  .responsive-table th,
+  .responsive-table td {
+    padding: 0.5rem;
+  }
+}
+
+/* 深色模式优化 */
+.dark .indicator-card {
+  background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.8) 100%);
+}
+
+/* 进度条样式优化 */
+.progress-bar-gradient {
+  background: linear-gradient(90deg, 
+    #ef4444 0%, 
+    #ef4444 20%, 
+    #f97316 20%, 
+    #f97316 40%, 
+    #eab308 40%, 
+    #eab308 60%, 
+    #22c55e 60%, 
+    #22c55e 80%, 
+    #16a34a 80%, 
+    #16a34a 100%
+  );
+}
+
+/* 徽章样式 */
+.badge-signal {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-signal-active {
+  @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+}
+
+.badge-signal-inactive {
+  @apply bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200;
+}
+
+/* 加载动画 */
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted) / 0.5) 50%,
+    hsl(var(--muted)) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
