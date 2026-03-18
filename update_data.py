@@ -7,7 +7,7 @@ BTC 指标数据更新脚本
 import json
 import os
 import time
-from datetime import datetime, timedelta
+from datetime import UTC, datetime
 
 import requests
 
@@ -69,14 +69,99 @@ def load_existing_history():
     return []
 
 
+def get_value(record, *keys):
+    for key in keys:
+        if key in record:
+            return record.get(key)
+    return None
+
+
+def find_indicator_dates(history):
+    latest = history[-1]
+    dates = {
+        "priceMa200w": latest["d"],
+    }
+    mapping = {
+        "mvrvZ": ("mvrv_zscore", "mvrvZscore"),
+        "lthMvrv": ("lth_mvrv", "lthMvrv"),
+        "puell": ("puell_multiple", "puellMultiple"),
+        "nupl": ("nupl",),
+    }
+
+    latest_values = {name: get_value(latest, *keys) for name, keys in mapping.items()}
+
+    for i in range(len(history) - 1, -1, -1):
+        record = history[i]
+        prev_record = history[i - 1] if i > 0 else None
+
+        for name, keys in mapping.items():
+            if name in dates:
+                continue
+
+            latest_value = latest_values.get(name)
+            if latest_value is None:
+                continue
+
+            current_value = get_value(record, *keys)
+            prev_value = get_value(prev_record, *keys) if prev_record else None
+            if current_value == latest_value and prev_value != current_value:
+                dates[name] = record["d"]
+
+        if len(dates) == 5:
+            return dates
+
+    for i in range(len(history) - 1, -1, -1):
+        record = history[i]
+        for name, keys in mapping.items():
+            if name not in dates and get_value(record, *keys) is not None:
+                dates[name] = record["d"]
+
+    return dates
+
+
+def build_latest_payload(history):
+    latest = history[-1]
+    btc_price = get_value(latest, "btcPrice", "btc_price") or 0
+    price_ma200w_ratio = get_value(latest, "priceMa200wRatio", "price_ma200w_ratio") or 0
+    mvrv_zscore = get_value(latest, "mvrvZscore", "mvrv_zscore") or 0
+    lth_mvrv = get_value(latest, "lthMvrv", "lth_mvrv") or 0
+    puell_multiple = get_value(latest, "puellMultiple", "puell_multiple") or 0
+    nupl = get_value(latest, "nupl") or 0
+
+    signals = {
+        "priceMa200w": bool(latest.get("signal_price_ma", price_ma200w_ratio < 1)),
+        "mvrvZ": bool(latest.get("signal_mvrv_z", mvrv_zscore < 0)),
+        "lthMvrv": bool(latest.get("signal_lth_mvrv", lth_mvrv < 1)),
+        "puell": bool(latest.get("signal_puell", puell_multiple < 0.5)),
+        "nupl": bool(latest.get("signal_nupl", nupl < 0)),
+    }
+
+    return {
+        "date": latest["d"],
+        "btcPrice": btc_price,
+        "priceMa200wRatio": price_ma200w_ratio,
+        "ma200w": get_value(latest, "ma200w"),
+        "mvrvZscore": mvrv_zscore,
+        "lthMvrv": lth_mvrv,
+        "puellMultiple": puell_multiple,
+        "nupl": nupl,
+        "signalCount": latest.get("signal_count", sum(signals.values())),
+        "signals": signals,
+        "indicatorDates": find_indicator_dates(history),
+    }
+
+
+def fail_job(message):
+    print(f"::error::{message}")
+    raise RuntimeError(message)
+
+
 def main():
-    print(f"=== BTC Indicator Update: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')} ===")
+    print(f"=== BTC Indicator Update: {datetime.now(UTC).strftime('%Y-%m-%d %H:%M:%S UTC')} ===")
 
     # --- 拉取各指标的全量历史（用天数参数获取尽可能多的数据） ---
     # 首次运行拉取全量，后续增量追加
     existing = load_existing_history()
-    existing_dates = {r["d"] for r in existing} if existing else set()
-
     # 决定拉取天数：有历史数据时只拉最近 30 天做增量，否则拉全量
     fetch_days = 30 if existing else 5000
 
@@ -97,6 +182,12 @@ def main():
     print(f"  puell-multiple: {len(puell_raw)} records")
     print(f"  nupl: {len(nupl_raw)} records")
     print(f"  btc-price (for MA): {len(price_for_ma)} records")
+
+    if not btc_price_raw:
+        fail_job("btc-price endpoint returned no data. Upstream API is likely unavailable or rate limited, so the workflow is stopping to avoid publishing stale snapshots.")
+
+    if not any([mvrv_z_raw, lth_mvrv_raw, puell_raw, nupl_raw]):
+        fail_job("All non-price indicator endpoints returned no data. Upstream API is likely unavailable or rate limited, so the workflow is stopping to avoid publishing stale snapshots.")
 
     # --- 构建日期索引 ---
     price_map = build_date_map(btc_price_raw, "btcPrice", "btc_price")
@@ -220,7 +311,7 @@ def main():
 
     # 生成 latest 文件
     if merged:
-        latest = merged[-1]
+        latest = build_latest_payload(merged)
         with open(LATEST_FILE, "w", encoding="utf-8") as f:
             json.dump(latest, f, ensure_ascii=False, indent=2)
         print(f"  Written {LATEST_FILE}")

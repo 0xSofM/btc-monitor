@@ -132,25 +132,32 @@ export default async function handler(request) {
     let data;
 
     if (path === '/btc-data/latest' || path === '/btc-data') {
-      const [mvrvZ, lthMvrv, puell, nupl, btcPrice, mayer] = await Promise.all([
+      const [mvrvZ, lthMvrv, puell, nupl, btcPrice, staticLatest] = await Promise.all([
         fetchJsonSafely(`${API_BASE_URL}/v1/mvrv-zscore/1`, []),
         fetchJsonSafely(`${API_BASE_URL}/v1/lth-mvrv/1`, []),
         fetchJsonSafely(`${API_BASE_URL}/v1/puell-multiple/1`, []),
         fetchJsonSafely(`${API_BASE_URL}/v1/nupl/1`, []),
         fetchJsonSafely(`${API_BASE_URL}/v1/btc-price/1`, []),
-        fetchJsonSafely(`${API_BASE_URL}/v1/mayer-multiple/1`, []),
+        fetchStaticLatestFallback(request),
       ]);
 
       if (!btcPrice[0]?.btcPrice) {
-        data = await fetchStaticLatestFallback(request);
+        data = staticLatest;
       } else {
         const price = parseFloat(btcPrice[0].btcPrice);
         const mvrvZScore = mvrvZ[0]?.mvrvZscore ? parseFloat(mvrvZ[0].mvrvZscore) : 0;
         const lthMvrvValue = lthMvrv[0]?.lthMvrv ? parseFloat(lthMvrv[0].lthMvrv) : 0;
         const puellValue = puell[0]?.puellMultiple ? parseFloat(puell[0].puellMultiple) : 0;
         const nuplValue = nupl[0]?.nupl ? parseFloat(nupl[0].nupl) : 0;
-        const mayerValue = mayer[0]?.mayerMultiple ? parseFloat(mayer[0].mayerMultiple) : 0;
-        const priceMa200wRatio = mayerValue * 0.9;
+        const fallbackRatio = staticLatest?.priceMa200wRatio && staticLatest.priceMa200wRatio > 0
+          ? staticLatest.priceMa200wRatio
+          : 0;
+        const ma200w = staticLatest?.ma200w && staticLatest.ma200w > 0
+          ? staticLatest.ma200w
+          : (staticLatest?.btcPrice && fallbackRatio > 0 ? staticLatest.btcPrice / fallbackRatio : undefined);
+        const priceMa200wRatio = ma200w && ma200w > 0
+          ? price / ma200w
+          : fallbackRatio;
 
         const signals = {
           priceMa200w: priceMa200wRatio < 1,
@@ -164,19 +171,27 @@ export default async function handler(request) {
           date: mvrvZ[0]?.d || btcPrice[0]?.d || new Date().toISOString().split('T')[0],
           btcPrice: price,
           priceMa200wRatio,
+          ma200w,
           mvrvZscore: mvrvZScore,
           lthMvrv: lthMvrvValue,
           puellMultiple: puellValue,
           nupl: nuplValue,
           signalCount: Object.values(signals).filter(Boolean).length,
           signals,
+          indicatorDates: {
+            priceMa200w: btcPrice[0]?.d || staticLatest?.indicatorDates?.priceMa200w || staticLatest?.date,
+            mvrvZ: mvrvZ[0]?.d || staticLatest?.indicatorDates?.mvrvZ || staticLatest?.date,
+            lthMvrv: lthMvrv[0]?.d || staticLatest?.indicatorDates?.lthMvrv || staticLatest?.date,
+            puell: puell[0]?.d || staticLatest?.indicatorDates?.puell || staticLatest?.date,
+            nupl: nupl[0]?.d || staticLatest?.indicatorDates?.nupl || staticLatest?.date,
+          },
           raw: {
             mvrvZ: mvrvZ[0],
             lthMvrv: lthMvrv[0],
             puell: puell[0],
             nupl: nupl[0],
             btcPrice: btcPrice[0],
-            mayer: mayer[0],
+            staticLatest,
           },
         };
       }

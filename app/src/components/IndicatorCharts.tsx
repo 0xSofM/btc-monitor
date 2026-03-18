@@ -268,12 +268,12 @@ export function IndicatorCharts({ data }: IndicatorChartsProps) {
 
 
     // Y轴刻度格式化
-const formatYAxisValue = (value: number): string => {
-if (Math.abs(value) >= 1000) return value.toFixed(0);
-if (Math.abs(value) >= 10) return value.toFixed(1);
-if (Math.abs(value) >= 1) return value.toFixed(2);
-return value.toFixed(3);
-};
+    const formatYAxisValue = (value: number): string => {
+      if (Math.abs(value) >= 1000) return value.toFixed(0);
+      if (Math.abs(value) >= 10) return value.toFixed(1);
+      if (Math.abs(value) >= 1) return value.toFixed(2);
+      return value.toFixed(3);
+    };
 
 
     return (
@@ -286,7 +286,7 @@ return value.toFixed(3);
             tick={{ fontSize: 11 }}
             interval="preserveStartEnd"
           />
-					<YAxis tick={{ fontSize: 11 }} tickFormatter={formatYAxisValue} domain={[yMin, yMax]} allowDataOverflow={true} />
+          <YAxis tick={{ fontSize: 11 }} tickFormatter={formatYAxisValue} domain={[yMin, yMax]} allowDataOverflow={true} />
 
           <Tooltip content={<CustomTooltip />} />
 

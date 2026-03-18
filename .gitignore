@@ -10,3 +10,5 @@ Thumbs.db
 *.bat
 *.ps1
 proxy-server.js
+__pycache__/
+*.pyc

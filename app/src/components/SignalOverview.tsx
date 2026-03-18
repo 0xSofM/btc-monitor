@@ -1,49 +1,76 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle, CheckCircle2, TrendingUp, DollarSign } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Clock3, Database, DollarSign, TrendingUp } from 'lucide-react';
 
 interface SignalOverviewProps {
   btcPrice: number;
   signalCount: number;
   totalIndicators: number;
   lastUpdated: string;
+  dataSource: 'api' | 'static' | 'history';
+  latestDataDate: string;
+  laggingIndicators: string[];
+  oldestIndicatorDate?: string;
 }
 
-export function SignalOverview({ 
-  btcPrice, 
-  signalCount, 
+export function SignalOverview({
+  btcPrice,
+  signalCount,
   totalIndicators,
-  lastUpdated 
+  lastUpdated,
+  dataSource,
+  latestDataDate,
+  laggingIndicators,
+  oldestIndicatorDate,
 }: SignalOverviewProps) {
   const progressPercentage = (signalCount / totalIndicators) * 100;
-  
+
   const getSignalStatus = () => {
-    if (signalCount === 0) return { label: '远离底部', color: 'text-gray-500', bgColor: 'bg-gray-500' };
-    if (signalCount <= 2) return { label: '偏离底部', color: 'text-blue-400', bgColor: 'bg-blue-400' };
-    if (signalCount === 3) return { label: '接近底部', color: 'text-yellow-500', bgColor: 'bg-yellow-500' };
-    if (signalCount === 4) return { label: '买入机会', color: 'text-green-500', bgColor: 'bg-green-500' };
-    return { label: '绝佳买入', color: 'text-green-600', bgColor: 'bg-green-600' };
+    if (signalCount === 0) return { label: '远离底部', color: 'text-gray-500' };
+    if (signalCount <= 2) return { label: '偏离底部', color: 'text-blue-500' };
+    if (signalCount === 3) return { label: '接近底部', color: 'text-yellow-500' };
+    if (signalCount === 4) return { label: '买入机会', color: 'text-green-500' };
+    return { label: '绝佳买入', color: 'text-green-600' };
+  };
+
+  const getSourceBadge = () => {
+    if (dataSource === 'api') {
+      return { label: '实时 API', className: 'border-green-200 text-green-700 bg-green-50' };
+    }
+
+    if (dataSource === 'history') {
+      return { label: '历史回退', className: 'border-yellow-200 text-yellow-700 bg-yellow-50' };
+    }
+
+    return { label: '静态快照', className: 'border-blue-200 text-blue-700 bg-blue-50' };
   };
 
   const status = getSignalStatus();
+  const sourceBadge = getSourceBadge();
+  const hasLaggingIndicators = laggingIndicators.length > 0;
 
   return (
     <Card className="mb-6">
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-semibold">信号概览</CardTitle>
-          <Badge variant="outline" className="text-xs">
-            更新于: {lastUpdated}
-          </Badge>
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <CardTitle className="text-lg font-semibold">信号总览</CardTitle>
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="outline" className={sourceBadge.className}>
+              <Database className="mr-1 h-3 w-3" />
+              {sourceBadge.label}
+            </Badge>
+            <Badge variant="outline" className="text-xs">
+              更新于: {lastUpdated}
+            </Badge>
+          </div>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* BTC价格 */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-orange-100 dark:bg-orange-900 rounded-full">
-              <DollarSign className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+            <div className="rounded-full bg-orange-100 p-3 dark:bg-orange-900">
+              <DollarSign className="h-6 w-6 text-orange-600 dark:text-orange-400" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground">BTC 价格</p>
@@ -53,10 +80,9 @@ export function SignalOverview({
             </div>
           </div>
 
-          {/* 信号数量 */}
           <div className="flex items-center gap-4">
-            <div className={`p-3 rounded-full ${signalCount >= 4 ? 'bg-green-100 dark:bg-green-900' : 'bg-gray-100 dark:bg-gray-800'}`}>
-              <TrendingUp className={`w-6 h-6 ${signalCount >= 4 ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`} />
+            <div className={`rounded-full p-3 ${signalCount >= 4 ? 'bg-green-100 dark:bg-green-900' : 'bg-gray-100 dark:bg-gray-800'}`}>
+              <TrendingUp className={`h-6 w-6 ${signalCount >= 4 ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`} />
             </div>
             <div>
               <p className="text-sm text-muted-foreground">买入信号</p>
@@ -66,20 +92,24 @@ export function SignalOverview({
             </div>
           </div>
 
-          {/* 市场状态 */}
           <div className="flex items-center gap-4">
-            <div className={`p-3 rounded-full ${
-              signalCount >= 4 ? 'bg-green-100 dark:bg-green-900' : 
-              signalCount === 0 ? 'bg-gray-100 dark:bg-gray-800' : 
-              signalCount <= 2 ? 'bg-blue-100 dark:bg-blue-900' :
-              'bg-yellow-100 dark:bg-yellow-900'
-            }`}>
+            <div
+              className={`rounded-full p-3 ${
+                signalCount >= 4
+                  ? 'bg-green-100 dark:bg-green-900'
+                  : signalCount === 0
+                    ? 'bg-gray-100 dark:bg-gray-800'
+                    : signalCount <= 2
+                      ? 'bg-blue-100 dark:bg-blue-900'
+                      : 'bg-yellow-100 dark:bg-yellow-900'
+              }`}
+            >
               {signalCount >= 4 ? (
-                <CheckCircle2 className="w-6 h-6 text-green-600 dark:text-green-400" />
+                <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400" />
               ) : signalCount === 0 ? (
-                <TrendingUp className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                <TrendingUp className="h-6 w-6 text-gray-600 dark:text-gray-400" />
               ) : (
-                <AlertTriangle className={`w-6 h-6 ${signalCount <= 2 ? 'text-blue-600 dark:text-blue-400' : 'text-yellow-600 dark:text-yellow-400'}`} />
+                <AlertTriangle className={`h-6 w-6 ${signalCount <= 2 ? 'text-blue-600 dark:text-blue-400' : 'text-yellow-600 dark:text-yellow-400'}`} />
               )}
             </div>
             <div>
@@ -91,58 +121,66 @@ export function SignalOverview({
           </div>
         </div>
 
-        {/* 进度条 */}
+        <div className="mt-4 rounded-lg border bg-muted/30 p-3 text-sm">
+          <div className="flex flex-wrap items-center gap-2 text-muted-foreground">
+            <Clock3 className="h-4 w-4" />
+            <span>最新记录日期: {latestDataDate}</span>
+            {oldestIndicatorDate && hasLaggingIndicators && (
+              <span>最慢指标日期: {oldestIndicatorDate}</span>
+            )}
+          </div>
+          {hasLaggingIndicators ? (
+            <p className="mt-2 text-amber-700 dark:text-amber-300">
+              以下指标尚未同步到最新记录日期: {laggingIndicators.join('、')}
+            </p>
+          ) : (
+            <p className="mt-2 text-emerald-700 dark:text-emerald-300">
+              5 个指标当前都使用同一天的数据。
+            </p>
+          )}
+        </div>
+
         <div className="mt-6">
-          <div className="flex justify-between text-sm mb-2">
+          <div className="mb-2 flex justify-between text-sm">
             <span className="text-muted-foreground">信号强度</span>
             <span className="font-medium">{progressPercentage.toFixed(0)}%</span>
           </div>
-          <Progress 
-            value={progressPercentage} 
-            className="h-3"
-          />
-          <div className="flex justify-between text-xs text-muted-foreground mt-1">
-            <span>0信号 - 远离底部</span>
-            <span>3信号 - 接近底部</span>
-            <span>5信号 - 绝佳买入</span>
+          <Progress value={progressPercentage} className="h-3" />
+          <div className="mt-1 flex justify-between text-xs text-muted-foreground">
+            <span>0 信号 - 远离底部</span>
+            <span>3 信号 - 接近底部</span>
+            <span>5 信号 - 绝佳买入</span>
           </div>
         </div>
 
-        {/* 建议 */}
         {signalCount >= 4 ? (
-          <div className="mt-4 p-4 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
+          <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
-              <span className="font-medium text-green-800 dark:text-green-200">
-                建议执行定投计划
-              </span>
+              <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
+              <span className="font-medium text-green-800 dark:text-green-200">建议执行定投计划</span>
             </div>
             <p className="mt-1 text-sm text-green-700 dark:text-green-300">
-              当前有 {signalCount} 个指标达到买入区间，是较好的建仓时机。建议按计划执行定投。
+              当前有 {signalCount} 个指标达到买入区间，适合按计划分批执行。
             </p>
           </div>
         ) : signalCount === 0 ? (
-          <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900">
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              <span className="font-medium text-gray-800 dark:text-gray-200">
-                市场处于常规区间
-              </span>
+              <TrendingUp className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+              <span className="font-medium text-gray-800 dark:text-gray-200">市场处于常规区间</span>
             </div>
             <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">
-              当前没有指标达到极端买入区间，市场可能处于正常波动范围。建议保持观望或小额定投，等待更好的买入时机。
+              当前没有指标达到极端买入区间，更适合保持观察或小额定投。
             </p>
           </div>
         ) : (
-          <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
+          <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950">
             <div className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              <span className="font-medium text-blue-800 dark:text-blue-200">
-                持续关注市场
-              </span>
+              <AlertTriangle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <span className="font-medium text-blue-800 dark:text-blue-200">持续关注市场</span>
             </div>
             <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
-              当前有 {signalCount} 个指标接近买入区间，建议保持关注，准备资金等待更好的买入时机。
+              当前有 {signalCount} 个指标接近买入区间，可以继续观察后续变化。
             </p>
           </div>
         )}

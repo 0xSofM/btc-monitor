@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import {
   AlertTriangle,
@@ -14,10 +14,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { HistoryReview } from '@/components/HistoryReview';
 import { IndicatorCard } from '@/components/IndicatorCard';
-import { IndicatorCharts } from '@/components/IndicatorCharts';
-import { IndicatorExplanation } from '@/components/IndicatorExplanation';
 import { SignalOverview } from '@/components/SignalOverview';
 import type { IndicatorData, LatestData } from '@/types';
 import {
@@ -30,6 +27,31 @@ import {
 import './App.css';
 
 type DataSource = 'api' | 'static' | 'history';
+type IndicatorDateKey = 'priceMa200w' | 'mvrvZ' | 'lthMvrv' | 'puell' | 'nupl';
+
+const IndicatorChartsPanel = lazy(async () => {
+  const module = await import('@/components/IndicatorCharts');
+  return { default: module.IndicatorCharts };
+});
+
+const HistoryReviewPanel = lazy(async () => {
+  const module = await import('@/components/HistoryReview');
+  return { default: module.HistoryReview };
+});
+
+const IndicatorExplanationPanel = lazy(async () => {
+  const module = await import('@/components/IndicatorExplanation');
+  return { default: module.IndicatorExplanation };
+});
+
+function SectionLoader({ message }: { message: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
+      <Loader2 className="mb-3 h-8 w-8 animate-spin text-orange-500" />
+      <p>{message}</p>
+    </div>
+  );
+}
 
 function App() {
   const [latestData, setLatestData] = useState<LatestData | null>(null);
@@ -141,6 +163,38 @@ function App() {
 
     return () => clearInterval(interval);
   }, []);
+
+  const indicatorDateLabels: Record<IndicatorDateKey, string> = {
+    priceMa200w: 'BTC Price / 200W-MA',
+    mvrvZ: 'MVRV Z-Score',
+    lthMvrv: 'LTH-MVRV',
+    puell: 'Puell Multiple',
+    nupl: 'NUPL',
+  };
+
+  const indicatorDateEntries = latestData?.indicatorDates
+    ? (Object.entries(latestData.indicatorDates) as Array<[IndicatorDateKey, string | undefined]>)
+        .reduce<Array<[IndicatorDateKey, string]>>((entries, [key, value]) => {
+          if (value) {
+            entries.push([key, value]);
+          }
+          return entries;
+        }, [])
+    : [];
+
+  const laggingIndicators = latestData
+    ? indicatorDateEntries
+        .filter(([, value]) => value < latestData.date)
+        .map(([key]) => indicatorDateLabels[key])
+    : [];
+
+  const oldestIndicatorDate = indicatorDateEntries.length > 0
+    ? indicatorDateEntries.reduce((oldest, [, value]) => {
+        if (!value) return oldest;
+        if (!oldest) return value;
+        return value < oldest ? value : oldest;
+      }, '' as string)
+    : undefined;
 
   const indicators = latestData
     ? [
@@ -337,9 +391,27 @@ function App() {
                   signalCount={latestData.signalCount}
                   totalIndicators={5}
                   lastUpdated={lastUpdated}
+                  dataSource={dataSource}
+                  latestDataDate={latestData.date}
+                  laggingIndicators={laggingIndicators}
+                  oldestIndicatorDate={oldestIndicatorDate}
                 />
 
-                {historicalData.length > 0 && <IndicatorCharts data={historicalData} />}
+                {laggingIndicators.length > 0 && (
+                  <Alert className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950">
+                    <AlertTriangle className="h-4 w-4 text-amber-600" />
+                    <AlertTitle className="text-amber-800 dark:text-amber-200">部分指标存在更新滞后</AlertTitle>
+                    <AlertDescription className="text-amber-700 dark:text-amber-300">
+                      最新记录日期为 {latestData.date}，但 {laggingIndicators.join('、')} 目前仍停留在 {oldestIndicatorDate}。
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                {historicalData.length > 0 && (
+                  <Suspense fallback={<SectionLoader message="正在加载图表..." />}>
+                    <IndicatorChartsPanel data={historicalData} />
+                  </Suspense>
+                )}
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {indicators.map((indicator) => (
@@ -373,7 +445,9 @@ function App() {
 
           <TabsContent value="history">
             {historicalData.length > 0 ? (
-              <HistoryReview data={historicalData} />
+              <Suspense fallback={<SectionLoader message="正在加载复盘数据..." />}>
+                <HistoryReviewPanel data={historicalData} />
+              </Suspense>
             ) : (
               <div className="flex flex-col items-center justify-center py-12">
                 <Loader2 className="mb-4 h-12 w-12 animate-spin text-orange-500" />
@@ -383,7 +457,9 @@ function App() {
           </TabsContent>
 
           <TabsContent value="guide">
-            <IndicatorExplanation />
+            <Suspense fallback={<SectionLoader message="正在加载指标说明..." />}>
+              <IndicatorExplanationPanel />
+            </Suspense>
           </TabsContent>
         </Tabs>
       </main>

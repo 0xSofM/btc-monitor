@@ -12,6 +12,7 @@ const PROXY_URL = import.meta.env.VITE_API_PROXY_URL || DEFAULT_PROXY_URL;
 // 数据刷新配置
 const REFRESH_INTERVAL = 5 * 60 * 1000; // 5分钟刷新一次（毫秒）
 const CACHE_DURATION = 60 * 1000; // 本地缓存1分钟
+const MA200W_LOOKBACK_DAYS = 1400;
 
 // 内存缓存
 let cache: {
@@ -264,6 +265,67 @@ export async function fetchMayerMultiple(days: number = 1): Promise<any[]> {
   }
 }
 
+function getMa200wFromHistory(data: IndicatorData[]): number | null {
+  const lastWithMa200w = [...data].reverse().find((item) => {
+    if (item.ma200w && item.ma200w > 0) {
+      return true;
+    }
+
+    if (!item.priceMa200wRatio || item.priceMa200wRatio <= 0) {
+      return false;
+    }
+
+    const price = typeof item.btcPrice === 'string'
+      ? parseFloat(item.btcPrice)
+      : item.btcPrice;
+
+    return typeof price === 'number' && price > 0;
+  });
+
+  if (!lastWithMa200w) {
+    return null;
+  }
+
+  if (lastWithMa200w.ma200w && lastWithMa200w.ma200w > 0) {
+    return lastWithMa200w.ma200w;
+  }
+
+  const price = typeof lastWithMa200w.btcPrice === 'string'
+    ? parseFloat(lastWithMa200w.btcPrice)
+    : lastWithMa200w.btcPrice;
+
+  if (!price || !lastWithMa200w.priceMa200wRatio) {
+    return null;
+  }
+
+  return price / lastWithMa200w.priceMa200wRatio;
+}
+
+function enrichLatestDataWithHistory(latest: LatestData, history: IndicatorData[]): LatestData {
+  if (!history.length) {
+    return latest;
+  }
+
+  return {
+    ...latest,
+    indicatorDates: findIndicatorDates(history),
+  };
+}
+
+async function resolveLatestMa200w(): Promise<number | null> {
+  if (cache.data?.ma200w && cache.data.ma200w > 0) {
+    return cache.data.ma200w;
+  }
+
+  const staticLatest = await fetchStaticLatestData();
+  if (staticLatest?.ma200w && staticLatest.ma200w > 0) {
+    return staticLatest.ma200w;
+  }
+
+  const historyData = await fetchHistoricalData();
+  return getMa200wFromHistory(historyData);
+}
+
 // 获取所有最新指标数据（带缓存和错误回退）
 export async function fetchAllLatestIndicators(useCache = true): Promise<LatestData | null> {
   const now = Date.now();
@@ -318,25 +380,23 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
     let priceMa200wRatio = 0;
     let ma200w = 0;
     try {
-      const priceHistory = await fetchBtcPrice(1400);
-      if (priceHistory.length >= 1400) {
-        const prices = priceHistory.map((p: any) => parseFloat(p.btcPrice));
-        ma200w = prices.reduce((a: number, b: number) => a + b, 0) / prices.length;
+      const resolvedMa200w = await resolveLatestMa200w();
+      if (resolvedMa200w && resolvedMa200w > 0) {
+        ma200w = resolvedMa200w;
         priceMa200wRatio = btcPrice / ma200w;
       } else {
-        // 从历史数据取最近有效的 200周MA 值作为 fallback
-        const historyData = await fetchHistoricalData();
-        const lastWithRatio = [...historyData].reverse().find(d => d.priceMa200wRatio && d.priceMa200wRatio > 0);
-        if (lastWithRatio?.priceMa200wRatio && lastWithRatio?.ma200w) {
-          ma200w = lastWithRatio.ma200w;
+        const priceHistory = await fetchBtcPrice(MA200W_LOOKBACK_DAYS);
+        if (priceHistory.length >= MA200W_LOOKBACK_DAYS) {
+          const prices = priceHistory.map((p: any) => parseFloat(p.btcPrice));
+          ma200w = prices.reduce((a: number, b: number) => a + b, 0) / prices.length;
           priceMa200wRatio = btcPrice / ma200w;
-        } else if (lastWithRatio?.priceMa200wRatio) {
-          // 用历史ratio推算当前ma200w（ma200w变化缓慢，短期内近似有效）
-          const histPrice = typeof lastWithRatio.btcPrice === 'string'
-            ? parseFloat(lastWithRatio.btcPrice)
-            : (lastWithRatio.btcPrice || 0);
-          ma200w = histPrice / lastWithRatio.priceMa200wRatio;
-          priceMa200wRatio = btcPrice / ma200w;
+        } else {
+          const historyData = await fetchHistoricalData();
+          const historyMa200w = getMa200wFromHistory(historyData);
+          if (historyMa200w && historyMa200w > 0) {
+            ma200w = historyMa200w;
+            priceMa200wRatio = btcPrice / ma200w;
+          }
         }
       }
     } catch (e) {
@@ -482,10 +542,13 @@ export async function fetchStaticLatestData(): Promise<LatestData | null> {
     if (!response.ok) throw new Error('Failed to fetch latest static data');
 
     const raw = await response.json();
-    const data = normalizeLatestData(raw);
+    let data = normalizeLatestData(raw);
     if (!data) {
       throw new Error('Invalid latest static data format');
     }
+
+    const history = cache.history.length > 0 ? cache.history : await fetchHistoricalData();
+    data = enrichLatestDataWithHistory(data, history);
 
     cache.data = data;
     cache.timestamp = Date.now();
@@ -527,7 +590,8 @@ export function getLocalLatestData(): LatestData | null {
   const data = localStorage.getItem('btc_indicators_latest');
   if (data) {
     try {
-      return JSON.parse(data);
+      const parsed = JSON.parse(data) as LatestData;
+      return enrichLatestDataWithHistory(parsed, getLocalData());
     } catch (e) {
       console.error('Error parsing local latest data:', e);
     }
