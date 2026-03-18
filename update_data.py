@@ -1,7 +1,13 @@
 """
-BTC 指标数据更新脚本
-从 BGeometrics API 拉取链上指标，生成前端所需的 JSON 文件。
-由 GitHub Actions 每日定时调用。
+BTC indicator data updater.
+
+Primary source:
+  - bitcoin-data.com
+
+Fallback strategy when upstream is rate limited or unavailable:
+  1. Keep on-chain indicators from the last known history row.
+  2. Refresh BTC spot price from backup price feeds.
+  3. Recompute Price / 200W-MA from the carried MA baseline.
 """
 
 import json
@@ -12,22 +18,22 @@ from datetime import UTC, datetime
 import requests
 
 API_BASE = "https://bitcoin-data.com/v1"
+COINBASE_SPOT_URL = "https://api.coinbase.com/v2/prices/BTC-USD/spot"
+COINGECKO_SPOT_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
 TIMEOUT = 30
 HISTORY_FILE = "btc_indicators_history.json"
 LATEST_FILE = "btc_indicators_latest.json"
-
-# 200周 = 1400天
 MA200W_DAYS = 1400
 
 
 def fetch_json(endpoint, params=None):
-    """带重试的 API 请求"""
+    """Fetch a primary upstream endpoint with retry."""
     url = f"{API_BASE}/{endpoint}"
     for attempt in range(3):
         try:
-            resp = requests.get(url, params=params, timeout=TIMEOUT)
-            resp.raise_for_status()
-            payload = resp.json()
+            response = requests.get(url, params=params, timeout=TIMEOUT)
+            response.raise_for_status()
+            payload = response.json()
             if isinstance(payload, list):
                 return payload
             if isinstance(payload, dict):
@@ -35,44 +41,159 @@ def fetch_json(endpoint, params=None):
                     value = payload.get(key)
                     if isinstance(value, list):
                         return value
-                print(f"  [attempt {attempt+1}] {endpoint} unexpected response object shape, fallback to []")
+                print(f"  [attempt {attempt + 1}] {endpoint} unexpected response object shape, fallback to []")
                 return []
-            print(f"  [attempt {attempt+1}] {endpoint} unexpected response type {type(payload).__name__}, fallback to []")
+            print(f"  [attempt {attempt + 1}] {endpoint} unexpected response type {type(payload).__name__}, fallback to []")
             return []
-        except Exception as e:
-            print(f"  [attempt {attempt+1}] {endpoint} failed: {e}")
+        except Exception as error:
+            print(f"  [attempt {attempt + 1}] {endpoint} failed: {error}")
             if attempt < 2:
                 time.sleep(2 ** attempt)
     return []
 
 
-def build_date_map(records, value_key, out_key):
-    """将 API 返回的列表转为 {日期: 值} 字典"""
-    m = {}
-    for r in records:
-        if not isinstance(r, dict):
-            continue
-        d = r.get("d")
-        v = r.get(value_key)
-        if d and v is not None:
-            try:
-                m[d] = float(v)
-            except (ValueError, TypeError):
-                pass
-    return m
+def fetch_backup_btc_price():
+    """Fetch BTC/USD spot price from backup providers."""
+    today = datetime.now(UTC).strftime("%Y-%m-%d")
+
+    try:
+        response = requests.get(COINBASE_SPOT_URL, timeout=TIMEOUT)
+        response.raise_for_status()
+        payload = response.json()
+        amount = payload.get("data", {}).get("amount")
+        if amount is not None:
+            return {
+                "d": today,
+                "btcPrice": float(amount),
+                "source": "coinbase",
+            }
+    except Exception as error:
+        print(f"  [fallback] coinbase spot failed: {error}")
+
+    try:
+        headers = {}
+        demo_key = os.getenv("COINGECKO_DEMO_API_KEY")
+        if demo_key:
+            headers["x-cg-demo-api-key"] = demo_key
+
+        response = requests.get(COINGECKO_SPOT_URL, headers=headers, timeout=TIMEOUT)
+        response.raise_for_status()
+        payload = response.json()
+        amount = payload.get("bitcoin", {}).get("usd")
+        if amount is not None:
+            return {
+                "d": today,
+                "btcPrice": float(amount),
+                "source": "coingecko",
+            }
+    except Exception as error:
+        print(f"  [fallback] coingecko spot failed: {error}")
+
+    return None
 
 
 def load_existing_history():
     if os.path.exists(HISTORY_FILE):
-        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+        with open(HISTORY_FILE, "r", encoding="utf-8") as file:
+            return json.load(file)
     return []
 
 
 def get_value(record, *keys):
+    if not record:
+        return None
     for key in keys:
         if key in record:
             return record.get(key)
+    return None
+
+
+def build_date_map(records, value_key):
+    result = {}
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        day = record.get("d")
+        value = record.get(value_key)
+        if day and value is not None:
+            try:
+                result[day] = float(value)
+            except (ValueError, TypeError):
+                continue
+    return result
+
+
+def build_price_series(existing_history, latest_price_map):
+    price_by_date = {}
+
+    for record in existing_history:
+        day = record.get("d")
+        price = get_value(record, "btcPrice", "btc_price")
+        if day and price is not None:
+            try:
+                price_by_date[day] = float(price)
+            except (ValueError, TypeError):
+                continue
+
+    for day, price in latest_price_map.items():
+        price_by_date[day] = price
+
+    return sorted(price_by_date.items(), key=lambda item: item[0])
+
+
+def compute_ma200w_map(price_series):
+    ma200w_map = {}
+    prices_only = [price for _, price in price_series]
+
+    for index, (day, _) in enumerate(price_series):
+        if index < MA200W_DAYS - 1:
+            continue
+        window = prices_only[index - MA200W_DAYS + 1:index + 1]
+        ma200w_map[day] = sum(window) / len(window)
+
+    return ma200w_map
+
+
+def get_last_known_indicator_values(history, exclude_date=None):
+    fallback = {
+        "mvrv_zscore": None,
+        "lth_mvrv": None,
+        "puell_multiple": None,
+        "nupl": None,
+    }
+
+    for record in reversed(history):
+        if exclude_date and record.get("d") == exclude_date:
+            continue
+        return {
+            "mvrv_zscore": get_value(record, "mvrv_zscore", "mvrvZscore"),
+            "lth_mvrv": get_value(record, "lth_mvrv", "lthMvrv"),
+            "puell_multiple": get_value(record, "puell_multiple", "puellMultiple"),
+            "nupl": get_value(record, "nupl"),
+        }
+
+    return fallback
+
+
+def get_last_known_ma200w(history, exclude_date=None):
+    for record in reversed(history):
+        if exclude_date and record.get("d") == exclude_date:
+            continue
+        ma200w = get_value(record, "ma200w")
+        if ma200w is not None:
+            try:
+                return float(ma200w)
+            except (ValueError, TypeError):
+                continue
+
+        ratio = get_value(record, "price_ma200w_ratio", "priceMa200wRatio")
+        price = get_value(record, "btc_price", "btcPrice")
+        if ratio and price:
+            try:
+                return float(price) / float(ratio)
+            except (ValueError, TypeError, ZeroDivisionError):
+                continue
+
     return None
 
 
@@ -90,9 +211,9 @@ def find_indicator_dates(history):
 
     latest_values = {name: get_value(latest, *keys) for name, keys in mapping.items()}
 
-    for i in range(len(history) - 1, -1, -1):
-        record = history[i]
-        prev_record = history[i - 1] if i > 0 else None
+    for index in range(len(history) - 1, -1, -1):
+        record = history[index]
+        previous = history[index - 1] if index > 0 else None
 
         for name, keys in mapping.items():
             if name in dates:
@@ -103,15 +224,15 @@ def find_indicator_dates(history):
                 continue
 
             current_value = get_value(record, *keys)
-            prev_value = get_value(prev_record, *keys) if prev_record else None
-            if current_value == latest_value and prev_value != current_value:
+            previous_value = get_value(previous, *keys) if previous else None
+            if current_value == latest_value and previous_value != current_value:
                 dates[name] = record["d"]
 
         if len(dates) == 5:
             return dates
 
-    for i in range(len(history) - 1, -1, -1):
-        record = history[i]
+    for index in range(len(history) - 1, -1, -1):
+        record = history[index]
         for name, keys in mapping.items():
             if name not in dates and get_value(record, *keys) is not None:
                 dates[name] = record["d"]
@@ -159,13 +280,9 @@ def fail_job(message):
 def main():
     print(f"=== BTC Indicator Update: {datetime.now(UTC).strftime('%Y-%m-%d %H:%M:%S UTC')} ===")
 
-    # --- 拉取各指标的全量历史（用天数参数获取尽可能多的数据） ---
-    # 首次运行拉取全量，后续增量追加
     existing = load_existing_history()
-    # 决定拉取天数：有历史数据时只拉最近 30 天做增量，否则拉全量
     fetch_days = 30 if existing else 5000
-
-    print(f"Fetching last {fetch_days} days of data...")
+    print(f"Fetching last {fetch_days} days of primary data...")
 
     btc_price_raw = fetch_json(f"btc-price/{fetch_days}")
     mvrv_z_raw = fetch_json(f"mvrv-zscore/{fetch_days}")
@@ -173,48 +290,42 @@ def main():
     puell_raw = fetch_json(f"puell-multiple/{fetch_days}")
     nupl_raw = fetch_json(f"nupl/{fetch_days}")
 
-    # 200周均线需要至少 1400 天价格数据
-    price_for_ma = fetch_json(f"btc-price/{max(fetch_days, MA200W_DAYS)}")
-
     print(f"  btc-price: {len(btc_price_raw)} records")
     print(f"  mvrv-zscore: {len(mvrv_z_raw)} records")
     print(f"  lth-mvrv: {len(lth_mvrv_raw)} records")
     print(f"  puell-multiple: {len(puell_raw)} records")
     print(f"  nupl: {len(nupl_raw)} records")
-    print(f"  btc-price (for MA): {len(price_for_ma)} records")
 
-    if not btc_price_raw:
-        fail_job("btc-price endpoint returned no data. Upstream API is likely unavailable or rate limited, so the workflow is stopping to avoid publishing stale snapshots.")
+    price_map = build_date_map(btc_price_raw, "btcPrice")
+
+    fallback_price = None
+    if not price_map:
+        fallback_price = fetch_backup_btc_price()
+        if fallback_price:
+            price_map[fallback_price["d"]] = fallback_price["btcPrice"]
+            print(f"  fallback btc price: {fallback_price['btcPrice']} ({fallback_price['source']})")
+
+    if not price_map:
+        fail_job("No BTC price data available from either the primary upstream or backup feeds.")
+
+    if not existing and not any([mvrv_z_raw, lth_mvrv_raw, puell_raw, nupl_raw]):
+        fail_job("Initial bootstrap requires at least one on-chain indicator source. No primary data was available and there is no history to carry forward.")
 
     if not any([mvrv_z_raw, lth_mvrv_raw, puell_raw, nupl_raw]):
-        fail_job("All non-price indicator endpoints returned no data. Upstream API is likely unavailable or rate limited, so the workflow is stopping to avoid publishing stale snapshots.")
+        print("  [degraded] all non-price indicators unavailable, carrying forward the last known values")
 
-    # --- 构建日期索引 ---
-    price_map = build_date_map(btc_price_raw, "btcPrice", "btc_price")
-    mvrv_map = build_date_map(mvrv_z_raw, "mvrvZscore", "mvrv_zscore")
-    lth_map = build_date_map(lth_mvrv_raw, "lthMvrv", "lth_mvrv")
-    puell_map = build_date_map(puell_raw, "puellMultiple", "puell_multiple")
-    nupl_map = build_date_map(nupl_raw, "nupl", "nupl")
+    mvrv_map = build_date_map(mvrv_z_raw, "mvrvZscore")
+    lth_map = build_date_map(lth_mvrv_raw, "lthMvrv")
+    puell_map = build_date_map(puell_raw, "puellMultiple")
+    nupl_map = build_date_map(nupl_raw, "nupl")
 
-    # --- 构建价格列表用于计算滚动 200 周均线 ---
-    price_list = []
-    for r in sorted(price_for_ma, key=lambda x: x.get("d", "")):
-        d = r.get("d")
-        p = r.get("btcPrice")
-        if d and p:
-            try:
-                price_list.append((d, float(p)))
-            except (ValueError, TypeError):
-                pass
+    degraded_mode = not any([mvrv_map, lth_map, puell_map, nupl_map])
+    carry_exclude_date = max(price_map.keys()) if degraded_mode else None
 
-    # 计算每个日期的 200 周均线
-    ma200w_map = {}
-    for i, (d, p) in enumerate(price_list):
-        if i >= MA200W_DAYS - 1:
-            window = [x[1] for x in price_list[i - MA200W_DAYS + 1: i + 1]]
-            ma200w_map[d] = sum(window) / len(window)
+    price_series = build_price_series(existing, price_map)
+    ma200w_map = compute_ma200w_map(price_series)
+    fallback_ma200w = get_last_known_ma200w(existing, exclude_date=carry_exclude_date)
 
-    # --- 收集所有日期 ---
     all_dates = sorted(
         set(price_map.keys())
         | set(mvrv_map.keys())
@@ -223,45 +334,36 @@ def main():
         | set(nupl_map.keys())
     )
 
-    # --- 合并生成每日记录 ---
+    carried = get_last_known_indicator_values(existing, exclude_date=carry_exclude_date)
     new_records = []
-    # 用于向前填充的上一个有效值
-    last = {
-        "mvrv_zscore": None,
-        "lth_mvrv": None,
-        "puell_multiple": None,
-        "nupl": None,
-    }
 
-    for d in all_dates:
-        btc_price = price_map.get(d)
+    for day in all_dates:
+        btc_price = price_map.get(day)
         if btc_price is None:
-            continue  # 没有价格的日期跳过
+            continue
 
-        mvrv = mvrv_map.get(d, last["mvrv_zscore"])
-        lth = lth_map.get(d, last["lth_mvrv"])
-        puell = puell_map.get(d, last["puell_multiple"])
-        nupl_val = nupl_map.get(d, last["nupl"])
+        mvrv = mvrv_map.get(day, carried["mvrv_zscore"])
+        lth = lth_map.get(day, carried["lth_mvrv"])
+        puell = puell_map.get(day, carried["puell_multiple"])
+        nupl_value = nupl_map.get(day, carried["nupl"])
 
-        # 更新最后有效值
-        if d in mvrv_map:
-            last["mvrv_zscore"] = mvrv
-        if d in lth_map:
-            last["lth_mvrv"] = lth
-        if d in puell_map:
-            last["puell_multiple"] = puell
-        if d in nupl_map:
-            last["nupl"] = nupl_val
+        if day in mvrv_map:
+            carried["mvrv_zscore"] = mvrv
+        if day in lth_map:
+            carried["lth_mvrv"] = lth
+        if day in puell_map:
+            carried["puell_multiple"] = puell
+        if day in nupl_map:
+            carried["nupl"] = nupl_value
 
-        ma200w = ma200w_map.get(d)
+        ma200w = ma200w_map.get(day) or fallback_ma200w
         price_ma200w_ratio = (btc_price / ma200w) if ma200w else None
 
-        # 计算信号
         signal_price_ma = price_ma200w_ratio is not None and price_ma200w_ratio < 1
         signal_mvrv_z = mvrv is not None and mvrv < 0
         signal_lth_mvrv = lth is not None and lth < 1
         signal_puell = puell is not None and puell < 0.5
-        signal_nupl = nupl_val is not None and nupl_val < 0
+        signal_nupl = nupl_value is not None and nupl_value < 0
 
         signal_count = sum([
             signal_price_ma,
@@ -271,62 +373,56 @@ def main():
             signal_nupl,
         ])
 
-        record = {
-            "d": d,
-            "btc_price": btc_price,
-            "price_ma200w_ratio": round(price_ma200w_ratio, 6) if price_ma200w_ratio else None,
-            "ma200w": round(ma200w, 2) if ma200w else None,
-            "mvrv_zscore": round(mvrv, 6) if mvrv is not None else None,
-            "lth_mvrv": round(lth, 6) if lth is not None else None,
-            "puell_multiple": round(puell, 6) if puell is not None else None,
-            "nupl": round(nupl_val, 6) if nupl_val is not None else None,
+        new_records.append({
+            "d": day,
+            "btc_price": round(btc_price, 2),
+            "price_ma200w_ratio": round(price_ma200w_ratio, 6) if price_ma200w_ratio is not None else None,
+            "ma200w": round(ma200w, 2) if ma200w is not None else None,
+            "mvrv_zscore": mvrv,
+            "lth_mvrv": lth,
+            "puell_multiple": puell,
+            "nupl": nupl_value,
             "signal_price_ma": signal_price_ma,
             "signal_mvrv_z": signal_mvrv_z,
             "signal_lth_mvrv": signal_lth_mvrv,
             "signal_puell": signal_puell,
             "signal_nupl": signal_nupl,
             "signal_count": signal_count,
-        }
-
-        new_records.append(record)
+        })
 
     print(f"  Generated {len(new_records)} new/updated records")
 
-    # --- 合并到已有历史 ---
     if existing:
-        existing_map = {r["d"]: r for r in existing}
-        for r in new_records:
-            existing_map[r["d"]] = r  # 覆盖更新
-        merged = sorted(existing_map.values(), key=lambda x: x["d"])
+        merged_map = {record["d"]: record for record in existing}
+        for record in new_records:
+            merged_map[record["d"]] = record
+        merged = sorted(merged_map.values(), key=lambda item: item["d"])
     else:
         merged = new_records
 
+    if not merged:
+        fail_job("No merged history records were produced.")
+
     print(f"  Total history: {len(merged)} records")
 
-    # --- 写入文件 ---
-    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-        json.dump(merged, f, ensure_ascii=False, separators=(",", ":"))
-
+    with open(HISTORY_FILE, "w", encoding="utf-8") as file:
+        json.dump(merged, file, ensure_ascii=False, separators=(",", ":"))
     print(f"  Written {HISTORY_FILE} ({os.path.getsize(HISTORY_FILE) / 1024:.1f} KB)")
 
-    # 生成 latest 文件
-    if merged:
-        latest = build_latest_payload(merged)
-        with open(LATEST_FILE, "w", encoding="utf-8") as f:
-            json.dump(latest, f, ensure_ascii=False, indent=2)
-        print(f"  Written {LATEST_FILE}")
+    latest = build_latest_payload(merged)
+    with open(LATEST_FILE, "w", encoding="utf-8") as file:
+        json.dump(latest, file, ensure_ascii=False, indent=2)
+    print(f"  Written {LATEST_FILE}")
 
-    # --- 复制到 app/public 供 Vercel 构建 ---
     public_dir = os.path.join("app", "public")
     os.makedirs(public_dir, exist_ok=True)
 
-    for fname in [HISTORY_FILE, LATEST_FILE]:
-        if os.path.exists(fname):
-            dest = os.path.join(public_dir, fname)
-            with open(fname, "r", encoding="utf-8") as src:
-                with open(dest, "w", encoding="utf-8") as dst:
-                    dst.write(src.read())
-            print(f"  Copied to {dest}")
+    for filename in [HISTORY_FILE, LATEST_FILE]:
+        destination = os.path.join(public_dir, filename)
+        with open(filename, "r", encoding="utf-8") as source_file:
+            with open(destination, "w", encoding="utf-8") as target_file:
+                target_file.write(source_file.read())
+        print(f"  Copied to {destination}")
 
     print("=== Done ===")
 
