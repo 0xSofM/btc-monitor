@@ -7,8 +7,8 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "source": "/api/btc-data/(.*)",
+      "destination": "/api/btc-data?path=/btc-data/$1"
     },
     {
       "source": "/(.*)",
