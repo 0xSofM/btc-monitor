@@ -27,7 +27,18 @@ def fetch_json(endpoint, params=None):
         try:
             resp = requests.get(url, params=params, timeout=TIMEOUT)
             resp.raise_for_status()
-            return resp.json()
+            payload = resp.json()
+            if isinstance(payload, list):
+                return payload
+            if isinstance(payload, dict):
+                for key in ("data", "result", "items"):
+                    value = payload.get(key)
+                    if isinstance(value, list):
+                        return value
+                print(f"  [attempt {attempt+1}] {endpoint} unexpected response object shape, fallback to []")
+                return []
+            print(f"  [attempt {attempt+1}] {endpoint} unexpected response type {type(payload).__name__}, fallback to []")
+            return []
         except Exception as e:
             print(f"  [attempt {attempt+1}] {endpoint} failed: {e}")
             if attempt < 2:
@@ -39,6 +50,8 @@ def build_date_map(records, value_key, out_key):
     """将 API 返回的列表转为 {日期: 值} 字典"""
     m = {}
     for r in records:
+        if not isinstance(r, dict):
+            continue
         d = r.get("d")
         v = r.get(value_key)
         if d and v is not None:
