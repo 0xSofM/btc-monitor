@@ -12,6 +12,69 @@ export const config = {
 const API_BASE_URL = 'https://bitcoin-data.com';
 const CACHE_DURATION = 300;
 
+function toNumber(value, fallback = 0) {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === 'string' && value.trim() !== '') {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  return fallback;
+}
+
+function normalizeLatestSnapshot(snapshot) {
+  if (!snapshot || typeof snapshot !== 'object') {
+    return null;
+  }
+
+  const date = snapshot.date ?? snapshot.d;
+  if (!date) {
+    return null;
+  }
+
+  const btcPrice = toNumber(snapshot.btcPrice ?? snapshot.btc_price);
+  const priceMa200wRatio = toNumber(snapshot.priceMa200wRatio ?? snapshot.price_ma200w_ratio);
+  const mvrvZscore = toNumber(snapshot.mvrvZscore ?? snapshot.mvrv_zscore);
+  const lthMvrv = toNumber(snapshot.lthMvrv ?? snapshot.lth_mvrv);
+  const puellMultiple = toNumber(snapshot.puellMultiple ?? snapshot.puell_multiple);
+  const nupl = toNumber(snapshot.nupl);
+  const ma200w = snapshot.ma200w === undefined || snapshot.ma200w === null
+    ? undefined
+    : toNumber(snapshot.ma200w);
+
+  const signals = {
+    priceMa200w: typeof snapshot.signal_price_ma === 'boolean' ? snapshot.signal_price_ma : priceMa200wRatio < 1,
+    mvrvZ: typeof snapshot.signal_mvrv_z === 'boolean' ? snapshot.signal_mvrv_z : mvrvZscore < 0,
+    lthMvrv: typeof snapshot.signal_lth_mvrv === 'boolean' ? snapshot.signal_lth_mvrv : lthMvrv < 1,
+    puell: typeof snapshot.signal_puell === 'boolean' ? snapshot.signal_puell : puellMultiple < 0.5,
+    nupl: typeof snapshot.signal_nupl === 'boolean' ? snapshot.signal_nupl : nupl < 0,
+  };
+
+  return {
+    date,
+    btcPrice,
+    priceMa200wRatio,
+    ma200w,
+    mvrvZscore,
+    lthMvrv,
+    puellMultiple,
+    nupl,
+    signalCount: snapshot.signalCount ?? snapshot.signal_count ?? Object.values(signals).filter(Boolean).length,
+    signals,
+    indicatorDates: {
+      priceMa200w: date,
+      mvrvZ: date,
+      lthMvrv: date,
+      puell: date,
+      nupl: date,
+    },
+    raw: null,
+  };
+}
+
 async function fetchJsonSafely(url, fallback) {
   try {
     const response = await fetch(url);
@@ -38,8 +101,8 @@ async function fetchStaticLatestFallback(request) {
     if (!response.ok) {
       return null;
     }
-
-    return await response.json();
+    const raw = await response.json();
+    return normalizeLatestSnapshot(raw);
   } catch (error) {
     console.warn('Static latest fallback failed:', error);
     return null;
