@@ -96,8 +96,9 @@ https://你的用户名.github.io/btc-dca-monitor
 1. 点击 **Add New Project**
 2. 选择你的 `btc-dca-monitor` 仓库
 3. **Framework Preset**: 选择 **Other**
-4. **Root Directory**: 输入 `app`
-5. 点击 **Deploy**
+4. **Root Directory**: 在 **Project Settings → Build and Deployment → Root Directory** 中填写 `app`
+5. 如果导入流程页面没看到该项，先完成首次部署，再进入项目设置修改
+6. 点击 **Deploy**
 
 #### 第 4 步：完成部署
 等待 1-2 分钟，Vercel 会生成一个链接：

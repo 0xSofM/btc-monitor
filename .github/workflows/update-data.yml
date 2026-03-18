@@ -14,6 +14,7 @@ on:
     paths:
       - '.github/workflows/update-data.yml'
       - 'update_data.py'
+      - 'requirements.txt'
 
 jobs:
   update-data:
@@ -30,11 +31,12 @@ jobs:
       with:
         python-version: '3.11'
         cache: 'pip'
+        cache-dependency-path: 'requirements.txt'
     
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests
+        pip install -r requirements.txt
     
     - name: Update BTC indicator data
       run: python update_data.py
