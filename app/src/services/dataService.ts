@@ -2,9 +2,12 @@ import type { IndicatorData, LatestData, SignalEvent, TimeRange, ChartDataPoint 
 
 // API 配置
 const API_BASE_URL = 'https://bitcoin-data.com';
+const STATIC_HISTORY_PATH = '/btc_indicators_history.json';
+const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
 
 // 代理配置（用于解决 CORS 问题）
-const PROXY_URL = import.meta.env.VITE_API_PROXY_URL || '';
+const DEFAULT_PROXY_URL = import.meta.env.PROD ? '/api/btc-data' : '';
+const PROXY_URL = import.meta.env.VITE_API_PROXY_URL || DEFAULT_PROXY_URL;
 
 // 数据刷新配置
 const REFRESH_INTERVAL = 5 * 60 * 1000; // 5分钟刷新一次（毫秒）
@@ -157,6 +160,23 @@ function buildApiUrl(endpoint: string): string {
   return `${API_BASE_URL}${endpoint}`;
 }
 
+function toNumber(value: unknown, fallback = 0): number {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? value : fallback;
+  }
+
+  if (typeof value === 'string' && value.trim() !== '') {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+
+  return fallback;
+}
+
+function resolveSignalFlag(explicitValue: unknown, derivedValue: boolean): boolean {
+  return typeof explicitValue === 'boolean' ? explicitValue : derivedValue;
+}
+
 // 带超时的 fetch
 async function fetchWithTimeout(url: string, timeout = 10000): Promise<Response> {
   const controller = new AbortController();
@@ -253,17 +273,21 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
   }
 
   try {
-    const [mvrvZData, lthMvrvData, puellData, nuplData, btcPriceData, mayerData] = await Promise.all([
+    const [mvrvZData, lthMvrvData, puellData, nuplData, btcPriceData] = await Promise.all([
       fetchMvrvZScore(1),
       fetchLthMvrv(1),
       fetchPuellMultiple(1),
       fetchNupl(1),
-      fetchBtcPrice(1),
-      fetchMayerMultiple(1)
+      fetchBtcPrice(1)
     ]);
 
     if (!btcPriceData.length) {
-      console.warn('[DataService] API fetch failed, falling back to history data');
+      console.warn('[DataService] API fetch failed, falling back to static latest data');
+      const staticLatest = await fetchStaticLatestData();
+      if (staticLatest) {
+        return staticLatest;
+      }
+
       const historyData = await fetchHistoricalData();
       if (historyData.length > 0) {
         const latest = getLatestFromHistory(historyData);
@@ -290,8 +314,6 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
     
     const nupl = nuplData.length ? parseFloat(nuplData[0].nupl) : 0;
     const nuplDate = nuplData.length ? nuplData[0].d : priceDate;
-    
-    const mayerMultiple = mayerData.length ? mayerData[0].mayerMultiple : 0;
     
     let priceMa200wRatio = 0;
     let ma200w = 0;
@@ -359,7 +381,8 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
     return result;
   } catch (error) {
     console.error('[DataService] Error fetching all indicators:', error);
-    return getLocalLatestData();
+    const staticLatest = await fetchStaticLatestData();
+    return staticLatest ?? getLocalLatestData();
   }
 }
 
@@ -384,6 +407,96 @@ function normalizeIndicatorData(item: any): IndicatorData {
   };
 }
 
+function normalizeLatestData(item: any): LatestData | null {
+  if (!item || typeof item !== 'object') {
+    return null;
+  }
+
+  const date = item.date ?? item.d;
+  if (!date) {
+    return null;
+  }
+
+  const btcPrice = toNumber(item.btcPrice ?? item.btc_price);
+  const priceMa200wRatio = toNumber(item.priceMa200wRatio ?? item.price_ma200w_ratio);
+  const ma200w = item.ma200w === undefined || item.ma200w === null
+    ? undefined
+    : toNumber(item.ma200w);
+  const mvrvZscore = toNumber(item.mvrvZscore ?? item.mvrv_zscore);
+  const lthMvrv = toNumber(item.lthMvrv ?? item.lth_mvrv);
+  const puellMultiple = toNumber(item.puellMultiple ?? item.puell_multiple);
+  const nupl = toNumber(item.nupl);
+
+  const signals = {
+    priceMa200w: resolveSignalFlag(
+      item.signals?.priceMa200w ?? item.signalPriceMa ?? item.signal_price_ma,
+      priceMa200wRatio < 1
+    ),
+    mvrvZ: resolveSignalFlag(
+      item.signals?.mvrvZ ?? item.signalMvrvZ ?? item.signal_mvrv_z,
+      mvrvZscore < 0
+    ),
+    lthMvrv: resolveSignalFlag(
+      item.signals?.lthMvrv ?? item.signalLthMvrv ?? item.signal_lth_mvrv,
+      lthMvrv < 1
+    ),
+    puell: resolveSignalFlag(
+      item.signals?.puell ?? item.signalPuell ?? item.signal_puell,
+      puellMultiple < 0.5
+    ),
+    nupl: resolveSignalFlag(
+      item.signals?.nupl ?? item.signalNupl ?? item.signal_nupl,
+      nupl < 0
+    )
+  };
+
+  const signalCountValue = item.signalCount ?? item.signal_count;
+  const signalCount = signalCountValue === undefined || signalCountValue === null
+    ? Object.values(signals).filter(Boolean).length
+    : toNumber(signalCountValue);
+
+  return {
+    date,
+    btcPrice,
+    priceMa200wRatio,
+    ma200w,
+    mvrvZscore,
+    lthMvrv,
+    puellMultiple,
+    nupl,
+    signalCount,
+    signals,
+    indicatorDates: {
+      priceMa200w: item.indicatorDates?.priceMa200w ?? date,
+      mvrvZ: item.indicatorDates?.mvrvZ ?? date,
+      lthMvrv: item.indicatorDates?.lthMvrv ?? date,
+      puell: item.indicatorDates?.puell ?? date,
+      nupl: item.indicatorDates?.nupl ?? date,
+    }
+  };
+}
+
+export async function fetchStaticLatestData(): Promise<LatestData | null> {
+  try {
+    const response = await fetchWithTimeout(STATIC_LATEST_PATH, 10000);
+    if (!response.ok) throw new Error('Failed to fetch latest static data');
+
+    const raw = await response.json();
+    const data = normalizeLatestData(raw);
+    if (!data) {
+      throw new Error('Invalid latest static data format');
+    }
+
+    cache.data = data;
+    cache.timestamp = Date.now();
+    saveLocalData({ latest: data });
+    return data;
+  } catch (error) {
+    console.error('Error fetching latest static data:', error);
+    return getLocalLatestData();
+  }
+}
+
 // 获取历史数据（用于复盘）
 export async function fetchHistoricalData(): Promise<IndicatorData[]> {
   if (cache.history.length > 0) {
@@ -391,7 +504,7 @@ export async function fetchHistoricalData(): Promise<IndicatorData[]> {
   }
 
   try {
-    const response = await fetchWithTimeout('/btc_indicators_history.json', 30000);
+    const response = await fetchWithTimeout(STATIC_HISTORY_PATH, 30000);
     if (!response.ok) throw new Error('Failed to fetch historical data');
     const raw = await response.json();
     const data = raw.map(normalizeIndicatorData);
@@ -511,7 +624,7 @@ export async function checkDataSource(): Promise<{
   }
 
   try {
-    const response = await fetchWithTimeout('/btc_indicators_history.json', 5000);
+    const response = await fetchWithTimeout(STATIC_HISTORY_PATH, 5000);
     result.historyAvailable = response.ok;
   } catch (e) {
     result.historyAvailable = false;
@@ -569,7 +682,7 @@ export function getIndicatorChartData(
   const filteredData = filterDataByTimeRange(data, range);
 
   return filteredData
-    .map(item => {
+    .map((item): ChartDataPoint | null => {
       let value: number | null = null;
       let signal = false;
 
@@ -607,11 +720,15 @@ export function getIndicatorChartData(
       return {
         date: item.d,
         value,
-        btcPrice,
+        btcPrice: typeof btcPrice === 'number' ? btcPrice : undefined,
         signal
       };
     })
-    .filter((item): item is ChartDataPoint => item !== null);
+    .filter(isChartDataPoint);
+}
+
+function isChartDataPoint(item: ChartDataPoint | null): item is ChartDataPoint {
+  return item !== null;
 }
 
 // 获取MA200图表数据（价格和均线）
