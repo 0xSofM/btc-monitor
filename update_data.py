@@ -2,12 +2,17 @@
 BTC indicator data updater.
 
 Primary source:
-  - bitcoin-data.com
+- bitcoin-data.com
 
 Fallback strategy when upstream is rate limited or unavailable:
-  1. Keep on-chain indicators from the last known history row.
-  2. Refresh BTC spot price from backup price feeds.
-  3. Recompute Price / 200W-MA from the carried MA baseline.
+1. Keep on-chain indicators from the last known history row.
+2. Refresh BTC spot price from backup price feeds.
+3. Recompute Price / 200W-MA from the carried MA baseline.
+
+Rate Limit Handling:
+- bitcoin-data.com has strict rate limits (8 requests/hour for free tier)
+- We fetch only 1 day of data for each indicator to minimize API calls
+- Total: 5 API calls per run (btc-price, mvrv-zscore, lth-mvrv, puell-multiple, nupl)
 """
 
 import json
@@ -37,16 +42,17 @@ def fetch_json(endpoint, params=None):
             if isinstance(payload, list):
                 return payload
             if isinstance(payload, dict):
+                # Handle single record response (e.g., {"d":"2026-03-17","mvrvZscore":"0.701"})
+                if "d" in payload:
+                    return [payload]
                 for key in ("data", "result", "items"):
                     value = payload.get(key)
                     if isinstance(value, list):
                         return value
-                print(f"  [attempt {attempt + 1}] {endpoint} unexpected response object shape, fallback to []")
-                return []
-            print(f"  [attempt {attempt + 1}] {endpoint} unexpected response type {type(payload).__name__}, fallback to []")
+            print(f" [attempt {attempt + 1}] {endpoint} unexpected response object shape, fallback to []")
             return []
         except Exception as error:
-            print(f"  [attempt {attempt + 1}] {endpoint} failed: {error}")
+            print(f" [attempt {attempt + 1}] {endpoint} failed: {error}")
             if attempt < 2:
                 time.sleep(2 ** attempt)
     return []
@@ -281,7 +287,11 @@ def main():
     print(f"=== BTC Indicator Update: {datetime.now(UTC).strftime('%Y-%m-%d %H:%M:%S UTC')} ===")
 
     existing = load_existing_history()
-    fetch_days = 30 if existing else 5000
+    
+    # Use minimal fetch days to conserve API rate limit
+    # bitcoin-data.com has 8 requests/hour limit for free tier
+    # We only need the latest data, so fetch just 1 day
+    fetch_days = 1 if existing else 5000
     print(f"Fetching last {fetch_days} days of primary data...")
 
     btc_price_raw = fetch_json(f"btc-price/{fetch_days}")
@@ -290,11 +300,11 @@ def main():
     puell_raw = fetch_json(f"puell-multiple/{fetch_days}")
     nupl_raw = fetch_json(f"nupl/{fetch_days}")
 
-    print(f"  btc-price: {len(btc_price_raw)} records")
-    print(f"  mvrv-zscore: {len(mvrv_z_raw)} records")
-    print(f"  lth-mvrv: {len(lth_mvrv_raw)} records")
-    print(f"  puell-multiple: {len(puell_raw)} records")
-    print(f"  nupl: {len(nupl_raw)} records")
+    print(f" btc-price: {len(btc_price_raw)} records")
+    print(f" mvrv-zscore: {len(mvrv_z_raw)} records")
+    print(f" lth-mvrv: {len(lth_mvrv_raw)} records")
+    print(f" puell-multiple: {len(puell_raw)} records")
+    print(f" nupl: {len(nupl_raw)} records")
 
     price_map = build_date_map(btc_price_raw, "btcPrice")
 

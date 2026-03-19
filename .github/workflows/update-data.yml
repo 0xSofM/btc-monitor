@@ -1,20 +1,26 @@
 name: Update BTC Indicator Data
 
 on:
-  schedule:
-    # 每天 UTC 00:00 (北京时间 08:00) 运行
-    - cron: '0 0 * * *'
-    # 每天 UTC 12:00 (北京时间 20:00) 运行，一天两次
-    - cron: '0 12 * * *'
-  workflow_dispatch: # 允许手动触发
-  push:
-    branches:
-      - main
-      - master
-    paths:
-      - '.github/workflows/update-data.yml'
-      - 'update_data.py'
-      - 'requirements.txt'
+schedule:
+# 每天 UTC 00:00 (北京时间 08:00) 运行
+- cron: '0 0 * * *'
+# 每天 UTC 12:00 (北京时间 20:00) 运行，一天两次
+- cron: '0 12 * * *'
+workflow_dispatch: # 允许手动触发
+push:
+branches:
+- main
+- master
+paths:
+- '.github/workflows/update-data.yml'
+- 'update_data.py'
+- 'requirements.txt'
+
+# Concurrency: ensure only one workflow runs at a time
+# This prevents rate limit exhaustion from parallel runs
+concurrency:
+group: btc-data-update
+cancel-in-progress: false
 
 jobs:
   update-data:
