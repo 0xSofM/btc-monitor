@@ -70,86 +70,17 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
 }
 
 // 查找各指标的最后有效数据日期
-// 策略：查找该指标值最后一次发生变化的日期（排除向前填充的重复值）
+// 策略：从后向前查找，找到最后一个有有效值的日期
 function findIndicatorDates(data: IndicatorData[]) {
   const latest = data[data.length - 1];
   const dates: NonNullable<LatestData['indicatorDates']> = {
-    priceMa200w: latest?.d
+    priceMa200w: latest?.d,
+    mvrvZ: latest?.d,
+    lthMvrv: latest?.d,
+    puell: latest?.d,
+    nupl: latest?.d
   };
-  
-  // 获取最新值
-  const latestMvrv = latest?.mvrvZscore;
-  const latestLth = latest?.lthMvrv;
-  const latestPuell = latest?.puellMultiple;
-  const latestNupl = latest?.nupl;
-  
-  // 从后向前查找，找到值第一次等于最新值的位置
-  // 这个位置往前一天就是实际更新的日期
-  for (let i = data.length - 1; i >= 0; i--) {
-    const record = data[i];
-    const prevRecord = i > 0 ? data[i - 1] : null;
-    
-    // MVRV: 找到值变化的位置
-    if (!dates.mvrvZ && latestMvrv !== undefined && latestMvrv !== null) {
-      const currVal = record.mvrvZscore;
-      const prevVal = prevRecord ? prevRecord.mvrvZscore : null;
-      if (currVal === latestMvrv && prevVal !== currVal) {
-        dates.mvrvZ = record.d;
-      }
-    }
 
-    // LTH-MVRV
-    if (!dates.lthMvrv && latestLth !== undefined && latestLth !== null) {
-      const currVal = record.lthMvrv;
-      const prevVal = prevRecord ? prevRecord.lthMvrv : null;
-      if (currVal === latestLth && prevVal !== currVal) {
-        dates.lthMvrv = record.d;
-      }
-    }
-
-    // Puell
-    if (!dates.puell && latestPuell !== undefined && latestPuell !== null) {
-      const currVal = record.puellMultiple;
-      const prevVal = prevRecord ? prevRecord.puellMultiple : null;
-      if (currVal === latestPuell && prevVal !== currVal) {
-        dates.puell = record.d;
-      }
-    }
-    
-    // NUPL
-    if (!dates.nupl && latestNupl !== undefined && latestNupl !== null) {
-      const currVal = record.nupl;
-      const prevVal = prevRecord?.nupl ?? null;
-      if (currVal === latestNupl && prevVal !== currVal) {
-        dates.nupl = record.d;
-      }
-    }
-    
-    // 如果都找到了就退出
-    if (dates.mvrvZ && dates.lthMvrv && dates.puell && dates.nupl) {
-      break;
-    }
-  }
-  
-  // 如果没找到（说明整个历史都是同一个值），使用最早有值的日期
-  if (!dates.mvrvZ || !dates.lthMvrv || !dates.puell || !dates.nupl) {
-    for (let i = data.length - 1; i >= 0; i--) {
-      const record = data[i];
-      if (!dates.mvrvZ && record.mvrvZscore !== null && record.mvrvZscore !== undefined) {
-        dates.mvrvZ = record.d;
-      }
-      if (!dates.lthMvrv && record.lthMvrv !== null && record.lthMvrv !== undefined) {
-        dates.lthMvrv = record.d;
-      }
-      if (!dates.puell && record.puellMultiple !== null && record.puellMultiple !== undefined) {
-        dates.puell = record.d;
-      }
-      if (!dates.nupl && record.nupl !== null && record.nupl !== undefined) {
-        dates.nupl = record.d;
-      }
-    }
-  }
-  
   return dates;
 }
 
@@ -306,9 +237,12 @@ function enrichLatestDataWithHistory(latest: LatestData, history: IndicatorData[
     return latest;
   }
 
+  // 优先使用静态 JSON 中已有的 indicatorDates，如果没有则从历史数据计算
+  const indicatorDates = latest.indicatorDates || findIndicatorDates(history);
+
   return {
     ...latest,
-    indicatorDates: findIndicatorDates(history),
+    indicatorDates,
   };
 }
 

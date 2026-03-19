@@ -1,8 +1,8 @@
 {
   "date": "2026-03-19",
-  "btcPrice": 71195.01,
-  "priceMa200wRatio": 1.206739,
-  "ma200w": 58997.84,
+  "btcPrice": 71106.01,
+  "priceMa200wRatio": 1.205232,
+  "ma200w": 58997.78,
   "mvrvZscore": 0.5858,
   "lthMvrv": 1.73,
   "puellMultiple": 0.631,
@@ -17,9 +17,9 @@
   },
   "indicatorDates": {
     "priceMa200w": "2026-03-19",
-    "mvrvZ": "2026-03-15",
-    "lthMvrv": "2026-03-15",
-    "puell": "2026-03-15",
-    "nupl": "2026-03-15"
+    "mvrvZ": "2026-03-19",
+    "lthMvrv": "2026-03-19",
+    "puell": "2026-03-19",
+    "nupl": "2026-03-19"
   }
 }

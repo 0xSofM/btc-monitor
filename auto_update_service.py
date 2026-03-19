@@ -311,12 +311,23 @@ class BTCDataService:
         """保存最新数据摘要"""
         if not data:
             return
-        
+
         latest = data[-1]
+        
+        # 构建 indicatorDates - 所有指标使用最新日期
+        indicator_dates = {
+            'priceMa200w': latest['d'],
+            'mvrvZ': latest['d'],
+            'lthMvrv': latest['d'],
+            'puell': latest['d'],
+            'nupl': latest['d']
+        }
+        
         summary = {
             'date': latest['d'],
             'btcPrice': latest['btcPrice'],
             'priceMa200wRatio': latest['price_ma200w_ratio'],
+            'ma200w': latest.get('ma200w'),
             'mvrvZscore': latest['mvrvZscore'],
             'lthMvrv': latest['lthMvrv'],
             'puellMultiple': latest['puellMultiple'],
@@ -329,6 +340,7 @@ class BTCDataService:
                 'puell': latest['signal_puell'],
                 'nupl': latest['signal_nupl']
             },
+            'indicatorDates': indicator_dates,
             'lastUpdated': datetime.now().isoformat()
         }
         

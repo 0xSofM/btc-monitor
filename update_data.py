@@ -204,6 +204,14 @@ def get_last_known_ma200w(history, exclude_date=None):
 
 
 def find_indicator_dates(history):
+    """
+    查找每个指标最后更新的日期。
+    
+    逻辑：
+    1. priceMa200w 使用最新记录的日期（因为它是根据价格计算的）
+    2. 其他指标：从后向前查找，找到第一个有有效值的记录，其日期即为最后更新日期
+    3. 如果指标在历史记录中一直存在，则使用最新记录的日期
+    """
     latest = history[-1]
     dates = {
         "priceMa200w": latest["d"],
@@ -215,32 +223,28 @@ def find_indicator_dates(history):
         "nupl": ("nupl",),
     }
 
+    # 首先尝试从最新记录获取指标值
     latest_values = {name: get_value(latest, *keys) for name, keys in mapping.items()}
+    
+    # 对于有最新值的指标，直接使用最新日期
+    for name, value in latest_values.items():
+        if value is not None and name not in dates:
+            dates[name] = latest["d"]
+    
+    # 如果所有指标都已找到，直接返回
+    if len(dates) == 5:
+        return dates
 
+    # 对于没有最新值的指标，从后向前查找最后更新的日期
     for index in range(len(history) - 1, -1, -1):
         record = history[index]
-        previous = history[index - 1] if index > 0 else None
-
+        
         for name, keys in mapping.items():
             if name in dates:
                 continue
-
-            latest_value = latest_values.get(name)
-            if latest_value is None:
-                continue
-
+            
             current_value = get_value(record, *keys)
-            previous_value = get_value(previous, *keys) if previous else None
-            if current_value == latest_value and previous_value != current_value:
-                dates[name] = record["d"]
-
-        if len(dates) == 5:
-            return dates
-
-    for index in range(len(history) - 1, -1, -1):
-        record = history[index]
-        for name, keys in mapping.items():
-            if name not in dates and get_value(record, *keys) is not None:
+            if current_value is not None:
                 dates[name] = record["d"]
 
     return dates
