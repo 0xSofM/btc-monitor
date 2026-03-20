@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Info, BookOpen, TrendingDown, AlertTriangle } from 'lucide-react';
 
 export function IndicatorExplanation() {
@@ -84,10 +83,10 @@ export function IndicatorExplanation() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Accordion type="single" collapsible className="w-full">
+        <div className="space-y-4">
           {indicators.map((indicator) => (
-            <AccordionItem key={indicator.id} value={indicator.id}>
-              <AccordionTrigger className="hover:no-underline">
+            <Card key={indicator.id}>
+              <CardHeader>
                 <div className="flex items-center gap-3 text-left">
                   <div className="p-2 bg-muted rounded-full">
                     {indicator.icon}
@@ -99,9 +98,9 @@ export function IndicatorExplanation() {
                     </p>
                   </div>
                 </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="pl-14 space-y-4">
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
                   <div>
                     <h4 className="font-medium mb-1">指标介绍</h4>
                     <p className="text-sm text-muted-foreground">
@@ -132,10 +131,10 @@ export function IndicatorExplanation() {
                     </div>
                   </div>
                 </div>
-              </AccordionContent>
-            </AccordionItem>
+              </CardContent>
+            </Card>
           ))}
-        </Accordion>
+        </div>
 
         <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
           <div className="flex items-start gap-3">

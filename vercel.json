@@ -1,0 +1,31 @@
+{
+  "buildCommand": "cd app && npm run build",
+  "outputDirectory": "app/dist",
+  "installCommand": "cd app && npm install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/btc-data.js"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type"
+        }
+      ]
+    }
+  ]
+}
