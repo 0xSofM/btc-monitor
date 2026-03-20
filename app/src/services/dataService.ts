@@ -70,16 +70,62 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
 }
 
 // 查找各指标的最后有效数据日期
-// 策略：从后向前查找，找到最后一个有有效值的日期
+// 策略：
+// 1. 优先使用 apiDataDate 字段（记录 API 实际返回数据的日期）
+// 2. 如果没有 apiDataDate，从后向前查找最后一个有有效值的日期
+// 3. 如果某个指标从未有过有效值，则返回 undefined
 function findIndicatorDates(data: IndicatorData[]) {
   const latest = data[data.length - 1];
+  if (!latest) {
+    return {
+      priceMa200w: undefined,
+      mvrvZ: undefined,
+      lthMvrv: undefined,
+      puell: undefined,
+      nupl: undefined
+    };
+  }
+
+  // 初始化为 undefined，表示尚未找到有效值
   const dates: NonNullable<LatestData['indicatorDates']> = {
-    priceMa200w: latest?.d,
-    mvrvZ: latest?.d,
-    lthMvrv: latest?.d,
-    puell: latest?.d,
-    nupl: latest?.d
+    priceMa200w: latest.d, // priceMa200w 始终使用最新日期（因为它是根据价格计算的）
+    mvrvZ: undefined,
+    lthMvrv: undefined,
+    puell: undefined,
+    nupl: undefined
   };
+
+  // 首先检查是否有 apiDataDate 字段（记录 API 实际返回数据的日期）
+  const apiDates = (latest as any).apiDataDate || (latest as any).api_data_date;
+  if (apiDates && typeof apiDates === 'object') {
+    // 只添加 apiDataDate 中存在的指标
+    if (apiDates.mvrvZ) dates.mvrvZ = apiDates.mvrvZ;
+    if (apiDates.lthMvrv) dates.lthMvrv = apiDates.lthMvrv;
+    if (apiDates.puell) dates.puell = apiDates.puell;
+    if (apiDates.nupl) dates.nupl = apiDates.nupl;
+    return dates;
+  }
+
+  // 如果没有 apiDataDate，从后向前查找每个指标最后一个有有效值的日期
+  for (let i = data.length - 1; i >= 0; i--) {
+    const record = data[i];
+    // MVRV: 查找最后一个有 mvrvZscore 值的日期
+    if (dates.mvrvZ === undefined && record.mvrvZscore !== null && record.mvrvZscore !== undefined && record.mvrvZscore !== 0) {
+      dates.mvrvZ = record.d;
+    }
+    // LTH-MVRV: 查找最后一个有 lthMvrv 值的日期
+    if (dates.lthMvrv === undefined && record.lthMvrv !== null && record.lthMvrv !== undefined && record.lthMvrv !== 0) {
+      dates.lthMvrv = record.d;
+    }
+    // Puell: 查找最后一个有 puellMultiple 值的日期
+    if (dates.puell === undefined && record.puellMultiple !== null && record.puellMultiple !== undefined && record.puellMultiple !== 0) {
+      dates.puell = record.d;
+    }
+    // NUPL: 查找最后一个有 nupl 值的日期
+    if (dates.nupl === undefined && record.nupl !== null && record.nupl !== undefined && record.nupl !== 0) {
+      dates.nupl = record.d;
+    }
+  }
 
   return dates;
 }
@@ -382,6 +428,19 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
 
 // 将历史数据中的 snake_case 字段规范化为 camelCase
 function normalizeIndicatorData(item: any): IndicatorData {
+  if (!item || typeof item !== 'object') {
+    return item;
+  }
+
+  // 处理 apiDataDate 字段（支持 snake_case 和 camelCase）
+  const apiDataDate = item.apiDataDate || item.api_data_date;
+  const indicatorDates = apiDataDate ? {
+    mvrvZ: apiDataDate.mvrvZ || apiDataDate.mvrv_z,
+    lthMvrv: apiDataDate.lthMvrv || apiDataDate.lth_mvrv,
+    puell: apiDataDate.puell,
+    nupl: apiDataDate.nupl
+  } : undefined;
+
   return {
     d: item.d,
     unixTs: item.unixTs ?? item.unix_ts,
@@ -398,7 +457,9 @@ function normalizeIndicatorData(item: any): IndicatorData {
     signalPuell: item.signalPuell ?? item.signal_puell,
     signalNupl: item.signalNupl ?? item.signal_nupl,
     signalCount: item.signalCount ?? item.signal_count,
-  };
+    // 保留 apiDataDate 字段用于数据日期追踪
+    apiDataDate: indicatorDates,
+  } as IndicatorData;
 }
 
 function normalizeLatestData(item: any): LatestData | null {
@@ -411,36 +472,63 @@ function normalizeLatestData(item: any): LatestData | null {
     return null;
   }
 
-  const btcPrice = toNumber(item.btcPrice ?? item.btc_price);
-  const priceMa200wRatio = toNumber(item.priceMa200wRatio ?? item.price_ma200w_ratio);
+  // 使用 null 作为缺失值的表示，而非 0
+  const btcPrice = item.btcPrice ?? item.btc_price ?? null;
+  const priceMa200wRatio = item.priceMa200wRatio ?? item.price_ma200w_ratio ?? null;
   const ma200w = item.ma200w === undefined || item.ma200w === null
     ? undefined
     : toNumber(item.ma200w);
-  const mvrvZscore = toNumber(item.mvrvZscore ?? item.mvrv_zscore);
-  const lthMvrv = toNumber(item.lthMvrv ?? item.lth_mvrv);
-  const puellMultiple = toNumber(item.puellMultiple ?? item.puell_multiple);
-  const nupl = toNumber(item.nupl);
+  const mvrvZscore = item.mvrvZscore ?? item.mvrv_zscore ?? null;
+  const lthMvrv = item.lthMvrv ?? item.lth_mvrv ?? null;
+  const puellMultiple = item.puellMultiple ?? item.puell_multiple ?? null;
+  const nupl = item.nupl ?? null;
+
+  // 转换为数字或保持 null
+  const toNumberOrNull = (val: any): number | null => {
+    if (val === null || val === undefined) return null;
+    const num = toNumber(val, NaN);
+    return Number.isNaN(num) ? null : num;
+  };
+
+  const btcPriceNum = toNumberOrNull(btcPrice);
+  const priceMa200wRatioNum = toNumberOrNull(priceMa200wRatio);
+  const mvrvZscoreNum = toNumberOrNull(mvrvZscore);
+  const lthMvrvNum = toNumberOrNull(lthMvrv);
+  const puellMultipleNum = toNumberOrNull(puellMultiple);
+  const nuplNum = toNumberOrNull(nupl);
+
+  // 处理 indicatorDates（支持 apiDataDate 和 indicatorDates 两种格式）
+  const apiDataDate = item.apiDataDate || item.api_data_date;
+  const incomingIndicatorDates = item.indicatorDates || apiDataDate;
+  
+  const indicatorDates: LatestData['indicatorDates'] = {
+    priceMa200w: incomingIndicatorDates?.priceMa200w || date,
+    mvrvZ: incomingIndicatorDates?.mvrvZ || incomingIndicatorDates?.mvrv_z || date,
+    lthMvrv: incomingIndicatorDates?.lthMvrv || incomingIndicatorDates?.lth_mvrv || date,
+    puell: incomingIndicatorDates?.puell || date,
+    nupl: incomingIndicatorDates?.nupl || date,
+  };
 
   const signals = {
     priceMa200w: resolveSignalFlag(
       item.signals?.priceMa200w ?? item.signalPriceMa ?? item.signal_price_ma,
-      priceMa200wRatio < 1
+      priceMa200wRatioNum !== null && priceMa200wRatioNum < 1
     ),
     mvrvZ: resolveSignalFlag(
       item.signals?.mvrvZ ?? item.signalMvrvZ ?? item.signal_mvrv_z,
-      mvrvZscore < 0
+      mvrvZscoreNum !== null && mvrvZscoreNum < 0
     ),
     lthMvrv: resolveSignalFlag(
       item.signals?.lthMvrv ?? item.signalLthMvrv ?? item.signal_lth_mvrv,
-      lthMvrv < 1
+      lthMvrvNum !== null && lthMvrvNum < 1
     ),
     puell: resolveSignalFlag(
       item.signals?.puell ?? item.signalPuell ?? item.signal_puell,
-      puellMultiple < 0.5
+      puellMultipleNum !== null && puellMultipleNum < 0.5
     ),
     nupl: resolveSignalFlag(
       item.signals?.nupl ?? item.signalNupl ?? item.signal_nupl,
-      nupl < 0
+      nuplNum !== null && nuplNum < 0
     )
   };
 
@@ -451,22 +539,16 @@ function normalizeLatestData(item: any): LatestData | null {
 
   return {
     date,
-    btcPrice,
-    priceMa200wRatio,
+    btcPrice: btcPriceNum ?? 0,
+    priceMa200wRatio: priceMa200wRatioNum ?? 0,
     ma200w,
-    mvrvZscore,
-    lthMvrv,
-    puellMultiple,
-    nupl,
+    mvrvZscore: mvrvZscoreNum ?? 0,
+    lthMvrv: lthMvrvNum ?? 0,
+    puellMultiple: puellMultipleNum ?? 0,
+    nupl: nuplNum ?? 0,
     signalCount,
     signals,
-    indicatorDates: {
-      priceMa200w: item.indicatorDates?.priceMa200w ?? date,
-      mvrvZ: item.indicatorDates?.mvrvZ ?? date,
-      lthMvrv: item.indicatorDates?.lthMvrv ?? date,
-      puell: item.indicatorDates?.puell ?? date,
-      nupl: item.indicatorDates?.nupl ?? date,
-    }
+    indicatorDates
   };
 }
 
@@ -513,35 +595,119 @@ export async function fetchHistoricalData(): Promise<IndicatorData[]> {
   }
 }
 
+// 数据版本标识，用于检测数据结构变更
+const DATA_VERSION = 'v1.0.0';
+
 // 从本地存储获取历史数据
 export function getLocalData(): IndicatorData[] {
-  const data = localStorage.getItem('btc_indicators_history');
-  return data ? JSON.parse(data) : [];
+  try {
+    const data = localStorage.getItem('btc_indicators_history');
+    if (!data) return [];
+    const parsed = JSON.parse(data);
+    
+    // 支持两种格式：
+    // 1. 新格式：{ version, timestamp, data: [...] }
+    // 2. 旧格式：直接数组 [...]
+    let historyArray: any[];
+    if (parsed && typeof parsed === 'object' && 'data' in parsed && Array.isArray(parsed.data)) {
+      // 新格式：从 data 字段提取数组
+      historyArray = parsed.data;
+    } else if (Array.isArray(parsed)) {
+      // 旧格式：直接使用数组
+      historyArray = parsed;
+    } else {
+      console.warn('[DataService] Invalid local history data format');
+      return [];
+    }
+    
+    return historyArray.map(item => normalizeIndicatorData(item));
+  } catch (e) {
+    console.error('Error parsing local history data:', e);
+    return [];
+  }
 }
 
 // 从本地存储获取最新数据
 export function getLocalLatestData(): LatestData | null {
-  const data = localStorage.getItem('btc_indicators_latest');
-  if (data) {
-    try {
-      const parsed = JSON.parse(data) as LatestData;
-      return enrichLatestDataWithHistory(parsed, getLocalData());
-    } catch (e) {
-      console.error('Error parsing local latest data:', e);
+  try {
+    const data = localStorage.getItem('btc_indicators_latest');
+    if (!data) return null;
+    const parsed = JSON.parse(data);
+    if (!parsed || typeof parsed !== 'object') return null;
+    
+    // 支持两种格式：
+    // 1. 新格式：{ version, timestamp, data: {...} }
+    // 2. 旧格式：直接对象 {...}
+    let latestObj: any;
+    if ('data' in parsed && parsed.data && typeof parsed.data === 'object') {
+      // 新格式：从 data 字段提取对象
+      latestObj = parsed.data;
+    } else {
+      // 旧格式：直接使用对象（排除 version/timestamp 等包装字段）
+      latestObj = parsed;
     }
+    
+    // 使用 normalizeLatestData 确保格式一致
+    const normalized = normalizeLatestData(latestObj);
+    if (normalized) {
+      return enrichLatestDataWithHistory(normalized, getLocalData());
+    }
+    return null;
+  } catch (e) {
+    console.error('Error parsing local latest data:', e);
+    return null;
   }
-  const history = getLocalData();
-  return getLatestFromHistory(history);
 }
 
-// 保存数据到本地存储
+// 保存数据到本地存储（带版本标识）
 export function saveLocalData(data: { history?: IndicatorData[]; latest?: LatestData }) {
-  if (data.history) {
-    localStorage.setItem('btc_indicators_history', JSON.stringify(data.history));
+  try {
+    if (data.history) {
+      const historyWithVersion = {
+        version: DATA_VERSION,
+        timestamp: Date.now(),
+        data: data.history
+      };
+      localStorage.setItem('btc_indicators_history', JSON.stringify(historyWithVersion));
+    }
+    if (data.latest) {
+      const latestWithVersion = {
+        version: DATA_VERSION,
+        timestamp: Date.now(),
+        data: data.latest
+      };
+      localStorage.setItem('btc_indicators_latest', JSON.stringify(latestWithVersion));
+    }
+  } catch (e) {
+    console.error('Error saving local data:', e);
   }
-  if (data.latest) {
-    localStorage.setItem('btc_indicators_latest', JSON.stringify(data.latest));
+}
+
+// 验证本地数据与展示数据的一致性
+export function validateLocalDataConsistency(): {
+  historyValid: boolean;
+  latestValid: boolean;
+  needsSync: boolean;
+} {
+  const historyValid = Array.isArray(getLocalData());
+  const latestData = getLocalLatestData();
+  const latestValid = latestData !== null;
+
+  // 检查历史数据和最新数据是否同步
+  const history = getLocalData();
+  let needsSync = false;
+
+  if (history.length > 0 && latestData) {
+    const lastHistoryDate = history[history.length - 1]?.d;
+    const latestDate = latestData.date;
+    needsSync = lastHistoryDate !== latestDate;
   }
+
+  return {
+    historyValid,
+    latestValid,
+    needsSync
+  };
 }
 
 // 获取信号事件（历史买入机会）

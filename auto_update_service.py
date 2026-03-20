@@ -229,6 +229,14 @@ class BTCDataService:
         result = []
         price_history = []
         
+        # 追踪每个指标最后从API获取数据的日期
+        last_api_date = {
+            'mvrvZ': None,
+            'lthMvrv': None,
+            'puell': None,
+            'nupl': None
+        }
+        
         for date in all_dates:
             price = price_dict.get(date)
             if price:
@@ -245,6 +253,16 @@ class BTCDataService:
             puell = self._get_latest_value(puell_dict, date, all_dates)
             nupl = self._get_latest_value(nupl_dict, date, all_dates)
             
+            # 更新每个指标最后从API获取数据的日期
+            if date in mvrv_dict:
+                last_api_date['mvrvZ'] = date
+            if date in lth_mvrv_dict:
+                last_api_date['lthMvrv'] = date
+            if date in puell_dict:
+                last_api_date['puell'] = date
+            if date in nupl_dict:
+                last_api_date['nupl'] = date
+            
             # 计算信号
             signal_price_ma = (price and ma_200w and price / ma_200w < 1) or False
             signal_mvrv_z = (mvrv_z is not None and mvrv_z < 0) or False
@@ -254,20 +272,33 @@ class BTCDataService:
             
             signal_count = sum([signal_price_ma, signal_mvrv_z, signal_lth_mvrv, signal_puell, signal_nupl])
             
+            # 构建 apiDataDate 字段，记录每个指标最后从API获取数据的日期
+            api_data_date = {}
+            if last_api_date['mvrvZ']:
+                api_data_date['mvrvZ'] = last_api_date['mvrvZ']
+            if last_api_date['lthMvrv']:
+                api_data_date['lthMvrv'] = last_api_date['lthMvrv']
+            if last_api_date['puell']:
+                api_data_date['puell'] = last_api_date['puell']
+            if last_api_date['nupl']:
+                api_data_date['nupl'] = last_api_date['nupl']
+            
             record = {
                 'd': date,
                 'btcPrice': price,
-                'price_ma200w_ratio': price / ma_200w if price and ma_200w else None,
+                'priceMa200wRatio': price / ma_200w if price and ma_200w else None,
+                'ma200w': ma_200w,
                 'mvrvZscore': mvrv_z,
                 'lthMvrv': lth_mvrv,
                 'puellMultiple': puell,
                 'nupl': nupl,
-                'signal_price_ma': signal_price_ma,
-                'signal_mvrv_z': signal_mvrv_z,
-                'signal_lth_mvrv': signal_lth_mvrv,
-                'signal_puell': signal_puell,
-                'signal_nupl': signal_nupl,
-                'signal_count': signal_count
+                'signalPriceMa': signal_price_ma,
+                'signalMvrvZ': signal_mvrv_z,
+                'signalLthMvrv': signal_lth_mvrv,
+                'signalPuell': signal_puell,
+                'signalNupl': signal_nupl,
+                'signalCount': signal_count,
+                'apiDataDate': api_data_date if api_data_date else None
             }
             result.append(record)
         
@@ -313,32 +344,41 @@ class BTCDataService:
             return
 
         latest = data[-1]
-        
-        # 构建 indicatorDates - 所有指标使用最新日期
+
+        # 构建 indicatorDates - 根据 apiDataDate 字段确定每个指标的实际数据日期
+        # priceMa200w 始终使用最新日期（因为它是根据价格计算的）
         indicator_dates = {
             'priceMa200w': latest['d'],
-            'mvrvZ': latest['d'],
-            'lthMvrv': latest['d'],
-            'puell': latest['d'],
-            'nupl': latest['d']
         }
-        
+    
+        # 检查是否有 apiDataDate 字段
+        api_dates = latest.get('apiDataDate')
+        if api_dates:
+            # 只添加 apiDataDate 中存在的指标
+            for name in ['mvrvZ', 'lthMvrv', 'puell', 'nupl']:
+                if name in api_dates:
+                    indicator_dates[name] = api_dates[name]
+        else:
+            # 如果没有 apiDataDate，使用最新日期作为后备
+            for name in ['mvrvZ', 'lthMvrv', 'puell', 'nupl']:
+                indicator_dates[name] = latest['d']
+    
         summary = {
             'date': latest['d'],
             'btcPrice': latest['btcPrice'],
-            'priceMa200wRatio': latest['price_ma200w_ratio'],
+            'priceMa200wRatio': latest['priceMa200wRatio'],
             'ma200w': latest.get('ma200w'),
             'mvrvZscore': latest['mvrvZscore'],
             'lthMvrv': latest['lthMvrv'],
             'puellMultiple': latest['puellMultiple'],
             'nupl': latest['nupl'],
-            'signalCount': latest['signal_count'],
+            'signalCount': latest['signalCount'],
             'signals': {
-                'priceMa200w': latest['signal_price_ma'],
-                'mvrvZ': latest['signal_mvrv_z'],
-                'lthMvrv': latest['signal_lth_mvrv'],
-                'puell': latest['signal_puell'],
-                'nupl': latest['signal_nupl']
+                'priceMa200w': latest['signalPriceMa'],
+                'mvrvZ': latest['signalMvrvZ'],
+                'lthMvrv': latest['signalLthMvrv'],
+                'puell': latest['signalPuell'],
+                'nupl': latest['signalNupl']
             },
             'indicatorDates': indicator_dates,
             'lastUpdated': datetime.now().isoformat()
@@ -359,17 +399,17 @@ class BTCDataService:
         """打印数据摘要"""
         if not data:
             return
-        
+
         latest = data[-1]
-        
+
         print("\n" + "=" * 60)
         print("最新数据:")
         print("=" * 60)
         print(f"日期: {latest['d']}")
         if latest['btcPrice']:
             print(f"BTC价格: ${latest['btcPrice']:,.2f}")
-        if latest['price_ma200w_ratio']:
-            print(f"Price/200W-MA: {latest['price_ma200w_ratio']:.4f}")
+        if latest['priceMa200wRatio']:
+            print(f"Price/200W-MA: {latest['priceMa200wRatio']:.4f}")
         if latest['mvrvZscore'] is not None:
             print(f"MVRV Z-Score: {latest['mvrvZscore']:.4f}")
         if latest['lthMvrv'] is not None:
@@ -378,19 +418,19 @@ class BTCDataService:
             print(f"Puell Multiple: {latest['puellMultiple']:.4f}")
         if latest['nupl'] is not None:
             print(f"NUPL: {latest['nupl']:.4f}")
-        
-        print(f"\n买入信号: {latest['signal_count']}/5")
-        print(f"  - Price/200W-MA < 1: {'[YES]' if latest['signal_price_ma'] else '[NO]'}")
-        print(f"  - MVRV-Z < 0: {'[YES]' if latest['signal_mvrv_z'] else '[NO]'}")
-        print(f"  - LTH-MVRV < 1: {'[YES]' if latest['signal_lth_mvrv'] else '[NO]'}")
-        print(f"  - Puell < 0.5: {'[YES]' if latest['signal_puell'] else '[NO]'}")
-        print(f"  - NUPL < 0: {'[YES]' if latest['signal_nupl'] else '[NO]'}")
-        
+
+        print(f"\n买入信号: {latest['signalCount']}/5")
+        print(f" - Price/200W-MA < 1: {'[YES]' if latest['signalPriceMa'] else '[NO]'}")
+        print(f" - MVRV-Z < 0: {'[YES]' if latest['signalMvrvZ'] else '[NO]'}")
+        print(f" - LTH-MVRV < 1: {'[YES]' if latest['signalLthMvrv'] else '[NO]'}")
+        print(f" - Puell < 0.5: {'[YES]' if latest['signalPuell'] else '[NO]'}")
+        print(f" - NUPL < 0: {'[YES]' if latest['signalNupl'] else '[NO]'}")
+
         # 统计历史信号
-        signal_5 = sum(1 for r in data if r['signal_count'] == 5)
-        signal_4 = sum(1 for r in data if r['signal_count'] >= 4)
-        signal_3 = sum(1 for r in data if r['signal_count'] >= 3)
-        
+        signal_5 = sum(1 for r in data if r['signalCount'] == 5)
+        signal_4 = sum(1 for r in data if r['signalCount'] >= 4)
+        signal_3 = sum(1 for r in data if r['signalCount'] >= 3)
+
         print("\n" + "=" * 60)
         print("历史统计:")
         print("=" * 60)
