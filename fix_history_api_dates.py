@@ -32,7 +32,8 @@ def find_indicator_dates(history: List[Dict]) -> Dict[str, str]:
     
     逻辑：
     1. priceMa200w 使用最新记录的日期（因为它是根据价格计算的）
-    2. 其他指标：从后向前查找，找到该指标值最后一次变化后首次出现的日期
+    2. 其他指标：从后向前查找，找到该指标值最后一次变化时的日期
+       - 即：当前值首次出现的日期，这才是API返回新数据的日期
     """
     if not history:
         return {}
@@ -65,13 +66,13 @@ def find_indicator_dates(history: List[Dict]) -> Dict[str, str]:
             record = history[index]
             current_value = get_value(record, *keys)
             if current_value is None:
-                # 遇到 None 值，说明 API 没有返回数据，停止遍历
+                # 遇到 None 值，说明之前没有数据，停止遍历
                 break
             if current_value == latest_value:
-                # 值相同，记录日期
+                # 值相同，记录日期（继续向前查找看是否有更早的相同值）
                 first_occurrence_date = record["d"]
             else:
-                # 值不同，说明已经遍历完了所有相同值的记录
+                # 值不同，说明已经找到值变化的边界
                 break
         
         if first_occurrence_date:
@@ -83,6 +84,8 @@ def find_indicator_dates(history: List[Dict]) -> Dict[str, str]:
 def fix_history_file(input_file: str, output_file: Optional[str] = None) -> int:
     """
     为历史数据文件添加 apiDataDate 字段
+    
+    apiDataDate 记录每个指标值最后一次变化的日期（即API返回新数据的日期）
     
     返回：修复的记录数量
     """
@@ -97,8 +100,16 @@ def fix_history_file(input_file: str, output_file: Optional[str] = None) -> int:
         print("历史数据为空，无需处理")
         return 0
     
-    # 追踪每个指标最后从API获取数据的日期
-    last_api_date = {
+    # 追踪每个指标当前值和值变化的日期
+    last_value = {
+        'mvrvZ': None,
+        'lthMvrv': None,
+        'puell': None,
+        'nupl': None
+    }
+    
+    # 记录每个指标值最后一次变化的日期
+    last_change_date = {
         'mvrvZ': None,
         'lthMvrv': None,
         'puell': None,
@@ -112,39 +123,29 @@ def fix_history_file(input_file: str, output_file: Optional[str] = None) -> int:
         if not date:
             continue
         
-        # 检查是否有 mvrvZscore 值
-        mvrv_z = get_value(record, 'mvrvZscore')
-        if mvrv_z is not None:
-            # 如果这个日期有新的值，更新 last_api_date
-            # 我们需要检查这是否是一个"新"值（不同于前一天）
-            # 简化处理：假设每个有值的日期都是从API获取的
-            last_api_date['mvrvZ'] = date
+        # 检查每个指标值是否变化
+        indicators = [
+            ('mvrvZ', 'mvrvZscore'),
+            ('lthMvrv', 'lthMvrv'),
+            ('puell', 'puellMultiple'),
+            ('nupl', 'nupl')
+        ]
         
-        # 检查 lthMvrv
-        lth_mvrv = get_value(record, 'lthMvrv')
-        if lth_mvrv is not None:
-            last_api_date['lthMvrv'] = date
+        for indicator_name, field_name in indicators:
+            current_val = get_value(record, field_name)
+            
+            if current_val is not None:
+                # 如果是第一次有值，或者值发生了变化
+                if last_value[indicator_name] is None or current_val != last_value[indicator_name]:
+                    last_change_date[indicator_name] = date
+                    last_value[indicator_name] = current_val
+                # 如果值相同，保持 last_change_date 不变（向前填充）
         
-        # 检查 puellMultiple
-        puell = get_value(record, 'puellMultiple')
-        if puell is not None:
-            last_api_date['puell'] = date
-        
-        # 检查 nupl
-        nupl = get_value(record, 'nupl')
-        if nupl is not None:
-            last_api_date['nupl'] = date
-        
-        # 构建 apiDataDate 字段
+        # 构建 apiDataDate 字段：记录当前记录中各指标值最后变化的日期
         api_data_date = {}
-        if last_api_date['mvrvZ']:
-            api_data_date['mvrvZ'] = last_api_date['mvrvZ']
-        if last_api_date['lthMvrv']:
-            api_data_date['lthMvrv'] = last_api_date['lthMvrv']
-        if last_api_date['puell']:
-            api_data_date['puell'] = last_api_date['puell']
-        if last_api_date['nupl']:
-            api_data_date['nupl'] = last_api_date['nupl']
+        for indicator_name in ['mvrvZ', 'lthMvrv', 'puell', 'nupl']:
+            if last_change_date[indicator_name] is not None:
+                api_data_date[indicator_name] = last_change_date[indicator_name]
         
         # 只有当 apiDataDate 有内容时才添加
         if api_data_date:
