@@ -7,7 +7,7 @@ import json
 import os
 import time
 from datetime import UTC, datetime
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Union
 
 import requests
 
@@ -24,7 +24,7 @@ class DataUpdater:
         self.latest_file = "data/latest/btc_indicators_latest.json"
         self.ma200w_days = 1400
         
-    def fetch_json(self, endpoint: str, params: Optional[Dict] = None) -> List[Dict]:
+    def fetch_json(self, endpoint: str, params: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
         """Fetch data from API with retry logic"""
         url = f"{self.api_base}/{endpoint}"
         
@@ -54,7 +54,7 @@ class DataUpdater:
                     
         return []
     
-    def fetch_backup_btc_price(self) -> Optional[Dict]:
+    def fetch_backup_btc_price(self) -> Optional[Dict[str, Union[str, float]]]:
         """Fetch BTC price from backup providers"""
         today = datetime.now(UTC).strftime("%Y-%m-%d")
         
@@ -95,7 +95,7 @@ class DataUpdater:
             
         return None
     
-    def fetch_indicator_data(self, indicator: str) -> List[Dict]:
+    def fetch_indicator_data(self, indicator: str) -> List[Dict[str, Any]]:
         """Fetch specific indicator data"""
         endpoints = {
             'btc-price': 'btc-price',
@@ -110,7 +110,7 @@ class DataUpdater:
             
         return self.fetch_json(endpoints[indicator])
     
-    def load_history_data(self) -> List[Dict]:
+    def load_history_data(self) -> List[Dict[str, Any]]:
         """Load existing history data"""
         try:
             with open(self.history_file, 'r', encoding='utf-8') as f:
@@ -121,7 +121,7 @@ class DataUpdater:
             print(f"Error loading history file: {e}")
             return []
     
-    def save_history_data(self, data: List[Dict]) -> bool:
+    def save_history_data(self, data: List[Dict[str, Any]]) -> bool:
         """Save history data to file"""
         try:
             with open(self.history_file, 'w', encoding='utf-8') as f:
@@ -131,7 +131,7 @@ class DataUpdater:
             print(f"Error saving history file: {e}")
             return False
     
-    def load_latest_data(self) -> Optional[Dict]:
+    def load_latest_data(self) -> Optional[Dict[str, Any]]:
         """Load latest summary data"""
         try:
             with open(self.latest_file, 'r', encoding='utf-8') as f:
@@ -139,7 +139,7 @@ class DataUpdater:
         except (FileNotFoundError, json.JSONDecodeError):
             return None
     
-    def save_latest_data(self, data: Dict) -> bool:
+    def save_latest_data(self, data: Dict[str, Any]) -> bool:
         """Save latest summary data"""
         try:
             with open(self.latest_file, 'w', encoding='utf-8') as f:

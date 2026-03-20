@@ -2,8 +2,12 @@
 # Core dependencies
 requests>=2.31.0
 
-# Development dependencies (optional)
-# pytest>=7.0.0
-# pytest-cov>=4.0.0
-# black>=23.0.0
-# flake8>=6.0.0
+# Development dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=23.0.0
+ruff>=0.1.0
+mypy>=1.0.0
+
+# Optional dependencies
+# python-dotenv>=1.0.0  # For .env file support

@@ -7,9 +7,12 @@ import {
   History,
   LineChart,
   Loader2,
+  Moon,
   RefreshCw,
+  Sun,
   TrendingUp,
 } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -60,6 +63,7 @@ function App() {
   const [lastUpdated, setLastUpdated] = useState('-');
   const [error, setError] = useState<string | null>(null);
   const [dataSource, setDataSource] = useState<DataSource>('static');
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const loadHistoricalData = async () => {
@@ -314,19 +318,33 @@ function App() {
               </div>
             </div>
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => void fetchLatestData('manual')}
-              disabled={loading}
-            >
-              {loading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <RefreshCw className="mr-2 h-4 w-4" />
-              )}
-              刷新数据
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              >
+                {theme === 'dark' ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
+              </Button>
+              
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => void fetchLatestData('manual')}
+                disabled={loading}
+              >
+                {loading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                )}
+                刷新数据
+              </Button>
+            </div>
           </div>
         </div>
       </header>
