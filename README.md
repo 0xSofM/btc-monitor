@@ -1,16 +1,14 @@
 # BTC Monitor - 比特币定投指标监控系统
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![React](https://img.shields.io/badge/React-18+-blue.svg)](https://reactjs.org/)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
+[![React](https://img.shields.io/badge/React-19+-blue.svg)](https://reactjs.org/)
 
-一个专业的比特币投资指标监控工具，基于多个经典链上指标生成定投信号，帮助投资者把握最佳买入时机。
+一个比特币投资指标监控工具，基于多个链上指标生成定投信号，为投资者提供市场分析参考。
 
 ## 🎯 项目背景
 
-比特币作为数字黄金，其价格波动剧烈，如何在合适的时机进行定投是投资者面临的重要问题。BTC Monitor 通过监控 5 个经过市场验证的核心指标，当多个指标同时发出买入信号时提示用户，有效提高定投收益。
-
-历史数据显示，当 5 个指标全部触发时，往往是历史性的买入机会。例如 2022 年 12 月，所有指标同时触发时 BTC 价格约为 $16,000-$17,000，随后的市场反弹验证了这一策略的有效性。
+比特币价格波动剧烈，把握合适的定投时机是投资者面临的重要问题。BTC Monitor 通过监控多个核心指标，帮助用户了解市场状态，为投资决策提供数据支持。
 
 ## ✨ 核心功能
 
@@ -24,17 +22,15 @@
 ### 🌙 暗色模式支持
 - **系统主题检测**: 自动跟随系统主题设置
 - **手动切换**: 一键切换明暗主题
-- **优化体验**: 暗色模式下的视觉优化
 
-### 🚀 智能信号系统
-- **多级信号强度**: 根据触发指标数量分为 MINIMAL、WEAK、MODERATE、STRONG、MAXIMUM 五个等级
-- **历史回测**: 查看历史买入机会和信号触发情况
-- **实时更新**: 支持自动和手动数据更新
+### 🚀 信号系统
+- **多级信号强度**: 根据触发指标数量分为不同等级
+- **历史数据**: 查看历史指标变化
+- **数据更新**: 支持手动和自动数据更新
 
-### 🌐 多平台部署
-- **云端部署**: GitHub Pages 免费托管，自动更新
-- **本地运行**: 支持传统部署方式
-- **API 服务**: 提供 RESTful API 接口
+### 🌐 部署支持
+- **本地部署**: 支持本地开发和运行
+- **云端部署**: 支持 Vercel 等平台部署
 
 ## 🏗️ 技术架构
 
@@ -71,11 +67,11 @@ btc-monitor/
 ```
 
 ### 前端架构
-- **React 19+**: 现代化前端框架
+- **React 19**: 现代化前端框架
 - **TypeScript**: 类型安全的 JavaScript
 - **Tailwind CSS**: 实用优先的 CSS 框架
 - **Vite**: 快速构建工具
-- **shadcn/ui**: 高质量 UI 组件库
+- **shadcn/ui**: UI 组件库
 - **next-themes**: 主题管理
 
 ### 数据源
@@ -85,81 +81,68 @@ btc-monitor/
 
 ## 🚀 快速开始
 
-### 方案一：云端部署（推荐）
-
-1. **Fork 仓库**
-   ```bash
-   # 访问 GitHub 页面，点击 Fork 按钮
-   # 将仓库 fork 到你的账号下
-   ```
-
-2. **启用 GitHub Pages**
-   ```
-   Settings → Pages → Deploy from branch → 选择 main 分支和 /docs 文件夹
-   ```
-
-3. **访问应用**
-   ```
-   https://你的用户名.github.io/btc-monitor
-   ```
-
-4. **配置自动更新**
-   - GitHub Actions 已配置每日自动更新
-   - 无需额外配置，完全自动化运行
-
-### 方案二：本地部署
+### 方案一：本地部署（推荐）
 
 #### 环境要求
-- Python 3.8+
-- Node.js 16+
-- npm 或 yarn
+- Python 3.11
+- Node.js 22
+- npm
 
-#### 快速启动（推荐）
+#### 快速启动
 
 ```bash
+# 克隆仓库
+git clone https://github.com/0xSofM/btc-monitor.git
+cd btc-monitor
+
 # 使用开发启动器（自动安装依赖并启动服务）
 python scripts/dev.py
 ```
 
 #### 手动安装步骤
 
-1. **克隆仓库**
-   ```bash
-   git clone https://github.com/你的用户名/btc-monitor.git
-   cd btc-monitor
-   ```
-
-2. **安装 Python 依赖**
+1. **安装 Python 依赖**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **安装前端依赖**
+2. **安装前端依赖**
    ```bash
    cd app
    npm install
    cd ..
    ```
 
-4. **启动数据服务**
+3. **启动数据服务**
    ```bash
    # 单次更新
    python src/cli/main.py update
-   
-   # 或启动守护进程
-   python src/cli/main.py update --daemon
    ```
 
-5. **启动前端服务**
+4. **启动前端服务**
    ```bash
    cd app
    npm run dev
    ```
 
-6. **访问应用**
+5. **访问应用**
    ```
    http://localhost:5173
    ```
+
+### 方案二：云端部署
+
+#### Vercel 部署
+
+项目已配置 `vercel.json`，支持一键部署：
+
+```bash
+# 安装 Vercel CLI
+npm i -g vercel
+
+# 部署
+vercel --prod
+```
 
 ## 📖 使用指南
 
@@ -193,33 +176,27 @@ python scripts/dev.py                           # 启动完整开发环境
 
 ### 买入信号解读
 
-| 信号强度 | 触发指标数 | 投资建议 |
-|----------|------------|----------|
-| MAXIMUM | 5/5 | 🟢 强烈建议买入，历史性机会 |
-| STRONG | 4/5 | 🟡 建议买入，良好时机 |
-| MODERATE | 3/5 | 🟡 考虑买入，可分批建仓 |
-| WEAK | 2/5 | 🟠 观望为主，小量试水 |
-| MINIMAL | 1/5 | 🔴 保持观望，不宜买入 |
-| NONE | 0/5 | 🔴 绝对避免买入 |
+| 信号强度 | 触发指标数 | 说明 |
+|----------|------------|------|
+| MAXIMUM | 5/5 | 所有指标触发 |
+| STRONG | 4/5 | 大部分指标触发 |
+| MODERATE | 3/5 | 中等数量指标触发 |
+| WEAK | 2/5 | 少量指标触发 |
+| MINIMAL | 1/5 | 单个指标触发 |
+| NONE | 0/5 | 无指标触发 |
 
-## 📊 历史统计
+## 📊 数据说明
 
-基于历史数据回测（2013-2023）：
-
-- **5个信号全部触发**: 47 天
-- **4个及以上信号触发**: 288 天  
-- **3个及以上信号触发**: 604 天
-
-**最近一次 MAXIMUM 信号**: 2022年12月（BTC价格约$16,000-$17,000）
+本项目提供比特币链上指标的监控功能，数据来源于公开的区块链分析 API。指标仅供参考，不构成投资建议。
 
 ## 🔧 开发指南
 
 ### 代码质量
 
-项目配备了完整的代码质量检查工具：
+项目配置了代码质量检查工具：
 
 - **Python**: ruff（代码检查）、black（格式化）、mypy（类型检查）
-- **TypeScript**: ESLint + TypeScript 编译检查
+- **TypeScript**: TypeScript 编译检查
 - **CI/CD**: GitHub Actions 自动化检查
 
 ### 项目验证
@@ -241,15 +218,15 @@ pytest tests/
 
 ## 🚀 部署指南
 
-### GitHub Pages 部署
+### 本地部署
 
-1. 启用 GitHub Pages
-2. 配置 GitHub Actions 自动更新
-3. 设置自定义域名（可选）
+1. 克隆仓库并安装依赖
+2. 运行开发服务器：`python scripts/dev.py`
+3. 访问 http://localhost:5173
 
 ### Vercel 部署
 
-项目已配置 `vercel.json`，支持一键部署：
+项目已配置 `vercel.json`：
 
 ```bash
 # 安装 Vercel CLI
@@ -266,13 +243,13 @@ vercel --prod
 1. **开发环境启动失败**
    ```bash
    # 检查 Node.js 和 Python 版本
-   node --version  # 需要 16+
-   python --version  # 需要 3.8+
+   node --version  # 需要 22
+   python --version  # 需要 3.11
    ```
 
-2. **API 限制错误**
+2. **API 连接问题**
    ```
-   解决方案：等待 API 限制重置，或使用备用数据源
+   检查网络连接，或等待 API 限制重置
    ```
 
 3. **前端构建失败**
@@ -288,26 +265,16 @@ vercel --prod
 启用详细日志：
 
 ```bash
-export BTC_LOG_LEVEL=DEBUG
-python src/cli/main.py update
+python src/cli/main.py update --verbose
 ```
 
-## 📚 API 文档
+## 📚 项目说明
 
-### 数据更新 API
+### 数据接口
 
-```bash
-# 获取最新数据
-GET /api/latest
+项目提供前端数据获取功能，支持从多个数据源获取比特币指标数据。
 
-# 获取历史数据
-GET /api/history?days=30
-
-# 获取信号统计
-GET /api/signals/stats
-```
-
-### 响应格式
+### 示例数据格式
 
 ```json
 {
@@ -317,8 +284,7 @@ GET /api/signals/stats
   "lthMvrv": 2.1,
   "puellMultiple": 0.8,
   "nupl": 0.3,
-  "signal_count": 2,
-  "signal_strength": "WEAK"
+  "signal_count": 2
 }
 ```
 
@@ -326,7 +292,6 @@ GET /api/signals/stats
 
 - **GitHub Issues**: 报告 Bug 或提出功能请求
 - **Discussions**: 技术讨论和经验分享
-- **Wiki**: 详细教程和最佳实践
 
 ## 📄 许可证
 
