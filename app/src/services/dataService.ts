@@ -510,26 +510,11 @@ function normalizeLatestData(item: any): LatestData | null {
   };
 
   const signals = {
-    priceMa200w: resolveSignalFlag(
-      item.signals?.priceMa200w ?? item.signalPriceMa ?? item.signal_price_ma,
-      priceMa200wRatioNum !== null && priceMa200wRatioNum < 1
-    ),
-    mvrvZ: resolveSignalFlag(
-      item.signals?.mvrvZ ?? item.signalMvrvZ ?? item.signal_mvrv_z,
-      mvrvZscoreNum !== null && mvrvZscoreNum < 0
-    ),
-    lthMvrv: resolveSignalFlag(
-      item.signals?.lthMvrv ?? item.signalLthMvrv ?? item.signal_lth_mvrv,
-      lthMvrvNum !== null && lthMvrvNum < 1
-    ),
-    puell: resolveSignalFlag(
-      item.signals?.puell ?? item.signalPuell ?? item.signal_puell,
-      puellMultipleNum !== null && puellMultipleNum < 0.5
-    ),
-    nupl: resolveSignalFlag(
-      item.signals?.nupl ?? item.signalNupl ?? item.signal_nupl,
-      nuplNum !== null && nuplNum < 0
-    )
+    priceMa200w: priceMa200wRatioNum !== null && priceMa200wRatioNum < 1,
+    mvrvZ: mvrvZscoreNum !== null && mvrvZscoreNum < 0,
+    lthMvrv: lthMvrvNum !== null && lthMvrvNum < 1,
+    puell: puellMultipleNum !== null && puellMultipleNum < 0.5,
+    nupl: nuplNum !== null && nuplNum < 0
   };
 
   const signalCountValue = item.signalCount ?? item.signal_count;
