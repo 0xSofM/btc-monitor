@@ -51,9 +51,7 @@ def cmd_update(args):
     """Handle update command"""
     service = AutoUpdateService()
     
-    if args.check_api:
-        return service.check_api()
-    elif args.daemon:
+    if args.daemon:
         service.run_daemon(args.interval)
     elif args.daily:
         service.run_daily(args.daily)
