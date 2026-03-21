@@ -505,12 +505,29 @@ function normalizeLatestData(item: any): LatestData | null {
     nupl: incomingIndicatorDates?.nupl || date,
   };
 
+  // 支持 _signal 后缀格式（如 price_200w_ma_signal, lth_mvrv_signal 等）
+  const priceMa200wSignal = item.price_200w_ma_signal ?? item.signalPriceMa ?? item.signal_price_ma;
+  const mvrvZSignal = item.mvrv_zscore_signal ?? item.signalMvrvZ ?? item.signal_mvrv_z;
+  const lthMvrvSignal = item.lth_mvrv_signal ?? item.signalLthMvrv ?? item.signal_lth_mvrv;
+  const puellSignal = item.puell_multiple_signal ?? item.signalPuell ?? item.signal_puell;
+  const nuplSignal = item.nupl_signal ?? item.signalNupl ?? item.signal_nupl;
+
   const signals = {
-    priceMa200w: priceMa200wRatioNum !== null && priceMa200wRatioNum < 1,
-    mvrvZ: mvrvZscoreNum !== null && mvrvZscoreNum < 0,
-    lthMvrv: lthMvrvNum !== null && lthMvrvNum < 1,
-    puell: puellMultipleNum !== null && puellMultipleNum < 0.5,
-    nupl: nuplNum !== null && nuplNum < 0
+    priceMa200w: priceMa200wSignal !== undefined && priceMa200wSignal !== null
+      ? Boolean(priceMa200wSignal)
+      : (priceMa200wRatioNum !== null && priceMa200wRatioNum < 1),
+    mvrvZ: mvrvZSignal !== undefined && mvrvZSignal !== null
+      ? Boolean(mvrvZSignal)
+      : (mvrvZscoreNum !== null && mvrvZscoreNum < 0),
+    lthMvrv: lthMvrvSignal !== undefined && lthMvrvSignal !== null
+      ? Boolean(lthMvrvSignal)
+      : (lthMvrvNum !== null && lthMvrvNum < 1),
+    puell: puellSignal !== undefined && puellSignal !== null
+      ? Boolean(puellSignal)
+      : (puellMultipleNum !== null && puellMultipleNum < 0.5),
+    nupl: nuplSignal !== undefined && nuplSignal !== null
+      ? Boolean(nuplSignal)
+      : (nuplNum !== null && nuplNum < 0)
   };
 
   const signalCountValue = item.signalCount ?? item.signal_count;
