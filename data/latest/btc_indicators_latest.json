@@ -1,10 +1,15 @@
 {
   "d": "2026-03-21",
+  "btcPrice": "0.0000000000",
+  "mvrvZscore": "0",
+  "lthMvrv": "816.457",
+  "puellMultiple": "0.541",
+  "nupl": "0.4367",
   "price_200w_ma_signal": false,
   "mvrv_zscore_signal": false,
-  "lth_mvrv_signal": true,
-  "puell_multiple_signal": true,
+  "lth_mvrv_signal": false,
+  "puell_multiple_signal": false,
   "nupl_signal": false,
-  "signal_count": 2,
-  "signal_strength": "WEAK"
+  "signal_count": 0,
+  "signal_strength": "NONE"
 }
