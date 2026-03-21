@@ -151,10 +151,6 @@ function toNumber(value: unknown, fallback = 0): number {
   return fallback;
 }
 
-function resolveSignalFlag(explicitValue: unknown, derivedValue: boolean): boolean {
-  return typeof explicitValue === 'boolean' ? explicitValue : derivedValue;
-}
-
 // 带超时的 fetch
 async function fetchWithTimeout(url: string, timeout = 10000): Promise<Response> {
   const controller = new AbortController();
