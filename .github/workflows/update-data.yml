@@ -69,11 +69,17 @@ jobs:
           echo "✓ 数据已更新"
         fi
     
+    - name: Sync data to app/public
+      if: steps.check_changes.outputs.changed == 'true'
+      run: |
+        python scripts/deployment/sync_data_to_public.py
+
     - name: Commit and push changes
       if: steps.check_changes.outputs.changed == 'true'
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
+        git add -A
         git commit -m "📊 Update BTC indicator data - $(date +'%Y-%m-%d %H:%M:%S UTC')"
         git push
     
