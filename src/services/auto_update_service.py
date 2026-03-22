@@ -1,6 +1,7 @@
 """
 Auto Update Service - Consolidated from auto_update_service.py
 Handles automatic data updates with scheduling and daemon mode
+Strictly uses bitcoin-data.com API only
 """
 
 import os
@@ -19,16 +20,14 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from src.core.data_updater import DataUpdater
 from src.core.indicator_calculator import IndicatorCalculator
-from src.core.api_client import APIClient
 
 
 class AutoUpdateService:
-    """Main auto-update service for BTC Monitor"""
+    """Main auto-update service for BTC Monitor - strictly uses bitcoin-data.com API"""
     
     def __init__(self):
         self.data_updater = DataUpdater()
         self.indicator_calculator = IndicatorCalculator()
-        self.api_client = APIClient()
         self.running = False
         self.setup_logging()
         
@@ -46,43 +45,78 @@ class AutoUpdateService:
         self.logger = logging.getLogger(__name__)
     
     def update_data(self) -> bool:
-        """Perform a single data update"""
+        """Perform a single data update - fetch only latest data from bitcoin-data.com API"""
         try:
-            self.logger.info("Starting data update...")
+            self.logger.info("Starting data update from bitcoin-data.com API...")
             
-            # Get all indicator data
-            indicator_data = self.api_client.get_all_indicators()
+            # Fetch latest data (1 day) for all indicators
+            indicator_data = self.data_updater.fetch_all_indicators_latest()
             
             if not indicator_data:
-                self.logger.error("Failed to fetch indicator data")
+                self.logger.error("Failed to fetch indicator data from API")
                 return False
             
-            # Process and combine data
-            today = datetime.now().strftime('%Y-%m-%d')
-            combined_data = {'d': today}
+            # Track actual data dates from API for each indicator
+            api_data_dates = {}
             
-            # Extract latest values from each indicator with field mapping
-            # API returns field names as they appear in each endpoint
+            # Process and combine data with proper field mapping
+            combined_data = {}
+            
+            # Field mappings for each indicator
             field_mappings = {
-                'btc-price': {'btcPrice': 'btcPrice', 'price': 'btcPrice', 'ma200w': 'ma200w', 'price_ma200w_ratio': 'price_ma200w_ratio'},
-                'mvrv-zscore': {'mvrvZscore': 'mvrvZscore', 'mvrv_zscore': 'mvrvZscore'},
-                'lth-mvrv': {'lthMvrv': 'lthMvrv', 'lth_mvrv': 'lthMvrv'},
-                'puell-multiple': {'puellMultiple': 'puellMultiple', 'puell_multiple': 'puellMultiple'},
-                'nupl': {'nupl': 'nupl'}
+                'btc-price': {
+                    'fields': {'btcPrice': 'btcPrice', 'price': 'btcPrice', 'ma200w': 'ma200w', 'price_ma200w_ratio': 'price_ma200w_ratio'},
+                    'date_field': 'd',
+                    'data_date_key': 'btcPrice'
+                },
+                'mvrv-zscore': {
+                    'fields': {'mvrvZscore': 'mvrvZscore', 'mvrv_zscore': 'mvrvZscore'},
+                    'date_field': 'd',
+                    'data_date_key': 'mvrvZ'
+                },
+                'lth-mvrv': {
+                    'fields': {'lthMvrv': 'lthMvrv', 'lth_mvrv': 'lthMvrv'},
+                    'date_field': 'd',
+                    'data_date_key': 'lthMvrv'
+                },
+                'puell-multiple': {
+                    'fields': {'puellMultiple': 'puellMultiple', 'puell_multiple': 'puellMultiple'},
+                    'date_field': 'd',
+                    'data_date_key': 'puell'
+                },
+                'nupl': {
+                    'fields': {'nupl': 'nupl'},
+                    'date_field': 'd',
+                    'data_date_key': 'nupl'
+                }
             }
             
             for indicator, data in indicator_data.items():
                 if data and len(data) > 0:
                     latest = data[0]  # API returns latest first
-                    mappings = field_mappings.get(indicator, {})
+                    config = field_mappings.get(indicator, {})
+                    mappings = config.get('fields', {})
+                    date_field = config.get('date_field', 'd')
+                    data_date_key = config.get('data_date_key')
                     
-                    # Try each possible field name
+                    # Record the actual data date from API
+                    if data_date_key and date_field in latest:
+                        api_data_dates[data_date_key] = latest[date_field]
+                    
+                    # Extract fields
                     for api_field, our_field in mappings.items():
                         if api_field in latest and latest[api_field] is not None:
                             combined_data[our_field] = latest[api_field]
+                    
+                    # Also capture the date field for the record
+                    if date_field in latest:
+                        combined_data['d'] = latest[date_field]
             
-            # Log what we got
+            # Add apiDataDate to track when each indicator was actually updated
+            combined_data['apiDataDate'] = api_data_dates
+            
             self.logger.info(f"Raw data from API: {list(combined_data.keys())}")
+            self.logger.info(f"API data dates: {api_data_dates}")
             
             # Validate essential data (btcPrice must be valid)
             btc_price = combined_data.get('btcPrice')
@@ -92,18 +126,10 @@ class AutoUpdateService:
                 btc_price_val = 0
                 
             if btc_price_val <= 0:
-                self.logger.warning("Primary API returned invalid btcPrice, trying backup sources...")
-                
-                # Try backup price sources (Coinbase, CoinGecko)
-                backup_price = self.data_updater.fetch_backup_btc_price()
-                if backup_price and backup_price.get('btcPrice', 0) > 0:
-                    combined_data['btcPrice'] = backup_price['btcPrice']
-                    self.logger.info(f"Got btcPrice from {backup_price.get('source')}: ${backup_price['btcPrice']}")
-                else:
-                    self.logger.error("Invalid btcPrice from all sources, skipping update to preserve last valid data")
-                    return False
+                self.logger.error("Invalid btcPrice from API, skipping update")
+                return False
             
-            # Validate other critical indicators - if missing or zero, use last valid data
+            # Validate other critical indicators - all must be present
             required_indicators = ['mvrvZscore', 'lthMvrv', 'puellMultiple', 'nupl']
             missing_indicators = []
             
@@ -118,38 +144,8 @@ class AutoUpdateService:
                     missing_indicators.append(indicator)
             
             if missing_indicators:
-                self.logger.warning(f"Missing or invalid indicators from API: {missing_indicators}")
-                
-                # Try to get last valid values from history
-                history_data = self.data_updater.load_history_data()
-                if history_data:
-                    # Find last entry with valid data
-                    for entry in reversed(history_data[-10:]):  # Check last 10 entries
-                        entry_date = entry.get('d', '')
-                        if entry_date >= '2026-03-01':  # Only use recent data
-                            # Check if this entry has the missing indicators
-                            found_any = False
-                            for ind in missing_indicators[:]:
-                                entry_val = entry.get(ind)
-                                try:
-                                    entry_val_float = float(entry_val) if entry_val is not None else 0
-                                except:
-                                    entry_val_float = 0
-                                    
-                                if entry_val_float > 0:
-                                    combined_data[ind] = entry_val
-                                    found_any = True
-                                    missing_indicators.remove(ind)
-                            
-                            if found_any:
-                                self.logger.info(f"Used indicator data from {entry_date}")
-                            
-                            if not missing_indicators:
-                                break
-                
-                if missing_indicators:
-                    self.logger.error(f"Could not find valid data for: {missing_indicators}. Skipping update.")
-                    return False
+                self.logger.error(f"Missing or invalid indicators from API: {missing_indicators}. Skipping update.")
+                return False
             
             # Load existing history
             history_data = self.data_updater.load_history_data()
@@ -159,15 +155,17 @@ class AutoUpdateService:
             if enriched_data:
                 combined_data = enriched_data[0]
             
-            # Update history
-            if history_data and history_data[-1].get('d') == today:
+            data_date = combined_data.get('d', datetime.now().strftime('%Y-%m-%d'))
+            
+            # Update history - check if we already have this date
+            if history_data and history_data[-1].get('d') == data_date:
                 # Update today's data
                 history_data[-1] = combined_data
-                self.logger.info("Updated today's data")
+                self.logger.info(f"Updated data for {data_date}")
             else:
                 # Add new day's data
                 history_data.append(combined_data)
-                self.logger.info("Added new day's data")
+                self.logger.info(f"Added new data for {data_date}")
             
             # Save files
             success = (
@@ -177,7 +175,7 @@ class AutoUpdateService:
             
             if success:
                 signal_count = combined_data.get('signal_count', 0)
-                self.logger.info(f"Update completed successfully. Signal count: {signal_count}")
+                self.logger.info(f"Update completed successfully. Date: {data_date}, Signal count: {signal_count}")
             else:
                 self.logger.error("Failed to save data files")
                 
@@ -185,6 +183,95 @@ class AutoUpdateService:
             
         except Exception as e:
             self.logger.error(f"Update failed: {e}")
+            return False
+    
+    def build_full_history(self, days: int = 0) -> bool:
+        """
+        Build full historical dataset from bitcoin-data.com API.
+        If days=0, fetch all available history.
+        """
+        try:
+            self.logger.info(f"Building full history (days={days if days > 0 else 'all'})...")
+            
+            # Fetch full history for all indicators
+            indicator_data = self.data_updater.fetch_all_indicators_history(days=days)
+            
+            if not indicator_data:
+                self.logger.error("Failed to fetch historical data")
+                return False
+            
+            # Build a unified history dataset
+            # Create a date-indexed dictionary
+            history_by_date = {}
+            
+            field_mappings = {
+                'btc-price': {
+                    'fields': {'btcPrice': 'btcPrice', 'price': 'btcPrice', 'ma200w': 'ma200w', 'price_ma200w_ratio': 'price_ma200w_ratio'},
+                    'date_field': 'd'
+                },
+                'mvrv-zscore': {
+                    'fields': {'mvrvZscore': 'mvrvZscore', 'mvrv_zscore': 'mvrvZscore'},
+                    'date_field': 'd'
+                },
+                'lth-mvrv': {
+                    'fields': {'lthMvrv': 'lthMvrv', 'lth_mvrv': 'lthMvrv'},
+                    'date_field': 'd'
+                },
+                'puell-multiple': {
+                    'fields': {'puellMultiple': 'puellMultiple', 'puell_multiple': 'puellMultiple'},
+                    'date_field': 'd'
+                },
+                'nupl': {
+                    'fields': {'nupl': 'nupl'},
+                    'date_field': 'd'
+                }
+            }
+            
+            # Process each indicator's data
+            for indicator, data_list in indicator_data.items():
+                if not data_list:
+                    continue
+                    
+                config = field_mappings.get(indicator, {})
+                mappings = config.get('fields', {})
+                date_field = config.get('date_field', 'd')
+                
+                for record in data_list:
+                    date_val = record.get(date_field)
+                    if not date_val:
+                        continue
+                    
+                    if date_val not in history_by_date:
+                        history_by_date[date_val] = {'d': date_val}
+                    
+                    # Extract fields
+                    for api_field, our_field in mappings.items():
+                        if api_field in record and record[api_field] is not None:
+                            history_by_date[date_val][our_field] = record[api_field]
+            
+            # Convert to sorted list
+            sorted_dates = sorted(history_by_date.keys())
+            history_list = [history_by_date[d] for d in sorted_dates]
+            
+            # Enrich with signals
+            enriched_history = self.indicator_calculator.enrich_data_with_signals(history_list)
+            
+            # Save history
+            success = self.data_updater.save_history_data(enriched_history)
+            
+            if success:
+                self.logger.info(f"Full history built successfully. Total records: {len(enriched_history)}")
+                # Also save latest
+                if enriched_history:
+                    latest = enriched_history[-1]
+                    self.data_updater.save_latest_data(latest)
+            else:
+                self.logger.error("Failed to save history data")
+            
+            return success
+            
+        except Exception as e:
+            self.logger.error(f"Build history failed: {e}")
             return False
     
     def run_daemon(self, interval: int = 600):
@@ -239,11 +326,16 @@ class AutoUpdateService:
     
     def check_api(self):
         """Check API connectivity"""
-        if self.api_client.check_api_status():
-            print("✅ API is accessible")
-            return True
-        else:
-            print("❌ API is not accessible")
+        try:
+            data = self.data_updater.fetch_indicator_data('btc-price', days=1)
+            if data:
+                print("✅ bitcoin-data.com API is accessible")
+                return True
+            else:
+                print("❌ bitcoin-data.com API is not accessible")
+                return False
+        except Exception as e:
+            print(f"❌ API check failed: {e}")
             return False
 
 
@@ -254,6 +346,8 @@ def main():
     parser.add_argument('--daily', help='Run daily at specified time (e.g., 08:00)')
     parser.add_argument('--interval', type=int, default=600, help='Update interval in seconds (daemon mode)')
     parser.add_argument('--check', action='store_true', help='Check API connectivity')
+    parser.add_argument('--build-history', type=int, nargs='?', const=0, metavar='DAYS',
+                        help='Build full history. Use --build-history (all history) or --build-history N (last N days)')
     
     args = parser.parse_args()
     
@@ -261,6 +355,9 @@ def main():
     
     if args.check:
         service.check_api()
+    elif args.build_history is not None:
+        success = service.build_full_history(days=args.build_history)
+        sys.exit(0 if success else 1)
     elif args.daemon:
         service.run_daemon(args.interval)
     elif args.daily:

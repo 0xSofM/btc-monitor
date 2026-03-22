@@ -13,19 +13,17 @@ import requests
 
 
 class DataUpdater:
-    """Main data updater for BTC indicators"""
+    """Main data updater for BTC indicators - strictly uses bitcoin-data.com API"""
     
     def __init__(self):
         self.api_base = "https://bitcoin-data.com/v1"
-        self.coinbase_spot_url = "https://api.coinbase.com/v2/prices/BTC-USD/spot"
-        self.coingecko_spot_url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
         self.timeout = 30
         self.history_file = "data/history/btc_indicators_history.json"
         self.latest_file = "data/latest/btc_indicators_latest.json"
         self.ma200w_days = 1400
         
     def fetch_json(self, endpoint: str, params: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
-        """Fetch data from API with retry logic"""
+        """Fetch data from bitcoin-data.com API with retry logic"""
         url = f"{self.api_base}/{endpoint}"
         
         for attempt in range(3):
@@ -54,49 +52,8 @@ class DataUpdater:
                     
         return []
     
-    def fetch_backup_btc_price(self) -> Optional[Dict[str, Union[str, float]]]:
-        """Fetch BTC price from backup providers"""
-        today = datetime.now(UTC).strftime("%Y-%m-%d")
-        
-        # Try Coinbase first
-        try:
-            response = requests.get(self.coinbase_spot_url, timeout=self.timeout)
-            response.raise_for_status()
-            payload = response.json()
-            amount = payload.get("data", {}).get("amount")
-            if amount is not None:
-                return {
-                    "d": today,
-                    "btcPrice": float(amount),
-                    "source": "coinbase",
-                }
-        except Exception as error:
-            print(f"  [fallback] coinbase spot failed: {error}")
-        
-        # Try CoinGecko
-        try:
-            headers = {}
-            demo_key = os.getenv("COINGECKO_DEMO_API_KEY")
-            if demo_key:
-                headers["x-cg-demo-api-key"] = demo_key
-                
-            response = requests.get(self.coingecko_spot_url, headers=headers, timeout=self.timeout)
-            response.raise_for_status()
-            payload = response.json()
-            amount = payload.get("bitcoin", {}).get("usd")
-            if amount is not None:
-                return {
-                    "d": today,
-                    "btcPrice": float(amount),
-                    "source": "coingecko",
-                }
-        except Exception as error:
-            print(f"  [fallback] coingecko spot failed: {error}")
-            
-        return None
-    
-    def fetch_indicator_data(self, indicator: str) -> List[Dict[str, Any]]:
-        """Fetch specific indicator data"""
+    def fetch_indicator_data(self, indicator: str, days: int = 1) -> List[Dict[str, Any]]:
+        """Fetch specific indicator data from bitcoin-data.com API"""
         endpoints = {
             'btc-price': 'btc-price',
             'mvrv-zscore': 'mvrv-zscore',
@@ -108,7 +65,47 @@ class DataUpdater:
         if indicator not in endpoints:
             raise ValueError(f"Unknown indicator: {indicator}")
             
-        return self.fetch_json(endpoints[indicator])
+        endpoint = f"{endpoints[indicator]}/{days}"
+        return self.fetch_json(endpoint)
+    
+    def fetch_all_indicators_latest(self) -> Dict[str, List[Dict[str, Any]]]:
+        """Fetch latest data (1 day) for all indicators - used for daily updates"""
+        indicators = ['btc-price', 'mvrv-zscore', 'lth-mvrv', 'puell-multiple', 'nupl']
+        results = {}
+        
+        for indicator in indicators:
+            print(f"Fetching {indicator} (latest)...")
+            data = self.fetch_indicator_data(indicator, days=1)
+            results[indicator] = data
+            
+            # Add delay between requests to respect rate limits
+            if indicator != indicators[-1]:
+                print(f"  Waiting 5s before next request...")
+                time.sleep(5)
+                
+        return results
+    
+    def fetch_all_indicators_history(self, days: int = 0) -> Dict[str, List[Dict[str, Any]]]:
+        """
+        Fetch full historical data for all indicators.
+        If days=0, fetch all available history.
+        """
+        indicators = ['btc-price', 'mvrv-zscore', 'lth-mvrv', 'puell-multiple', 'nupl']
+        results = {}
+        
+        days_param = days if days > 0 else 'all'
+        
+        for indicator in indicators:
+            print(f"Fetching {indicator} (history: {days_param})...")
+            data = self.fetch_indicator_data(indicator, days=days_param if isinstance(days_param, int) else 0)
+            results[indicator] = data
+            
+            # Add delay between requests to respect rate limits
+            if indicator != indicators[-1]:
+                print(f"  Waiting 5s before next request...")
+                time.sleep(5)
+                
+        return results
     
     def load_history_data(self) -> List[Dict[str, Any]]:
         """Load existing history data"""
@@ -148,3 +145,4 @@ class DataUpdater:
         except Exception as e:
             print(f"Error saving latest file: {e}")
             return False
+

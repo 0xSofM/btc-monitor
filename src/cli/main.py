@@ -26,6 +26,8 @@ Examples:
   %(prog)s update --daily 08:00      # Daily update at 8 AM
   %(prog)s validate                   # Validate data integrity
   %(prog)s check-api                  # Check API connectivity
+  %(prog)s build-history             # Build full historical data
+  %(prog)s build-history 365         # Build last 365 days of history
         """
     )
     
@@ -43,6 +45,11 @@ Examples:
     
     # Check command
     check_parser = subparsers.add_parser('check-api', help='Check API connectivity')
+    
+    # Build history command
+    history_parser = subparsers.add_parser('build-history', help='Build full historical data from API')
+    history_parser.add_argument('days', type=int, nargs='?', default=0, 
+                               help='Number of days to fetch (default: 0 = all available history)')
     
     return parser
 
@@ -89,6 +96,13 @@ def cmd_check_api(args):
     return 0 if accessible else 1
 
 
+def cmd_build_history(args):
+    """Handle build-history command"""
+    service = AutoUpdateService()
+    success = service.build_full_history(days=args.days)
+    return 0 if success else 1
+
+
 def main():
     """Main CLI entry point"""
     parser = create_parser()
@@ -105,6 +119,8 @@ def main():
             return cmd_validate(args)
         elif args.command == 'check-api':
             return cmd_check_api(args)
+        elif args.command == 'build-history':
+            return cmd_build_history(args)
         else:
             print(f"Unknown command: {args.command}")
             return 1
