@@ -86,7 +86,12 @@ class AutoUpdateService:
             
             # Validate essential data (btcPrice must be valid)
             btc_price = combined_data.get('btcPrice')
-            if not btc_price or float(btc_price) <= 0:
+            try:
+                btc_price_val = float(btc_price) if btc_price else 0
+            except (ValueError, TypeError):
+                btc_price_val = 0
+                
+            if btc_price_val <= 0:
                 self.logger.warning("Primary API returned invalid btcPrice, trying backup sources...")
                 
                 # Try backup price sources (Coinbase, CoinGecko)
@@ -96,6 +101,54 @@ class AutoUpdateService:
                     self.logger.info(f"Got btcPrice from {backup_price.get('source')}: ${backup_price['btcPrice']}")
                 else:
                     self.logger.error("Invalid btcPrice from all sources, skipping update to preserve last valid data")
+                    return False
+            
+            # Validate other critical indicators - if missing or zero, use last valid data
+            required_indicators = ['mvrvZscore', 'lthMvrv', 'puellMultiple', 'nupl']
+            missing_indicators = []
+            
+            for indicator in required_indicators:
+                val = combined_data.get(indicator)
+                try:
+                    val_float = float(val) if val is not None else 0
+                except (ValueError, TypeError):
+                    val_float = 0
+                    
+                if val_float == 0:
+                    missing_indicators.append(indicator)
+            
+            if missing_indicators:
+                self.logger.warning(f"Missing or invalid indicators from API: {missing_indicators}")
+                
+                # Try to get last valid values from history
+                history_data = self.data_updater.load_history_data()
+                if history_data:
+                    # Find last entry with valid data
+                    for entry in reversed(history_data[-10:]):  # Check last 10 entries
+                        entry_date = entry.get('d', '')
+                        if entry_date >= '2026-03-01':  # Only use recent data
+                            # Check if this entry has the missing indicators
+                            found_any = False
+                            for ind in missing_indicators[:]:
+                                entry_val = entry.get(ind)
+                                try:
+                                    entry_val_float = float(entry_val) if entry_val is not None else 0
+                                except:
+                                    entry_val_float = 0
+                                    
+                                if entry_val_float > 0:
+                                    combined_data[ind] = entry_val
+                                    found_any = True
+                                    missing_indicators.remove(ind)
+                            
+                            if found_any:
+                                self.logger.info(f"Used indicator data from {entry_date}")
+                            
+                            if not missing_indicators:
+                                break
+                
+                if missing_indicators:
+                    self.logger.error(f"Could not find valid data for: {missing_indicators}. Skipping update.")
                     return False
             
             # Load existing history
