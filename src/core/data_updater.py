@@ -53,7 +53,12 @@ class DataUpdater:
         return []
     
     def fetch_indicator_data(self, indicator: str, days: int = 1) -> List[Dict[str, Any]]:
-        """Fetch specific indicator data from bitcoin-data.com API"""
+        """Fetch specific indicator data from bitcoin-data.com API
+        
+        Args:
+            indicator: Indicator name
+            days: Number of days to fetch. If 0, fetch all available history.
+        """
         endpoints = {
             'btc-price': 'btc-price',
             'mvrv-zscore': 'mvrv-zscore',
@@ -64,8 +69,13 @@ class DataUpdater:
         
         if indicator not in endpoints:
             raise ValueError(f"Unknown indicator: {indicator}")
-            
-        endpoint = f"{endpoints[indicator]}/{days}"
+        
+        # If days is 0, don't add days parameter to get all history
+        if days == 0:
+            endpoint = endpoints[indicator]
+        else:
+            endpoint = f"{endpoints[indicator]}/{days}"
+        
         return self.fetch_json(endpoint)
     
     def fetch_all_indicators_latest(self) -> Dict[str, List[Dict[str, Any]]]:
