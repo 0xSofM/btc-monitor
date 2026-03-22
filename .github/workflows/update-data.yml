@@ -46,7 +46,7 @@ jobs:
     
     - name: Update BTC indicator data
       run: python src/cli/main.py update
-      timeout-minutes: 5
+      timeout-minutes: 60
 
     - name: Summarize failure
       if: failure()

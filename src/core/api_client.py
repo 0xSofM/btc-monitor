@@ -76,9 +76,10 @@ class APIClient:
         
         if indicator not in endpoints:
             raise ValueError(f"Unknown indicator: {indicator}")
-            
-        params = {'days': days} if days > 1 else None
-        return self.get(endpoints[indicator], params)
+        
+        # API uses path parameter: /endpoint/days (e.g., /btc-price/1)
+        endpoint = f"{endpoints[indicator]}/{days}"
+        return self.get(endpoint, params=None, enforce_rate_limit=False)
     
     def check_api_status(self) -> bool:
         """Check if API is accessible"""
@@ -89,7 +90,7 @@ class APIClient:
             return False
     
     def get_all_indicators(self, days: int = 1) -> Dict[str, List[Dict]]:
-        """Get all indicator data"""
+        """Get all indicator data with rate limiting"""
         indicators = ['btc-price', 'mvrv-zscore', 'lth-mvrv', 'puell-multiple', 'nupl']
         results = {}
         
@@ -98,8 +99,9 @@ class APIClient:
             data = self.get_indicator_data(indicator, days)
             results[indicator] = data
             
-            # Add delay between requests to respect rate limits
+            # Add 450s delay between requests to respect rate limits (8 requests/hour max)
             if indicator != indicators[-1]:
-                time.sleep(1)
+                print(f"  Waiting 450s for rate limit...")
+                time.sleep(450)
                 
         return results

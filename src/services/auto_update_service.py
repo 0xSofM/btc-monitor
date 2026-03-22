@@ -61,21 +61,42 @@ class AutoUpdateService:
             today = datetime.now().strftime('%Y-%m-%d')
             combined_data = {'d': today}
             
-            # Extract latest values from each indicator
+            # Extract latest values from each indicator with field mapping
+            # API returns field names as they appear in each endpoint
+            field_mappings = {
+                'btc-price': {'btcPrice': 'btcPrice', 'price': 'btcPrice', 'ma200w': 'ma200w', 'price_ma200w_ratio': 'price_ma200w_ratio'},
+                'mvrv-zscore': {'mvrvZscore': 'mvrvZscore', 'mvrv_zscore': 'mvrvZscore'},
+                'lth-mvrv': {'lthMvrv': 'lthMvrv', 'lth_mvrv': 'lthMvrv'},
+                'puell-multiple': {'puellMultiple': 'puellMultiple', 'puell_multiple': 'puellMultiple'},
+                'nupl': {'nupl': 'nupl'}
+            }
+            
             for indicator, data in indicator_data.items():
                 if data and len(data) > 0:
                     latest = data[0]  # API returns latest first
-                    field_mapping = {
-                        'btc-price': 'btcPrice',
-                        'mvrv-zscore': 'mvrvZscore',
-                        'lth-mvrv': 'lthMvrv',
-                        'puell-multiple': 'puellMultiple',
-                        'nupl': 'nupl'
-                    }
+                    mappings = field_mappings.get(indicator, {})
                     
-                    field_name = field_mapping.get(indicator)
-                    if field_name and field_name in latest:
-                        combined_data[field_name] = latest[field_name]
+                    # Try each possible field name
+                    for api_field, our_field in mappings.items():
+                        if api_field in latest and latest[api_field] is not None:
+                            combined_data[our_field] = latest[api_field]
+            
+            # Log what we got
+            self.logger.info(f"Raw data from API: {list(combined_data.keys())}")
+            
+            # Validate essential data (btcPrice must be valid)
+            btc_price = combined_data.get('btcPrice')
+            if not btc_price or float(btc_price) <= 0:
+                self.logger.warning("Primary API returned invalid btcPrice, trying backup sources...")
+                
+                # Try backup price sources (Coinbase, CoinGecko)
+                backup_price = self.data_updater.fetch_backup_btc_price()
+                if backup_price and backup_price.get('btcPrice', 0) > 0:
+                    combined_data['btcPrice'] = backup_price['btcPrice']
+                    self.logger.info(f"Got btcPrice from {backup_price.get('source')}: ${backup_price['btcPrice']}")
+                else:
+                    self.logger.error("Invalid btcPrice from all sources, skipping update to preserve last valid data")
+                    return False
             
             # Load existing history
             history_data = self.data_updater.load_history_data()
