@@ -134912,5 +134912,21 @@
     "signalPuell": false,
     "signalNupl": false,
     "signalCount": 0
+  },
+  {
+    "d": "2026-03-22",
+    "btcPrice": "0.0000000000",
+    "priceMa200wRatio": null,
+    "ma200w": null,
+    "mvrvZscore": "0",
+    "lthMvrv": "816.457",
+    "puellMultiple": "0.541",
+    "nupl": "0.4367",
+    "signalPriceMa": false,
+    "signalMvrvZ": false,
+    "signalLthMvrv": false,
+    "signalPuell": false,
+    "signalNupl": false,
+    "signalCount": 0
   }
 ]
