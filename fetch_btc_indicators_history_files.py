@@ -27,6 +27,7 @@ import argparse
 import json
 import math
 import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
@@ -195,13 +196,21 @@ def build_base_dataframe(
     print("BTC Indicators History (BGeometrics chart files mode)")
     print("=" * 72)
 
-    for key, cfg in SERIES_CONFIG.items():
-        display_name = str(cfg.get("display_name", key))
-        print(f"Fetching {display_name} ...")
-        df, selected_url = fetch_metric(key, cfg)
-        dfs[key] = df
-        selected_sources[key] = selected_url
-        print(f"  Rows: {len(df):,} | Source: {selected_url}")
+    futures = {}
+    max_workers = min(6, len(SERIES_CONFIG))
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        for key, cfg in SERIES_CONFIG.items():
+            display_name = str(cfg.get("display_name", key))
+            print(f"Queue fetch: {display_name} ...")
+            futures[key] = executor.submit(fetch_metric, key, cfg)
+
+        for key, cfg in SERIES_CONFIG.items():
+            display_name = str(cfg.get("display_name", key))
+            print(f"Fetching {display_name} ...")
+            df, selected_url = futures[key].result()
+            dfs[key] = df
+            selected_sources[key] = selected_url
+            print(f"  Rows: {len(df):,} | Source: {selected_url}")
 
     merged: pd.DataFrame | None = None
     for key in ["btc_price", "ma200w", "mvrv_z_score", "lth_mvrv", "puell_multiple", "nupl"]:

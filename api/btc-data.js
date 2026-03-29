@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Vercel Edge Function - BTC data proxy with backup price feeds.
  *
  * Primary source:
@@ -18,6 +18,30 @@ const API_BASE_URL = 'https://bitcoin-data.com';
 const COINBASE_SPOT_URL = 'https://api.coinbase.com/v2/prices/BTC-USD/spot';
 const COINGECKO_SPOT_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd';
 const CACHE_DURATION = 300;
+const UPSTREAM_TIMEOUT_MS = 8000;
+
+const INDICATOR_ROUTE_MAP = {
+  '/btc-data/v1/mvrv-zscore/1': {
+    upstreamPath: '/v1/mvrv-zscore/1',
+    dataKey: 'mvrvZscore',
+    dateKey: 'mvrvZ',
+  },
+  '/btc-data/v1/lth-mvrv/1': {
+    upstreamPath: '/v1/lth-mvrv/1',
+    dataKey: 'lthMvrv',
+    dateKey: 'lthMvrv',
+  },
+  '/btc-data/v1/puell-multiple/1': {
+    upstreamPath: '/v1/puell-multiple/1',
+    dataKey: 'puellMultiple',
+    dateKey: 'puell',
+  },
+  '/btc-data/v1/nupl/1': {
+    upstreamPath: '/v1/nupl/1',
+    dataKey: 'nupl',
+    dateKey: 'nupl',
+  },
+};
 
 function toNumber(value, fallback = 0) {
   if (typeof value === 'number' && Number.isFinite(value)) {
@@ -36,6 +60,19 @@ function getTodayUtcDate() {
   return new Date().toISOString().split('T')[0];
 }
 
+function withTimeout(init = {}, timeoutMs = UPSTREAM_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  return {
+    init: {
+      ...init,
+      signal: controller.signal,
+    },
+    done: () => clearTimeout(timeoutId),
+  };
+}
+
 function normalizeLatestSnapshot(snapshot) {
   if (!snapshot || typeof snapshot !== 'object') {
     return null;
@@ -45,6 +82,8 @@ function normalizeLatestSnapshot(snapshot) {
   if (!date) {
     return null;
   }
+
+  const indicatorDates = snapshot.indicatorDates ?? snapshot.api_data_date ?? snapshot.apiDataDate ?? {};
 
   const btcPrice = toNumber(snapshot.btcPrice ?? snapshot.btc_price);
   const priceMa200wRatio = toNumber(snapshot.priceMa200wRatio ?? snapshot.price_ma200w_ratio);
@@ -86,19 +125,21 @@ function normalizeLatestSnapshot(snapshot) {
     signalCount: snapshot.signalCount ?? snapshot.signal_count ?? Object.values(signals).filter(Boolean).length,
     signals,
     indicatorDates: {
-      priceMa200w: snapshot.indicatorDates?.priceMa200w ?? date,
-      mvrvZ: snapshot.indicatorDates?.mvrvZ ?? date,
-      lthMvrv: snapshot.indicatorDates?.lthMvrv ?? date,
-      puell: snapshot.indicatorDates?.puell ?? date,
-      nupl: snapshot.indicatorDates?.nupl ?? date,
+      priceMa200w: indicatorDates.priceMa200w ?? indicatorDates.price_ma200w ?? date,
+      mvrvZ: indicatorDates.mvrvZ ?? indicatorDates.mvrv_z ?? date,
+      lthMvrv: indicatorDates.lthMvrv ?? indicatorDates.lth_mvrv ?? date,
+      puell: indicatorDates.puell ?? date,
+      nupl: indicatorDates.nupl ?? date,
     },
     raw: null,
   };
 }
 
-async function fetchJsonSafely(url, fallback, init) {
+async function fetchJsonSafely(url, fallback, init = {}) {
+  const { init: requestInit, done } = withTimeout(init);
+
   try {
-    const response = await fetch(url, init);
+    const response = await fetch(url, requestInit);
     if (!response.ok) {
       return fallback;
     }
@@ -112,19 +153,16 @@ async function fetchJsonSafely(url, fallback, init) {
   } catch (error) {
     console.warn('Upstream fetch failed:', url, error);
     return fallback;
+  } finally {
+    done();
   }
 }
 
 async function fetchStaticLatestFallback(request) {
   try {
     const fallbackUrl = new URL('/btc_indicators_latest.json', request.url);
-    const response = await fetch(fallbackUrl);
-    if (!response.ok) {
-      return null;
-    }
-
-    const raw = await response.json();
-    return normalizeLatestSnapshot(raw);
+    const payload = await fetchJsonSafely(fallbackUrl.toString(), null);
+    return normalizeLatestSnapshot(payload);
   } catch (error) {
     console.warn('Static latest fallback failed:', error);
     return null;
@@ -154,6 +192,7 @@ async function fetchCoinGeckoSpotPrice() {
   const headers = {
     'User-Agent': 'btc-monitor',
   };
+
   const demoKey = process.env.COINGECKO_DEMO_API_KEY;
   if (demoKey) {
     headers['x-cg-demo-api-key'] = demoKey;
@@ -197,10 +236,12 @@ function buildIndicatorArray(staticLatest, dataKey, dateKey) {
     return [];
   }
 
-  return [{
-    d: day,
-    [dataKey]: value,
-  }];
+  return [
+    {
+      d: day,
+      [dataKey]: value,
+    },
+  ];
 }
 
 function buildPriceArrayFromFallback(pricePoint) {
@@ -208,10 +249,12 @@ function buildPriceArrayFromFallback(pricePoint) {
     return [];
   }
 
-  return [{
-    d: pricePoint.d,
-    btcPrice: pricePoint.btcPrice,
-  }];
+  return [
+    {
+      d: pricePoint.d,
+      btcPrice: pricePoint.btcPrice,
+    },
+  ];
 }
 
 function buildLatestPayload({ pricePoint, mvrvPoint, lthPoint, puellPoint, nuplPoint, staticLatest }) {
@@ -223,6 +266,7 @@ function buildLatestPayload({ pricePoint, mvrvPoint, lthPoint, puellPoint, nuplP
   const ma200w = staticLatest?.ma200w && staticLatest.ma200w > 0
     ? staticLatest.ma200w
     : undefined;
+
   const priceMa200wRatio = ma200w && ma200w > 0
     ? price / ma200w
     : toNumber(staticLatest?.priceMa200wRatio);
@@ -271,6 +315,35 @@ function buildLatestPayload({ pricePoint, mvrvPoint, lthPoint, puellPoint, nuplP
   };
 }
 
+async function fetchIndicatorRoute(path, request) {
+  const routeConfig = INDICATOR_ROUTE_MAP[path];
+  if (!routeConfig) {
+    return null;
+  }
+
+  const primary = await fetchJsonSafely(`${API_BASE_URL}${routeConfig.upstreamPath}`, [], {
+    headers: { 'User-Agent': 'btc-monitor' },
+  });
+
+  if (Array.isArray(primary) && primary.length > 0) {
+    return primary;
+  }
+
+  const staticLatest = await fetchStaticLatestFallback(request);
+  return buildIndicatorArray(staticLatest, routeConfig.dataKey, routeConfig.dateKey);
+}
+
+function buildSuccessResponse(payload, headers, cacheState = 'MISS') {
+  return new Response(JSON.stringify(payload), {
+    status: 200,
+    headers: {
+      ...headers,
+      'Cache-Control': `public, max-age=${CACHE_DURATION}, s-maxage=${CACHE_DURATION}`,
+      'X-Cache': cacheState,
+    },
+  });
+}
+
 export default async function handler(request) {
   const url = new URL(request.url);
   const rewrittenPath = url.searchParams.get('path');
@@ -293,7 +366,7 @@ export default async function handler(request) {
   try {
     let data;
 
-    if (path === '/btc-data/latest' || path === '/btc-data') {
+    if (path === '/btc-data/latest' || path === '/btc-data' || path === '/btc-data/') {
       const [mvrvZ, lthMvrv, puell, nupl, btcPrice, staticLatest] = await Promise.all([
         fetchJsonSafely(`${API_BASE_URL}/v1/mvrv-zscore/1`, [], { headers: { 'User-Agent': 'btc-monitor' } }),
         fetchJsonSafely(`${API_BASE_URL}/v1/lth-mvrv/1`, [], { headers: { 'User-Agent': 'btc-monitor' } }),
@@ -318,77 +391,54 @@ export default async function handler(request) {
         nuplPoint,
         staticLatest,
       }) ?? staticLatest;
-    } else if (path === '/btc-data/v1/btc-price/1') {
-      const primary = await fetchJsonSafely(`${API_BASE_URL}/v1/btc-price/1`, [], { headers: { 'User-Agent': 'btc-monitor' } });
-      if (primary.length > 0) {
+
+      return buildSuccessResponse(data, corsHeaders);
+    }
+
+    if (path === '/btc-data/v1/btc-price/1') {
+      const primary = await fetchJsonSafely(`${API_BASE_URL}/v1/btc-price/1`, [], {
+        headers: { 'User-Agent': 'btc-monitor' },
+      });
+
+      if (Array.isArray(primary) && primary.length > 0) {
         data = primary;
       } else {
         const backupPrice = await fetchBackupSpotPrice();
         data = buildPriceArrayFromFallback(backupPrice);
       }
-    } else if (path === '/btc-data/v1/mvrv-zscore/1') {
-      const primary = await fetchJsonSafely(`${API_BASE_URL}/v1/mvrv-zscore/1`, [], { headers: { 'User-Agent': 'btc-monitor' } });
-      if (primary.length > 0) {
-        data = primary;
-      } else {
-        const staticLatest = await fetchStaticLatestFallback(request);
-        data = buildIndicatorArray(staticLatest, 'mvrvZscore', 'mvrvZ');
-      }
-    } else if (path === '/btc-data/v1/lth-mvrv/1') {
-      const primary = await fetchJsonSafely(`${API_BASE_URL}/v1/lth-mvrv/1`, [], { headers: { 'User-Agent': 'btc-monitor' } });
-      if (primary.length > 0) {
-        data = primary;
-      } else {
-        const staticLatest = await fetchStaticLatestFallback(request);
-        data = buildIndicatorArray(staticLatest, 'lthMvrv', 'lthMvrv');
-      }
-    } else if (path === '/btc-data/v1/puell-multiple/1') {
-      const primary = await fetchJsonSafely(`${API_BASE_URL}/v1/puell-multiple/1`, [], { headers: { 'User-Agent': 'btc-monitor' } });
-      if (primary.length > 0) {
-        data = primary;
-      } else {
-        const staticLatest = await fetchStaticLatestFallback(request);
-        data = buildIndicatorArray(staticLatest, 'puellMultiple', 'puell');
-      }
-    } else if (path === '/btc-data/v1/nupl/1') {
-      const primary = await fetchJsonSafely(`${API_BASE_URL}/v1/nupl/1`, [], { headers: { 'User-Agent': 'btc-monitor' } });
-      if (primary.length > 0) {
-        data = primary;
-      } else {
-        const staticLatest = await fetchStaticLatestFallback(request);
-        data = buildIndicatorArray(staticLatest, 'nupl', 'nupl');
-      }
-    } else if (path.startsWith('/btc-data/history')) {
-      data = {
-        message: 'History data should be fetched from static JSON file',
-        hint: 'Use /btc_indicators_history.json instead',
-      };
-    } else {
-      const targetUrl = `${API_BASE_URL}${path.replace('/btc-data', '')}`;
-      data = await fetchJsonSafely(targetUrl, { error: 'Failed to fetch upstream endpoint' }, { headers: { 'User-Agent': 'btc-monitor' } });
+
+      return buildSuccessResponse(data, corsHeaders);
     }
 
-    return new Response(JSON.stringify(data), {
-      status: 200,
-      headers: {
-        ...corsHeaders,
-        'Cache-Control': `public, max-age=${CACHE_DURATION}, s-maxage=${CACHE_DURATION}`,
-        'X-Cache': 'MISS',
-      },
-    });
+    const indicatorData = await fetchIndicatorRoute(path, request);
+    if (indicatorData !== null) {
+      return buildSuccessResponse(indicatorData, corsHeaders);
+    }
+
+    if (path.startsWith('/btc-data/history')) {
+      return buildSuccessResponse(
+        {
+          message: 'History data should be fetched from static JSON file',
+          hint: 'Use /btc_indicators_history.json instead',
+        },
+        corsHeaders,
+      );
+    }
+
+    const targetUrl = `${API_BASE_URL}${path.replace('/btc-data', '')}`;
+    data = await fetchJsonSafely(
+      targetUrl,
+      { error: 'Failed to fetch upstream endpoint' },
+      { headers: { 'User-Agent': 'btc-monitor' } },
+    );
+
+    return buildSuccessResponse(data, corsHeaders);
   } catch (error) {
     console.error('API Error:', error);
 
     const fallbackData = await fetchStaticLatestFallback(request);
     if (fallbackData) {
-      return new Response(JSON.stringify(fallbackData), {
-        status: 200,
-        headers: {
-          ...corsHeaders,
-          'Cache-Control': `public, max-age=${CACHE_DURATION}, s-maxage=${CACHE_DURATION}`,
-          'X-Cache': 'FALLBACK',
-        },
-      });
+      return buildSuccessResponse(fallbackData, corsHeaders, 'FALLBACK');
     }
 
     return new Response(

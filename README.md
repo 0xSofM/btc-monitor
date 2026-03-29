@@ -36,7 +36,7 @@ A BTC indicator dashboard with a static-data pipeline designed for reliable depl
 Install Python dependencies:
 
 ```bash
-pip install pandas requests openpyxl
+pip install -r requirements.txt
 ```
 
 Generate frontend JSON + tabular files:
@@ -56,7 +56,8 @@ Run data quality validation:
 ```bash
 python validate_btc_data_quality.py \
   --current-history app/public/btc_indicators_history.json \
-  --current-latest app/public/btc_indicators_latest.json
+  --current-latest app/public/btc_indicators_latest.json \
+  --max-indicator-lag-days 21
 ```
 
 Run frontend:

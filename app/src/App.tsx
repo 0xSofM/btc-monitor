@@ -21,6 +21,7 @@ import { IndicatorCard } from '@/components/IndicatorCard';
 import { SignalOverview } from '@/components/SignalOverview';
 import type { IndicatorData, LatestData } from '@/types';
 import {
+  fetchDataManifest,
   fetchAllLatestIndicators,
   fetchFullHistoricalData,
   fetchHistoricalData,
@@ -63,6 +64,8 @@ function App() {
   const [latestData, setLatestData] = useState<LatestData | null>(null);
   const [historicalData, setHistoricalData] = useState<IndicatorData[]>([]);
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
+  const [manifestGeneratedAt, setManifestGeneratedAt] = useState<string | null>(null);
+  const [isLightHistoryLoading, setIsLightHistoryLoading] = useState(false);
   const [isFullHistoryLoaded, setIsFullHistoryLoaded] = useState(false);
   const [isFullHistoryLoading, setIsFullHistoryLoading] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -71,17 +74,48 @@ function App() {
   const [dataSource, setDataSource] = useState<DataSource>('static');
   const { theme, setTheme } = useTheme();
 
-  const loadInitialHistory = useCallback(async () => {
+  const loadLightHistory = useCallback(async () => {
+    if (historicalData.length > 0 || isLightHistoryLoading) {
+      return;
+    }
+
+    setIsLightHistoryLoading(true);
+    try {
+      const data = await fetchHistoricalData({ mode: 'light' });
+      if (data.length > 0) {
+        setHistoricalData(data);
+      }
+      setIsFullHistoryLoaded(false);
+    } catch (err) {
+      console.error('Error loading light history:', err);
+    } finally {
+      setIsLightHistoryLoading(false);
+    }
+  }, [historicalData.length, isLightHistoryLoading]);
+
+  const loadManifest = useCallback(async () => {
+    const manifest = await fetchDataManifest();
+    if (manifest?.generatedAt) {
+      setManifestGeneratedAt(manifest.generatedAt);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadManifest();
+  }, [loadManifest]);
+
+  const loadHistoryFallback = useCallback(async () => {
+    if (historicalData.length > 0) {
+      return historicalData;
+    }
+
     const data = await fetchHistoricalData({ mode: 'light' });
     if (data.length > 0) {
       setHistoricalData(data);
       setIsFullHistoryLoaded(false);
     }
-  }, []);
-
-  useEffect(() => {
-    void loadInitialHistory();
-  }, [loadInitialHistory]);
+    return data;
+  }, [historicalData]);
 
   const applyLatestData = (data: LatestData, source: DataSource) => {
     setLatestData(data);
@@ -119,26 +153,13 @@ function App() {
     }
   }, [isFullHistoryLoaded, isFullHistoryLoading]);
 
-  const loadHistoryFallback = useCallback(async () => {
-    if (historicalData.length > 0) {
-      return historicalData;
-    }
-
-    const data = await fetchHistoricalData({ mode: 'light' });
-    if (data.length > 0) {
-      setHistoricalData(data);
-      setIsFullHistoryLoaded(false);
-    }
-    return data;
-  }, [historicalData]);
-
   const fetchLatestData = async (mode: 'auto' | 'manual' = 'auto') => {
     setLoading(true);
     setError(null);
 
     try {
       if (mode === 'auto') {
-        const staticData = await fetchStaticLatestData();
+        const staticData = await fetchStaticLatestData({ enrichWithHistory: false });
         if (staticData) {
           applyLatestData(staticData, 'static');
           return;
@@ -162,7 +183,7 @@ function App() {
     } catch (err) {
       console.error('Error fetching data:', err);
 
-      const staticData = await fetchStaticLatestData();
+      const staticData = await fetchStaticLatestData({ enrichWithHistory: false });
       if (staticData) {
         applyLatestData(staticData, 'static');
         if (mode === 'manual') {
@@ -477,6 +498,31 @@ function App() {
                   </Suspense>
                 )}
 
+                {historicalData.length === 0 && (
+                  <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
+                    <AlertTriangle className="h-4 w-4 text-blue-600" />
+                    <AlertTitle className="text-blue-800 dark:text-blue-200">图表数据按需加载</AlertTitle>
+                    <AlertDescription className="text-blue-700 dark:text-blue-300">
+                      首屏优先加载最新快照。点击下方按钮后再加载轻量历史数据用于图表展示。
+                      <div className="mt-3">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => void loadLightHistory()}
+                          disabled={isLightHistoryLoading}
+                        >
+                          {isLightHistoryLoading ? (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <History className="mr-2 h-4 w-4" />
+                          )}
+                          加载图表数据
+                        </Button>
+                      </div>
+                    </AlertDescription>
+                  </Alert>
+                )}
+
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {indicators.map((indicator) => (
                     <IndicatorCard key={indicator.name} {...indicator} />
@@ -547,7 +593,10 @@ function App() {
             <p className="text-sm text-muted-foreground">
               数据来源：BGeometrics 图表文件 | 页面默认优先展示静态快照
             </p>
-            <p className="text-sm text-muted-foreground">最后更新：{lastUpdated}</p>
+            <p className="text-sm text-muted-foreground">
+              最后更新：{lastUpdated}
+              {manifestGeneratedAt ? ` | Manifest：${manifestGeneratedAt}` : ''}
+            </p>
           </div>
         </div>
       </footer>

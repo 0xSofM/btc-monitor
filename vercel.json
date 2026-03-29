@@ -1,32 +1,26 @@
-{
+﻿{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "name": "btc-dca-monitor",
   "buildCommand": "cd app && npm run build",
+  "installCommand": "cd app && npm ci",
   "outputDirectory": "app/dist",
-  "installCommand": "cd app && npm install",
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/btc-data.js"
+      "source": "/api/btc-data/(.*)",
+      "destination": "/api/btc-data?path=/btc-data/$1"
+    },
+    {
+      "source": "/api/btc-data",
+      "destination": "/api/btc-data?path=/btc-data"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/$1"
     }
   ],
   "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type"
-        }
-      ]
-    },
     {
       "source": "/btc_indicators_latest.json",
       "headers": [

@@ -29,6 +29,14 @@ CRITICAL_FIELDS = [
     "nupl",
 ]
 
+INDICATOR_DATE_FIELDS = {
+    "priceMa200w": ("priceMa200w", "price_ma200w"),
+    "mvrvZ": ("mvrvZ", "mvrv_z"),
+    "lthMvrv": ("lthMvrv", "lth_mvrv"),
+    "puell": ("puell", "puell"),
+    "nupl": ("nupl", "nupl"),
+}
+
 
 def load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as f:
@@ -135,16 +143,109 @@ def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str,
         )
 
 
+def get_latest_indicator_date(latest: Dict[str, Any], indicator_key: str) -> str:
+    candidates = INDICATOR_DATE_FIELDS[indicator_key]
+
+    indicator_dates = latest.get("indicatorDates")
+    if isinstance(indicator_dates, dict):
+        for key in candidates:
+            value = indicator_dates.get(key)
+            if isinstance(value, str) and value:
+                return value
+
+    api_data_date = latest.get("api_data_date")
+    if isinstance(api_data_date, dict):
+        for key in candidates:
+            value = api_data_date.get(key)
+            if isinstance(value, str) and value:
+                return value
+
+    return ""
+
+
+def get_history_tail_indicator_date(history: List[Dict[str, Any]], indicator_key: str) -> str:
+    if not history:
+        return ""
+
+    tail = history[-1]
+    candidates = INDICATOR_DATE_FIELDS[indicator_key]
+
+    api_data_date = tail.get("api_data_date")
+    if isinstance(api_data_date, dict):
+        for key in candidates:
+            value = api_data_date.get(key)
+            if isinstance(value, str) and value:
+                return value
+
+    indicator_dates = tail.get("indicatorDates")
+    if isinstance(indicator_dates, dict):
+        for key in candidates:
+            value = indicator_dates.get(key)
+            if isinstance(value, str) and value:
+                return value
+
+    return ""
+
+
+def validate_indicator_staleness(
+    history: List[Dict[str, Any]],
+    latest: Dict[str, Any],
+    max_lag_days: int,
+    errors: List[str],
+) -> None:
+    if max_lag_days < 0:
+        return
+
+    latest_date_raw = latest.get("date") or (history[-1].get("d") if history else "")
+    if not latest_date_raw:
+        errors.append("Cannot validate indicator staleness: missing latest date.")
+        return
+
+    try:
+        latest_date = parse_date(latest_date_raw)
+    except Exception as exc:
+        errors.append(f"Cannot validate indicator staleness: invalid latest date ({exc}).")
+        return
+
+    for indicator_key in INDICATOR_DATE_FIELDS:
+        indicator_date_raw = get_latest_indicator_date(latest, indicator_key)
+        if not indicator_date_raw:
+            indicator_date_raw = get_history_tail_indicator_date(history, indicator_key)
+
+        if not indicator_date_raw:
+            errors.append(
+                f"Missing indicator date for '{indicator_key}', cannot verify staleness."
+            )
+            continue
+
+        try:
+            indicator_date = parse_date(indicator_date_raw)
+        except Exception as exc:
+            errors.append(
+                f"Invalid indicator date for '{indicator_key}': {indicator_date_raw} ({exc})."
+            )
+            continue
+
+        lag_days = (latest_date - indicator_date).days
+        if lag_days > max_lag_days:
+            errors.append(
+                f"Indicator '{indicator_key}' is stale by {lag_days} days "
+                f"(latest={latest_date_raw}, indicator={indicator_date_raw}, max={max_lag_days})."
+            )
+
+
 def validate_current_pair(
     history: List[Dict[str, Any]],
     latest: Dict[str, Any],
     lookback_rows: int,
+    max_indicator_lag_days: int,
 ) -> Tuple[bool, List[str]]:
     errors: List[str] = []
 
     validate_history_structure(history, errors)
     validate_recent_non_null(history, lookback_rows, errors)
     validate_signal_consistency(history, latest, errors)
+    validate_indicator_staleness(history, latest, max_indicator_lag_days, errors)
 
     if history:
         history_last_date = str(history[-1].get("d", ""))
@@ -193,6 +294,12 @@ def main() -> int:
     parser.add_argument("--previous-latest", default="", help="Path to previous latest JSON.")
     parser.add_argument("--lookback-rows", type=int, default=30, help="Rows checked for recent non-null critical fields.")
     parser.add_argument("--max-row-drop", type=int, default=5, help="Allowed max row drop versus previous history.")
+    parser.add_argument(
+        "--max-indicator-lag-days",
+        type=int,
+        default=21,
+        help="Max allowed lag days between latest date and per-indicator actual data date.",
+    )
     args = parser.parse_args()
 
     current_history_path = Path(args.current_history)
@@ -207,7 +314,12 @@ def main() -> int:
         print("ERROR: Current latest JSON must be an object.")
         return 1
 
-    ok, errors = validate_current_pair(current_history, current_latest, args.lookback_rows)
+    ok, errors = validate_current_pair(
+        current_history,
+        current_latest,
+        args.lookback_rows,
+        max(0, args.max_indicator_lag_days),
+    )
 
     if args.previous_history and args.previous_latest:
         prev_history_path = Path(args.previous_history)
