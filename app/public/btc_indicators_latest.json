@@ -1,11 +1,12 @@
 {
-  "date": "2026-03-22",
-  "btcPrice": 70277.21,
-  "priceMa200wRatio": 0.0,
-  "mvrvZscore": 0.0,
-  "lthMvrv": 0.0,
-  "puellMultiple": 0.0,
-  "nupl": 0.0,
+  "date": "2026-03-28",
+  "btcPrice": 66351.0725251315,
+  "priceMa200wRatio": 1.11984105109584,
+  "ma200w": 59250.437783293,
+  "mvrvZscore": 0.5086,
+  "lthMvrv": 1.53,
+  "puellMultiple": 0.7614285714,
+  "nupl": 0.1823349475,
   "signalCount": 0,
   "signals": {
     "priceMa200w": false,
@@ -15,11 +16,11 @@
     "nupl": false
   },
   "indicatorDates": {
-    "priceMa200w": "2026-03-22",
-    "mvrvZ": "2026-03-22",
-    "lthMvrv": "2026-03-22",
-    "puell": "2026-03-22",
-    "nupl": "2026-03-22"
+    "priceMa200w": "2026-03-28",
+    "mvrvZ": "2026-03-27",
+    "lthMvrv": "2026-03-27",
+    "puell": "2026-03-28",
+    "nupl": "2026-03-28"
   },
-  "lastUpdated": "2026-03-22T00:00:00.000000"
+  "lastUpdated": "2026-03-29T06:34:46.023284+00:00"
 }

@@ -1,0 +1,51 @@
+name: Update BTC Data
+
+on:
+  schedule:
+    - cron: "15 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-btc-data
+  cancel-in-progress: false
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests openpyxl
+
+      - name: Refresh frontend data files
+        run: |
+          python fetch_btc_indicators_history_files.py \
+            --skip-tabular \
+            --history-json-path app/public/btc_indicators_history.json \
+            --latest-json-path app/public/btc_indicators_latest.json
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/public/btc_indicators_history.json app/public/btc_indicators_latest.json
+          if git diff --cached --quiet; then
+            echo "No data changes."
+            exit 0
+          fi
+          git commit -m "chore(data): auto-update BTC indicators"
+          git push

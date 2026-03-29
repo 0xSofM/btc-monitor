@@ -1,21 +1,45 @@
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { IndicatorData, LatestData, SignalEvent, TimeRange, ChartDataPoint } from '@/types';
 
-// API 配置
+type ApiDatePayload = {
+  mvrvZ?: string;
+  mvrv_z?: string;
+  lthMvrv?: string;
+  lth_mvrv?: string;
+  puell?: string;
+  nupl?: string;
+};
+
+type ApiMetricPoint = {
+  d?: string;
+  btcPrice?: string | number;
+  mvrvZscore?: string | number;
+  lthMvrv?: string | number;
+  puellMultiple?: string | number;
+  nupl?: string | number;
+};
+
+type IndicatorDataWithApiDate = IndicatorData & {
+  apiDataDate?: ApiDatePayload;
+  api_data_date?: ApiDatePayload;
+};
+
+// API 閰嶇疆
 const API_BASE_URL = 'https://bitcoin-data.com';
 const STATIC_HISTORY_PATH = '/btc_indicators_history.json';
 const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
 
-// 代理配置（用于解决 CORS 问题）
+// 浠ｇ悊閰嶇疆锛堢敤浜庤В鍐?CORS 闂锛?
 const DEFAULT_PROXY_URL = import.meta.env.PROD ? '/api/btc-data' : '';
 const PROXY_URL = import.meta.env.VITE_API_PROXY_URL || DEFAULT_PROXY_URL;
 
-// 数据刷新配置
-const REFRESH_INTERVAL = 5 * 60 * 1000; // 5分钟刷新一次（毫秒）
-const CACHE_DURATION = 60 * 1000; // 本地缓存1分钟
+// 鏁版嵁鍒锋柊閰嶇疆
+const REFRESH_INTERVAL = 5 * 60 * 1000; // 5鍒嗛挓鍒锋柊涓€娆★紙姣锛?
+const CACHE_DURATION = 60 * 1000; // 鏈湴缂撳瓨1鍒嗛挓
 const MA200W_LOOKBACK_DAYS = 1400;
 
-// 内存缓存
-let cache: {
+// 鍐呭瓨缂撳瓨
+const cache: {
   data: LatestData | null;
   history: IndicatorData[];
   timestamp: number;
@@ -25,11 +49,11 @@ let cache: {
   timestamp: 0
 };
 
-// 从历史数据中提取最新数据
+// 浠庡巻鍙叉暟鎹腑鎻愬彇鏈€鏂版暟鎹?
 export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   if (!data || data.length === 0) return null;
   
-  // 获取最后一条数据
+  // 鑾峰彇鏈€鍚庝竴鏉℃暟鎹?
   const latest = data[data.length - 1];
   
   const btcPrice = typeof latest.btcPrice === 'string' ? parseFloat(latest.btcPrice) : (latest.btcPrice || 0);
@@ -50,8 +74,8 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   
   const signalCount = Object.values(signals).filter(Boolean).length;
   
-  // 获取各指标的实际数据日期
-  // 由于数据可能经过向前填充，需要查找每个指标最后一次实际更新的日期
+  // 鑾峰彇鍚勬寚鏍囩殑瀹為檯鏁版嵁鏃ユ湡
+  // 鐢变簬鏁版嵁鍙兘缁忚繃鍚戝墠濉厖锛岄渶瑕佹煡鎵炬瘡涓寚鏍囨渶鍚庝竴娆″疄闄呮洿鏂扮殑鏃ユ湡
   const indicatorDates = findIndicatorDates(data);
   
   return {
@@ -69,11 +93,11 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   };
 }
 
-// 查找各指标的最后有效数据日期
-// 策略：
-// 1. 优先使用 apiDataDate 字段（记录 API 实际返回数据的日期）
-// 2. 如果没有 apiDataDate，从后向前查找最后一个有有效值的日期
-// 3. 如果某个指标从未有过有效值，则返回 undefined
+// 鏌ユ壘鍚勬寚鏍囩殑鏈€鍚庢湁鏁堟暟鎹棩鏈?
+// 绛栫暐锛?
+// 1. 浼樺厛浣跨敤 apiDataDate 瀛楁锛堣褰?API 瀹為檯杩斿洖鏁版嵁鐨勬棩鏈燂級
+// 2. 濡傛灉娌℃湁 apiDataDate锛屼粠鍚庡悜鍓嶆煡鎵炬渶鍚庝竴涓湁鏈夋晥鍊肩殑鏃ユ湡
+// 3. 濡傛灉鏌愪釜鎸囨爣浠庢湭鏈夎繃鏈夋晥鍊硷紝鍒欒繑鍥?undefined
 function findIndicatorDates(data: IndicatorData[]) {
   const latest = data[data.length - 1];
   if (!latest) {
@@ -86,19 +110,20 @@ function findIndicatorDates(data: IndicatorData[]) {
     };
   }
 
-  // 初始化为 undefined，表示尚未找到有效值
+  // 鍒濆鍖栦负 undefined锛岃〃绀哄皻鏈壘鍒版湁鏁堝€?
   const dates: NonNullable<LatestData['indicatorDates']> = {
-    priceMa200w: latest.d, // priceMa200w 始终使用最新日期（因为它是根据价格计算的）
+    priceMa200w: latest.d, // priceMa200w 濮嬬粓浣跨敤鏈€鏂版棩鏈燂紙鍥犱负瀹冩槸鏍规嵁浠锋牸璁＄畻鐨勶級
     mvrvZ: undefined,
     lthMvrv: undefined,
     puell: undefined,
     nupl: undefined
   };
 
-  // 首先检查是否有 apiDataDate 字段（记录 API 实际返回数据的日期）
-  const apiDates = (latest as any).apiDataDate || (latest as any).api_data_date;
+  // 棣栧厛妫€鏌ユ槸鍚︽湁 apiDataDate 瀛楁锛堣褰?API 瀹為檯杩斿洖鏁版嵁鐨勬棩鏈燂級
+  const latestWithApi = latest as IndicatorDataWithApiDate;
+  const apiDates = latestWithApi.apiDataDate || latestWithApi.api_data_date;
   if (apiDates && typeof apiDates === 'object') {
-    // 只添加 apiDataDate 中存在的指标
+    // 鍙坊鍔?apiDataDate 涓瓨鍦ㄧ殑鎸囨爣
     if (apiDates.mvrvZ) dates.mvrvZ = apiDates.mvrvZ;
     if (apiDates.lthMvrv) dates.lthMvrv = apiDates.lthMvrv;
     if (apiDates.puell) dates.puell = apiDates.puell;
@@ -106,22 +131,22 @@ function findIndicatorDates(data: IndicatorData[]) {
     return dates;
   }
 
-  // 如果没有 apiDataDate，从后向前查找每个指标最后一个有有效值的日期
+  // 濡傛灉娌℃湁 apiDataDate锛屼粠鍚庡悜鍓嶆煡鎵炬瘡涓寚鏍囨渶鍚庝竴涓湁鏈夋晥鍊肩殑鏃ユ湡
   for (let i = data.length - 1; i >= 0; i--) {
     const record = data[i];
-    // MVRV: 查找最后一个有 mvrvZscore 值的日期
+    // MVRV: 鏌ユ壘鏈€鍚庝竴涓湁 mvrvZscore 鍊肩殑鏃ユ湡
     if (dates.mvrvZ === undefined && record.mvrvZscore !== null && record.mvrvZscore !== undefined && record.mvrvZscore !== 0) {
       dates.mvrvZ = record.d;
     }
-    // LTH-MVRV: 查找最后一个有 lthMvrv 值的日期
+    // LTH-MVRV: 鏌ユ壘鏈€鍚庝竴涓湁 lthMvrv 鍊肩殑鏃ユ湡
     if (dates.lthMvrv === undefined && record.lthMvrv !== null && record.lthMvrv !== undefined && record.lthMvrv !== 0) {
       dates.lthMvrv = record.d;
     }
-    // Puell: 查找最后一个有 puellMultiple 值的日期
+    // Puell: 鏌ユ壘鏈€鍚庝竴涓湁 puellMultiple 鍊肩殑鏃ユ湡
     if (dates.puell === undefined && record.puellMultiple !== null && record.puellMultiple !== undefined && record.puellMultiple !== 0) {
       dates.puell = record.d;
     }
-    // NUPL: 查找最后一个有 nupl 值的日期
+    // NUPL: 鏌ユ壘鏈€鍚庝竴涓湁 nupl 鍊肩殑鏃ユ湡
     if (dates.nupl === undefined && record.nupl !== null && record.nupl !== undefined && record.nupl !== 0) {
       dates.nupl = record.d;
     }
@@ -130,7 +155,7 @@ function findIndicatorDates(data: IndicatorData[]) {
   return dates;
 }
 
-// 构建 API URL（支持代理）
+// 鏋勫缓 API URL锛堟敮鎸佷唬鐞嗭級
 function buildApiUrl(endpoint: string): string {
   if (PROXY_URL) {
     return `${PROXY_URL}${endpoint}`;
@@ -151,7 +176,8 @@ function toNumber(value: unknown, fallback = 0): number {
   return fallback;
 }
 
-// 带超时的 fetch
+
+// 甯﹁秴鏃剁殑 fetch
 async function fetchWithTimeout(url: string, timeout = 10000): Promise<Response> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -166,76 +192,46 @@ async function fetchWithTimeout(url: string, timeout = 10000): Promise<Response>
   }
 }
 
-// 获取MVRV Z-Score数据
-export async function fetchMvrvZScore(days: number = 1): Promise<any[]> {
+async function fetchMetricSeries(endpoint: string, metricName: string): Promise<ApiMetricPoint[]> {
   try {
-    const response = await fetchWithTimeout(buildApiUrl(`/v1/mvrv-zscore/${days}`));
-    if (!response.ok) throw new Error('Failed to fetch MVRV Z-Score');
-    return await response.json();
+    const response = await fetchWithTimeout(buildApiUrl(endpoint));
+    if (!response.ok) throw new Error(`Failed to fetch ${metricName}`);
+    const payload = await response.json();
+    return Array.isArray(payload) ? (payload as ApiMetricPoint[]) : [];
   } catch (error) {
-    console.error('Error fetching MVRV Z-Score:', error);
+    console.error(`Error fetching ${metricName}:`, error);
     return [];
   }
 }
 
-// 获取LTH-MVRV数据
-export async function fetchLthMvrv(days: number = 1): Promise<any[]> {
-  try {
-    const response = await fetchWithTimeout(buildApiUrl(`/v1/lth-mvrv/${days}`));
-    if (!response.ok) throw new Error('Failed to fetch LTH-MVRV');
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching LTH-MVRV:', error);
-    return [];
-  }
+// 鑾峰彇MVRV Z-Score鏁版嵁
+export async function fetchMvrvZScore(days: number = 1): Promise<ApiMetricPoint[]> {
+  return fetchMetricSeries(`/v1/mvrv-zscore/${days}`, 'MVRV Z-Score');
 }
 
-// 获取Puell Multiple数据
-export async function fetchPuellMultiple(days: number = 1): Promise<any[]> {
-  try {
-    const response = await fetchWithTimeout(buildApiUrl(`/v1/puell-multiple/${days}`));
-    if (!response.ok) throw new Error('Failed to fetch Puell Multiple');
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching Puell Multiple:', error);
-    return [];
-  }
+// 鑾峰彇LTH-MVRV鏁版嵁
+export async function fetchLthMvrv(days: number = 1): Promise<ApiMetricPoint[]> {
+  return fetchMetricSeries(`/v1/lth-mvrv/${days}`, 'LTH-MVRV');
 }
 
-// 获取NUPL数据
-export async function fetchNupl(days: number = 1): Promise<any[]> {
-  try {
-    const response = await fetchWithTimeout(buildApiUrl(`/v1/nupl/${days}`));
-    if (!response.ok) throw new Error('Failed to fetch NUPL');
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching NUPL:', error);
-    return [];
-  }
+// 鑾峰彇Puell Multiple鏁版嵁
+export async function fetchPuellMultiple(days: number = 1): Promise<ApiMetricPoint[]> {
+  return fetchMetricSeries(`/v1/puell-multiple/${days}`, 'Puell Multiple');
 }
 
-// 获取BTC价格数据
-export async function fetchBtcPrice(days: number = 1): Promise<any[]> {
-  try {
-    const response = await fetchWithTimeout(buildApiUrl(`/v1/btc-price/${days}`));
-    if (!response.ok) throw new Error('Failed to fetch BTC Price');
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching BTC Price:', error);
-    return [];
-  }
+// 鑾峰彇NUPL鏁版嵁
+export async function fetchNupl(days: number = 1): Promise<ApiMetricPoint[]> {
+  return fetchMetricSeries(`/v1/nupl/${days}`, 'NUPL');
 }
 
-// 获取Mayer Multiple数据
-export async function fetchMayerMultiple(days: number = 1): Promise<any[]> {
-  try {
-    const response = await fetchWithTimeout(buildApiUrl(`/v1/mayer-multiple/${days}`));
-    if (!response.ok) throw new Error('Failed to fetch Mayer Multiple');
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching Mayer Multiple:', error);
-    return [];
-  }
+// 鑾峰彇BTC浠锋牸鏁版嵁
+export async function fetchBtcPrice(days: number = 1): Promise<ApiMetricPoint[]> {
+  return fetchMetricSeries(`/v1/btc-price/${days}`, 'BTC Price');
+}
+
+// 鑾峰彇Mayer Multiple鏁版嵁
+export async function fetchMayerMultiple(days: number = 1): Promise<ApiMetricPoint[]> {
+  return fetchMetricSeries(`/v1/mayer-multiple/${days}`, 'Mayer Multiple');
 }
 
 function getMa200wFromHistory(data: IndicatorData[]): number | null {
@@ -279,7 +275,7 @@ function enrichLatestDataWithHistory(latest: LatestData, history: IndicatorData[
     return latest;
   }
 
-  // 优先使用静态 JSON 中已有的 indicatorDates，如果没有则从历史数据计算
+  // 浼樺厛浣跨敤闈欐€?JSON 涓凡鏈夌殑 indicatorDates锛屽鏋滄病鏈夊垯浠庡巻鍙叉暟鎹绠?
   const indicatorDates = latest.indicatorDates || findIndicatorDates(history);
 
   return {
@@ -302,7 +298,7 @@ async function resolveLatestMa200w(): Promise<number | null> {
   return getMa200wFromHistory(historyData);
 }
 
-// 获取所有最新指标数据（带缓存和错误回退）
+// 鑾峰彇鎵€鏈夋渶鏂版寚鏍囨暟鎹紙甯︾紦瀛樺拰閿欒鍥為€€锛?
 export async function fetchAllLatestIndicators(useCache = true): Promise<LatestData | null> {
   const now = Date.now();
   if (useCache && cache.data && (now - cache.timestamp) < CACHE_DURATION) {
@@ -338,20 +334,20 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
       return null;
     }
 
-    const btcPrice = parseFloat(btcPriceData[0].btcPrice);
-    const priceDate = btcPriceData[0].d;
+    const btcPrice = toNumber(btcPriceData[0].btcPrice, 0);
+    const priceDate = String(btcPriceData[0].d ?? new Date().toISOString().split('T')[0]);
     
-    const mvrvZ = mvrvZData.length ? parseFloat(mvrvZData[0].mvrvZscore) : 0;
-    const mvrvZDate = mvrvZData.length ? mvrvZData[0].d : priceDate;
+    const mvrvZ = mvrvZData.length ? toNumber(mvrvZData[0].mvrvZscore, 0) : 0;
+    const mvrvZDate = mvrvZData.length ? String(mvrvZData[0].d ?? priceDate) : priceDate;
     
-    const lthMvrv = lthMvrvData.length ? parseFloat(lthMvrvData[0].lthMvrv) : 0;
-    const lthMvrvDate = lthMvrvData.length ? lthMvrvData[0].d : priceDate;
+    const lthMvrv = lthMvrvData.length ? toNumber(lthMvrvData[0].lthMvrv, 0) : 0;
+    const lthMvrvDate = lthMvrvData.length ? String(lthMvrvData[0].d ?? priceDate) : priceDate;
     
-    const puell = puellData.length ? parseFloat(puellData[0].puellMultiple) : 0;
-    const puellDate = puellData.length ? puellData[0].d : priceDate;
+    const puell = puellData.length ? toNumber(puellData[0].puellMultiple, 0) : 0;
+    const puellDate = puellData.length ? String(puellData[0].d ?? priceDate) : priceDate;
     
-    const nupl = nuplData.length ? parseFloat(nuplData[0].nupl) : 0;
-    const nuplDate = nuplData.length ? nuplData[0].d : priceDate;
+    const nupl = nuplData.length ? toNumber(nuplData[0].nupl, 0) : 0;
+    const nuplDate = nuplData.length ? String(nuplData[0].d ?? priceDate) : priceDate;
     
     let priceMa200wRatio = 0;
     let ma200w = 0;
@@ -363,7 +359,7 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
       } else {
         const priceHistory = await fetchBtcPrice(MA200W_LOOKBACK_DAYS);
         if (priceHistory.length >= MA200W_LOOKBACK_DAYS) {
-          const prices = priceHistory.map((p: any) => parseFloat(p.btcPrice));
+          const prices = priceHistory.map((p: ApiMetricPoint) => parseFloat(String(p.btcPrice ?? 0)));
           ma200w = prices.reduce((a: number, b: number) => a + b, 0) / prices.length;
           priceMa200wRatio = btcPrice / ma200w;
         } else {
@@ -376,7 +372,7 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
         }
       }
     } catch (e) {
-      // 静默失败，priceMa200wRatio 保持 0，信号不触发
+      // 闈欓粯澶辫触锛宲riceMa200wRatio 淇濇寔 0锛屼俊鍙蜂笉瑙﹀彂
       console.warn('[DataService] Failed to compute priceMa200wRatio:', e);
     }
 
@@ -422,13 +418,13 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
   }
 }
 
-// 将历史数据中的 snake_case 字段规范化为 camelCase
+// 灏嗗巻鍙叉暟鎹腑鐨?snake_case 瀛楁瑙勮寖鍖栦负 camelCase
 function normalizeIndicatorData(item: any): IndicatorData {
   if (!item || typeof item !== 'object') {
     return item;
   }
 
-  // 处理 apiDataDate 字段（支持 snake_case 和 camelCase）
+  // 澶勭悊 apiDataDate 瀛楁锛堟敮鎸?snake_case 鍜?camelCase锛?
   const apiDataDate = item.apiDataDate || item.api_data_date;
   const indicatorDates = apiDataDate ? {
     mvrvZ: apiDataDate.mvrvZ || apiDataDate.mvrv_z,
@@ -453,7 +449,7 @@ function normalizeIndicatorData(item: any): IndicatorData {
     signalPuell: item.signalPuell ?? item.signal_puell,
     signalNupl: item.signalNupl ?? item.signal_nupl,
     signalCount: item.signalCount ?? item.signal_count,
-    // 保留 apiDataDate 字段用于数据日期追踪
+    // 淇濈暀 apiDataDate 瀛楁鐢ㄤ簬鏁版嵁鏃ユ湡杩借釜
     apiDataDate: indicatorDates,
   } as IndicatorData;
 }
@@ -468,7 +464,7 @@ function normalizeLatestData(item: any): LatestData | null {
     return null;
   }
 
-  // 使用 null 作为缺失值的表示，而非 0
+  // 浣跨敤 null 浣滀负缂哄け鍊肩殑琛ㄧず锛岃€岄潪 0
   const btcPrice = item.btcPrice ?? item.btc_price ?? null;
   const priceMa200wRatio = item.priceMa200wRatio ?? item.price_ma200w_ratio ?? null;
   const ma200w = item.ma200w === undefined || item.ma200w === null
@@ -479,7 +475,7 @@ function normalizeLatestData(item: any): LatestData | null {
   const puellMultiple = item.puellMultiple ?? item.puell_multiple ?? null;
   const nupl = item.nupl ?? null;
 
-  // 转换为数字或保持 null
+  // 杞崲涓烘暟瀛楁垨淇濇寔 null
   const toNumberOrNull = (val: any): number | null => {
     if (val === null || val === undefined) return null;
     const num = toNumber(val, NaN);
@@ -493,7 +489,7 @@ function normalizeLatestData(item: any): LatestData | null {
   const puellMultipleNum = toNumberOrNull(puellMultiple);
   const nuplNum = toNumberOrNull(nupl);
 
-  // 处理 indicatorDates（支持 apiDataDate 和 indicatorDates 两种格式）
+  // 澶勭悊 indicatorDates锛堟敮鎸?apiDataDate 鍜?indicatorDates 涓ょ鏍煎紡锛?
   const apiDataDate = item.apiDataDate || item.api_data_date;
   const incomingIndicatorDates = item.indicatorDates || apiDataDate;
   
@@ -505,7 +501,7 @@ function normalizeLatestData(item: any): LatestData | null {
     nupl: incomingIndicatorDates?.nupl || date,
   };
 
-  // 支持 _signal 后缀格式（如 price_200w_ma_signal, lth_mvrv_signal 等）
+  // 鏀寔 _signal 鍚庣紑鏍煎紡锛堝 price_200w_ma_signal, lth_mvrv_signal 绛夛級
   const priceMa200wSignal = item.price_200w_ma_signal ?? item.signalPriceMa ?? item.signal_price_ma;
   const mvrvZSignal = item.mvrv_zscore_signal ?? item.signalMvrvZ ?? item.signal_mvrv_z;
   const lthMvrvSignal = item.lth_mvrv_signal ?? item.signalLthMvrv ?? item.signal_lth_mvrv;
@@ -574,7 +570,7 @@ export async function fetchStaticLatestData(): Promise<LatestData | null> {
   }
 }
 
-// 获取历史数据（用于复盘）
+// 鑾峰彇鍘嗗彶鏁版嵁锛堢敤浜庡鐩橈級
 export async function fetchHistoricalData(): Promise<IndicatorData[]> {
   if (cache.history.length > 0) {
     return cache.history;
@@ -593,25 +589,25 @@ export async function fetchHistoricalData(): Promise<IndicatorData[]> {
   }
 }
 
-// 数据版本标识，用于检测数据结构变更
+// 鏁版嵁鐗堟湰鏍囪瘑锛岀敤浜庢娴嬫暟鎹粨鏋勫彉鏇?
 const DATA_VERSION = 'v1.0.0';
 
-// 从本地存储获取历史数据
+// 浠庢湰鍦板瓨鍌ㄨ幏鍙栧巻鍙叉暟鎹?
 export function getLocalData(): IndicatorData[] {
   try {
     const data = localStorage.getItem('btc_indicators_history');
     if (!data) return [];
     const parsed = JSON.parse(data);
     
-    // 支持两种格式：
-    // 1. 新格式：{ version, timestamp, data: [...] }
-    // 2. 旧格式：直接数组 [...]
+    // 鏀寔涓ょ鏍煎紡锛?
+    // 1. 鏂版牸寮忥細{ version, timestamp, data: [...] }
+    // 2. 鏃ф牸寮忥細鐩存帴鏁扮粍 [...]
     let historyArray: any[];
     if (parsed && typeof parsed === 'object' && 'data' in parsed && Array.isArray(parsed.data)) {
-      // 新格式：从 data 字段提取数组
+      // 鏂版牸寮忥細浠?data 瀛楁鎻愬彇鏁扮粍
       historyArray = parsed.data;
     } else if (Array.isArray(parsed)) {
-      // 旧格式：直接使用数组
+      // 鏃ф牸寮忥細鐩存帴浣跨敤鏁扮粍
       historyArray = parsed;
     } else {
       console.warn('[DataService] Invalid local history data format');
@@ -625,7 +621,7 @@ export function getLocalData(): IndicatorData[] {
   }
 }
 
-// 从本地存储获取最新数据
+// 浠庢湰鍦板瓨鍌ㄨ幏鍙栨渶鏂版暟鎹?
 export function getLocalLatestData(): LatestData | null {
   try {
     const data = localStorage.getItem('btc_indicators_latest');
@@ -633,19 +629,19 @@ export function getLocalLatestData(): LatestData | null {
     const parsed = JSON.parse(data);
     if (!parsed || typeof parsed !== 'object') return null;
     
-    // 支持两种格式：
-    // 1. 新格式：{ version, timestamp, data: {...} }
-    // 2. 旧格式：直接对象 {...}
+    // 鏀寔涓ょ鏍煎紡锛?
+    // 1. 鏂版牸寮忥細{ version, timestamp, data: {...} }
+    // 2. 鏃ф牸寮忥細鐩存帴瀵硅薄 {...}
     let latestObj: any;
     if ('data' in parsed && parsed.data && typeof parsed.data === 'object') {
-      // 新格式：从 data 字段提取对象
+      // 鏂版牸寮忥細浠?data 瀛楁鎻愬彇瀵硅薄
       latestObj = parsed.data;
     } else {
-      // 旧格式：直接使用对象（排除 version/timestamp 等包装字段）
+      // 鏃ф牸寮忥細鐩存帴浣跨敤瀵硅薄锛堟帓闄?version/timestamp 绛夊寘瑁呭瓧娈碉級
       latestObj = parsed;
     }
     
-    // 使用 normalizeLatestData 确保格式一致
+    // 浣跨敤 normalizeLatestData 纭繚鏍煎紡涓€鑷?
     const normalized = normalizeLatestData(latestObj);
     if (normalized) {
       return enrichLatestDataWithHistory(normalized, getLocalData());
@@ -657,7 +653,7 @@ export function getLocalLatestData(): LatestData | null {
   }
 }
 
-// 保存数据到本地存储（带版本标识）
+// 淇濆瓨鏁版嵁鍒版湰鍦板瓨鍌紙甯︾増鏈爣璇嗭級
 export function saveLocalData(data: { history?: IndicatorData[]; latest?: LatestData }) {
   try {
     if (data.history) {
@@ -681,7 +677,7 @@ export function saveLocalData(data: { history?: IndicatorData[]; latest?: Latest
   }
 }
 
-// 验证本地数据与展示数据的一致性
+// 楠岃瘉鏈湴鏁版嵁涓庡睍绀烘暟鎹殑涓€鑷存€?
 export function validateLocalDataConsistency(): {
   historyValid: boolean;
   latestValid: boolean;
@@ -691,7 +687,7 @@ export function validateLocalDataConsistency(): {
   const latestData = getLocalLatestData();
   const latestValid = latestData !== null;
 
-  // 检查历史数据和最新数据是否同步
+  // 妫€鏌ュ巻鍙叉暟鎹拰鏈€鏂版暟鎹槸鍚﹀悓姝?
   const history = getLocalData();
   let needsSync = false;
 
@@ -708,7 +704,7 @@ export function validateLocalDataConsistency(): {
   };
 }
 
-// 获取信号事件（历史买入机会）
+// 鑾峰彇淇″彿浜嬩欢锛堝巻鍙蹭拱鍏ユ満浼氾級
 export function getSignalEvents(data: IndicatorData[], minSignals: number = 4): SignalEvent[] {
   return data
     .filter(d => (d.signalCount || 0) >= minSignals)
@@ -726,7 +722,7 @@ export function getSignalEvents(data: IndicatorData[], minSignals: number = 4): 
     }));
 }
 
-// 自动刷新数据（用于 React 组件）
+// 鑷姩鍒锋柊鏁版嵁锛堢敤浜?React 缁勪欢锛?
 export function startAutoRefresh(
   callback: (data: LatestData) => void,
   interval = REFRESH_INTERVAL
@@ -755,7 +751,7 @@ export function startAutoRefresh(
   };
 }
 
-// 检查数据源可用性
+// 妫€鏌ユ暟鎹簮鍙敤鎬?
 export async function checkDataSource(): Promise<{
   apiAvailable: boolean;
   proxyAvailable: boolean;
@@ -772,7 +768,7 @@ export async function checkDataSource(): Promise<{
   try {
     const response = await fetchWithTimeout(`${API_BASE_URL}/v1/btc-price/1`, 5000);
     result.apiAvailable = response.ok;
-  } catch (e) {
+  } catch {
     result.apiAvailable = false;
   }
 
@@ -780,7 +776,7 @@ export async function checkDataSource(): Promise<{
     try {
       const response = await fetchWithTimeout(`${PROXY_URL}/v1/btc-price/1`, 5000);
       result.proxyAvailable = response.ok;
-    } catch (e) {
+    } catch {
       result.proxyAvailable = false;
     }
   }
@@ -788,7 +784,7 @@ export async function checkDataSource(): Promise<{
   try {
     const response = await fetchWithTimeout(STATIC_HISTORY_PATH, 5000);
     result.historyAvailable = response.ok;
-  } catch (e) {
+  } catch {
     result.historyAvailable = false;
   }
 
@@ -797,7 +793,7 @@ export async function checkDataSource(): Promise<{
   return result;
 }
 
-// 获取数据状态信息（用于调试）
+// 鑾峰彇鏁版嵁鐘舵€佷俊鎭紙鐢ㄤ簬璋冭瘯锛?
 export function getDataStatus(): {
   cacheAge: number;
   cacheValid: boolean;
@@ -813,9 +809,9 @@ export function getDataStatus(): {
   };
 }
 
-// ============ 历史数据图表相关函数 ============
+// ============ 鍘嗗彶鏁版嵁鍥捐〃鐩稿叧鍑芥暟 ============
 
-// 时间范围对应的毫秒数
+// 鏃堕棿鑼冨洿瀵瑰簲鐨勬绉掓暟
 const TIME_RANGE_MS: Record<TimeRange, number> = {
   '1w': 7 * 24 * 60 * 60 * 1000,
   '1m': 30 * 24 * 60 * 60 * 1000,
@@ -824,7 +820,7 @@ const TIME_RANGE_MS: Record<TimeRange, number> = {
   'all': Infinity
 };
 
-// 根据时间范围过滤数据
+// 鏍规嵁鏃堕棿鑼冨洿杩囨护鏁版嵁
 export function filterDataByTimeRange(data: IndicatorData[], range: TimeRange): IndicatorData[] {
   if (range === 'all') return data;
   
@@ -835,7 +831,7 @@ export function filterDataByTimeRange(data: IndicatorData[], range: TimeRange): 
   });
 }
 
-// 获取指标图表数据
+// 鑾峰彇鎸囨爣鍥捐〃鏁版嵁
 export function getIndicatorChartData(
   data: IndicatorData[],
   indicator: 'priceMa200w' | 'mvrvZ' | 'lthMvrv' | 'puell' | 'nupl',
@@ -876,7 +872,7 @@ export function getIndicatorChartData(
       if (value === null) return null;
 
       const btcPrice = typeof item.btcPrice === 'string' ? parseFloat(item.btcPrice) : item.btcPrice;
-      // 过滤掉占位数据：指标值为0且BTC价格也为0或缺失的记录
+      // 杩囨护鎺夊崰浣嶆暟鎹細鎸囨爣鍊间负0涓擝TC浠锋牸涔熶负0鎴栫己澶辩殑璁板綍
       if (value === 0 && (!btcPrice || btcPrice === 0)) return null;
 
       return {
@@ -893,7 +889,7 @@ function isChartDataPoint(item: ChartDataPoint | null): item is ChartDataPoint {
   return item !== null;
 }
 
-// 获取MA200图表数据（价格和均线）
+// 鑾峰彇MA200鍥捐〃鏁版嵁锛堜环鏍煎拰鍧囩嚎锛?
 export function getMA200ChartData(
   data: IndicatorData[], 
   range: TimeRange
@@ -921,50 +917,50 @@ export function getMA200ChartData(
     });
 }
 
-// 指标配置信息
+// Indicator config
 export const INDICATOR_CONFIG = {
   priceMa200w: {
     name: 'BTC Price / 200W-MA',
     unit: '',
     targetValue: 1,
     color: '#F7931A',
-    description: '价格与200周均线比值'
+    description: 'Price relative to 200-week moving average'
   },
   mvrvZ: {
     name: 'MVRV Z-Score',
     unit: '',
     targetValue: 0,
     color: '#3B82F6',
-    description: '市值与实现市值标准化比值'
+    description: 'Standardized market value vs realized value'
   },
   lthMvrv: {
     name: 'LTH-MVRV',
     unit: '',
     targetValue: 1,
     color: '#10B981',
-    description: '长期持有者成本比值'
+    description: 'Long-term holder unrealized P/L ratio'
   },
   puell: {
     name: 'Puell Multiple',
     unit: '',
     targetValue: 0.5,
     color: '#8B5CF6',
-    description: '矿工收入比值'
+    description: 'Miner revenue relative to historical norm'
   },
   nupl: {
     name: 'NUPL',
     unit: '',
     targetValue: 0,
     color: '#EF4444',
-    description: '净未实现利润/亏损'
+    description: 'Net unrealized profit/loss'
   }
 };
 
-// 时间范围标签
+// Time range labels
 export const TIME_RANGE_LABELS: Record<TimeRange, string> = {
-  '1w': '近一周',
-  '1m': '近一月',
-  '6m': '近半年',
-  '1y': '近一年',
-  'all': '全部历史'
+  '1w': 'Last 1 Week',
+  '1m': 'Last 1 Month',
+  '6m': 'Last 6 Months',
+  '1y': 'Last 1 Year',
+  'all': 'All History'
 };
