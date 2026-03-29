@@ -2,9 +2,9 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "name": "btc-dca-monitor",
-  "buildCommand": "cd app && npm run build",
-  "installCommand": "cd app && npm ci",
-  "outputDirectory": "app/dist",
+  "buildCommand": "npm run build",
+  "installCommand": "npm ci",
+  "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
     {
