@@ -1,4 +1,4 @@
-﻿import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import {
   AlertTriangle,
@@ -22,8 +22,8 @@ import { SignalOverview } from '@/components/SignalOverview';
 import type { IndicatorData, LatestData } from '@/types';
 import {
   fetchAllLatestIndicators,
-  fetchHistoricalData,
   fetchFullHistoricalData,
+  fetchHistoricalData,
   fetchStaticLatestData,
   getDataFreshnessHours,
   getLatestFromHistory,
@@ -88,16 +88,16 @@ function App() {
     setDataSource(source);
 
     if (source === 'api') {
-      setLastUpdated(`${new Date().toLocaleString('zh-CN')} (瀹炴椂 API)`);
+      setLastUpdated(`${new Date().toLocaleString('zh-CN')}（实时 API）`);
       return;
     }
 
     if (source === 'static') {
-      setLastUpdated(`${data.date} (GitHub 鍚屾闈欐€佸揩鐓?`);
+      setLastUpdated(`${data.date}（GitHub 同步静态快照）`);
       return;
     }
 
-    setLastUpdated(`${data.date} (鍘嗗彶鍥為€€鏁版嵁)`);
+    setLastUpdated(`${data.date}（历史回退数据）`);
   };
 
   const ensureFullHistoryLoaded = useCallback(async () => {
@@ -150,8 +150,8 @@ function App() {
         applyLatestData(apiData, 'api');
 
         if (mode === 'manual' && apiData.signalCount >= 4) {
-          toast.success(`涔板叆淇″彿瑙﹀彂: ${apiData.signalCount}/5`, {
-            description: `褰撳墠 BTC 浠锋牸: $${apiData.btcPrice.toLocaleString()}`,
+          toast.success(`买入信号触发：${apiData.signalCount}/5`, {
+            description: `当前 BTC 价格：$${apiData.btcPrice.toLocaleString()}`,
             duration: 10000,
           });
         }
@@ -203,11 +203,11 @@ function App() {
     }, 5 * 60 * 1000);
 
     return () => clearInterval(interval);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const indicatorDateLabels: Record<IndicatorDateKey, string> = {
-    priceMa200w: 'BTC Price / 200W-MA',
+    priceMa200w: 'BTC 价格 / 200 周均线',
     mvrvZ: 'MVRV Z-Score',
     lthMvrv: 'LTH-MVRV',
     puell: 'Puell Multiple',
@@ -243,8 +243,8 @@ function App() {
   const indicators = latestData
     ? [
         {
-          name: 'BTC Price / 200W-MA',
-          description: '浠锋牸鐩稿 200 鍛ㄥ潎绾跨殑浣嶇疆',
+          name: 'BTC 价格 / 200 周均线',
+          description: '当前价格相对 200 周均线的位置',
           currentValue: latestData.priceMa200wRatio,
           targetValue: 1,
           targetOperator: 'lt' as const,
@@ -253,12 +253,12 @@ function App() {
           color: '#F7931A',
           dataDate: latestData.indicatorDates?.priceMa200w || latestData.date,
           detailValue: latestData.ma200w
-            ? `BTC: $${latestData.btcPrice.toLocaleString()} / MA200: $${Math.round(latestData.ma200w).toLocaleString()}`
-            : `BTC: $${latestData.btcPrice.toLocaleString()}`,
+            ? `BTC：$${latestData.btcPrice.toLocaleString()} / 200周均线：$${Math.round(latestData.ma200w).toLocaleString()}`
+            : `BTC：$${latestData.btcPrice.toLocaleString()}`,
         },
         {
           name: 'MVRV Z-Score',
-          description: '甯傚満浠峰€肩浉瀵瑰巻鍙插疄鐜颁环鍊肩殑鍋忕绋嬪害',
+          description: '市场价值相对历史实现价值的偏离程度',
           currentValue: latestData.mvrvZscore,
           targetValue: 0,
           targetOperator: 'lt' as const,
@@ -280,7 +280,7 @@ function App() {
         },
         {
           name: 'Puell Multiple',
-          description: '鐭垮伐鏀跺叆鐩稿鍘嗗彶鍧囧€肩殑浣嶇疆',
+          description: '矿工收入相对历史均值的位置',
           currentValue: latestData.puellMultiple,
           targetValue: 0.5,
           targetOperator: 'lt' as const,
@@ -311,7 +311,7 @@ function App() {
           titleClass: 'text-green-800 dark:text-green-200',
           textClass: 'text-green-700 dark:text-green-300',
           title: '当前市场评估',
-          description: `当前已有 ${latestData.signalCount} 个指标进入买入区间，适合按计划分批定投。`,
+          description: `当前已有 ${latestData.signalCount} 个指标进入抄底区间，底部识别信号较强。`,
         }
       : latestData.signalCount === 0
       ? {
@@ -320,7 +320,7 @@ function App() {
           titleClass: 'text-gray-800 dark:text-gray-200',
           textClass: 'text-gray-700 dark:text-gray-300',
           title: '当前市场评估',
-          description: '当前没有指标进入极端低估区域，更适合保持观察或进行小额定投。',
+          description: '当前没有指标进入极端低估区域，暂不具备明显抄底信号，建议保持观察。',
         }
       : latestData.signalCount <= 2
       ? {
@@ -353,8 +353,8 @@ function App() {
                 <Bitcoin className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold">BTC 瀹氭姇鎸囨爣鐩戞帶</h1>
-                <p className="text-sm text-muted-foreground">基于链上数据的定投辅助看板</p>
+                <h1 className="text-xl font-bold">BTC 底部识别指标监控</h1>
+                <p className="text-sm text-muted-foreground">基于链上数据的底部识别辅助看板</p>
               </div>
             </div>
 
@@ -370,7 +370,7 @@ function App() {
                   <Moon className="h-4 w-4" />
                 )}
               </Button>
-              
+
               <Button
                 variant="outline"
                 size="sm"
@@ -382,7 +382,7 @@ function App() {
                 ) : (
                   <RefreshCw className="mr-2 h-4 w-4" />
                 )}
-                鍒锋柊鏁版嵁
+                刷新数据
               </Button>
             </div>
           </div>
@@ -394,15 +394,15 @@ function App() {
           <TabsList className="grid w-full grid-cols-3 lg:inline-grid lg:w-auto">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <LineChart className="h-4 w-4" />
-              <span className="hidden sm:inline">鐩戞帶闈㈡澘</span>
+              <span className="hidden sm:inline">监控面板</span>
             </TabsTrigger>
             <TabsTrigger value="history" className="flex items-center gap-2">
               <History className="h-4 w-4" />
-              <span className="hidden sm:inline">鍘嗗彶澶嶇洏</span>
+              <span className="hidden sm:inline">历史复盘</span>
             </TabsTrigger>
             <TabsTrigger value="guide" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
-              <span className="hidden sm:inline">鎸囨爣璇存槑</span>
+              <span className="hidden sm:inline">指标说明</span>
             </TabsTrigger>
           </TabsList>
 
@@ -410,7 +410,7 @@ function App() {
             {error && (
               <Alert variant="destructive">
                 <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>鏁版嵁鑾峰彇澶辫触</AlertTitle>
+                <AlertTitle>数据获取失败</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -420,7 +420,7 @@ function App() {
                 <AlertTriangle className="h-4 w-4 text-blue-600" />
                 <AlertTitle className="text-blue-800 dark:text-blue-200">当前展示静态快照</AlertTitle>
                 <AlertDescription className="text-blue-700 dark:text-blue-300">
-                  椤甸潰浼樺厛璇诲彇 GitHub Actions 鍚屾鍒扮珯鐐圭殑闈欐€佹暟鎹紝閫傚悎 Vercel 绋冲畾閮ㄧ讲銆傚綋鍓嶆暟鎹棩鏈燂細{latestData.date}
+                  页面优先读取 GitHub Actions 同步到站点的静态数据，适合 Vercel 稳定部署。当前数据日期：{latestData.date}
                 </AlertDescription>
               </Alert>
             )}
@@ -428,9 +428,9 @@ function App() {
             {dataSource === 'history' && latestData && (
               <Alert className="border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950">
                 <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                <AlertTitle className="text-yellow-800 dark:text-yellow-200">褰撳墠灞曠ず鍘嗗彶鍥為€€鏁版嵁</AlertTitle>
+                <AlertTitle className="text-yellow-800 dark:text-yellow-200">当前展示历史回退数据</AlertTitle>
                 <AlertDescription className="text-yellow-700 dark:text-yellow-300">
-                  闈欐€佸揩鐓у拰瀹炴椂 API 鏆傛椂閮戒笉鍙敤锛屽綋鍓嶅睍绀哄巻鍙叉暟鎹帹瀵煎嚭鐨勬渶杩戜竴鏉¤褰曘€傛暟鎹棩鏈燂細{latestData.date}
+                  静态快照和实时 API 暂时都不可用，当前展示历史数据推导出的最近一条记录。数据日期：{latestData.date}
                 </AlertDescription>
               </Alert>
             )}
@@ -438,7 +438,7 @@ function App() {
             {loading && !latestData && (
               <div className="flex flex-col items-center justify-center py-12">
                 <Loader2 className="mb-4 h-12 w-12 animate-spin text-orange-500" />
-                <p className="text-muted-foreground">姝ｅ湪鍔犺浇鏁版嵁...</p>
+                <p className="text-muted-foreground">正在加载数据...</p>
               </div>
             )}
 
@@ -459,7 +459,7 @@ function App() {
                 {laggingIndicators.length > 0 && (
                   <Alert className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950">
                     <AlertTriangle className="h-4 w-4 text-amber-600" />
-                    <AlertTitle className="text-amber-800 dark:text-amber-200">閮ㄥ垎鎸囨爣瀛樺湪鏇存柊婊炲悗</AlertTitle>
+                    <AlertTitle className="text-amber-800 dark:text-amber-200">部分指标存在更新滞后</AlertTitle>
                     <AlertDescription className="text-amber-700 dark:text-amber-300">
                       最新记录日期为 {latestData.date}，但 {laggingIndicators.join('、')} 目前仍停留在 {oldestIndicatorDate}。
                     </AlertDescription>
@@ -467,7 +467,7 @@ function App() {
                 )}
 
                 {historicalData.length > 0 && (
-                  <Suspense fallback={<SectionLoader message="姝ｅ湪鍔犺浇鍥捐〃..." />}>
+                  <Suspense fallback={<SectionLoader message="正在加载图表..." />}>
                     <IndicatorChartsPanel
                       data={historicalData}
                       isFullHistoryLoaded={isFullHistoryLoaded}
@@ -506,9 +506,10 @@ function App() {
               </>
             )}
           </TabsContent>
+
           <TabsContent value="history">
             {historicalData.length > 0 ? (
-              <Suspense fallback={<SectionLoader message="Loading history review..." />}>
+              <Suspense fallback={<SectionLoader message="正在加载复盘数据..." />}>
                 <>
                   {!isFullHistoryLoaded && (
                     <Alert className="mb-4 border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
@@ -533,7 +534,7 @@ function App() {
           </TabsContent>
 
           <TabsContent value="guide">
-            <Suspense fallback={<SectionLoader message="姝ｅ湪鍔犺浇鎸囨爣璇存槑..." />}>
+            <Suspense fallback={<SectionLoader message="正在加载指标说明..." />}>
               <IndicatorExplanationPanel />
             </Suspense>
           </TabsContent>
@@ -544,9 +545,9 @@ function App() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-sm text-muted-foreground">
-              鏁版嵁鏉ユ簮: BGeometrics API | 椤甸潰榛樿浼樺厛灞曠ず闈欐€佸揩鐓?
+              数据来源：BGeometrics 图表文件 | 页面默认优先展示静态快照
             </p>
-            <p className="text-sm text-muted-foreground">鏈€鍚庢洿鏂? {lastUpdated}</p>
+            <p className="text-sm text-muted-foreground">最后更新：{lastUpdated}</p>
           </div>
         </div>
       </footer>
@@ -555,5 +556,3 @@ function App() {
 }
 
 export default App;
-
-

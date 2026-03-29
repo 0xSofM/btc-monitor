@@ -43,11 +43,11 @@ type MaSeriesPoint = {
 const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'mvrvZ', 'lthMvrv', 'puell', 'nupl'];
 
 const TIME_RANGES = [
-  { key: 'all', label: 'All' },
-  { key: '1y', label: '1Y' },
-  { key: '6m', label: '6M' },
-  { key: '1m', label: '1M' },
-  { key: '1w', label: '1W' },
+  { key: 'all', label: '全部' },
+  { key: '1y', label: '1年' },
+  { key: '6m', label: '6个月' },
+  { key: '1m', label: '1个月' },
+  { key: '1w', label: '1周' },
 ] as const;
 
 const BUY_ZONE_CONFIG: Record<IndicatorType, { min: number; max: number; description: string }> = {
@@ -205,81 +205,79 @@ export function IndicatorCharts({
     }
   };
 
-  const renderMiniCards = () => {
-    return (
-      <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
-        {INDICATOR_ORDER.map((indicatorKey) => {
-          const indicatorConfig = INDICATOR_CONFIG[indicatorKey];
-          const points = miniSeriesMap[indicatorKey];
-          const latest = points.length > 0 ? points[points.length - 1] : null;
-          const zone = BUY_ZONE_CONFIG[indicatorKey];
-          const isActive = activeIndicator === indicatorKey;
+  const renderMiniCards = () => (
+    <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
+      {INDICATOR_ORDER.map((indicatorKey) => {
+        const indicatorConfig = INDICATOR_CONFIG[indicatorKey];
+        const points = miniSeriesMap[indicatorKey];
+        const latest = points.length > 0 ? points[points.length - 1] : null;
+        const zone = BUY_ZONE_CONFIG[indicatorKey];
+        const isActive = activeIndicator === indicatorKey;
 
-          return (
-            <button
-              key={indicatorKey}
-              type="button"
-              onClick={() => activateIndicator(indicatorKey)}
-              className={`rounded-xl border bg-card p-3 text-left transition-all ${
-                isActive ? 'ring-2 ring-offset-1' : 'hover:border-muted-foreground/30'
-              }`}
-              style={isActive ? { boxShadow: `0 0 0 2px ${indicatorConfig.color}33` } : undefined}
-            >
-              <div className="mb-2 flex items-center justify-between">
-                <span className="text-xs font-semibold text-muted-foreground">{indicatorConfig.name}</span>
-                <span
-                  className={`rounded-full px-2 py-0.5 text-[11px] ${
-                    latest?.signal ? 'bg-emerald-100 text-emerald-700' : 'bg-muted text-muted-foreground'
-                  }`}
-                >
-                  {latest?.signal ? 'Signal' : 'Neutral'}
-                </span>
-              </div>
+        return (
+          <button
+            key={indicatorKey}
+            type="button"
+            onClick={() => activateIndicator(indicatorKey)}
+            className={`rounded-xl border bg-card p-3 text-left transition-all ${
+              isActive ? 'ring-2 ring-offset-1' : 'hover:border-muted-foreground/30'
+            }`}
+            style={isActive ? { boxShadow: `0 0 0 2px ${indicatorConfig.color}33` } : undefined}
+          >
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted-foreground">{indicatorConfig.name}</span>
+              <span
+                className={`rounded-full px-2 py-0.5 text-[11px] ${
+                  latest?.signal ? 'bg-emerald-100 text-emerald-700' : 'bg-muted text-muted-foreground'
+                }`}
+              >
+                {latest?.signal ? '触发' : '中性'}
+              </span>
+            </div>
 
-              <div className="mb-2 text-lg font-semibold">
-                {latest ? formatNumber(latest.value) : '-'}
-              </div>
+            <div className="mb-2 text-lg font-semibold">
+              {latest ? formatNumber(latest.value) : '-'}
+            </div>
 
-              <div className="h-20">
-                {points.length > 0 ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={points}>
-                      <defs>
-                        <linearGradient id={`mini-${indicatorKey}`} x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor={indicatorConfig.color} stopOpacity={0.35} />
-                          <stop offset="95%" stopColor={indicatorConfig.color} stopOpacity={0} />
-                        </linearGradient>
-                      </defs>
-                      {showThresholds && (
-                        <ReferenceLine y={zone.max} stroke={indicatorConfig.color} strokeDasharray="2 2" strokeOpacity={0.5} />
-                      )}
-                      <Area
-                        type="monotone"
-                        dataKey="value"
-                        stroke={indicatorConfig.color}
-                        strokeWidth={2}
-                        fill={`url(#mini-${indicatorKey})`}
-                        isAnimationActive={false}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <div className="flex h-full items-center justify-center text-xs text-muted-foreground">No data</div>
-                )}
-              </div>
+            <div className="h-20">
+              {points.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={points}>
+                    <defs>
+                      <linearGradient id={`mini-${indicatorKey}`} x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor={indicatorConfig.color} stopOpacity={0.35} />
+                        <stop offset="95%" stopColor={indicatorConfig.color} stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    {showThresholds && (
+                      <ReferenceLine y={zone.max} stroke={indicatorConfig.color} strokeDasharray="2 2" strokeOpacity={0.5} />
+                    )}
+                    <Area
+                      type="monotone"
+                      dataKey="value"
+                      stroke={indicatorConfig.color}
+                      strokeWidth={2}
+                      fill={`url(#mini-${indicatorKey})`}
+                      isAnimationActive={false}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex h-full items-center justify-center text-xs text-muted-foreground">暂无数据</div>
+              )}
+            </div>
 
-              <div className="mt-2 text-[11px] text-muted-foreground">Buy zone: {zone.description}</div>
-            </button>
-          );
-        })}
-      </div>
-    );
-  };
+            <div className="mt-2 text-[11px] text-muted-foreground">买入区间：{zone.description}</div>
+          </button>
+        );
+      })}
+    </div>
+  );
 
   const renderPriceChart = () => {
     const series = detailSeries as MaSeriesPoint[];
     if (!series.length) {
-      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">No MA data</div>;
+      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">暂无均线数据</div>;
     }
 
     const visible = series.slice(resolvedStartIndex, resolvedEndIndex + 1);
@@ -309,7 +307,7 @@ export function IndicatorCharts({
             yAxisId="left"
             type="monotone"
             dataKey="price"
-            name="BTC Price"
+            name="BTC 价格"
             stroke="#F7931A"
             strokeWidth={2}
             dot={false}
@@ -319,7 +317,7 @@ export function IndicatorCharts({
             yAxisId="right"
             type="monotone"
             dataKey="ma200"
-            name="200W MA"
+            name="200 周均线"
             stroke="#3B82F6"
             strokeWidth={2}
             dot={false}
@@ -346,7 +344,7 @@ export function IndicatorCharts({
   const renderIndicatorChart = () => {
     const series = detailSeries as DetailSeriesPoint[];
     if (!series.length) {
-      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">No indicator data</div>;
+      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">暂无指标数据</div>;
     }
 
     const visible = series.slice(resolvedStartIndex, resolvedEndIndex + 1);
@@ -370,7 +368,7 @@ export function IndicatorCharts({
               y={buyZone.max}
               stroke="#10B981"
               strokeDasharray="4 4"
-              label={{ value: `Buy zone ${buyZone.description}`, position: 'right', fontSize: 10, fill: '#10B981' }}
+              label={{ value: `买入阈值 ${buyZone.description}`, position: 'right', fontSize: 10, fill: '#10B981' }}
             />
           )}
 
@@ -411,10 +409,10 @@ export function IndicatorCharts({
       <CardHeader>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle className="text-lg font-semibold">5-Indicator History Charts</CardTitle>
+            <CardTitle className="text-lg font-semibold">五指标历史图表</CardTitle>
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span className={`rounded-full px-2 py-1 ${isFullHistoryLoaded ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}>
-                {isFullHistoryLoaded ? 'Full History Loaded' : 'Light History Loaded'}
+                {isFullHistoryLoaded ? '已加载全量历史' : '当前为轻量历史'}
               </span>
               {!isFullHistoryLoaded && (
                 <button
@@ -423,7 +421,7 @@ export function IndicatorCharts({
                   disabled={isFullHistoryLoading}
                   className="rounded-md border px-2 py-1 transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {isFullHistoryLoading ? 'Loading full...' : 'Load Full History'}
+                  {isFullHistoryLoading ? '正在加载全量...' : '加载全量历史'}
                 </button>
               )}
             </div>
@@ -449,14 +447,14 @@ export function IndicatorCharts({
               onClick={handleResetView}
               className="rounded-md border px-2 py-1 text-xs transition-colors hover:bg-muted"
             >
-              Reset View
+              重置视图
             </button>
             <button
               type="button"
               onClick={() => setShowThresholds((prev) => !prev)}
               className="rounded-md border px-2 py-1 text-xs transition-colors hover:bg-muted"
             >
-              {showThresholds ? 'Hide Thresholds' : 'Show Thresholds'}
+              {showThresholds ? '隐藏阈值线' : '显示阈值线'}
             </button>
           </div>
         </div>
@@ -503,19 +501,19 @@ export function IndicatorCharts({
           {activeIndicator === 'priceMa200w' ? (
             <div className="flex items-center gap-1">
               <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #3B82F6' }} />
-              <span>200W MA</span>
+              <span>200 周均线</span>
             </div>
           ) : (
             <>
               {showThresholds && (
                 <div className="flex items-center gap-1">
                   <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #10B981' }} />
-                  <span>Buy threshold ({buyZone.description})</span>
+                  <span>买入阈值（{buyZone.description}）</span>
                 </div>
               )}
               <div className="flex items-center gap-1">
                 <div className="h-2 w-2 rounded-full bg-green-500" />
-                <span>Signal points</span>
+                <span>信号点</span>
               </div>
             </>
           )}

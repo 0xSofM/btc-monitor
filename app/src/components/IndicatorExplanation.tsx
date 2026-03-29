@@ -1,131 +1,139 @@
+import { AlertTriangle, BookOpen, Info, TrendingDown } from 'lucide-react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Info, BookOpen, TrendingDown, AlertTriangle } from 'lucide-react';
 
 export function IndicatorExplanation() {
   const indicators = [
     {
       id: 'price-ma200w',
-      name: 'BTC Price / 200-Week MA',
-      icon: <TrendingDown className="w-5 h-5" />,
-      description: '比特币价格与200周移动平均线的比值。200周MA是比特币的长期趋势线，历史上价格在该线下方时往往是长期买入机会。',
+      name: 'BTC 价格 / 200 周均线',
+      icon: <TrendingDown className="h-5 w-5" />,
+      description:
+        '这个指标衡量当前 BTC 价格相对 200 周均线的位置。历史上，价格跌到 200 周均线附近或下方，通常对应熊市后期和长期低估区。',
       target: '< 1',
-      rationale: '当价格低于200周MA时，说明BTC处于长期趋势下方，市场处于恐惧状态，是价值投资者的理想买入时机。',
+      rationale:
+        '当价格低于 200 周均线时，市场情绪通常偏悲观，但长期风险收益比往往更有吸引力，适合分批布局。',
       historicalExamples: [
-        { date: '2015年1月', price: '$175', context: '2014-2015熊市底部' },
-        { date: '2018年12月', price: '$3,200', context: '2018熊市底部' },
-        { date: '2022年6-11月', price: '$16,000-$20,000', context: '2022熊市底部' }
-      ]
+        { date: '2015 年 1 月', price: '$175', context: '2014-2015 熊市底部区域' },
+        { date: '2018 年 12 月', price: '$3,200', context: '2018 熊市底部区域' },
+        { date: '2022 年 6-11 月', price: '$16,000-$20,000', context: '2022 熊市底部区域' },
+      ],
     },
     {
       id: 'mvrv-z',
       name: 'MVRV Z-Score',
-      icon: <TrendingDown className="w-5 h-5" />,
-      description: 'MVRV Z-Score是市值与实现市值的比值，经过标准化处理（减去历史均值除以标准差）。它衡量市场价值与"真实价值"的偏离程度。',
+      icon: <TrendingDown className="h-5 w-5" />,
+      description:
+        'MVRV Z-Score 用于评估市场价值相对链上“实现价值”的偏离程度。它能帮助识别市场是否处于过热或低估状态。',
       target: '< 0',
-      rationale: 'Z-Score小于0表示市场价值低于历史平均水平，意味着整体市场处于亏损状态，通常是周期底部的信号。',
+      rationale:
+        '当 MVRV Z-Score 低于 0，说明市场整体估值处于历史偏低区间，往往出现在周期底部附近。',
       historicalExamples: [
-        { date: '2011年10月', price: '$3', context: '首次大熊市底部' },
-        { date: '2015年1月', price: '$175', context: '2014-2015熊市底部' },
-        { date: '2018年12月', price: '$3,200', context: '2018熊市底部' },
-        { date: '2022年6-11月', price: '$16,000-$20,000', context: '2022熊市底部' }
-      ]
+        { date: '2011 年 10 月', price: '$3-$5', context: '早期周期底部' },
+        { date: '2015 年 1 月', price: '$175', context: '熊市低估区' },
+        { date: '2018 年 12 月', price: '$3,200', context: '熊市低估区' },
+        { date: '2022 年 11 月', price: '$16,000-$20,000', context: '周期低估区' },
+      ],
     },
     {
       id: 'lth-mvrv',
       name: 'LTH-MVRV',
-      icon: <TrendingDown className="w-5 h-5" />,
-      description: '长期持有者MVRV（Long-Term Holder MVRV），计算持有超过155天的地址的平均成本与当前价格的比值。',
+      icon: <TrendingDown className="h-5 w-5" />,
+      description:
+        'LTH-MVRV 反映长期持有者（通常持币超过 155 天）是否处于盈利状态，是观察长期资金压力的重要指标。',
       target: '< 1',
-      rationale: '长期持有者是市场中最坚定的投资者。当他们也开始亏损时（LTH-MVRV < 1），说明市场已经极度恐慌，是难得买入机会。',
+      rationale:
+        '当 LTH-MVRV 小于 1，意味着长期持有者整体接近或进入浮亏，往往对应市场极度谨慎阶段。',
       historicalExamples: [
-        { date: '2015年1月', price: '$175', context: '长期持有者也开始抛售' },
-        { date: '2018年12月', price: '$3,200', context: '长期持有者成本线被击穿' },
-        { date: '2020年3月', price: '$5,000', context: '疫情黑天鹅事件' },
-        { date: '2022年6-11月', price: '$16,000-$20,000', context: '长期持有者亏损' }
-      ]
+        { date: '2015 年 1 月', price: '$175', context: '长期持有者普遍承压' },
+        { date: '2018 年 12 月', price: '$3,200', context: '长期持有者成本线被击穿' },
+        { date: '2020 年 3 月', price: '$5,000', context: '极端黑天鹅冲击' },
+        { date: '2022 年 11 月', price: '$16,000-$20,000', context: '长期持有者再度承压' },
+      ],
     },
     {
       id: 'puell',
       name: 'Puell Multiple',
-      icon: <AlertTriangle className="w-5 h-5" />,
-      description: 'Puell Multiple是比特币每日发行价值（美元计）与365天移动平均值的比值。它反映了矿工的收入状况。',
+      icon: <AlertTriangle className="h-5 w-5" />,
+      description:
+        'Puell Multiple 用来衡量矿工收入相对历史均值的高低，能反映矿工侧抛压和行业压力。',
       target: '< 0.5',
-      rationale: '当Puell Multiple低于0.5时，矿工收入远低于历史平均水平，意味着矿工面临巨大压力，往往是市场底部的信号。',
+      rationale:
+        '当指标低于 0.5，通常说明矿工收入显著低于常态，市场处于压力后期，可能接近价值区。',
       historicalExamples: [
-        { date: '2015年1月', price: '$175', context: '矿工收入极度困难' },
-        { date: '2018年12月', price: '$3,200', context: '矿工关机潮' },
-        { date: '2020年3月', price: '$5,000', context: '疫情崩盘' },
-        { date: '2022年6-11月', price: '$16,000-$20,000', context: '矿工抛售压力' }
-      ]
+        { date: '2015 年 1 月', price: '$175', context: '矿工收入困难期' },
+        { date: '2018 年 12 月', price: '$3,200', context: '矿工关机潮阶段' },
+        { date: '2020 年 3 月', price: '$5,000', context: '市场快速去杠杆' },
+        { date: '2022 年 11 月', price: '$16,000-$20,000', context: '矿工压力加剧' },
+      ],
     },
     {
       id: 'nupl',
       name: 'NUPL',
-      icon: <TrendingDown className="w-5 h-5" />,
-      description: 'Net Unrealized Profit/Loss（净未实现利润/亏损），计算方式为 (市值 - 实现市值) / 市值。它反映了整个网络的盈利状态。',
+      icon: <TrendingDown className="h-5 w-5" />,
+      description:
+        'NUPL（净未实现盈亏）表示全网投资者当前账面盈亏状态，能直观反映市场情绪和风险偏好。',
       target: '< 0',
-      rationale: 'NUPL小于0表示整个比特币网络处于净亏损状态，是市场极度恐惧的表现，历史上是绝佳的买入时机。',
+      rationale:
+        '当 NUPL 低于 0，说明全网整体进入未实现亏损区间，往往是恐慌极值阶段，历史上较少持续太久。',
       historicalExamples: [
-        { date: '2011年9-10月', price: '$3-$5', context: '首次进入亏损状态' },
-        { date: '2015年1月', price: '$175', context: '深度亏损区域' },
-        { date: '2018年11-12月', price: '$3,200-$4,000', context: '全面亏损' },
-        { date: '2022年6-11月', price: '$16,000-$20,000', context: '长期亏损状态' }
-      ]
-    }
+        { date: '2011 年 9-10 月', price: '$3-$5', context: '首次深度回撤' },
+        { date: '2015 年 1 月', price: '$175', context: '深度亏损阶段' },
+        { date: '2018 年 11-12 月', price: '$3,200-$4,000', context: '全面亏损区' },
+        { date: '2022 年 6-11 月', price: '$16,000-$20,000', context: '持续亏损区' },
+      ],
+    },
   ];
 
   return (
     <Card className="mt-6">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
+          <BookOpen className="h-5 w-5" />
           指标说明
         </CardTitle>
       </CardHeader>
+
       <CardContent>
         <div className="space-y-4">
           {indicators.map((indicator) => (
             <Card key={indicator.id}>
               <CardHeader>
                 <div className="flex items-center gap-3 text-left">
-                  <div className="p-2 bg-muted rounded-full">
+                  <div className="rounded-full bg-muted p-2">
                     {indicator.icon}
                   </div>
                   <div>
                     <p className="font-medium">{indicator.name}</p>
                     <p className="text-sm text-muted-foreground">
-                      目标: {indicator.target}
+                      目标区间：{indicator.target}
                     </p>
                   </div>
                 </div>
               </CardHeader>
+
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-medium mb-1">指标介绍</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {indicator.description}
-                    </p>
+                    <h4 className="mb-1 font-medium">指标介绍</h4>
+                    <p className="text-sm text-muted-foreground">{indicator.description}</p>
                   </div>
+
                   <div>
-                    <h4 className="font-medium mb-1">买入逻辑</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {indicator.rationale}
-                    </p>
+                    <h4 className="mb-1 font-medium">买入逻辑</h4>
+                    <p className="text-sm text-muted-foreground">{indicator.rationale}</p>
                   </div>
+
                   <div>
-                    <h4 className="font-medium mb-2">历史案例</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <h4 className="mb-2 font-medium">历史案例</h4>
+                    <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                       {indicator.historicalExamples.map((example, idx) => (
-                        <div 
-                          key={idx} 
-                          className="p-3 bg-muted rounded-lg text-sm"
-                        >
-                          <div className="flex justify-between items-center">
+                        <div key={idx} className="rounded-lg bg-muted p-3 text-sm">
+                          <div className="flex items-center justify-between">
                             <span className="font-medium">{example.date}</span>
                             <span className="text-green-600">{example.price}</span>
                           </div>
-                          <p className="text-muted-foreground mt-1">{example.context}</p>
+                          <p className="mt-1 text-muted-foreground">{example.context}</p>
                         </div>
                       ))}
                     </div>
@@ -136,17 +144,16 @@ export function IndicatorExplanation() {
           ))}
         </div>
 
-        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
+        <div className="mt-6 rounded-lg bg-blue-50 p-4 dark:bg-blue-950">
           <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+            <Info className="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400" />
             <div>
-              <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-1">
+              <h4 className="mb-1 font-medium text-blue-800 dark:text-blue-200">
                 组合使用说明
               </h4>
               <p className="text-sm text-blue-700 dark:text-blue-300">
-                这5个指标从不同维度（价格趋势、市场情绪、持有者行为、矿工状况、网络盈亏）
-                综合判断市场周期位置。当多个指标同时触发时，买入信号的可靠性更高。
-                历史上，4-5个指标同时触发的时间点都是BTC的周期大底部。
+                这 5 个指标分别覆盖价格趋势、估值偏离、长期持有者状态、矿工压力和全网盈亏。
+                单一指标可能有噪音，多指标共振时信号通常更可靠。历史上，4-5 个指标同向触发的阶段，多出现在周期底部附近。
               </p>
             </div>
           </div>

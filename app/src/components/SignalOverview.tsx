@@ -144,14 +144,14 @@ export function SignalOverview({
         <div className="mt-4 rounded-lg border bg-muted/30 p-3 text-sm">
           <div className="flex flex-wrap items-center gap-2 text-muted-foreground">
             <Clock3 className="h-4 w-4" />
-            <span>最新记录日期: {latestDataDate}</span>
+            <span>最新记录日期：{latestDataDate}</span>
             {oldestIndicatorDate && hasLaggingIndicators && (
-              <span>最慢指标日期: {oldestIndicatorDate}</span>
+              <span>最慢指标日期：{oldestIndicatorDate}</span>
             )}
           </div>
           {hasLaggingIndicators ? (
             <p className="mt-2 text-amber-700 dark:text-amber-300">
-              以下指标尚未同步到最新记录日期: {laggingIndicators.join('、')}
+              以下指标尚未同步到最新记录日期：{laggingIndicators.join('、')}
             </p>
           ) : (
             <p className="mt-2 text-emerald-700 dark:text-emerald-300">
@@ -177,7 +177,7 @@ export function SignalOverview({
           <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
-              <span className="font-medium text-green-800 dark:text-green-200">建议执行定投计划</span>
+              <span className="font-medium text-green-800 dark:text-green-200">抄底信号较强</span>
             </div>
             <p className="mt-1 text-sm text-green-700 dark:text-green-300">
               当前有 {signalCount} 个指标达到买入区间，适合按计划分批执行。
@@ -190,7 +190,7 @@ export function SignalOverview({
               <span className="font-medium text-gray-800 dark:text-gray-200">市场处于常规区间</span>
             </div>
             <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">
-              当前没有指标达到极端买入区间，更适合保持观察或小额定投。
+              当前没有指标达到极端买入区间，暂不具备明显抄底信号，建议保持观察。
             </p>
           </div>
         ) : (

@@ -1016,47 +1016,47 @@ export function getMA200ChartData(
 // Indicator config
 export const INDICATOR_CONFIG = {
   priceMa200w: {
-    name: 'BTC Price / 200W-MA',
+    name: 'BTC价格 / 200周均线',
     unit: '',
     targetValue: 1,
     color: '#F7931A',
-    description: 'Price relative to 200-week moving average'
+    description: '价格相对200周均线的位置'
   },
   mvrvZ: {
     name: 'MVRV Z-Score',
     unit: '',
     targetValue: 0,
     color: '#3B82F6',
-    description: 'Standardized market value vs realized value'
+    description: '市场价值相对实现价值的标准化偏离'
   },
   lthMvrv: {
     name: 'LTH-MVRV',
     unit: '',
     targetValue: 1,
     color: '#10B981',
-    description: 'Long-term holder unrealized P/L ratio'
+    description: '长期持有者未实现盈亏比率'
   },
   puell: {
     name: 'Puell Multiple',
     unit: '',
     targetValue: 0.5,
     color: '#8B5CF6',
-    description: 'Miner revenue relative to historical norm'
+    description: '矿工收入相对历史常态的位置'
   },
   nupl: {
     name: 'NUPL',
     unit: '',
     targetValue: 0,
     color: '#EF4444',
-    description: 'Net unrealized profit/loss'
+    description: '全网净未实现盈亏'
   }
 };
 
 // Time range labels
 export const TIME_RANGE_LABELS: Record<TimeRange, string> = {
-  '1w': 'Last 1 Week',
-  '1m': 'Last 1 Month',
-  '6m': 'Last 6 Months',
-  '1y': 'Last 1 Year',
-  'all': 'All History'
+  '1w': '近1周',
+  '1m': '近1个月',
+  '6m': '近6个月',
+  '1y': '近1年',
+  'all': '全部历史'
 };
