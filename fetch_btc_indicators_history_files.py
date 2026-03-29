@@ -9,7 +9,9 @@ Outputs:
   1. Tabular files (CSV/XLSX) for offline analysis
   2. Frontend static files used by the Vite app:
      - app/public/btc_indicators_history.json
+     - app/public/btc_indicators_history_light.json
      - app/public/btc_indicators_latest.json
+     - app/public/btc_indicators_manifest.json
 
 Indicators:
   - BTC Price / 200W-MA (calculated)
@@ -365,6 +367,45 @@ def build_latest_json(frontend_df: pd.DataFrame) -> Dict[str, object]:
     return latest_payload
 
 
+def build_light_history_json(
+    history_json: List[Dict[str, object]],
+    years: int = 8,
+) -> List[Dict[str, object]]:
+    """Build lightweight recent history subset for frontend default loading."""
+    if not history_json:
+        return []
+
+    latest_date_str = str(history_json[-1].get("d", ""))
+    latest_date = datetime.strptime(latest_date_str, "%Y-%m-%d")
+    cutoff = latest_date - pd.Timedelta(days=365 * years)
+
+    light: List[Dict[str, object]] = []
+    for row in history_json:
+        date_str = str(row.get("d", ""))
+        if not date_str:
+            continue
+        row_date = datetime.strptime(date_str, "%Y-%m-%d")
+        if row_date >= cutoff:
+            light.append(row)
+    return light
+
+
+def build_manifest_json(
+    latest_json: Dict[str, object],
+    history_rows: int,
+    light_rows: int,
+) -> Dict[str, object]:
+    """Build a small manifest for observability/debugging and cache-busting hints."""
+    return {
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "latestDate": latest_json.get("date"),
+        "lastUpdated": latest_json.get("lastUpdated"),
+        "historyRows": history_rows,
+        "historyLightRows": light_rows,
+        "schemaVersion": "v2",
+    }
+
+
 def write_json(path: Path, payload: object) -> None:
     """Write JSON with stable formatting and UTF-8 encoding."""
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -396,7 +437,11 @@ def print_summary(
     tabular_df: pd.DataFrame,
     sources: Dict[str, str],
     history_path: Path,
+    history_light_path: Path,
     latest_path: Path,
+    manifest_path: Path,
+    history_rows: int,
+    light_rows: int,
 ) -> None:
     """Print concise run summary."""
     print()
@@ -417,8 +462,10 @@ def print_summary(
 
     print()
     print("Frontend JSON files:")
-    print(f"  - history: {history_path}")
-    print(f"  - latest : {latest_path}")
+    print(f"  - history      : {history_path} ({history_rows} rows)")
+    print(f"  - history light: {history_light_path} ({light_rows} rows)")
+    print(f"  - latest       : {latest_path}")
+    print(f"  - manifest     : {manifest_path}")
 
 
 def main() -> int:
@@ -456,6 +503,22 @@ def main() -> int:
         help="Frontend latest JSON output path.",
     )
     parser.add_argument(
+        "--history-light-json-path",
+        default="app/public/btc_indicators_history_light.json",
+        help="Frontend lightweight history JSON output path.",
+    )
+    parser.add_argument(
+        "--history-light-years",
+        type=int,
+        default=8,
+        help="Number of recent years to keep in lightweight history JSON.",
+    )
+    parser.add_argument(
+        "--manifest-json-path",
+        default="app/public/btc_indicators_manifest.json",
+        help="Frontend manifest JSON output path.",
+    )
+    parser.add_argument(
         "--skip-tabular",
         action="store_true",
         help="Skip CSV/XLSX outputs and only write frontend JSON files.",
@@ -472,11 +535,21 @@ def main() -> int:
 
     history_json = dataframe_to_history_json(frontend_df)
     latest_json = build_latest_json(frontend_df)
+    history_light_json = build_light_history_json(history_json, years=max(1, args.history_light_years))
+    manifest_json = build_manifest_json(
+        latest_json=latest_json,
+        history_rows=len(history_json),
+        light_rows=len(history_light_json),
+    )
 
     history_path = Path(args.history_json_path)
+    history_light_path = Path(args.history_light_json_path)
     latest_path = Path(args.latest_json_path)
+    manifest_path = Path(args.manifest_json_path)
     write_json(history_path, history_json)
+    write_json(history_light_path, history_light_json)
     write_json(latest_path, latest_json)
+    write_json(manifest_path, manifest_json)
 
     saved_files: Dict[str, Path] = {}
     if not args.skip_tabular:
@@ -490,7 +563,16 @@ def main() -> int:
     else:
         print("Tabular export skipped (--skip-tabular).")
 
-    print_summary(tabular_df, sources, history_path, latest_path)
+    print_summary(
+        tabular_df=tabular_df,
+        sources=sources,
+        history_path=history_path,
+        history_light_path=history_light_path,
+        latest_path=latest_path,
+        manifest_path=manifest_path,
+        history_rows=len(history_json),
+        light_rows=len(history_light_json),
+    )
     return 0
 
 

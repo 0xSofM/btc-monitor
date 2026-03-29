@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: update-btc-data
@@ -31,21 +32,114 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas requests openpyxl
 
+      - name: Snapshot previous data files
+        run: |
+          mkdir -p .tmp/previous
+          cp app/public/btc_indicators_history.json .tmp/previous/btc_indicators_history.json || true
+          cp app/public/btc_indicators_latest.json .tmp/previous/btc_indicators_latest.json || true
+
       - name: Refresh frontend data files
         run: |
           python fetch_btc_indicators_history_files.py \
             --skip-tabular \
             --history-json-path app/public/btc_indicators_history.json \
-            --latest-json-path app/public/btc_indicators_latest.json
+            --history-light-json-path app/public/btc_indicators_history_light.json \
+            --latest-json-path app/public/btc_indicators_latest.json \
+            --manifest-json-path app/public/btc_indicators_manifest.json
+
+      - name: Validate data quality gate
+        run: |
+          python validate_btc_data_quality.py \
+            --current-history app/public/btc_indicators_history.json \
+            --current-latest app/public/btc_indicators_latest.json \
+            --previous-history .tmp/previous/btc_indicators_history.json \
+            --previous-latest .tmp/previous/btc_indicators_latest.json \
+            --lookback-rows 30 \
+            --max-row-drop 5
 
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add app/public/btc_indicators_history.json app/public/btc_indicators_latest.json
+          git add \
+            app/public/btc_indicators_history.json \
+            app/public/btc_indicators_history_light.json \
+            app/public/btc_indicators_latest.json \
+            app/public/btc_indicators_manifest.json
           if git diff --cached --quiet; then
             echo "No data changes."
             exit 0
           fi
           git commit -m "chore(data): auto-update BTC indicators"
           git push
+
+      - name: Close existing data-pipeline failure issue
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const title = '[Data Pipeline] BTC auto-update failed';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100
+            });
+            const existing = issues.find((issue) => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: existing.number,
+                body: `Recovered in run #${context.runNumber}: ${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`
+              });
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: existing.number,
+                state: 'closed'
+              });
+            }
+
+      - name: Create/update failure issue
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const title = '[Data Pipeline] BTC auto-update failed';
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const body = [
+              'Automatic BTC data update failed.',
+              '',
+              `- workflow: ${context.workflow}`,
+              `- run: ${runUrl}`,
+              `- branch: ${context.ref}`,
+              `- sha: ${context.sha}`
+            ].join('\n');
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100
+            });
+            const existing = issues.find((issue) => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: existing.number,
+                body
+              });
+            } else {
+              await github.rest.issues.create({
+                owner,
+                repo,
+                title,
+                body,
+                labels: ['bug', 'data-pipeline']
+              });
+            }

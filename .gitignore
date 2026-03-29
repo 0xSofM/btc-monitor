@@ -7,5 +7,7 @@ Thumbs.db
 .venv/
 __pycache__/
 *.pyc
+.pytest_cache/
+.coverage
 btc_indicators_from_files.csv
 btc_indicators_from_files.xlsx

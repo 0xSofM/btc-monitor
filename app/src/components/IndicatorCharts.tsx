@@ -19,6 +19,9 @@ import { INDICATOR_CONFIG, getIndicatorChartData, getMA200ChartData } from '@/se
 
 interface IndicatorChartsProps {
   data: IndicatorData[];
+  isFullHistoryLoaded?: boolean;
+  isFullHistoryLoading?: boolean;
+  onRequestFullHistory?: () => void | Promise<void>;
 }
 
 type IndicatorType = 'priceMa200w' | 'mvrvZ' | 'lthMvrv' | 'puell' | 'nupl';
@@ -120,11 +123,18 @@ function IndicatorTooltip({ active, payload, label }: TooltipProps) {
   );
 }
 
-export function IndicatorCharts({ data }: IndicatorChartsProps) {
+export function IndicatorCharts({
+  data,
+  isFullHistoryLoaded = false,
+  isFullHistoryLoading = false,
+  onRequestFullHistory,
+}: IndicatorChartsProps) {
   const [activeIndicator, setActiveIndicator] = useState<IndicatorType>('priceMa200w');
   const [brushKey, setBrushKey] = useState(0);
   const [brushStartIndex, setBrushStartIndex] = useState(0);
   const [brushEndIndex, setBrushEndIndex] = useState<number | undefined>(undefined);
+  const [showThresholds, setShowThresholds] = useState(true);
+  const [selectedRange, setSelectedRange] = useState<(typeof TIME_RANGES)[number]['key']>('all');
 
   const detailSeries = useMemo(() => {
     if (activeIndicator === 'priceMa200w') {
@@ -158,6 +168,7 @@ export function IndicatorCharts({ data }: IndicatorChartsProps) {
     setActiveIndicator(indicator);
     setBrushStartIndex(0);
     setBrushEndIndex(undefined);
+    setSelectedRange('all');
     setBrushKey((prev) => prev + 1);
   };
 
@@ -173,6 +184,14 @@ export function IndicatorCharts({ data }: IndicatorChartsProps) {
 
     setBrushStartIndex(start);
     setBrushEndIndex(total - 1);
+    setSelectedRange(rangeKey);
+    setBrushKey((prev) => prev + 1);
+  };
+
+  const handleResetView = () => {
+    setBrushStartIndex(0);
+    setBrushEndIndex(undefined);
+    setSelectedRange('all');
     setBrushKey((prev) => prev + 1);
   };
 
@@ -231,7 +250,9 @@ export function IndicatorCharts({ data }: IndicatorChartsProps) {
                           <stop offset="95%" stopColor={indicatorConfig.color} stopOpacity={0} />
                         </linearGradient>
                       </defs>
-                      <ReferenceLine y={zone.max} stroke={indicatorConfig.color} strokeDasharray="2 2" strokeOpacity={0.5} />
+                      {showThresholds && (
+                        <ReferenceLine y={zone.max} stroke={indicatorConfig.color} strokeDasharray="2 2" strokeOpacity={0.5} />
+                      )}
                       <Area
                         type="monotone"
                         dataKey="value"
@@ -344,12 +365,14 @@ export function IndicatorCharts({ data }: IndicatorChartsProps) {
           <YAxis tick={{ fontSize: 11 }} domain={[yMin, yMax]} tickFormatter={formatNumber} />
           <Tooltip content={<IndicatorTooltip />} />
 
-          <ReferenceLine
-            y={buyZone.max}
-            stroke="#10B981"
-            strokeDasharray="4 4"
-            label={{ value: `Buy zone ${buyZone.description}`, position: 'right', fontSize: 10, fill: '#10B981' }}
-          />
+          {showThresholds && (
+            <ReferenceLine
+              y={buyZone.max}
+              stroke="#10B981"
+              strokeDasharray="4 4"
+              label={{ value: `Buy zone ${buyZone.description}`, position: 'right', fontSize: 10, fill: '#10B981' }}
+            />
+          )}
 
           <Line
             type="monotone"
@@ -386,19 +409,55 @@ export function IndicatorCharts({ data }: IndicatorChartsProps) {
   return (
     <Card className="mb-6">
       <CardHeader>
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <CardTitle className="text-lg font-semibold">5-Indicator History Charts</CardTitle>
-          <div className="flex flex-wrap gap-1">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <CardTitle className="text-lg font-semibold">5-Indicator History Charts</CardTitle>
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              <span className={`rounded-full px-2 py-1 ${isFullHistoryLoaded ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}>
+                {isFullHistoryLoaded ? 'Full History Loaded' : 'Light History Loaded'}
+              </span>
+              {!isFullHistoryLoaded && (
+                <button
+                  type="button"
+                  onClick={() => void onRequestFullHistory?.()}
+                  disabled={isFullHistoryLoading}
+                  className="rounded-md border px-2 py-1 transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isFullHistoryLoading ? 'Loading full...' : 'Load Full History'}
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
             {TIME_RANGES.map((range) => (
               <button
                 key={range.key}
                 type="button"
                 onClick={() => handleTimeRangeSelect(range.key)}
-                className="rounded-md bg-muted px-2 py-1 text-xs transition-colors hover:bg-muted/80"
+                className={`rounded-md px-2 py-1 text-xs transition-colors ${
+                  selectedRange === range.key
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted hover:bg-muted/80'
+                }`}
               >
                 {range.label}
               </button>
             ))}
+            <button
+              type="button"
+              onClick={handleResetView}
+              className="rounded-md border px-2 py-1 text-xs transition-colors hover:bg-muted"
+            >
+              Reset View
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowThresholds((prev) => !prev)}
+              className="rounded-md border px-2 py-1 text-xs transition-colors hover:bg-muted"
+            >
+              {showThresholds ? 'Hide Thresholds' : 'Show Thresholds'}
+            </button>
           </div>
         </div>
       </CardHeader>
@@ -448,10 +507,12 @@ export function IndicatorCharts({ data }: IndicatorChartsProps) {
             </div>
           ) : (
             <>
-              <div className="flex items-center gap-1">
-                <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #10B981' }} />
-                <span>Buy threshold ({buyZone.description})</span>
-              </div>
+              {showThresholds && (
+                <div className="flex items-center gap-1">
+                  <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #10B981' }} />
+                  <span>Buy threshold ({buyZone.description})</span>
+                </div>
+              )}
               <div className="flex items-center gap-1">
                 <div className="h-2 w-2 rounded-full bg-green-500" />
                 <span>Signal points</span>

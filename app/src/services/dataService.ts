@@ -2,6 +2,8 @@
 import type { IndicatorData, LatestData, SignalEvent, TimeRange, ChartDataPoint } from '@/types';
 
 type ApiDatePayload = {
+  priceMa200w?: string;
+  price_ma200w?: string;
   mvrvZ?: string;
   mvrv_z?: string;
   lthMvrv?: string;
@@ -24,9 +26,17 @@ type IndicatorDataWithApiDate = IndicatorData & {
   api_data_date?: ApiDatePayload;
 };
 
+type HistoryMode = 'light' | 'full';
+
+type FetchHistoricalOptions = {
+  mode?: HistoryMode;
+  forceRefresh?: boolean;
+};
+
 // API 閰嶇疆
 const API_BASE_URL = 'https://bitcoin-data.com';
-const STATIC_HISTORY_PATH = '/btc_indicators_history.json';
+const STATIC_HISTORY_LIGHT_PATH = '/btc_indicators_history_light.json';
+const STATIC_HISTORY_FULL_PATH = '/btc_indicators_history.json';
 const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
 
 // 浠ｇ悊閰嶇疆锛堢敤浜庤В鍐?CORS 闂锛?
@@ -42,10 +52,12 @@ const MA200W_LOOKBACK_DAYS = 1400;
 const cache: {
   data: LatestData | null;
   history: IndicatorData[];
+  historyFull: IndicatorData[];
   timestamp: number;
 } = {
   data: null,
   history: [],
+  historyFull: [],
   timestamp: 0
 };
 
@@ -93,6 +105,18 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   };
 }
 
+function hasUsableValue(value: unknown): boolean {
+  if (value === null || value === undefined) {
+    return false;
+  }
+
+  if (typeof value === 'number') {
+    return !Number.isNaN(value);
+  }
+
+  return true;
+}
+
 // 鏌ユ壘鍚勬寚鏍囩殑鏈€鍚庢湁鏁堟暟鎹棩鏈?
 // 绛栫暐锛?
 // 1. 浼樺厛浣跨敤 apiDataDate 瀛楁锛堣褰?API 瀹為檯杩斿洖鏁版嵁鐨勬棩鏈燂級
@@ -124,8 +148,8 @@ function findIndicatorDates(data: IndicatorData[]) {
   const apiDates = latestWithApi.apiDataDate || latestWithApi.api_data_date;
   if (apiDates && typeof apiDates === 'object') {
     // 鍙坊鍔?apiDataDate 涓瓨鍦ㄧ殑鎸囨爣
-    if (apiDates.mvrvZ) dates.mvrvZ = apiDates.mvrvZ;
-    if (apiDates.lthMvrv) dates.lthMvrv = apiDates.lthMvrv;
+    if (apiDates.mvrvZ || apiDates.mvrv_z) dates.mvrvZ = apiDates.mvrvZ || apiDates.mvrv_z;
+    if (apiDates.lthMvrv || apiDates.lth_mvrv) dates.lthMvrv = apiDates.lthMvrv || apiDates.lth_mvrv;
     if (apiDates.puell) dates.puell = apiDates.puell;
     if (apiDates.nupl) dates.nupl = apiDates.nupl;
     return dates;
@@ -135,19 +159,19 @@ function findIndicatorDates(data: IndicatorData[]) {
   for (let i = data.length - 1; i >= 0; i--) {
     const record = data[i];
     // MVRV: 鏌ユ壘鏈€鍚庝竴涓湁 mvrvZscore 鍊肩殑鏃ユ湡
-    if (dates.mvrvZ === undefined && record.mvrvZscore !== null && record.mvrvZscore !== undefined && record.mvrvZscore !== 0) {
+    if (dates.mvrvZ === undefined && hasUsableValue(record.mvrvZscore)) {
       dates.mvrvZ = record.d;
     }
     // LTH-MVRV: 鏌ユ壘鏈€鍚庝竴涓湁 lthMvrv 鍊肩殑鏃ユ湡
-    if (dates.lthMvrv === undefined && record.lthMvrv !== null && record.lthMvrv !== undefined && record.lthMvrv !== 0) {
+    if (dates.lthMvrv === undefined && hasUsableValue(record.lthMvrv)) {
       dates.lthMvrv = record.d;
     }
     // Puell: 鏌ユ壘鏈€鍚庝竴涓湁 puellMultiple 鍊肩殑鏃ユ湡
-    if (dates.puell === undefined && record.puellMultiple !== null && record.puellMultiple !== undefined && record.puellMultiple !== 0) {
+    if (dates.puell === undefined && hasUsableValue(record.puellMultiple)) {
       dates.puell = record.d;
     }
     // NUPL: 鏌ユ壘鏈€鍚庝竴涓湁 nupl 鍊肩殑鏃ユ湡
-    if (dates.nupl === undefined && record.nupl !== null && record.nupl !== undefined && record.nupl !== 0) {
+    if (dates.nupl === undefined && hasUsableValue(record.nupl)) {
       dates.nupl = record.d;
     }
   }
@@ -427,6 +451,7 @@ function normalizeIndicatorData(item: any): IndicatorData {
   // 澶勭悊 apiDataDate 瀛楁锛堟敮鎸?snake_case 鍜?camelCase锛?
   const apiDataDate = item.apiDataDate || item.api_data_date;
   const indicatorDates = apiDataDate ? {
+    priceMa200w: apiDataDate.priceMa200w || apiDataDate.price_ma200w,
     mvrvZ: apiDataDate.mvrvZ || apiDataDate.mvrv_z,
     lthMvrv: apiDataDate.lthMvrv || apiDataDate.lth_mvrv,
     puell: apiDataDate.puell,
@@ -557,7 +582,9 @@ export async function fetchStaticLatestData(): Promise<LatestData | null> {
       throw new Error('Invalid latest static data format');
     }
 
-    const history = cache.history.length > 0 ? cache.history : await fetchHistoricalData();
+    const history = cache.history.length > 0
+      ? cache.history
+      : (cache.historyFull.length > 0 ? cache.historyFull : await fetchHistoricalData());
     data = enrichLatestDataWithHistory(data, history);
 
     cache.data = data;
@@ -570,23 +597,62 @@ export async function fetchStaticLatestData(): Promise<LatestData | null> {
   }
 }
 
-// 鑾峰彇鍘嗗彶鏁版嵁锛堢敤浜庡鐩橈級
-export async function fetchHistoricalData(): Promise<IndicatorData[]> {
-  if (cache.history.length > 0) {
-    return cache.history;
+async function fetchStaticHistoryByPath(path: string, timeout: number): Promise<IndicatorData[]> {
+  const response = await fetchWithTimeout(path, timeout);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch historical data from ${path}`);
   }
 
-  try {
-    const response = await fetchWithTimeout(STATIC_HISTORY_PATH, 30000);
-    if (!response.ok) throw new Error('Failed to fetch historical data');
-    const raw = await response.json();
-    const data = raw.map(normalizeIndicatorData);
-    cache.history = data;
-    return data;
-  } catch (error) {
-    console.error('Error fetching historical data:', error);
-    return getLocalData();
+  const raw = await response.json();
+  if (!Array.isArray(raw)) {
+    throw new Error(`Invalid historical data format from ${path}`);
   }
+
+  return raw.map(normalizeIndicatorData);
+}
+
+// 鑾峰彇鍘嗗彶鏁版嵁锛堢敤浜庡鐩橈級
+export async function fetchHistoricalData(options: FetchHistoricalOptions = {}): Promise<IndicatorData[]> {
+  const mode: HistoryMode = options.mode ?? 'light';
+  const forceRefresh = options.forceRefresh ?? false;
+  const cacheKey = mode === 'full' ? 'historyFull' : 'history';
+
+  if (!forceRefresh && cache[cacheKey].length > 0) {
+    return cache[cacheKey];
+  }
+
+  const primaryPath = mode === 'full' ? STATIC_HISTORY_FULL_PATH : STATIC_HISTORY_LIGHT_PATH;
+  const fallbackPath = mode === 'full' ? STATIC_HISTORY_LIGHT_PATH : STATIC_HISTORY_FULL_PATH;
+
+  try {
+    const data = await fetchStaticHistoryByPath(primaryPath, 30000);
+    cache[cacheKey] = data;
+    if (mode === 'full' && cache.history.length === 0) {
+      cache.history = data;
+    }
+    return data;
+  } catch (primaryError) {
+    console.warn(`[DataService] Primary history source failed (${primaryPath}), trying fallback (${fallbackPath}).`, primaryError);
+    try {
+      const fallbackData = await fetchStaticHistoryByPath(fallbackPath, 30000);
+      cache[cacheKey] = fallbackData;
+      if (mode === 'full' && cache.history.length === 0) {
+        cache.history = fallbackData;
+      }
+      return fallbackData;
+    } catch (fallbackError) {
+      console.error('Error fetching historical data:', fallbackError);
+      const local = getLocalData();
+      if (local.length > 0) {
+        cache[cacheKey] = local;
+      }
+      return local;
+    }
+  }
+}
+
+export async function fetchFullHistoricalData(forceRefresh = false): Promise<IndicatorData[]> {
+  return fetchHistoricalData({ mode: 'full', forceRefresh });
 }
 
 // 鏁版嵁鐗堟湰鏍囪瘑锛岀敤浜庢娴嬫暟鎹粨鏋勫彉鏇?
@@ -756,12 +822,16 @@ export async function checkDataSource(): Promise<{
   apiAvailable: boolean;
   proxyAvailable: boolean;
   historyAvailable: boolean;
+  historyLightAvailable: boolean;
+  historyFullAvailable: boolean;
   localAvailable: boolean;
 }> {
   const result = {
     apiAvailable: false,
     proxyAvailable: false,
     historyAvailable: false,
+    historyLightAvailable: false,
+    historyFullAvailable: false,
     localAvailable: false
   };
 
@@ -782,12 +852,20 @@ export async function checkDataSource(): Promise<{
   }
 
   try {
-    const response = await fetchWithTimeout(STATIC_HISTORY_PATH, 5000);
-    result.historyAvailable = response.ok;
+    const response = await fetchWithTimeout(STATIC_HISTORY_LIGHT_PATH, 5000);
+    result.historyLightAvailable = response.ok;
   } catch {
-    result.historyAvailable = false;
+    result.historyLightAvailable = false;
   }
 
+  try {
+    const response = await fetchWithTimeout(STATIC_HISTORY_FULL_PATH, 5000);
+    result.historyFullAvailable = response.ok;
+  } catch {
+    result.historyFullAvailable = false;
+  }
+
+  result.historyAvailable = result.historyLightAvailable || result.historyFullAvailable;
   result.localAvailable = !!getLocalLatestData();
 
   return result;
@@ -807,6 +885,24 @@ export function getDataStatus(): {
     cacheValid: cache.data !== null && cacheAge < CACHE_DURATION,
     lastUpdate: cache.data?.date || null
   };
+}
+
+export function getDataFreshnessHours(date: string): number {
+  if (!date) {
+    return 0;
+  }
+
+  const timestamp = Date.parse(`${date}T00:00:00Z`);
+  if (Number.isNaN(timestamp)) {
+    return 0;
+  }
+
+  const diffMs = Date.now() - timestamp;
+  if (diffMs <= 0) {
+    return 0;
+  }
+
+  return Number((diffMs / (1000 * 60 * 60)).toFixed(1));
 }
 
 // ============ 鍘嗗彶鏁版嵁鍥捐〃鐩稿叧鍑芥暟 ============

@@ -1,7 +1,8 @@
+import { AlertTriangle, CheckCircle2, Clock3, Database, DollarSign, TrendingUp } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { AlertTriangle, CheckCircle2, Clock3, Database, DollarSign, TrendingUp } from 'lucide-react';
 
 interface SignalOverviewProps {
   btcPrice: number;
@@ -10,8 +11,41 @@ interface SignalOverviewProps {
   lastUpdated: string;
   dataSource: 'api' | 'static' | 'history';
   latestDataDate: string;
+  latestDataAgeHours: number;
   laggingIndicators: string[];
   oldestIndicatorDate?: string;
+}
+
+function getSignalStatus(signalCount: number) {
+  if (signalCount === 0) return { label: '远离底部', color: 'text-gray-500' };
+  if (signalCount <= 2) return { label: '偏离底部', color: 'text-blue-500' };
+  if (signalCount === 3) return { label: '接近底部', color: 'text-yellow-500' };
+  if (signalCount === 4) return { label: '买入机会', color: 'text-green-500' };
+  return { label: '绝佳买入', color: 'text-green-600' };
+}
+
+function getSourceBadge(dataSource: SignalOverviewProps['dataSource']) {
+  if (dataSource === 'api') {
+    return { label: '实时 API', className: 'border-green-200 bg-green-50 text-green-700' };
+  }
+
+  if (dataSource === 'history') {
+    return { label: '历史回退', className: 'border-yellow-200 bg-yellow-50 text-yellow-700' };
+  }
+
+  return { label: '静态快照', className: 'border-blue-200 bg-blue-50 text-blue-700' };
+}
+
+function getFreshnessBadge(hours: number) {
+  if (hours <= 24) {
+    return { label: `新鲜 ${hours.toFixed(1)}h`, className: 'border-emerald-200 bg-emerald-50 text-emerald-700' };
+  }
+
+  if (hours <= 72) {
+    return { label: `滞后 ${hours.toFixed(1)}h`, className: 'border-amber-200 bg-amber-50 text-amber-700' };
+  }
+
+  return { label: `陈旧 ${hours.toFixed(1)}h`, className: 'border-red-200 bg-red-50 text-red-700' };
 }
 
 export function SignalOverview({
@@ -21,33 +55,14 @@ export function SignalOverview({
   lastUpdated,
   dataSource,
   latestDataDate,
+  latestDataAgeHours,
   laggingIndicators,
   oldestIndicatorDate,
 }: SignalOverviewProps) {
   const progressPercentage = (signalCount / totalIndicators) * 100;
-
-  const getSignalStatus = () => {
-    if (signalCount === 0) return { label: '远离底部', color: 'text-gray-500' };
-    if (signalCount <= 2) return { label: '偏离底部', color: 'text-blue-500' };
-    if (signalCount === 3) return { label: '接近底部', color: 'text-yellow-500' };
-    if (signalCount === 4) return { label: '买入机会', color: 'text-green-500' };
-    return { label: '绝佳买入', color: 'text-green-600' };
-  };
-
-  const getSourceBadge = () => {
-    if (dataSource === 'api') {
-      return { label: '实时 API', className: 'border-green-200 text-green-700 bg-green-50' };
-    }
-
-    if (dataSource === 'history') {
-      return { label: '历史回退', className: 'border-yellow-200 text-yellow-700 bg-yellow-50' };
-    }
-
-    return { label: '静态快照', className: 'border-blue-200 text-blue-700 bg-blue-50' };
-  };
-
-  const status = getSignalStatus();
-  const sourceBadge = getSourceBadge();
+  const status = getSignalStatus(signalCount);
+  const sourceBadge = getSourceBadge(dataSource);
+  const freshnessBadge = getFreshnessBadge(latestDataAgeHours);
   const hasLaggingIndicators = laggingIndicators.length > 0;
 
   return (
@@ -60,12 +75,17 @@ export function SignalOverview({
               <Database className="mr-1 h-3 w-3" />
               {sourceBadge.label}
             </Badge>
+            <Badge variant="outline" className={freshnessBadge.className}>
+              <Clock3 className="mr-1 h-3 w-3" />
+              {freshnessBadge.label}
+            </Badge>
             <Badge variant="outline" className="text-xs">
-              更新于: {lastUpdated}
+              更新于 {lastUpdated}
             </Badge>
           </div>
         </div>
       </CardHeader>
+
       <CardContent>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div className="flex items-center gap-4">
