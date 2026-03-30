@@ -43,11 +43,11 @@ type MaSeriesPoint = {
 const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'priceRealized', 'reserveRisk', 'sthSopr', 'sthMvrv', 'puell'];
 
 const TIME_RANGES = [
-  { key: 'all', label: 'All' },
-  { key: '1y', label: '1Y' },
-  { key: '6m', label: '6M' },
-  { key: '1m', label: '1M' },
-  { key: '1w', label: '1W' },
+  { key: 'all', label: '全部' },
+  { key: '1y', label: '1年' },
+  { key: '6m', label: '6月' },
+  { key: '1m', label: '1月' },
+  { key: '1w', label: '1周' },
 ] as const;
 
 const RANGE_DAYS: Record<(typeof TIME_RANGES)[number]['key'], number> = {
@@ -59,12 +59,12 @@ const RANGE_DAYS: Record<(typeof TIME_RANGES)[number]['key'], number> = {
 };
 
 const BUY_ZONE_CONFIG: Record<IndicatorType, { min: number; max: number; description: string }> = {
-  priceMa200w: { min: 0, max: 1, description: '< 1 (deep < 0.85)' },
-  priceRealized: { min: 0, max: 1, description: '< 1 (deep < 0.90)' },
-  reserveRisk: { min: 0, max: 0.0016, description: '< p20 (deep < p10)' },
-  sthSopr: { min: 0, max: 1, description: '< 1 (deep < 0.97)' },
-  sthMvrv: { min: 0, max: 1, description: '< 1 (deep < 0.85)' },
-  puell: { min: 0, max: 0.6, description: '< 0.6 (deep < 0.5)' },
+  priceMa200w: { min: 0, max: 1, description: '< 1（深度 < 0.85）' },
+  priceRealized: { min: 0, max: 1, description: '< 1（深度 < 0.90）' },
+  reserveRisk: { min: 0, max: 0.0016, description: '< p20（深度 < p10）' },
+  sthSopr: { min: 0, max: 1, description: '< 1（深度 < 0.97）' },
+  sthMvrv: { min: 0, max: 1, description: '< 1（深度 < 0.85）' },
+  puell: { min: 0, max: 0.6, description: '< 0.6（深度 < 0.5）' },
 };
 
 type TooltipEntry = {
@@ -144,7 +144,7 @@ function IndicatorTooltip({
       ))}
       {payload[0]?.payload?.btcPrice && (
         <p className="mt-1 text-muted-foreground">
-          BTC: ${Number(payload[0].payload.btcPrice).toLocaleString('en-US')}
+          BTC价格: ${Number(payload[0].payload.btcPrice).toLocaleString('en-US')}
         </p>
       )}
     </div>
@@ -267,7 +267,7 @@ export function IndicatorCharts({
                     : 'bg-muted text-muted-foreground'
                 }`}
               >
-                {latest?.signal ? 'Triggered' : 'Neutral'}
+                {latest?.signal ? '触发' : '中性'}
               </span>
             </div>
 
@@ -297,11 +297,11 @@ export function IndicatorCharts({
                   </AreaChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="flex h-full items-center justify-center text-xs text-muted-foreground">No data</div>
+                <div className="flex h-full items-center justify-center text-xs text-muted-foreground">暂无数据</div>
               )}
             </div>
 
-            <p className="mt-2 text-[11px] text-muted-foreground">Trigger zone: {zone.description}</p>
+            <p className="mt-2 text-[11px] text-muted-foreground">触发区间：{zone.description}</p>
           </button>
         );
       })}
@@ -311,7 +311,7 @@ export function IndicatorCharts({
   const renderPriceChart = () => {
     const series = detailSeries as MaSeriesPoint[];
     if (!series.length) {
-      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">No MA200 data</div>;
+      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">暂无 MA200 数据</div>;
     }
 
     const visible = series.slice(resolvedStartIndex, resolvedEndIndex + 1);
@@ -344,7 +344,7 @@ export function IndicatorCharts({
             yAxisId="left"
             type="monotone"
             dataKey="price"
-            name="BTC Price"
+            name="BTC价格"
             stroke="#F7931A"
             strokeWidth={2}
             dot={false}
@@ -354,7 +354,7 @@ export function IndicatorCharts({
             yAxisId="right"
             type="monotone"
             dataKey="ma200"
-            name="200W MA"
+            name="200周均线"
             stroke="#3B82F6"
             strokeWidth={2}
             strokeDasharray="6 4"
@@ -381,7 +381,7 @@ export function IndicatorCharts({
   const renderIndicatorChart = () => {
     const series = detailSeries as DetailSeriesPoint[];
     if (!series.length) {
-      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">No indicator data</div>;
+      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">暂无指标数据</div>;
     }
 
     const visible = series.slice(resolvedStartIndex, resolvedEndIndex + 1);
@@ -444,7 +444,7 @@ export function IndicatorCharts({
       <CardHeader>
         <div className="space-y-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle className="text-lg font-semibold">Core-6 Historical Charts</CardTitle>
+            <CardTitle className="text-lg font-semibold">Core-6 历史图表</CardTitle>
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span
                 className={`rounded-full px-2.5 py-1 ${
@@ -453,7 +453,7 @@ export function IndicatorCharts({
                     : 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
                 }`}
               >
-                {isFullHistoryLoaded ? 'Full history loaded' : 'Light history loaded'}
+                {isFullHistoryLoaded ? '已加载全量历史' : '已加载轻量历史'}
               </span>
 
               {!isFullHistoryLoaded && (
@@ -463,7 +463,7 @@ export function IndicatorCharts({
                   disabled={isFullHistoryLoading}
                   className="rounded-md border px-2 py-1 transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {isFullHistoryLoading ? 'Loading full history...' : 'Load full history'}
+                  {isFullHistoryLoading ? '正在加载全量历史...' : '加载全量历史'}
                 </button>
               )}
             </div>
@@ -490,7 +490,7 @@ export function IndicatorCharts({
               onClick={resetView}
               className="rounded-md border px-2.5 py-1 text-xs transition-colors hover:bg-muted"
             >
-              Reset view
+              重置视图
             </button>
 
             <button
@@ -498,7 +498,7 @@ export function IndicatorCharts({
               onClick={() => setShowThresholds((prev) => !prev)}
               className="rounded-md border px-2.5 py-1 text-xs transition-colors hover:bg-muted"
             >
-              {showThresholds ? 'Hide thresholds' : 'Show thresholds'}
+              {showThresholds ? '隐藏阈值线' : '显示阈值线'}
             </button>
           </div>
         </div>
@@ -547,19 +547,19 @@ export function IndicatorCharts({
           {activeIndicator === 'priceMa200w' ? (
             <div className="flex items-center gap-1">
               <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #3B82F6' }} />
-              <span>200W MA</span>
+              <span>200周均线</span>
             </div>
           ) : (
             <>
               {showThresholds && (
                 <div className="flex items-center gap-1">
                   <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #10B981' }} />
-                  <span>Trigger zone ({buyZone.description})</span>
+                  <span>触发阈值线（{buyZone.description}）</span>
                 </div>
               )}
               <div className="flex items-center gap-1">
                 <div className="h-2 w-2 rounded-full bg-emerald-500" />
-                <span>Signal points</span>
+                <span>信号点</span>
               </div>
             </>
           )}

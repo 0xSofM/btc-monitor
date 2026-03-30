@@ -63,16 +63,16 @@ function SectionLoader({ message }: { message: string }) {
 }
 
 function sourceLabel(source: DataSource): string {
-  if (source === 'api') return 'Live API';
-  if (source === 'history') return 'History Fallback';
-  return 'Static Snapshot';
+  if (source === 'api') return '实时 API';
+  if (source === 'history') return '历史回退';
+  return '静态快照';
 }
 
 function scoreBandLabel(score: number): string {
-  if (score >= 10) return 'Extreme Bottom';
-  if (score >= 7) return 'Accumulate';
-  if (score >= 4) return 'Focus';
-  return 'Watch';
+  if (score >= 10) return '极端底部';
+  if (score >= 7) return '分批配置';
+  if (score >= 4) return '重点关注';
+  return '观察';
 }
 
 function App() {
@@ -176,15 +176,15 @@ function App() {
 
         const score = latest.signalScoreV2 ?? 0;
         if (mode === 'manual' && score >= 7) {
-          toast.success(`V2 signal armed: ${score}/12`, {
-            description: `BTC price: $${latest.btcPrice.toLocaleString()}`,
+          toast.success(`V2 信号触发：${score}/12`, {
+            description: `BTC 价格：$${latest.btcPrice.toLocaleString()}`,
             duration: 8000,
           });
         }
         return;
       }
 
-      throw new Error('No latest data available');
+      throw new Error('无可用最新数据');
     } catch (err) {
       console.error('Error fetching data:', err);
 
@@ -192,7 +192,7 @@ function App() {
       if (staticData) {
         applyLatestData(staticData, 'static');
         if (mode === 'manual') {
-          toast.info('Live endpoint unavailable, switched to static snapshot.');
+          toast.info('实时接口不可用，已切换到静态快照。');
         }
         return;
       }
@@ -201,11 +201,11 @@ function App() {
       const backupData = getLatestFromHistory(history);
       if (backupData) {
         applyLatestData(backupData, 'history');
-        toast.info('Running on history fallback mode.');
+        toast.info('当前运行在历史回退模式。');
         return;
       }
 
-      setError('Failed to load data. Please check connection and retry.');
+      setError('数据加载失败，请检查连接后重试。');
     } finally {
       setLoading(false);
     }
@@ -233,12 +233,12 @@ function App() {
   }, []);
 
   const indicatorDateLabels: Record<IndicatorDateKey, string> = {
-    priceMa200w: 'Price / 200W MA',
-    priceRealized: 'Price / Realized',
-    reserveRisk: 'Reserve Risk',
-    sthSopr: 'STH-SOPR',
-    sthMvrv: 'STH-MVRV',
-    puell: 'Puell',
+    priceMa200w: '价格 / 200周均线',
+    priceRealized: '价格 / 实现价格',
+    reserveRisk: '储备风险',
+    sthSopr: '短期SOPR',
+    sthMvrv: '短期MVRV',
+    puell: 'Puell倍数',
   };
 
   const indicatorDateEntries = latestData?.indicatorDates
@@ -272,19 +272,19 @@ function App() {
     if (!latestData) return [];
     return [
       {
-        label: 'V2 Score',
+        label: 'V2评分',
         value: `${signalScoreV2}/12`,
         note: scoreBandLabel(signalScoreV2),
       },
       {
-        label: 'Trigger Count',
+        label: '触发数量',
         value: `${latestData.signalCount}/6`,
-        note: latestData.signalConfirmed3d ? '3D confirmed' : 'Awaiting 3D confirm',
+        note: latestData.signalConfirmed3d ? '已满足3日确认' : '等待3日确认',
       },
       {
-        label: 'Source',
+        label: '数据来源',
         value: sourceLabel(dataSource),
-        note: `As of ${latestData.date}`,
+        note: `截至 ${latestData.date}`,
       },
     ];
   }, [latestData, signalScoreV2, dataSource]);
@@ -292,8 +292,8 @@ function App() {
   const indicators = latestData
     ? [
         {
-          name: 'Price / 200W MA',
-          description: 'Long-cycle trend anchor',
+          name: '价格 / 200周均线',
+          description: '长周期趋势锚点',
           currentValue: latestData.priceMa200wRatio,
           targetValue: 1,
           targetOperator: 'lt' as const,
@@ -302,12 +302,12 @@ function App() {
           color: '#F7931A',
           dataDate: latestData.indicatorDates?.priceMa200w || latestData.date,
           detailValue: latestData.ma200w
-            ? `BTC $${latestData.btcPrice.toLocaleString()} / MA200W $${Math.round(latestData.ma200w).toLocaleString()}`
+            ? `BTC $${latestData.btcPrice.toLocaleString()} / 200周均线 $${Math.round(latestData.ma200w).toLocaleString()}`
             : `BTC $${latestData.btcPrice.toLocaleString()}`,
         },
         {
-          name: 'Price / Realized Price',
-          description: 'On-chain cost anchor',
+          name: '价格 / 实现价格',
+          description: '链上成本锚点',
           currentValue: latestData.priceRealizedRatio,
           targetValue: 1,
           targetOperator: 'lt' as const,
@@ -315,11 +315,11 @@ function App() {
           format: 'ratio' as const,
           color: '#0EA5E9',
           dataDate: latestData.indicatorDates?.priceRealized || latestData.date,
-          detailValue: latestData.realizedPrice ? `Realized price $${Math.round(latestData.realizedPrice).toLocaleString()}` : undefined,
+          detailValue: latestData.realizedPrice ? `实现价格 $${Math.round(latestData.realizedPrice).toLocaleString()}` : undefined,
         },
         {
-          name: 'Reserve Risk',
-          description: 'Long-holder risk/reward regime',
+          name: '储备风险',
+          description: '长期持有者风险回报区间',
           currentValue: latestData.reserveRisk,
           targetValue: latestData.thresholds?.reserveRisk?.trigger ?? 0.0016,
           targetOperator: 'lt' as const,
@@ -329,8 +329,8 @@ function App() {
           dataDate: latestData.indicatorDates?.reserveRisk || latestData.date,
         },
         {
-          name: 'STH-SOPR',
-          description: 'Short-term capitulation pulse',
+          name: '短期SOPR',
+          description: '短期筹码止损脉冲',
           currentValue: latestData.sthSopr,
           targetValue: 1,
           targetOperator: 'lt' as const,
@@ -340,8 +340,8 @@ function App() {
           dataDate: latestData.indicatorDates?.sthSopr || latestData.date,
         },
         {
-          name: 'STH-MVRV',
-          description: 'Short-term cohort stress depth',
+          name: '短期MVRV',
+          description: '短期群体压力深度',
           currentValue: latestData.sthMvrv,
           targetValue: 1,
           targetOperator: 'lt' as const,
@@ -351,8 +351,8 @@ function App() {
           dataDate: latestData.indicatorDates?.sthMvrv || latestData.date,
         },
         {
-          name: 'Puell Multiple',
-          description: 'Miner pressure confirmation',
+          name: 'Puell倍数',
+          description: '矿工压力确认项',
           currentValue: latestData.puellMultiple,
           targetValue: 0.6,
           targetOperator: 'lt' as const,
@@ -371,8 +371,8 @@ function App() {
           iconClass: 'text-green-600 dark:text-green-300',
           titleClass: 'text-green-800 dark:text-green-200',
           textClass: 'text-green-700 dark:text-green-300',
-          title: 'Extreme Bottom Zone',
-          description: `Score ${signalScoreV2}/12. Market is in deep-value territory. Execute staged entries with risk controls.`,
+          title: '极端底部区',
+          description: `当前评分 ${signalScoreV2}/12，市场处于深度价值区间，可在风控前提下执行分批入场。`,
         }
       : signalScoreV2 >= 7
       ? {
@@ -380,8 +380,8 @@ function App() {
           iconClass: 'text-emerald-600 dark:text-emerald-300',
           titleClass: 'text-emerald-800 dark:text-emerald-200',
           textClass: 'text-emerald-700 dark:text-emerald-300',
-          title: 'Accumulation Zone',
-          description: `Score ${signalScoreV2}/12. Conditions are constructive for staged accumulation.`,
+          title: '分批配置区',
+          description: `当前评分 ${signalScoreV2}/12，信号较强，适合按计划分批配置。`,
         }
       : signalScoreV2 >= 4
       ? {
@@ -389,16 +389,16 @@ function App() {
           iconClass: 'text-amber-600 dark:text-amber-300',
           titleClass: 'text-amber-800 dark:text-amber-200',
           textClass: 'text-amber-700 dark:text-amber-300',
-          title: 'Focus Zone',
-          description: `Score ${signalScoreV2}/12. Momentum is improving but not yet in high-conviction territory.`,
+          title: '重点关注区',
+          description: `当前评分 ${signalScoreV2}/12，状态改善中，但尚未进入高确定性区间。`,
         }
       : {
           boxClass: 'border-slate-300 bg-slate-50 dark:border-slate-700 dark:bg-slate-900/60',
           iconClass: 'text-slate-600 dark:text-slate-300',
           titleClass: 'text-slate-800 dark:text-slate-200',
           textClass: 'text-slate-700 dark:text-slate-300',
-          title: 'Watch Zone',
-          description: `Score ${signalScoreV2}/12. No strong cycle-bottom signal at the moment.`,
+          title: '观察区',
+          description: `当前评分 ${signalScoreV2}/12，暂未出现强大周期底部信号。`,
         }
     : null;
 
@@ -416,9 +416,9 @@ function App() {
                   <Bitcoin className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold tracking-tight">BTC Cycle Bottom Monitor V2</h1>
+                  <h1 className="text-xl font-bold tracking-tight">BTC 大周期底部监测 V2</h1>
                   <p className="text-sm text-muted-foreground">
-                    Core-6 model with weighted score and 3-day confirmation
+                    Core-6 模型，采用加权评分与 3 日确认机制
                   </p>
                 </div>
               </div>
@@ -445,7 +445,7 @@ function App() {
                   ) : (
                     <RefreshCw className="mr-2 h-4 w-4" />
                   )}
-                  Refresh
+                  刷新
                 </Button>
               </div>
             </div>
@@ -471,15 +471,15 @@ function App() {
             <TabsList className="tab-shell grid w-full grid-cols-3 lg:w-auto">
               <TabsTrigger value="dashboard" className="flex items-center gap-2">
                 <LineChart className="h-4 w-4" />
-                <span className="hidden sm:inline">Dashboard</span>
+                <span className="hidden sm:inline">仪表盘</span>
               </TabsTrigger>
               <TabsTrigger value="history" className="flex items-center gap-2">
                 <History className="h-4 w-4" />
-                <span className="hidden sm:inline">Review</span>
+                <span className="hidden sm:inline">历史复盘</span>
               </TabsTrigger>
               <TabsTrigger value="guide" className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
-                <span className="hidden sm:inline">Guide</span>
+                <span className="hidden sm:inline">指标说明</span>
               </TabsTrigger>
             </TabsList>
 
@@ -487,7 +487,7 @@ function App() {
               {error && (
                 <Alert variant="destructive">
                   <AlertTriangle className="h-4 w-4" />
-                  <AlertTitle>Data fetch failed</AlertTitle>
+                  <AlertTitle>数据获取失败</AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
@@ -495,9 +495,9 @@ function App() {
               {dataSource === 'static' && latestData && (
                 <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
                   <AlertTriangle className="h-4 w-4 text-blue-600" />
-                  <AlertTitle className="text-blue-800 dark:text-blue-200">Snapshot mode</AlertTitle>
+                  <AlertTitle className="text-blue-800 dark:text-blue-200">静态快照模式</AlertTitle>
                   <AlertDescription className="text-blue-700 dark:text-blue-300">
-                    Live endpoint is healthy, but UI is currently rendering the static snapshot first for reliability.
+                    为保证稳定性，页面当前优先展示静态快照数据。
                   </AlertDescription>
                 </Alert>
               )}
@@ -505,9 +505,9 @@ function App() {
               {dataSource === 'history' && latestData && (
                 <Alert className="border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950">
                   <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                  <AlertTitle className="text-yellow-800 dark:text-yellow-200">Fallback mode</AlertTitle>
+                  <AlertTitle className="text-yellow-800 dark:text-yellow-200">历史回退模式</AlertTitle>
                   <AlertDescription className="text-yellow-700 dark:text-yellow-300">
-                    API and snapshot were unavailable. Rendering latest value from local historical records.
+                    API 与快照均不可用，当前展示本地历史数据中的最新记录。
                   </AlertDescription>
                 </Alert>
               )}
@@ -515,7 +515,7 @@ function App() {
               {loading && !latestData && (
                 <div className="surface-card flex flex-col items-center justify-center py-14">
                   <Loader2 className="mb-4 h-12 w-12 animate-spin text-orange-500" />
-                  <p className="text-muted-foreground">Loading latest market state...</p>
+                  <p className="text-muted-foreground">正在加载最新市场状态...</p>
                 </div>
               )}
 
@@ -538,15 +538,15 @@ function App() {
                   {laggingIndicators.length > 0 && (
                     <Alert className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950">
                       <Clock3 className="h-4 w-4 text-amber-600" />
-                      <AlertTitle className="text-amber-800 dark:text-amber-200">Indicator lag detected</AlertTitle>
+                      <AlertTitle className="text-amber-800 dark:text-amber-200">检测到指标延迟</AlertTitle>
                       <AlertDescription className="text-amber-700 dark:text-amber-300">
-                        Latest row is {latestData.date}. Lagging series: {laggingIndicators.join(', ')} (oldest update {oldestIndicatorDate}).
+                        最新记录日期为 {latestData.date}。存在延迟的指标：{laggingIndicators.join('、')}（最早更新时间 {oldestIndicatorDate}）。
                       </AlertDescription>
                     </Alert>
                   )}
 
                   {historicalData.length > 0 ? (
-                    <Suspense fallback={<SectionLoader message="Loading chart workspace..." />}>
+                    <Suspense fallback={<SectionLoader message="正在加载图表工作区..." />}>
                       <IndicatorChartsPanel
                         data={historicalData}
                         isFullHistoryLoaded={isFullHistoryLoaded}
@@ -557,9 +557,9 @@ function App() {
                   ) : (
                     <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
                       <AlertTriangle className="h-4 w-4 text-blue-600" />
-                      <AlertTitle className="text-blue-800 dark:text-blue-200">Charts are lazy-loaded</AlertTitle>
+                      <AlertTitle className="text-blue-800 dark:text-blue-200">图表按需加载</AlertTitle>
                       <AlertDescription className="text-blue-700 dark:text-blue-300">
-                        First paint prioritizes current signal state. Load historical data when you are ready.
+                        首屏优先展示当前信号状态，你可按需加载历史图表数据。
                         <div className="mt-3">
                           <Button
                             size="sm"
@@ -572,7 +572,7 @@ function App() {
                             ) : (
                               <History className="mr-2 h-4 w-4" />
                             )}
-                            Load chart data
+                            加载图表数据
                           </Button>
                         </div>
                       </AlertDescription>
@@ -606,14 +606,14 @@ function App() {
 
             <TabsContent value="history" className="fade-up">
               {historicalData.length > 0 ? (
-                <Suspense fallback={<SectionLoader message="Loading review workspace..." />}>
+                <Suspense fallback={<SectionLoader message="正在加载复盘工作区..." />}>
                   <>
                     {!isFullHistoryLoaded && (
                       <Alert className="mb-4 border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
                         <AlertTriangle className="h-4 w-4 text-blue-600" />
-                        <AlertTitle className="text-blue-800 dark:text-blue-200">History still expanding</AlertTitle>
+                        <AlertTitle className="text-blue-800 dark:text-blue-200">历史数据仍在扩展</AlertTitle>
                         <AlertDescription className="text-blue-700 dark:text-blue-300">
-                          Full history is being loaded in the background for a complete replay view.
+                          后台正在补齐全量历史数据，以支持完整复盘。
                         </AlertDescription>
                       </Alert>
                     )}
@@ -624,14 +624,14 @@ function App() {
                 <div className="surface-card flex flex-col items-center justify-center py-12">
                   <Loader2 className="mb-4 h-12 w-12 animate-spin text-orange-500" />
                   <p className="text-muted-foreground">
-                    {isFullHistoryLoading ? 'Loading full historical dataset...' : 'Loading historical dataset...'}
+                    {isFullHistoryLoading ? '正在加载全量历史数据...' : '正在加载历史数据...'}
                   </p>
                 </div>
               )}
             </TabsContent>
 
             <TabsContent value="guide" className="fade-up">
-              <Suspense fallback={<SectionLoader message="Loading indicator guide..." />}>
+              <Suspense fallback={<SectionLoader message="正在加载指标说明..." />}>
                 <IndicatorExplanationPanel />
               </Suspense>
             </TabsContent>
@@ -640,10 +640,10 @@ function App() {
 
         <footer className="footer-line mt-12">
           <div className="app-container flex flex-col items-center justify-between gap-3 py-6 text-sm text-muted-foreground md:flex-row">
-            <p>Data source: BGeometrics file endpoints | Model: Core-6 V2</p>
+            <p>数据来源：BGeometrics 文件端点 | 模型：Core-6 V2</p>
             <p>
-              Data timestamp: {dataTimestampLabel}
-              {manifestGeneratedAt ? ` | Manifest generated: ${manifestGeneratedAt}` : ''}
+              数据时间：{dataTimestampLabel}
+              {manifestGeneratedAt ? ` | 清单生成时间：${manifestGeneratedAt}` : ''}
             </p>
           </div>
         </footer>

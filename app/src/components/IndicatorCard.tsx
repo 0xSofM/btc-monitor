@@ -21,17 +21,13 @@ function formatDate(dateStr?: string) {
     return '';
   }
 
-  const parsed = new Date(`${dateStr}T00:00:00Z`);
-  if (Number.isNaN(parsed.getTime())) {
+  const parts = dateStr.split('-');
+  if (parts.length !== 3) {
     return dateStr;
   }
 
-  return parsed.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: '2-digit',
-    timeZone: 'UTC',
-  });
+  const [year, month, day] = parts;
+  return `${year}年${Number(month)}月${Number(day)}日`;
 }
 
 export function IndicatorCard({
@@ -89,12 +85,12 @@ export function IndicatorCard({
             {triggered ? (
               <span className="inline-flex items-center gap-1">
                 <TrendingDown className="h-3 w-3" />
-                Triggered
+                已触发
               </span>
             ) : (
               <span className="inline-flex items-center gap-1">
                 <Minus className="h-3 w-3" />
-                Waiting
+                观察中
               </span>
             )}
           </Badge>
@@ -111,7 +107,7 @@ export function IndicatorCard({
         )}
 
         <div className="mt-3 flex items-center gap-2 text-sm">
-          <span className="text-muted-foreground">Trigger zone:</span>
+          <span className="text-muted-foreground">触发阈值：</span>
           <span className={triggered ? 'font-semibold text-emerald-700 dark:text-emerald-300' : 'font-medium'}>
             {targetText}
           </span>
@@ -120,13 +116,13 @@ export function IndicatorCard({
         {dataDate && (
           <div className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
             <Calendar className="h-3.5 w-3.5" />
-            Updated: {formatDate(dataDate)}
+            数据日期：{formatDate(dataDate)}
           </div>
         )}
 
         {triggered && (
           <div className="mt-3 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-2 text-xs text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-            This indicator is currently inside its bottom-recognition range.
+            该指标当前位于底部识别区间内。
           </div>
         )}
       </CardContent>
