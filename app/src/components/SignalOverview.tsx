@@ -8,7 +8,7 @@ interface SignalOverviewProps {
   btcPrice: number;
   signalCount: number;
   totalIndicators: number;
-  lastUpdated: string;
+  dataTimestampLabel: string;
   dataSource: 'api' | 'static' | 'history';
   latestDataDate: string;
   latestDataAgeHours: number;
@@ -52,7 +52,7 @@ export function SignalOverview({
   btcPrice,
   signalCount,
   totalIndicators,
-  lastUpdated,
+  dataTimestampLabel,
   dataSource,
   latestDataDate,
   latestDataAgeHours,
@@ -80,7 +80,7 @@ export function SignalOverview({
               {freshnessBadge.label}
             </Badge>
             <Badge variant="outline" className="text-xs">
-              更新于 {lastUpdated}
+              数据时间 {dataTimestampLabel}
             </Badge>
           </div>
         </div>

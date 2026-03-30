@@ -69,7 +69,7 @@ function App() {
   const [isFullHistoryLoaded, setIsFullHistoryLoaded] = useState(false);
   const [isFullHistoryLoading, setIsFullHistoryLoading] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState('-');
+  const [dataTimestampLabel, setDataTimestampLabel] = useState('-');
   const [error, setError] = useState<string | null>(null);
   const [dataSource, setDataSource] = useState<DataSource>('static');
   const { theme, setTheme } = useTheme();
@@ -120,18 +120,12 @@ function App() {
   const applyLatestData = (data: LatestData, source: DataSource) => {
     setLatestData(data);
     setDataSource(source);
-
-    if (source === 'api') {
-      setLastUpdated(`${new Date().toLocaleString('zh-CN')}（实时 API）`);
-      return;
-    }
-
-    if (source === 'static') {
-      setLastUpdated(`${data.date}（GitHub 同步静态快照）`);
-      return;
-    }
-
-    setLastUpdated(`${data.date}（历史回退数据）`);
+    const sourceLabel: Record<DataSource, string> = {
+      api: '实时 API 数据日期',
+      static: 'GitHub 同步静态快照日期',
+      history: '历史回退数据日期',
+    };
+    setDataTimestampLabel(`${data.date}（${sourceLabel[source]}）`);
   };
 
   const ensureFullHistoryLoaded = useCallback(async () => {
@@ -469,7 +463,7 @@ function App() {
                   btcPrice={latestData.btcPrice}
                   signalCount={latestData.signalCount}
                   totalIndicators={5}
-                  lastUpdated={lastUpdated}
+                  dataTimestampLabel={dataTimestampLabel}
                   dataSource={dataSource}
                   latestDataDate={latestData.date}
                   latestDataAgeHours={latestDataAgeHours}
@@ -594,7 +588,7 @@ function App() {
               数据来源：BGeometrics 图表文件 | 页面默认优先展示静态快照
             </p>
             <p className="text-sm text-muted-foreground">
-              最后更新：{lastUpdated}
+              数据时间：{dataTimestampLabel}
               {manifestGeneratedAt ? ` | Manifest：${manifestGeneratedAt}` : ''}
             </p>
           </div>
