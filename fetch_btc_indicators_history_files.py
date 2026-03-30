@@ -27,6 +27,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
@@ -74,6 +75,10 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
 REQUEST_TIMEOUT = 45
 MAX_RETRIES = 4
 RETRY_BACKOFF_SEC = 2.0
+RESERVE_RISK_BACKUP_URLS = [
+    "https://bitcoin-data.com/v1/reserve-risk/1",
+    "https://r.jina.ai/http://bitcoin-data.com/v1/reserve-risk/1",
+]
 
 
 SCORE_BANDS: List[Tuple[int, int, str]] = [
@@ -220,6 +225,115 @@ def fetch_metric(metric_key: str, config: Dict[str, object]) -> Tuple[pd.DataFra
     raise RuntimeError(f"Failed to fetch {metric_key}: {last_error}")
 
 
+def _extract_json_from_response_text(raw_text: str) -> object | None:
+    trimmed = raw_text.strip()
+    if not trimmed:
+        return None
+
+    try:
+        return json.loads(trimmed)
+    except Exception:
+        pass
+
+    match = re.search(r"(\{[\s\S]*\}|\[[\s\S]*\])", trimmed)
+    if not match:
+        return None
+
+    candidate = match.group(1)
+    try:
+        return json.loads(candidate)
+    except Exception:
+        return None
+
+
+def _parse_reserve_risk_point(payload: object) -> Tuple[pd.Timestamp, float] | None:
+    point: Dict[str, object] | None = None
+
+    if isinstance(payload, dict):
+        if "d" in payload and "reserveRisk" in payload:
+            point = payload
+    elif isinstance(payload, list) and payload:
+        if isinstance(payload[-1], dict):
+            point = payload[-1]
+
+    if not point:
+        return None
+
+    date_raw = _safe_iso_date(point.get("d"))
+    value_raw = _safe_float(point.get("reserveRisk"))
+    if not date_raw or value_raw is None:
+        return None
+
+    try:
+        date_value = pd.to_datetime(date_raw)
+    except Exception:
+        return None
+
+    return date_value, value_raw
+
+
+def fetch_reserve_risk_backup_point() -> Tuple[pd.Timestamp, float, str] | None:
+    headers = {"User-Agent": "btc-monitor-history-fetcher/1.1"}
+
+    for url in RESERVE_RISK_BACKUP_URLS:
+        try:
+            response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+            if response.status_code >= 400:
+                continue
+
+            payload = _extract_json_from_response_text(response.text)
+            if payload is None:
+                continue
+
+            parsed = _parse_reserve_risk_point(payload)
+            if parsed is None:
+                continue
+
+            return parsed[0], parsed[1], url
+        except Exception:
+            continue
+
+    return None
+
+
+def patch_reserve_risk_tail(df: pd.DataFrame) -> Tuple[pd.DataFrame, str | None]:
+    if df.empty or "date" not in df.columns or "reserve_risk" not in df.columns:
+        return df, None
+
+    backup_point = fetch_reserve_risk_backup_point()
+    if not backup_point:
+        return df, None
+
+    backup_date, backup_value, backup_source = backup_point
+    patched = df.copy()
+    patched["date"] = pd.to_datetime(patched["date"])
+    patched = patched.sort_values("date").reset_index(drop=True)
+
+    same_day = patched["date"] == backup_date
+    if same_day.any():
+        patched.loc[same_day, "reserve_risk"] = backup_value
+    else:
+        patched = pd.concat(
+            [
+                patched,
+                pd.DataFrame(
+                    {
+                        "date": [backup_date],
+                        "reserve_risk": [backup_value],
+                    }
+                ),
+            ],
+            ignore_index=True,
+        )
+        patched = patched.sort_values("date").drop_duplicates(subset=["date"], keep="last").reset_index(drop=True)
+
+    applied_info = (
+        f"{backup_date.strftime('%Y-%m-%d')} -> {backup_value:.10f} "
+        f"(source: {backup_source})"
+    )
+    return patched, applied_info
+
+
 def build_base_dataframe(
     start_date: str | None = None,
     end_date: str | None = None,
@@ -247,6 +361,14 @@ def build_base_dataframe(
             dfs[key] = df
             selected_sources[key] = selected_url
             print(f"  Rows: {len(df):,} | Source: {selected_url}")
+
+    reserve_patched_df, reserve_patch_info = patch_reserve_risk_tail(dfs["reserve_risk"])
+    if reserve_patch_info:
+        dfs["reserve_risk"] = reserve_patched_df
+        selected_sources["reserve_risk"] = (
+            f"{selected_sources['reserve_risk']} + backup({reserve_patch_info})"
+        )
+        print(f"Reserve Risk tail patched: {reserve_patch_info}")
 
     merged: pd.DataFrame | None = None
     for key in [

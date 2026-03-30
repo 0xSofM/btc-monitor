@@ -4,20 +4,20 @@
   "realizedPrice": 53683.53,
   "priceMa200wRatio": 1.1223913515192918,
   "priceRealizedRatio": 1.2398726387776662,
-  "reserveRisk": 0.001786,
+  "reserveRisk": 0.0005603792,
   "sthSopr": 0.9919646853,
   "sthMvrv": 0.79,
   "ma200w": 59302.6130412552,
   "puellMultiple": 0.746,
-  "signalCount": 2,
-  "signalScoreV2": 3,
+  "signalCount": 3,
+  "signalScoreV2": 5,
   "signalScoreV2Min3d": 3.0,
   "signalConfirmed3d": false,
-  "signalBandV2": "watch",
+  "signalBandV2": "focus",
   "signals": {
     "priceMa200w": false,
     "priceRealized": false,
-    "reserveRisk": false,
+    "reserveRisk": true,
     "sthSopr": true,
     "sthMvrv": true,
     "puell": false
@@ -25,7 +25,7 @@
   "indicatorDates": {
     "priceMa200w": "2026-03-30",
     "priceRealized": "2026-03-27",
-    "reserveRisk": "2025-12-28",
+    "reserveRisk": "2026-03-29",
     "sthSopr": "2026-03-28",
     "sthMvrv": "2026-03-27",
     "puell": "2026-03-29"
@@ -40,8 +40,8 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.0016374,
-      "deep": 0.001251
+      "trigger": 0.001637,
+      "deep": 0.0012492
     },
     "sthSopr": {
       "trigger": 1.0,
@@ -56,5 +56,5 @@
       "deep": 0.5
     }
   },
-  "lastUpdated": "2026-03-30T12:47:53.794293+00:00"
+  "lastUpdated": "2026-03-30T13:48:31.727071+00:00"
 }

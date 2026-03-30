@@ -51,6 +51,26 @@ const cache: CacheState = {
   manifestTimestamp: 0,
 };
 
+function hasCore6Coverage(rows: IndicatorData[]): boolean {
+  if (!rows.length) {
+    return false;
+  }
+
+  const recent = rows.slice(-Math.min(rows.length, 365));
+  const required: Array<keyof IndicatorData> = [
+    'priceMa200wRatio',
+    'priceRealizedRatio',
+    'reserveRisk',
+    'sthSopr',
+    'sthMvrv',
+    'puellMultiple',
+  ];
+
+  return required.every((field) =>
+    recent.some((row) => row[field] !== null && row[field] !== undefined),
+  );
+}
+
 function normalizeHistoryRows(rawRows: unknown[]): IndicatorData[] {
   return rawRows
     .map((item) => normalizeIndicatorData(item))
@@ -120,10 +140,11 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
   }
 
   const primaryPath = mode === 'full' ? STATIC_HISTORY_FULL_PATH : STATIC_HISTORY_LIGHT_PATH;
-  const fallbackPath = mode === 'full' ? STATIC_HISTORY_LIGHT_PATH : STATIC_HISTORY_FULL_PATH;
+  const primaryTimeout = mode === 'full' ? 120000 : 30000;
+  const fallbackPath = mode === 'light' ? STATIC_HISTORY_FULL_PATH : null;
 
   try {
-    const primaryRaw = await fetchStaticHistoryRaw(primaryPath, 30000);
+    const primaryRaw = await fetchStaticHistoryRaw(primaryPath, primaryTimeout);
     const primaryData = normalizeHistoryRows(primaryRaw);
     persistLocalData({ history: primaryData });
 
@@ -138,18 +159,28 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
 
     return primaryData;
   } catch (primaryError) {
+    if (mode === 'full') {
+      console.warn(`[DataService] Full history source failed (${primaryPath}).`, primaryError);
+      const localHistory = readLocalData();
+      if (localHistory.length > 0 && hasCore6Coverage(localHistory)) {
+        cache.historyFull = localHistory;
+        return localHistory;
+      }
+      return [];
+    }
+
     console.warn(`[DataService] Primary history source failed (${primaryPath}), trying fallback (${fallbackPath}).`, primaryError);
 
     try {
+      if (!fallbackPath) {
+        return [];
+      }
+
       const fallbackRaw = await fetchStaticHistoryRaw(fallbackPath, 30000);
       const fallbackData = normalizeHistoryRows(fallbackRaw);
       persistLocalData({ history: fallbackData });
 
-      if (mode === 'full') {
-        cache.historyFull = fallbackData;
-      } else {
-        cache.historyLight = fallbackData;
-      }
+      cache.historyLight = fallbackData;
 
       return fallbackData;
     } catch (fallbackError) {
@@ -157,11 +188,7 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
 
       const localHistory = readLocalData();
       if (localHistory.length > 0) {
-        if (mode === 'full') {
-          cache.historyFull = localHistory;
-        } else {
-          cache.historyLight = localHistory;
-        }
+        cache.historyLight = localHistory;
       }
 
       return localHistory;

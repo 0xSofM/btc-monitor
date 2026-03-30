@@ -75,6 +75,27 @@ function scoreBandLabel(score: number): string {
   return '观察';
 }
 
+function hasCore6Coverage(rows: IndicatorData[]): boolean {
+  if (!rows.length) {
+    return false;
+  }
+
+  const recent = rows.slice(-Math.min(rows.length, 365));
+  return [
+    'priceMa200wRatio',
+    'priceRealizedRatio',
+    'reserveRisk',
+    'sthSopr',
+    'sthMvrv',
+    'puellMultiple',
+  ].every((field) =>
+    recent.some((row) => {
+      const value = row[field as keyof IndicatorData];
+      return value !== null && value !== undefined;
+    }),
+  );
+}
+
 function App() {
   const [latestData, setLatestData] = useState<LatestData | null>(null);
   const [historicalData, setHistoricalData] = useState<IndicatorData[]>([]);
@@ -146,9 +167,12 @@ function App() {
     setIsFullHistoryLoading(true);
     try {
       const fullHistory = await fetchFullHistoricalData();
-      if (fullHistory.length > 0) {
+      if (fullHistory.length > 0 && hasCore6Coverage(fullHistory)) {
         setHistoricalData(fullHistory);
         setIsFullHistoryLoaded(true);
+      } else {
+        setIsFullHistoryLoaded(false);
+        toast.warning('全量历史加载未通过完整性校验，仍使用当前可用数据。');
       }
     } catch (err) {
       console.error('Error loading full history:', err);
