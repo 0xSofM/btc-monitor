@@ -1,53 +1,5 @@
 [
   {
-    "d": "2018-03-30",
-    "unixTs": 1522368000,
-    "btcPrice": 6832.1490663355,
-    "ma200w": 2000.8029839324,
-    "priceMa200wRatio": 3.414703557122611,
-    "mvrvZscore": 0.6093889266,
-    "lthMvrv": 5.582,
-    "puellMultiple": 1.1227142857,
-    "nupl": 0.2312,
-    "signalPriceMa": false,
-    "signalMvrvZ": false,
-    "signalLthMvrv": false,
-    "signalPuell": false,
-    "signalNupl": false,
-    "signalCount": 0,
-    "api_data_date": {
-      "price_ma200w": "2018-03-30",
-      "mvrv_z": "2018-03-30",
-      "lth_mvrv": "2018-03-30",
-      "puell": "2018-03-30",
-      "nupl": "2018-03-30"
-    }
-  },
-  {
-    "d": "2018-03-31",
-    "unixTs": 1522454400,
-    "btcPrice": 6922.2812969024,
-    "ma200w": 2005.2989759869,
-    "priceMa200wRatio": 3.4519946301252293,
-    "mvrvZscore": 0.6450063644,
-    "lthMvrv": 5.652,
-    "puellMultiple": 1.1144285714,
-    "nupl": 0.2417,
-    "signalPriceMa": false,
-    "signalMvrvZ": false,
-    "signalLthMvrv": false,
-    "signalPuell": false,
-    "signalNupl": false,
-    "signalCount": 0,
-    "api_data_date": {
-      "price_ma200w": "2018-03-31",
-      "mvrv_z": "2018-03-31",
-      "lth_mvrv": "2018-03-31",
-      "puell": "2018-03-31",
-      "nupl": "2018-03-31"
-    }
-  },
-  {
     "d": "2018-04-01",
     "unixTs": 1522540800,
     "btcPrice": 6804.5248793104,
@@ -69860,6 +69812,54 @@
       "mvrv_z": "2026-03-27",
       "lth_mvrv": "2026-03-27",
       "puell": "2026-03-28",
+      "nupl": "2026-03-28"
+    }
+  },
+  {
+    "d": "2026-03-29",
+    "unixTs": 1774742400,
+    "btcPrice": 65966.7523939217,
+    "ma200w": 59275.9441169684,
+    "priceMa200wRatio": 1.1128756087587643,
+    "mvrvZscore": 0.5086,
+    "lthMvrv": 1.53,
+    "puellMultiple": 0.746,
+    "nupl": 0.1823349475,
+    "signalPriceMa": false,
+    "signalMvrvZ": false,
+    "signalLthMvrv": false,
+    "signalPuell": false,
+    "signalNupl": false,
+    "signalCount": 0,
+    "api_data_date": {
+      "price_ma200w": "2026-03-29",
+      "mvrv_z": "2026-03-27",
+      "lth_mvrv": "2026-03-27",
+      "puell": "2026-03-29",
+      "nupl": "2026-03-28"
+    }
+  },
+  {
+    "d": "2026-03-30",
+    "unixTs": 1774828800,
+    "btcPrice": 66560.74,
+    "ma200w": 59302.6130412552,
+    "priceMa200wRatio": 1.1223913515192918,
+    "mvrvZscore": 0.5086,
+    "lthMvrv": 1.53,
+    "puellMultiple": 0.746,
+    "nupl": 0.1823349475,
+    "signalPriceMa": false,
+    "signalMvrvZ": false,
+    "signalLthMvrv": false,
+    "signalPuell": false,
+    "signalNupl": false,
+    "signalCount": 0,
+    "api_data_date": {
+      "price_ma200w": "2026-03-30",
+      "mvrv_z": "2026-03-27",
+      "lth_mvrv": "2026-03-27",
+      "puell": "2026-03-29",
       "nupl": "2026-03-28"
     }
   }
