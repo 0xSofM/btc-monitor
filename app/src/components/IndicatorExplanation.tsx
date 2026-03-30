@@ -1,163 +1,105 @@
-import { AlertTriangle, BookOpen, Info, TrendingDown } from 'lucide-react';
+﻿import { AlertTriangle, BookOpen, Info, TrendingDown } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export function IndicatorExplanation() {
-  const indicators = [
-    {
-      id: 'price-ma200w',
-      name: 'BTC 价格 / 200 周均线',
-      icon: <TrendingDown className="h-5 w-5" />,
-      description:
-        '这个指标衡量当前 BTC 价格相对 200 周均线的位置。历史上，价格跌到 200 周均线附近或下方，通常对应熊市后期和长期低估区。',
-      target: '< 1',
-      rationale:
-        '当价格低于 200 周均线时，市场情绪通常偏悲观，但长期风险收益比往往更有吸引力，适合分批布局。',
-      historicalExamples: [
-        { date: '2015 年 1 月', price: '$175', context: '2014-2015 熊市底部区域' },
-        { date: '2018 年 12 月', price: '$3,200', context: '2018 熊市底部区域' },
-        { date: '2022 年 6-11 月', price: '$16,000-$20,000', context: '2022 熊市底部区域' },
-      ],
-    },
-    {
-      id: 'mvrv-z',
-      name: 'MVRV Z-Score',
-      icon: <TrendingDown className="h-5 w-5" />,
-      description:
-        'MVRV Z-Score 用于评估市场价值相对链上“实现价值”的偏离程度。它能帮助识别市场是否处于过热或低估状态。',
-      target: '< 0',
-      rationale:
-        '当 MVRV Z-Score 低于 0，说明市场整体估值处于历史偏低区间，往往出现在周期底部附近。',
-      historicalExamples: [
-        { date: '2011 年 10 月', price: '$3-$5', context: '早期周期底部' },
-        { date: '2015 年 1 月', price: '$175', context: '熊市低估区' },
-        { date: '2018 年 12 月', price: '$3,200', context: '熊市低估区' },
-        { date: '2022 年 11 月', price: '$16,000-$20,000', context: '周期低估区' },
-      ],
-    },
-    {
-      id: 'lth-mvrv',
-      name: 'LTH-MVRV',
-      icon: <TrendingDown className="h-5 w-5" />,
-      description:
-        'LTH-MVRV 反映长期持有者（通常持币超过 155 天）是否处于盈利状态，是观察长期资金压力的重要指标。',
-      target: '< 1',
-      rationale:
-        '当 LTH-MVRV 小于 1，意味着长期持有者整体接近或进入浮亏，往往对应市场极度谨慎阶段。',
-      historicalExamples: [
-        { date: '2015 年 1 月', price: '$175', context: '长期持有者普遍承压' },
-        { date: '2018 年 12 月', price: '$3,200', context: '长期持有者成本线被击穿' },
-        { date: '2020 年 3 月', price: '$5,000', context: '极端黑天鹅冲击' },
-        { date: '2022 年 11 月', price: '$16,000-$20,000', context: '长期持有者再度承压' },
-      ],
-    },
-    {
-      id: 'puell',
-      name: 'Puell Multiple',
-      icon: <AlertTriangle className="h-5 w-5" />,
-      description:
-        'Puell Multiple 用来衡量矿工收入相对历史均值的高低，能反映矿工侧抛压和行业压力。',
-      target: '< 0.5',
-      rationale:
-        '当指标低于 0.5，通常说明矿工收入显著低于常态，市场处于压力后期，可能接近价值区。',
-      historicalExamples: [
-        { date: '2015 年 1 月', price: '$175', context: '矿工收入困难期' },
-        { date: '2018 年 12 月', price: '$3,200', context: '矿工关机潮阶段' },
-        { date: '2020 年 3 月', price: '$5,000', context: '市场快速去杠杆' },
-        { date: '2022 年 11 月', price: '$16,000-$20,000', context: '矿工压力加剧' },
-      ],
-    },
-    {
-      id: 'nupl',
-      name: 'NUPL',
-      icon: <TrendingDown className="h-5 w-5" />,
-      description:
-        'NUPL（净未实现盈亏）表示全网投资者当前账面盈亏状态，能直观反映市场情绪和风险偏好。',
-      target: '< 0',
-      rationale:
-        '当 NUPL 低于 0，说明全网整体进入未实现亏损区间，往往是恐慌极值阶段，历史上较少持续太久。',
-      historicalExamples: [
-        { date: '2011 年 9-10 月', price: '$3-$5', context: '首次深度回撤' },
-        { date: '2015 年 1 月', price: '$175', context: '深度亏损阶段' },
-        { date: '2018 年 11-12 月', price: '$3,200-$4,000', context: '全面亏损区' },
-        { date: '2022 年 6-11 月', price: '$16,000-$20,000', context: '持续亏损区' },
-      ],
-    },
-  ];
+const indicators = [
+  {
+    id: 'price-ma200w',
+    name: 'Price / 200W MA',
+    icon: TrendingDown,
+    target: '< 1 (deep < 0.85)',
+    description: 'Compares spot price against the long-cycle 200-week moving average.',
+    rationale: 'Price below the 200W MA usually appears in broad panic phases and improves long-horizon risk/reward.',
+  },
+  {
+    id: 'price-realized',
+    name: 'Price / Realized Price',
+    icon: TrendingDown,
+    target: '< 1 (deep < 0.90)',
+    description: 'Measures whether market price trades below the chain-wide average cost basis.',
+    rationale: 'Trading below realized price often marks undervaluation zones within cycle bottoms.',
+  },
+  {
+    id: 'reserve-risk',
+    name: 'Reserve Risk',
+    icon: TrendingDown,
+    target: '< p20 (deep < p10)',
+    description: 'Tracks long-term holder conviction relative to market price risk.',
+    rationale: 'Historically low reserve risk commonly aligns with attractive long-term accumulation windows.',
+  },
+  {
+    id: 'sth-sopr',
+    name: 'STH-SOPR',
+    icon: AlertTriangle,
+    target: '< 1 (deep < 0.97)',
+    description: 'Captures whether short-term holders are realizing losses.',
+    rationale: 'SOPR below 1 often indicates capitulation and supply transfer near local bottoming zones.',
+  },
+  {
+    id: 'sth-mvrv',
+    name: 'STH-MVRV',
+    icon: AlertTriangle,
+    target: '< 1 (deep < 0.85)',
+    description: 'Shows unrealized PnL stress among short-term holders.',
+    rationale: 'Low STH-MVRV values often coincide with exhausted short-term positioning.',
+  },
+  {
+    id: 'puell',
+    name: 'Puell Multiple',
+    icon: TrendingDown,
+    target: '< 0.6 (deep < 0.5)',
+    description: 'Compares miner revenue to historical norms to gauge supply-side pressure.',
+    rationale: 'Very low Puell levels often appear after miner stress has largely reset.',
+  },
+];
 
+export function IndicatorExplanation() {
   return (
-    <Card className="mt-6">
+    <Card className="surface-card mt-6">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-lg">
           <BookOpen className="h-5 w-5" />
-          指标说明
+          Core-6 Indicator Guide
         </CardTitle>
       </CardHeader>
 
-      <CardContent>
-        <div className="space-y-4">
-          {indicators.map((indicator) => (
-            <Card key={indicator.id}>
-              <CardHeader>
-                <div className="flex items-center gap-3 text-left">
-                  <div className="rounded-full bg-muted p-2">
-                    {indicator.icon}
+      <CardContent className="space-y-4">
+        <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          {indicators.map((indicator) => {
+            const Icon = indicator.icon;
+            return (
+              <article key={indicator.id} className="rounded-xl border bg-background/70 p-4">
+                <div className="flex items-start gap-3">
+                  <div className="rounded-full border bg-muted/50 p-2">
+                    <Icon className="h-4 w-4" />
                   </div>
-                  <div>
-                    <p className="font-medium">{indicator.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      目标区间：{indicator.target}
-                    </p>
-                  </div>
-                </div>
-              </CardHeader>
-
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="mb-1 font-medium">指标介绍</h4>
-                    <p className="text-sm text-muted-foreground">{indicator.description}</p>
-                  </div>
-
-                  <div>
-                    <h4 className="mb-1 font-medium">买入逻辑</h4>
-                    <p className="text-sm text-muted-foreground">{indicator.rationale}</p>
-                  </div>
-
-                  <div>
-                    <h4 className="mb-2 font-medium">历史案例</h4>
-                    <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                      {indicator.historicalExamples.map((example, idx) => (
-                        <div key={idx} className="rounded-lg bg-muted p-3 text-sm">
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium">{example.date}</span>
-                            <span className="text-green-600">{example.price}</span>
-                          </div>
-                          <p className="mt-1 text-muted-foreground">{example.context}</p>
-                        </div>
-                      ))}
+                  <div className="space-y-2">
+                    <div>
+                      <h3 className="font-semibold leading-tight">{indicator.name}</h3>
+                      <p className="text-xs text-muted-foreground">Target zone: {indicator.target}</p>
                     </div>
+                    <p className="text-sm text-muted-foreground">{indicator.description}</p>
+                    <p className="text-sm">{indicator.rationale}</p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+              </article>
+            );
+          })}
+        </section>
 
-        <div className="mt-6 rounded-lg bg-blue-50 p-4 dark:bg-blue-950">
+        <section className="rounded-xl border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950">
           <div className="flex items-start gap-3">
-            <Info className="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <Info className="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-300" />
             <div>
-              <h4 className="mb-1 font-medium text-blue-800 dark:text-blue-200">
-                组合使用说明
-              </h4>
-              <p className="text-sm text-blue-700 dark:text-blue-300">
-                这 5 个指标分别覆盖价格趋势、估值偏离、长期持有者状态、矿工压力和全网盈亏。
-                单一指标可能有噪音，多指标共振时信号通常更可靠。历史上，4-5 个指标同向触发的阶段，多出现在周期底部附近。
+              <h3 className="font-semibold text-blue-800 dark:text-blue-200">V2 scoring framework</h3>
+              <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
+                Each Core-6 indicator contributes 0/1/2 points, for a maximum score of 12. Score bands are:
+                0-3 Watch, 4-6 Focus, 7-9 Accumulation, 10-12 Extreme Bottom. A 3-day confirmation layer is applied
+                to reduce one-day noise.
               </p>
             </div>
           </div>
-        </div>
+        </section>
       </CardContent>
     </Card>
   );

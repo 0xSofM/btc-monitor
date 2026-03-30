@@ -1,25 +1,35 @@
-﻿export type HistoryMode = 'light' | 'full';
+export type HistoryMode = 'light' | 'full';
 
-export type IndicatorKey = 'priceMa200w' | 'mvrvZ' | 'lthMvrv' | 'puell' | 'nupl';
+export type IndicatorKey =
+  | 'priceMa200w'
+  | 'priceRealized'
+  | 'reserveRisk'
+  | 'sthSopr'
+  | 'sthMvrv'
+  | 'puell';
 
 export type ApiDatePayload = {
   priceMa200w?: string;
   price_ma200w?: string;
-  mvrvZ?: string;
-  mvrv_z?: string;
-  lthMvrv?: string;
-  lth_mvrv?: string;
+  priceRealized?: string;
+  price_realized?: string;
+  reserveRisk?: string;
+  reserve_risk?: string;
+  sthSopr?: string;
+  sth_sopr?: string;
+  sthMvrv?: string;
+  sth_mvrv?: string;
   puell?: string;
-  nupl?: string;
 };
 
 export type ApiMetricPoint = {
   d?: string;
   btcPrice?: string | number;
-  mvrvZscore?: string | number;
-  lthMvrv?: string | number;
+  realizedPrice?: string | number;
+  reserveRisk?: string | number;
+  sthSopr?: string | number;
+  sthMvrv?: string | number;
   puellMultiple?: string | number;
-  nupl?: string | number;
   [key: string]: unknown;
 };
 

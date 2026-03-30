@@ -2,13 +2,20 @@
 
 A BTC indicator dashboard with a static-data pipeline designed for reliable deployment on GitHub + Vercel.
 
-## What It Tracks
+## What It Tracks (Core-6 V2)
 
 - `BTC Price / 200W-MA` (computed)
-- `MVRV Z-Score`
-- `LTH-MVRV`
+- `BTC Price / Realized Price` (computed)
+- `Reserve Risk`
+- `STH-SOPR`
+- `STH-MVRV`
 - `Puell Multiple`
-- `NUPL`
+
+V2 scoring:
+
+- per-indicator score: `0 / 1 / 2`
+- total score: `signalScoreV2` (`0..12`)
+- confirmation flag: `signalConfirmed3d` (3-day confirmation)
 
 ## Project Structure
 
@@ -25,7 +32,7 @@ A BTC indicator dashboard with a static-data pipeline designed for reliable depl
 ## Data Flow
 
 1. Script fetches historical series from `charts.bgeometrics.com/files/*.json`.
-2. Script computes `BTC Price / 200W-MA` and signal flags.
+2. Script computes derived ratios and Core-6 V2 signal/score fields.
 3. Script writes full + light history, latest snapshot, and manifest JSON files.
 4. Data quality validator checks structural/incremental consistency.
 5. GitHub Actions runs on schedule and commits updated JSON.
@@ -59,6 +66,10 @@ python validate_btc_data_quality.py \
   --current-latest app/public/btc_indicators_latest.json \
   --max-indicator-lag-days 21
 ```
+
+Note:
+
+- `reserveRisk` uses a slower upstream cadence, and the validator applies an internal per-indicator lag override for that series.
 
 Run frontend:
 

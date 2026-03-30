@@ -1,4 +1,4 @@
-import { Calendar, Minus, TrendingDown } from 'lucide-react';
+﻿import { Calendar, Minus, TrendingDown } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,6 +16,24 @@ interface IndicatorCardProps {
   detailValue?: string;
 }
 
+function formatDate(dateStr?: string) {
+  if (!dateStr) {
+    return '';
+  }
+
+  const parsed = new Date(`${dateStr}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime())) {
+    return dateStr;
+  }
+
+  return parsed.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    timeZone: 'UTC',
+  });
+}
+
 export function IndicatorCard({
   name,
   description,
@@ -29,88 +47,86 @@ export function IndicatorCard({
   detailValue,
 }: IndicatorCardProps) {
   const formatValue = (val: number) => {
-    if (format === 'price') {
-      return `$${val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    if (!Number.isFinite(val)) {
+      return '-';
     }
+
+    if (format === 'price') {
+      return `$${val.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`;
+    }
+
+    if (Math.abs(val) >= 10) {
+      return val.toFixed(2);
+    }
+
+    if (Math.abs(val) >= 1) {
+      return val.toFixed(3);
+    }
+
     return val.toFixed(4);
   };
 
-  const getTargetText = () => {
-    const op = targetOperator === 'lt' ? '<' : '>';
-    return `${op} ${formatValue(targetValue)}`;
-  };
-
-  const formatDate = (dateStr?: string) => {
-    if (!dateStr) return '';
-    const parts = dateStr.split('-');
-    if (parts.length === 3) {
-      const year = Number(parts[0]);
-      const month = Number(parts[1]);
-      const day = Number(parts[2]);
-      return `${year}年${month}月${day}日`;
-    }
-    return dateStr;
-  };
+  const targetText = `${targetOperator === 'lt' ? '<' : '>'} ${formatValue(targetValue)}`;
 
   return (
-    <Card className={`relative overflow-hidden transition-all duration-300 ${triggered ? 'ring-2 ring-green-500 shadow-lg shadow-green-500/20' : ''}`}>
+    <Card className={`surface-card relative overflow-hidden transition-all duration-300 ${triggered ? 'ring-1 ring-emerald-500/60' : ''}`}>
       <div className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: color }} />
 
       <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-sm font-medium text-muted-foreground">
-            {name}
-          </CardTitle>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <CardTitle className="text-sm font-semibold tracking-tight">{name}</CardTitle>
+            <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+          </div>
+
           <Badge
             variant={triggered ? 'default' : 'secondary'}
-            className={triggered ? 'bg-green-500 hover:bg-green-600' : ''}
+            className={triggered ? 'bg-emerald-600 text-white hover:bg-emerald-600' : ''}
           >
             {triggered ? (
-              <span className="flex items-center gap-1">
+              <span className="inline-flex items-center gap-1">
                 <TrendingDown className="h-3 w-3" />
-                买入信号
+                Triggered
               </span>
             ) : (
-              <span className="flex items-center gap-1">
+              <span className="inline-flex items-center gap-1">
                 <Minus className="h-3 w-3" />
-                观望
+                Waiting
               </span>
             )}
           </Badge>
         </div>
-        <p className="text-xs text-muted-foreground">{description}</p>
       </CardHeader>
 
       <CardContent>
-        <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-bold">{formatValue(currentValue)}</span>
-        </div>
+        <p className="text-2xl font-bold">{formatValue(currentValue)}</p>
 
         {detailValue && (
-          <div className="mt-2 rounded bg-muted/50 px-2 py-1 text-sm text-muted-foreground">
+          <div className="mt-2 rounded-md border bg-muted/30 px-2.5 py-1.5 text-xs text-muted-foreground">
             {detailValue}
           </div>
         )}
 
-        <div className="mt-2 flex items-center gap-2 text-sm">
-          <span className="text-muted-foreground">目标值：</span>
-          <span className={`font-medium ${triggered ? 'text-green-600' : 'text-muted-foreground'}`}>
-            {getTargetText()}
+        <div className="mt-3 flex items-center gap-2 text-sm">
+          <span className="text-muted-foreground">Trigger zone:</span>
+          <span className={triggered ? 'font-semibold text-emerald-700 dark:text-emerald-300' : 'font-medium'}>
+            {targetText}
           </span>
         </div>
 
         {dataDate && (
-          <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
-            <Calendar className="h-3 w-3" />
-            <span>数据日期：{formatDate(dataDate)}</span>
+          <div className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
+            <Calendar className="h-3.5 w-3.5" />
+            Updated: {formatDate(dataDate)}
           </div>
         )}
 
         {triggered && (
-          <div className="mt-3 rounded-md bg-green-50 p-2 dark:bg-green-950">
-            <p className="text-xs font-medium text-green-700 dark:text-green-300">
-              指标已达到抄底区间，可作为底部识别信号
-            </p>
+          <div className="mt-3 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-2 text-xs text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+            This indicator is currently inside its bottom-recognition range.
           </div>
         )}
       </CardContent>

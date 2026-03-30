@@ -8,31 +8,35 @@ import {
   getMA200ChartData,
 } from '@/services/dataService';
 
-describe('dataService helpers', () => {
+describe('dataService helpers (V2)', () => {
   it('getLatestFromHistory reads latest row and api_data_date fields', () => {
     const history = [
       {
         d: '2026-03-27',
         btcPrice: 80000,
         priceMa200wRatio: 1.2,
-        mvrvZscore: 0.4,
-        lthMvrv: 1.1,
+        priceRealizedRatio: 1.05,
+        reserveRisk: 0.002,
+        sthSopr: 1.01,
+        sthMvrv: 1.1,
         puellMultiple: 0.8,
-        nupl: 0.2,
       },
       {
         d: '2026-03-28',
         btcPrice: 79000,
         priceMa200wRatio: 0.95,
-        mvrvZscore: -0.1,
-        lthMvrv: 0.9,
-        puellMultiple: 0.4,
-        nupl: -0.05,
+        priceRealizedRatio: 0.97,
+        reserveRisk: 0.0012,
+        sthSopr: 0.99,
+        sthMvrv: 0.92,
+        puellMultiple: 0.45,
         api_data_date: {
-          mvrv_z: '2026-03-27',
-          lth_mvrv: '2026-03-27',
+          price_ma200w: '2026-03-28',
+          price_realized: '2026-03-27',
+          reserve_risk: '2026-03-27',
+          sth_sopr: '2026-03-28',
+          sth_mvrv: '2026-03-27',
           puell: '2026-03-28',
-          nupl: '2026-03-28',
         },
       },
     ] as IndicatorData[];
@@ -40,19 +44,19 @@ describe('dataService helpers', () => {
     const latest = getLatestFromHistory(history);
     expect(latest).not.toBeNull();
     expect(latest?.date).toBe('2026-03-28');
-    expect(latest?.signalCount).toBe(5);
-    expect(latest?.indicatorDates?.mvrvZ).toBe('2026-03-27');
-    expect(latest?.indicatorDates?.lthMvrv).toBe('2026-03-27');
+    expect(latest?.signalCount).toBe(6);
+    expect(latest?.indicatorDates?.priceRealized).toBe('2026-03-27');
+    expect(latest?.indicatorDates?.reserveRisk).toBe('2026-03-27');
     expect(latest?.indicatorDates?.puell).toBe('2026-03-28');
   });
 
   it('getIndicatorChartData filters placeholder zero rows', () => {
     const history = [
-      { d: '2026-01-01', btcPrice: 0, mvrvZscore: 0, signalMvrvZ: false },
-      { d: '2026-01-02', btcPrice: 90000, mvrvZscore: -0.2, signalMvrvZ: true },
+      { d: '2026-01-01', btcPrice: 0, reserveRisk: 0, signalReserveRisk: false },
+      { d: '2026-01-02', btcPrice: 90000, reserveRisk: 0.0012, signalReserveRisk: true },
     ] as IndicatorData[];
 
-    const chartData = getIndicatorChartData(history, 'mvrvZ', 'all');
+    const chartData = getIndicatorChartData(history, 'reserveRisk', 'all');
     expect(chartData).toHaveLength(1);
     expect(chartData[0].date).toBe('2026-01-02');
     expect(chartData[0].signal).toBe(true);
@@ -64,7 +68,7 @@ describe('dataService helpers', () => {
         d: '2026-02-01',
         btcPrice: 60000,
         priceMa200wRatio: 1.2,
-        signalPriceMa: false,
+        signalPriceMa200w: false,
       },
     ] as IndicatorData[];
 

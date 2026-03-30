@@ -1,145 +1,125 @@
-/* BTC底部识别指标监控系统样式 */
-
-/* 自定义滚动条 */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+.app-shell {
+  position: relative;
+  min-height: 100vh;
 }
 
-::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-  border-radius: 4px;
+.app-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 20% 0%, hsl(30 98% 66% / 0.12), transparent 45%),
+    radial-gradient(circle at 90% 10%, hsl(20 86% 62% / 0.1), transparent 42%);
 }
 
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
-  border-radius: 4px;
+.app-content {
+  position: relative;
+  z-index: 1;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  backdrop-filter: blur(10px);
+  background: hsl(var(--background) / 0.86);
+  border-bottom: 1px solid hsl(var(--border));
 }
 
-/* 动画效果 */
-@keyframes pulse-green {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
-  }
+.app-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.6), transparent);
 }
 
-.signal-active {
-  animation: pulse-green 2s infinite;
+.app-container {
+  width: min(1240px, 100% - 2rem);
+  margin-inline: auto;
 }
 
-/* 卡片悬停效果 */
-.card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.app-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 0.8rem;
+  background: linear-gradient(155deg, #ff9c29, #f97316);
+  box-shadow: 0 10px 24px -12px rgb(249 115 22 / 0.75);
 }
 
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1);
+.surface-card {
+  background:
+    linear-gradient(140deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.96) 100%);
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  box-shadow: 0 16px 34px -28px rgb(15 23 42 / 0.45);
 }
 
-/* 价格变化动画 */
-@keyframes price-up {
-  0% {
-    color: inherit;
-  }
-  50% {
-    color: #22c55e;
-  }
-  100% {
-    color: inherit;
-  }
+.status-strip {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
-@keyframes price-down {
-  0% {
-    color: inherit;
-  }
-  50% {
-    color: #ef4444;
-  }
-  100% {
-    color: inherit;
-  }
-}
-
-.price-up {
-  animation: price-up 1s ease;
-}
-
-.price-down {
-  animation: price-down 1s ease;
-}
-
-/* 响应式表格 */
-@media (max-width: 768px) {
-  .responsive-table {
-    font-size: 0.875rem;
-  }
-  
-  .responsive-table th,
-  .responsive-table td {
-    padding: 0.5rem;
+@media (min-width: 768px) {
+  .status-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-/* 深色模式优化 */
-.dark .indicator-card {
-  background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.8) 100%);
+.status-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.85rem;
+  padding: 0.85rem 0.95rem;
+  background: hsl(var(--card) / 0.72);
 }
 
-/* 进度条样式优化 */
-.progress-bar-gradient {
-  background: linear-gradient(90deg, 
-    #ef4444 0%, 
-    #ef4444 20%, 
-    #f97316 20%, 
-    #f97316 40%, 
-    #eab308 40%, 
-    #eab308 60%, 
-    #22c55e 60%, 
-    #22c55e 80%, 
-    #16a34a 80%, 
-    #16a34a 100%
-  );
+.status-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: hsl(var(--muted-foreground));
 }
 
-/* 徽章样式 */
-.badge-signal {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+.status-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.1;
 }
 
-.badge-signal-active {
-  @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+.tab-shell {
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card) / 0.7);
+  backdrop-filter: blur(6px);
+  border-radius: 0.9rem;
+  padding: 0.25rem;
 }
 
-.badge-signal-inactive {
-  @apply bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200;
+.footer-line {
+  border-top: 1px solid hsl(var(--border));
+  background: hsl(var(--background) / 0.84);
 }
 
-/* 加载动画 */
-.loading-shimmer {
-  background: linear-gradient(
-    90deg,
-    hsl(var(--muted)) 25%,
-    hsl(var(--muted) / 0.5) 50%,
-    hsl(var(--muted)) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+.fade-up {
+  animation: fade-up 420ms ease both;
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: 200% 0;
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
-  100% {
-    background-position: -200% 0;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

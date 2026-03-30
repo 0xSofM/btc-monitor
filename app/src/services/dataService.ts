@@ -1,4 +1,4 @@
-﻿import type { IndicatorData, LatestData } from '@/types';
+import type { IndicatorData, LatestData } from '@/types';
 
 import {
   API_BASE_URL,
@@ -6,11 +6,6 @@ import {
   STATIC_HISTORY_FULL_PATH,
   STATIC_HISTORY_LIGHT_PATH,
   checkEndpoint,
-  fetchBtcPrice,
-  fetchLthMvrv,
-  fetchMvrvZScore,
-  fetchNupl,
-  fetchPuellMultiple,
   fetchStaticHistoryRaw,
   fetchStaticLatestRaw,
   fetchStaticManifestRaw,
@@ -37,7 +32,6 @@ import {
 const REFRESH_INTERVAL = 5 * 60 * 1000;
 const CACHE_DURATION = 60 * 1000;
 const MANIFEST_CACHE_DURATION = 60 * 1000;
-const MA200W_LOOKBACK_DAYS = 1400;
 
 type CacheState = {
   latest: LatestData | null;
@@ -89,54 +83,6 @@ function normalizeManifest(raw: unknown): DataManifest | null {
     historyLightRows,
     schemaVersion,
   };
-}
-
-function getMa200wFromHistory(data: IndicatorData[]): number | null {
-  const lastWithMa200w = [...data].reverse().find((item) => {
-    if (item.ma200w && item.ma200w > 0) {
-      return true;
-    }
-
-    if (!item.priceMa200wRatio || item.priceMa200wRatio <= 0) {
-      return false;
-    }
-
-    const price = toFiniteNumber(item.btcPrice, 0);
-    return price > 0;
-  });
-
-  if (!lastWithMa200w) {
-    return null;
-  }
-
-  if (lastWithMa200w.ma200w && lastWithMa200w.ma200w > 0) {
-    return lastWithMa200w.ma200w;
-  }
-
-  const price = toFiniteNumber(lastWithMa200w.btcPrice, 0);
-  if (price <= 0 || !lastWithMa200w.priceMa200wRatio || lastWithMa200w.priceMa200wRatio <= 0) {
-    return null;
-  }
-
-  return price / lastWithMa200w.priceMa200wRatio;
-}
-
-function pickDate(value: string | undefined, fallback: string): string {
-  return value && value.trim() ? value : fallback;
-}
-
-async function resolveLatestMa200w(): Promise<number | null> {
-  if (cache.latest?.ma200w && cache.latest.ma200w > 0) {
-    return cache.latest.ma200w;
-  }
-
-  const staticLatest = await fetchStaticLatestData({ enrichWithHistory: false });
-  if (staticLatest?.ma200w && staticLatest.ma200w > 0) {
-    return staticLatest.ma200w;
-  }
-
-  const historyData = await fetchHistoricalData({ mode: 'light' });
-  return getMa200wFromHistory(historyData);
 }
 
 export async function fetchDataManifest(forceRefresh = false): Promise<DataManifest | null> {
@@ -288,122 +234,25 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
   }
 
   try {
-    const [mvrvZData, lthMvrvData, puellData, nuplData, btcPriceData] = await Promise.all([
-      fetchMvrvZScore(1),
-      fetchLthMvrv(1),
-      fetchPuellMultiple(1),
-      fetchNupl(1),
-      fetchBtcPrice(1),
-    ]);
-
-    if (btcPriceData.length === 0) {
-      const staticLatest = await fetchStaticLatestData({ enrichWithHistory: false });
-      if (staticLatest) {
-        return staticLatest;
-      }
-
-      const historyData = await fetchHistoricalData({ mode: 'light' });
-      const latestFromHistory = getLatestFromHistory(historyData);
-      if (latestFromHistory) {
-        cache.latest = latestFromHistory;
-        cache.latestTimestamp = now;
-      }
-      return latestFromHistory;
+    const staticLatest = await fetchStaticLatestData({
+      enrichWithHistory: true,
+      forceRefresh: !useCache,
+    });
+    if (staticLatest) {
+      return staticLatest;
     }
 
-    const today = new Date().toISOString().split('T')[0];
-    const btcPoint = btcPriceData[0];
-
-    const btcPrice = toFiniteNumber(btcPoint?.btcPrice, 0);
-    const priceDate = pickDate(typeof btcPoint?.d === 'string' ? btcPoint.d : undefined, today);
-
-    const mvrvPoint = mvrvZData[0];
-    const lthPoint = lthMvrvData[0];
-    const puellPoint = puellData[0];
-    const nuplPoint = nuplData[0];
-
-    const mvrvZ = toFiniteNumber(mvrvPoint?.mvrvZscore, 0);
-    const mvrvZDate = pickDate(typeof mvrvPoint?.d === 'string' ? mvrvPoint.d : undefined, priceDate);
-
-    const lthMvrv = toFiniteNumber(lthPoint?.lthMvrv, 0);
-    const lthMvrvDate = pickDate(typeof lthPoint?.d === 'string' ? lthPoint.d : undefined, priceDate);
-
-    const puell = toFiniteNumber(puellPoint?.puellMultiple, 0);
-    const puellDate = pickDate(typeof puellPoint?.d === 'string' ? puellPoint.d : undefined, priceDate);
-
-    const nupl = toFiniteNumber(nuplPoint?.nupl, 0);
-    const nuplDate = pickDate(typeof nuplPoint?.d === 'string' ? nuplPoint.d : undefined, priceDate);
-
-    let ma200w = 0;
-    let priceMa200wRatio = 0;
-
-    try {
-      const resolvedMa200w = await resolveLatestMa200w();
-      if (resolvedMa200w && resolvedMa200w > 0) {
-        ma200w = resolvedMa200w;
-        priceMa200wRatio = btcPrice / ma200w;
-      } else {
-        const priceHistory = await fetchBtcPrice(MA200W_LOOKBACK_DAYS);
-        if (priceHistory.length >= MA200W_LOOKBACK_DAYS) {
-          const prices = priceHistory
-            .map((point) => toFiniteNumber(point.btcPrice, Number.NaN))
-            .filter((price) => !Number.isNaN(price));
-
-          if (prices.length > 0) {
-            ma200w = prices.reduce((sum, value) => sum + value, 0) / prices.length;
-            priceMa200wRatio = ma200w > 0 ? (btcPrice / ma200w) : 0;
-          }
-        }
-
-        if (ma200w <= 0) {
-          const historyData = await fetchHistoricalData({ mode: 'light' });
-          const historyMa200w = getMa200wFromHistory(historyData);
-          if (historyMa200w && historyMa200w > 0) {
-            ma200w = historyMa200w;
-            priceMa200wRatio = btcPrice / ma200w;
-          }
-        }
-      }
-    } catch (error) {
-      console.warn('[DataService] Failed to compute price/200w ratio:', error);
+    const historyData = await fetchHistoricalData({ mode: 'light' });
+    const latestFromHistory = getLatestFromHistory(historyData);
+    if (latestFromHistory) {
+      cache.latest = latestFromHistory;
+      cache.latestTimestamp = now;
+      persistLocalData({ latest: latestFromHistory });
     }
-
-    const signals = {
-      priceMa200w: priceMa200wRatio < 1,
-      mvrvZ: mvrvZ < 0,
-      lthMvrv: lthMvrv < 1,
-      puell: puell < 0.5,
-      nupl: nupl < 0,
-    };
-
-    const latest: LatestData = {
-      date: priceDate,
-      btcPrice,
-      priceMa200wRatio,
-      ma200w,
-      mvrvZscore: mvrvZ,
-      lthMvrv,
-      puellMultiple: puell,
-      nupl,
-      signalCount: Object.values(signals).filter(Boolean).length,
-      signals,
-      indicatorDates: {
-        priceMa200w: priceDate,
-        mvrvZ: mvrvZDate,
-        lthMvrv: lthMvrvDate,
-        puell: puellDate,
-        nupl: nuplDate,
-      },
-    };
-
-    cache.latest = latest;
-    cache.latestTimestamp = now;
-    persistLocalData({ latest });
-    return latest;
+    return latestFromHistory;
   } catch (error) {
     console.error('[DataService] Error fetching latest indicators:', error);
-    const staticLatest = await fetchStaticLatestData({ enrichWithHistory: false });
-    return staticLatest ?? readLocalLatestData();
+    return readLocalLatestData();
   }
 }
 

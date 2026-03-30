@@ -1,26 +1,60 @@
 {
   "date": "2026-03-30",
   "btcPrice": 66560.74,
+  "realizedPrice": 53683.53,
   "priceMa200wRatio": 1.1223913515192918,
+  "priceRealizedRatio": 1.2398726387776662,
+  "reserveRisk": 0.001786,
+  "sthSopr": 0.9919646853,
+  "sthMvrv": 0.79,
   "ma200w": 59302.6130412552,
-  "mvrvZscore": 0.5086,
-  "lthMvrv": 1.53,
   "puellMultiple": 0.746,
-  "nupl": 0.1823349475,
-  "signalCount": 0,
+  "signalCount": 2,
+  "signalScoreV2": 3,
+  "signalScoreV2Min3d": 3.0,
+  "signalConfirmed3d": false,
+  "signalBandV2": "watch",
   "signals": {
     "priceMa200w": false,
-    "mvrvZ": false,
-    "lthMvrv": false,
-    "puell": false,
-    "nupl": false
+    "priceRealized": false,
+    "reserveRisk": false,
+    "sthSopr": true,
+    "sthMvrv": true,
+    "puell": false
   },
   "indicatorDates": {
     "priceMa200w": "2026-03-30",
-    "mvrvZ": "2026-03-27",
-    "lthMvrv": "2026-03-27",
-    "puell": "2026-03-29",
-    "nupl": "2026-03-28"
+    "priceRealized": "2026-03-27",
+    "reserveRisk": "2025-12-28",
+    "sthSopr": "2026-03-28",
+    "sthMvrv": "2026-03-27",
+    "puell": "2026-03-29"
   },
-  "lastUpdated": "2026-03-30T06:26:35.942742+00:00"
+  "thresholds": {
+    "priceMa200wRatio": {
+      "trigger": 1.0,
+      "deep": 0.85
+    },
+    "priceRealizedRatio": {
+      "trigger": 1.0,
+      "deep": 0.9
+    },
+    "reserveRisk": {
+      "trigger": 0.0016374,
+      "deep": 0.001251
+    },
+    "sthSopr": {
+      "trigger": 1.0,
+      "deep": 0.97
+    },
+    "sthMvrv": {
+      "trigger": 1.0,
+      "deep": 0.85
+    },
+    "puellMultiple": {
+      "trigger": 0.6,
+      "deep": 0.5
+    }
+  },
+  "lastUpdated": "2026-03-30T12:47:53.794293+00:00"
 }

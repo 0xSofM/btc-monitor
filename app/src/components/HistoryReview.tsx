@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { Calendar, Search, X } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -13,77 +13,104 @@ interface HistoryReviewProps {
   data: IndicatorData[];
 }
 
+function parsePrice(value: number | string | undefined): number {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  if (typeof value === 'string') {
+    const parsed = Number.parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  return 0;
+}
+
+function formatPrice(value: number): string {
+  return `$${value.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
+function getSignalBadges(item: IndicatorData): string[] {
+  const signals: string[] = [];
+
+  if (item.signalPriceMa200w || item.signalPriceMa) signals.push('Price / 200W MA');
+  if (item.signalPriceRealized) signals.push('Price / Realized');
+  if (item.signalReserveRisk) signals.push('Reserve Risk');
+  if (item.signalSthSopr) signals.push('STH-SOPR');
+  if (item.signalSthMvrv) signals.push('STH-MVRV');
+  if (item.signalPuell) signals.push('Puell');
+
+  return signals;
+}
+
 export function HistoryReview({ data }: HistoryReviewProps) {
   const [minSignals, setMinSignals] = useState(4);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
+  const dateRange = useMemo(() => {
+    if (!data.length) {
+      return { min: '', max: '' };
+    }
+
+    const dates = data.map((row) => row.d).sort();
+    return {
+      min: dates[0],
+      max: dates[dates.length - 1],
+    };
+  }, [data]);
+
   const filteredData = useMemo(() => {
+    const startAt = startDate ? Date.parse(`${startDate}T00:00:00Z`) : null;
+    const endAt = endDate ? Date.parse(`${endDate}T23:59:59Z`) : null;
+
     return data
       .filter((item) => {
-        const signalCount = item.signalCount || 0;
-        const itemDate = new Date(`${item.d}T00:00:00`);
-
-        if (signalCount < minSignals) return false;
-
-        if (startDate) {
-          const start = new Date(`${startDate}T00:00:00`).getTime();
-          if (itemDate.getTime() < start) return false;
+        const signalCount = item.signalCount ?? 0;
+        if (signalCount < minSignals) {
+          return false;
         }
 
-        if (endDate) {
-          const end = new Date(`${endDate}T23:59:59`).getTime();
-          if (itemDate.getTime() > end) return false;
+        const itemTime = Date.parse(`${item.d}T00:00:00Z`);
+        if (startAt && itemTime < startAt) {
+          return false;
+        }
+
+        if (endAt && itemTime > endAt) {
+          return false;
         }
 
         return true;
       })
-      .reverse();
+      .slice()
+      .sort((left, right) => right.d.localeCompare(left.d));
   }, [data, endDate, minSignals, startDate]);
 
-  const getSignalBadges = (item: IndicatorData) => {
-    const signals: string[] = [];
-    if (item.signalPriceMa) signals.push('价格/200周均线');
-    if (item.signalMvrvZ) signals.push('MVRV Z-Score');
-    if (item.signalLthMvrv) signals.push('LTH-MVRV');
-    if (item.signalPuell) signals.push('Puell Multiple');
-    if (item.signalNupl) signals.push('NUPL');
-    return signals;
-  };
+  const summary = useMemo(() => {
+    if (!filteredData.length) {
+      return {
+        minPrice: 0,
+        maxPrice: 0,
+        avgPrice: 0,
+      };
+    }
 
-  const formatPrice = (price: number | string | undefined) => {
-    const numPrice = typeof price === 'string' ? parseFloat(price) : (price || 0);
-    return `$${numPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  };
+    const prices = filteredData.map((row) => parsePrice(row.btcPrice));
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    const avgPrice = prices.reduce((acc, price) => acc + price, 0) / prices.length;
 
-  const getMinPrice = () => {
-    if (filteredData.length === 0) return 0;
-    return Math.min(
-      ...filteredData.map((d) => {
-        const price = d.btcPrice;
-        return typeof price === 'string' ? parseFloat(price) : (price || 0);
-      }),
-    );
-  };
+    return {
+      minPrice,
+      maxPrice,
+      avgPrice,
+    };
+  }, [filteredData]);
 
-  const getMaxPrice = () => {
-    if (filteredData.length === 0) return 0;
-    return Math.max(
-      ...filteredData.map((d) => {
-        const price = d.btcPrice;
-        return typeof price === 'string' ? parseFloat(price) : (price || 0);
-      }),
-    );
-  };
-
-  const getAvgPrice = () => {
-    if (filteredData.length === 0) return 0;
-    const sum = filteredData.reduce((acc, item) => {
-      const price = item.btcPrice;
-      return acc + (typeof price === 'string' ? parseFloat(price) : (price || 0));
-    }, 0);
-    return sum / filteredData.length;
-  };
+  const hasActiveFilters = Boolean(startDate || endDate || minSignals !== 4);
 
   const clearFilters = () => {
     setStartDate('');
@@ -91,138 +118,134 @@ export function HistoryReview({ data }: HistoryReviewProps) {
     setMinSignals(4);
   };
 
-  const hasActiveFilters = startDate || endDate || minSignals !== 4;
-
-  const dateRange = useMemo(() => {
-    if (data.length === 0) return { min: '', max: '' };
-    const dates = data.map((d) => d.d).sort();
-    return { min: dates[0], max: dates[dates.length - 1] };
-  }, [data]);
-
   return (
-    <Card className="mt-6">
+    <Card className="surface-card mt-6">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-lg">
           <Calendar className="h-5 w-5" />
-          历史复盘
+          Historical Replay (Core-6)
         </CardTitle>
       </CardHeader>
 
-      <CardContent>
-        <div className="mb-4 rounded-lg bg-muted p-3 text-sm text-muted-foreground">
-          数据范围：{dateRange.min} 至 {dateRange.max}（共 {data.length} 天）
-        </div>
+      <CardContent className="space-y-6">
+        <section className="rounded-xl border bg-muted/40 p-3 text-sm text-muted-foreground">
+          Range: {dateRange.min || '-'} to {dateRange.max || '-'} | {data.length} rows
+        </section>
 
-        <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
+        <section className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <div>
-            <Label htmlFor="min-signals">最少信号数</Label>
+            <Label htmlFor="min-signals">Minimum triggers</Label>
             <select
               id="min-signals"
               value={minSignals}
-              onChange={(e) => setMinSignals(Number(e.target.value))}
+              onChange={(event) => setMinSignals(Number(event.target.value))}
               className="mt-1 w-full rounded-md border bg-background p-2"
             >
-              <option value={3}>3 个信号（关注）</option>
-              <option value={4}>4 个信号（买入）</option>
-              <option value={5}>5 个信号（极强）</option>
+              <option value={3}>3 (Watch)</option>
+              <option value={4}>4 (Focus)</option>
+              <option value={5}>5 (Strong)</option>
+              <option value={6}>6 (Extreme)</option>
             </select>
           </div>
 
           <div>
-            <Label htmlFor="start-date">开始日期</Label>
+            <Label htmlFor="start-date">Start date</Label>
             <Input
               id="start-date"
               type="date"
               min={dateRange.min}
               max={dateRange.max}
               value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              onChange={(event) => setStartDate(event.target.value)}
               className="mt-1"
             />
           </div>
 
           <div>
-            <Label htmlFor="end-date">结束日期</Label>
+            <Label htmlFor="end-date">End date</Label>
             <Input
               id="end-date"
               type="date"
               min={dateRange.min}
               max={dateRange.max}
               value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              onChange={(event) => setEndDate(event.target.value)}
               className="mt-1"
             />
           </div>
 
           <div className="flex items-end">
-            <Button
-              variant="outline"
-              onClick={clearFilters}
-              disabled={!hasActiveFilters}
-              className="w-full"
-            >
+            <Button variant="outline" onClick={clearFilters} disabled={!hasActiveFilters} className="w-full">
               <X className="mr-2 h-4 w-4" />
-              清除筛选
+              Clear filters
             </Button>
           </div>
-        </div>
+        </section>
 
         {hasActiveFilters && (
-          <div className="mb-4 rounded-lg bg-blue-50 p-3 text-sm dark:bg-blue-950">
-            <span className="font-medium">当前筛选：</span>
-            {minSignals !== 4 && <span className="mr-3">信号数 ≥ {minSignals}</span>}
-            {startDate && <span className="mr-3">从 {startDate}</span>}
-            {endDate && <span className="mr-3">到 {endDate}</span>}
-          </div>
+          <section className="rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
+            Active filter:
+            <span className="ml-2">signals {'>='} {minSignals}</span>
+            {startDate && <span className="ml-3">from {startDate}</span>}
+            {endDate && <span className="ml-3">to {endDate}</span>}
+          </section>
         )}
 
-        <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div className="rounded-lg bg-muted p-4">
-            <p className="text-sm text-muted-foreground">符合条件天数</p>
+        <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <article className="rounded-xl border bg-background/70 p-4">
+            <p className="text-sm text-muted-foreground">Matched days</p>
             <p className="text-2xl font-bold">{filteredData.length}</p>
-          </div>
-          <div className="rounded-lg bg-muted p-4">
-            <p className="text-sm text-muted-foreground">最低价格</p>
-            <p className="text-xl font-bold">{filteredData.length > 0 ? formatPrice(getMinPrice()) : '-'}</p>
-          </div>
-          <div className="rounded-lg bg-muted p-4">
-            <p className="text-sm text-muted-foreground">最高价格</p>
-            <p className="text-xl font-bold">{filteredData.length > 0 ? formatPrice(getMaxPrice()) : '-'}</p>
-          </div>
-          <div className="rounded-lg bg-muted p-4">
-            <p className="text-sm text-muted-foreground">平均价格</p>
-            <p className="text-xl font-bold">{filteredData.length > 0 ? formatPrice(getAvgPrice()) : '-'}</p>
-          </div>
-        </div>
+          </article>
+
+          <article className="rounded-xl border bg-background/70 p-4">
+            <p className="text-sm text-muted-foreground">Min price</p>
+            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(summary.minPrice) : '-'}</p>
+          </article>
+
+          <article className="rounded-xl border bg-background/70 p-4">
+            <p className="text-sm text-muted-foreground">Max price</p>
+            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(summary.maxPrice) : '-'}</p>
+          </article>
+
+          <article className="rounded-xl border bg-background/70 p-4">
+            <p className="text-sm text-muted-foreground">Average price</p>
+            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(summary.avgPrice) : '-'}</p>
+          </article>
+        </section>
 
         {filteredData.length > 0 ? (
-          <div className="overflow-x-auto">
+          <section className="overflow-x-auto rounded-xl border">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>日期</TableHead>
-                  <TableHead>BTC 价格</TableHead>
-                  <TableHead>信号数</TableHead>
-                  <TableHead>触发指标</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>BTC Price</TableHead>
+                  <TableHead>Triggers</TableHead>
+                  <TableHead>V2 Score</TableHead>
+                  <TableHead>Triggered indicators</TableHead>
                 </TableRow>
               </TableHeader>
+
               <TableBody>
-                {filteredData.slice(0, 100).map((item, index) => (
-                  <TableRow key={index}>
+                {filteredData.slice(0, 120).map((item) => (
+                  <TableRow key={`${item.d}-${item.signalCount ?? 0}`}>
                     <TableCell>{item.d}</TableCell>
-                    <TableCell className="font-medium">{formatPrice(item.btcPrice)}</TableCell>
+                    <TableCell className="font-medium">{formatPrice(parsePrice(item.btcPrice))}</TableCell>
                     <TableCell>
                       <Badge
-                        variant={item.signalCount === 5 ? 'default' : 'secondary'}
-                        className={item.signalCount === 5 ? 'bg-green-500' : ''}
+                        variant={(item.signalCount ?? 0) >= 5 ? 'default' : 'secondary'}
+                        className={(item.signalCount ?? 0) >= 5 ? 'bg-emerald-600 text-white hover:bg-emerald-600' : ''}
                       >
-                        {item.signalCount} / 5
+                        {item.signalCount ?? 0} / 6
                       </Badge>
                     </TableCell>
                     <TableCell>
+                      <Badge variant="outline">{item.signalScoreV2 ?? '-'} / 12</Badge>
+                    </TableCell>
+                    <TableCell>
                       <div className="flex flex-wrap gap-1">
-                        {getSignalBadges(item).map((signal, idx) => (
-                          <Badge key={idx} variant="outline" className="text-xs">
+                        {getSignalBadges(item).map((signal) => (
+                          <Badge key={`${item.d}-${signal}`} variant="outline" className="text-xs">
                             {signal}
                           </Badge>
                         ))}
@@ -233,18 +256,18 @@ export function HistoryReview({ data }: HistoryReviewProps) {
               </TableBody>
             </Table>
 
-            {filteredData.length > 100 && (
-              <p className="mt-4 text-center text-sm text-muted-foreground">
-                还有 {filteredData.length - 100} 条记录未显示
+            {filteredData.length > 120 && (
+              <p className="px-4 py-3 text-center text-sm text-muted-foreground">
+                {filteredData.length - 120} additional rows are hidden for readability.
               </p>
             )}
-          </div>
+          </section>
         ) : (
-          <div className="py-8 text-center text-muted-foreground">
-            <Search className="mx-auto mb-4 h-12 w-12 opacity-50" />
-            <p>没有找到符合条件的数据</p>
-            <p className="text-sm">请调整筛选条件</p>
-          </div>
+          <section className="rounded-xl border py-10 text-center text-muted-foreground">
+            <Search className="mx-auto mb-3 h-10 w-10 opacity-50" />
+            <p>No records match current filters.</p>
+            <p className="text-sm">Try reducing minimum triggers or widening the date range.</p>
+          </section>
         )}
       </CardContent>
     </Card>

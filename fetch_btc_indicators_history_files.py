@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Fetch BTC indicator history from BGeometrics chart JSON files.
+Fetch BTC indicator history from BGeometrics chart JSON files (V2).
 
 Data sources:
   - https://charts.bgeometrics.com/files/*.json
@@ -13,12 +13,13 @@ Outputs:
      - app/public/btc_indicators_latest.json
      - app/public/btc_indicators_manifest.json
 
-Indicators:
+Core-6 bottom indicators:
   - BTC Price / 200W-MA (calculated)
-  - MVRV Z-Score
-  - LTH-MVRV
+  - BTC Price / Realized Price (calculated)
+  - Reserve Risk
+  - STH-SOPR
+  - STH-MVRV
   - Puell Multiple
-  - NUPL
 """
 
 from __future__ import annotations
@@ -45,13 +46,21 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
         "display_name": "200-Week MA",
         "url": "https://charts.bgeometrics.com/files/200wma.json",
     },
-    "mvrv_z_score": {
-        "display_name": "MVRV Z-Score",
-        "url": "https://charts.bgeometrics.com/files/mvrv_zscore_data.json",
+    "realized_price": {
+        "display_name": "Realized Price",
+        "url": "https://charts.bgeometrics.com/files/realized_price.json",
     },
-    "lth_mvrv": {
-        "display_name": "LTH-MVRV",
-        "url": "https://charts.bgeometrics.com/files/lth_mvrv.json",
+    "reserve_risk": {
+        "display_name": "Reserve Risk",
+        "url": "https://charts.bgeometrics.com/files/reserve_risk.json",
+    },
+    "sth_sopr": {
+        "display_name": "STH-SOPR",
+        "url": "https://charts.bgeometrics.com/files/sth_sopr.json",
+    },
+    "sth_mvrv": {
+        "display_name": "STH-MVRV",
+        "url": "https://charts.bgeometrics.com/files/sth_mvrv.json",
     },
     "puell_multiple": {
         "display_name": "Puell Multiple",
@@ -60,18 +69,45 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
             "https://charts.bgeometrics.com/files/puell_multiple_7dma.json",
         ],
     },
-    "nupl": {
-        "display_name": "NUPL",
-        "url": "https://charts.bgeometrics.com/files/nupl_data.json",
-        "fallback_urls": [
-            "https://charts.bgeometrics.com/files/nupl_7dma.json",
-        ],
-    },
 }
 
 REQUEST_TIMEOUT = 45
 MAX_RETRIES = 4
 RETRY_BACKOFF_SEC = 2.0
+
+
+SCORE_BANDS: List[Tuple[int, int, str]] = [
+    (0, 3, "watch"),
+    (4, 6, "focus"),
+    (7, 9, "accumulate"),
+    (10, 12, "extreme_bottom"),
+]
+
+THRESHOLD_STATIC: Dict[str, Dict[str, float]] = {
+    "price_ma200w_ratio": {"trigger": 1.0, "deep": 0.85},
+    "price_realized_ratio": {"trigger": 1.0, "deep": 0.90},
+    "sth_sopr": {"trigger": 1.0, "deep": 0.97},
+    "sth_mvrv": {"trigger": 1.0, "deep": 0.85},
+    "puell_multiple": {"trigger": 0.6, "deep": 0.5},
+}
+
+SIGNAL_COLUMNS = [
+    "signal_price_ma200w",
+    "signal_price_realized",
+    "signal_reserve_risk",
+    "signal_sth_sopr",
+    "signal_sth_mvrv",
+    "signal_puell",
+]
+
+SCORE_COLUMNS = [
+    "score_price_ma200w",
+    "score_price_realized",
+    "score_reserve_risk",
+    "score_sth_sopr",
+    "score_sth_mvrv",
+    "score_puell",
+]
 
 
 def _safe_float(value: object) -> float | None:
@@ -213,7 +249,15 @@ def build_base_dataframe(
             print(f"  Rows: {len(df):,} | Source: {selected_url}")
 
     merged: pd.DataFrame | None = None
-    for key in ["btc_price", "ma200w", "mvrv_z_score", "lth_mvrv", "puell_multiple", "nupl"]:
+    for key in [
+        "btc_price",
+        "ma200w",
+        "realized_price",
+        "reserve_risk",
+        "sth_sopr",
+        "sth_mvrv",
+        "puell_multiple",
+    ]:
         current = dfs[key]
         merged = current if merged is None else pd.merge(merged, current, on="date", how="outer")
 
@@ -228,17 +272,36 @@ def build_base_dataframe(
     return merged.reset_index(drop=True), selected_sources
 
 
-def enrich_for_frontend(base_df: pd.DataFrame) -> pd.DataFrame:
-    """Build frontend-ready columns including ffilled metrics and signal flags."""
+def _score_by_lt(value: object, trigger: float, deep: float) -> int:
+    parsed = _safe_float(value)
+    if parsed is None:
+        return 0
+    if parsed < deep:
+        return 2
+    if parsed < trigger:
+        return 1
+    return 0
+
+
+def _classify_score_band(score: int) -> str:
+    for low, high, label in SCORE_BANDS:
+        if low <= score <= high:
+            return label
+    return "watch"
+
+
+def enrich_for_frontend(base_df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict[str, Dict[str, float]]]:
+    """Build frontend-ready columns including ffilled metrics and V2 signals/scores."""
     df = base_df.copy()
 
     metric_cols = [
         "btc_price",
         "ma200w",
-        "mvrv_z_score",
-        "lth_mvrv",
+        "realized_price",
+        "reserve_risk",
+        "sth_sopr",
+        "sth_mvrv",
         "puell_multiple",
-        "nupl",
     ]
 
     # Track last real update date per indicator (before forward-fill).
@@ -250,26 +313,57 @@ def enrich_for_frontend(base_df: pd.DataFrame) -> pd.DataFrame:
     for col in metric_cols:
         df[col] = df[col].ffill()
 
-    # Derived metric.
+    # Derived metrics.
     df["price_200w_ma_ratio"] = df["btc_price"] / df["ma200w"].replace(0, pd.NA)
+    df["price_realized_ratio"] = df["btc_price"] / df["realized_price"].replace(0, pd.NA)
 
-    # Signal flags.
-    df["signal_price_ma"] = df["price_200w_ma_ratio"].fillna(float("inf")) < 1
-    df["signal_mvrv_z"] = df["mvrv_z_score"].fillna(float("inf")) < 0
-    df["signal_lth_mvrv"] = df["lth_mvrv"].fillna(float("inf")) < 1
-    df["signal_puell"] = df["puell_multiple"].fillna(float("inf")) < 0.5
-    df["signal_nupl"] = df["nupl"].fillna(float("inf")) < 0
+    reserve_series = df["reserve_risk"].dropna()
+    reserve_trigger = float(reserve_series.quantile(0.2)) if not reserve_series.empty else 0.0016
+    reserve_deep = float(reserve_series.quantile(0.1)) if not reserve_series.empty else 0.0012
 
-    signal_cols = [
-        "signal_price_ma",
-        "signal_mvrv_z",
-        "signal_lth_mvrv",
-        "signal_puell",
-        "signal_nupl",
-    ]
-    df["signal_count"] = df[signal_cols].sum(axis=1)
+    thresholds = {
+        "priceMa200wRatio": THRESHOLD_STATIC["price_ma200w_ratio"],
+        "priceRealizedRatio": THRESHOLD_STATIC["price_realized_ratio"],
+        "reserveRisk": {"trigger": reserve_trigger, "deep": reserve_deep},
+        "sthSopr": THRESHOLD_STATIC["sth_sopr"],
+        "sthMvrv": THRESHOLD_STATIC["sth_mvrv"],
+        "puellMultiple": THRESHOLD_STATIC["puell_multiple"],
+    }
 
-    return df
+    df["score_price_ma200w"] = df["price_200w_ma_ratio"].apply(
+        lambda v: _score_by_lt(v, thresholds["priceMa200wRatio"]["trigger"], thresholds["priceMa200wRatio"]["deep"])
+    )
+    df["score_price_realized"] = df["price_realized_ratio"].apply(
+        lambda v: _score_by_lt(v, thresholds["priceRealizedRatio"]["trigger"], thresholds["priceRealizedRatio"]["deep"])
+    )
+    df["score_reserve_risk"] = df["reserve_risk"].apply(
+        lambda v: _score_by_lt(v, thresholds["reserveRisk"]["trigger"], thresholds["reserveRisk"]["deep"])
+    )
+    df["score_sth_sopr"] = df["sth_sopr"].apply(
+        lambda v: _score_by_lt(v, thresholds["sthSopr"]["trigger"], thresholds["sthSopr"]["deep"])
+    )
+    df["score_sth_mvrv"] = df["sth_mvrv"].apply(
+        lambda v: _score_by_lt(v, thresholds["sthMvrv"]["trigger"], thresholds["sthMvrv"]["deep"])
+    )
+    df["score_puell"] = df["puell_multiple"].apply(
+        lambda v: _score_by_lt(v, thresholds["puellMultiple"]["trigger"], thresholds["puellMultiple"]["deep"])
+    )
+
+    # Signal flags and composite score.
+    df["signal_price_ma200w"] = df["score_price_ma200w"] > 0
+    df["signal_price_realized"] = df["score_price_realized"] > 0
+    df["signal_reserve_risk"] = df["score_reserve_risk"] > 0
+    df["signal_sth_sopr"] = df["score_sth_sopr"] > 0
+    df["signal_sth_mvrv"] = df["score_sth_mvrv"] > 0
+    df["signal_puell"] = df["score_puell"] > 0
+
+    df["signal_count"] = df[SIGNAL_COLUMNS].sum(axis=1)
+    df["signal_score_v2"] = df[SCORE_COLUMNS].sum(axis=1)
+    df["signal_score_v2_min3d"] = df["signal_score_v2"].rolling(window=3, min_periods=3).min()
+    df["signal_confirmed_3d"] = df["signal_score_v2_min3d"].fillna(0) >= 7
+    df["signal_band_v2"] = df["signal_score_v2"].apply(lambda v: _classify_score_band(int(v)))
+
+    return df, thresholds
 
 
 def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
@@ -278,19 +372,25 @@ def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
         columns={
             "date": "Date",
             "price_200w_ma_ratio": "BTC_Price_200W_MA_Ratio",
-            "mvrv_z_score": "MVRV_Z_Score",
-            "lth_mvrv": "LTH_MVRV",
+            "price_realized_ratio": "BTC_Price_Realized_Price_Ratio",
+            "reserve_risk": "Reserve_Risk",
+            "sth_sopr": "STH_SOPR",
+            "sth_mvrv": "STH_MVRV",
             "puell_multiple": "Puell_Multiple",
-            "nupl": "NUPL",
+            "signal_score_v2": "Signal_Score_V2",
+            "signal_count": "Signal_Count",
         }
     )[
         [
             "Date",
             "BTC_Price_200W_MA_Ratio",
-            "MVRV_Z_Score",
-            "LTH_MVRV",
+            "BTC_Price_Realized_Price_Ratio",
+            "Reserve_Risk",
+            "STH_SOPR",
+            "STH_MVRV",
             "Puell_Multiple",
-            "NUPL",
+            "Signal_Score_V2",
+            "Signal_Count",
         ]
     ].reset_index(drop=True)
 
@@ -313,23 +413,37 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "unixTs": unix_ts,
                 "btcPrice": _safe_float(getattr(row, "btc_price")),
                 "ma200w": _safe_float(getattr(row, "ma200w")),
+                "realizedPrice": _safe_float(getattr(row, "realized_price")),
                 "priceMa200wRatio": _safe_float(getattr(row, "price_200w_ma_ratio")),
-                "mvrvZscore": _safe_float(getattr(row, "mvrv_z_score")),
-                "lthMvrv": _safe_float(getattr(row, "lth_mvrv")),
+                "priceRealizedRatio": _safe_float(getattr(row, "price_realized_ratio")),
+                "reserveRisk": _safe_float(getattr(row, "reserve_risk")),
+                "sthSopr": _safe_float(getattr(row, "sth_sopr")),
+                "sthMvrv": _safe_float(getattr(row, "sth_mvrv")),
                 "puellMultiple": _safe_float(getattr(row, "puell_multiple")),
-                "nupl": _safe_float(getattr(row, "nupl")),
-                "signalPriceMa": bool(getattr(row, "signal_price_ma")),
-                "signalMvrvZ": bool(getattr(row, "signal_mvrv_z")),
-                "signalLthMvrv": bool(getattr(row, "signal_lth_mvrv")),
+                "signalPriceMa200w": bool(getattr(row, "signal_price_ma200w")),
+                "signalPriceRealized": bool(getattr(row, "signal_price_realized")),
+                "signalReserveRisk": bool(getattr(row, "signal_reserve_risk")),
+                "signalSthSopr": bool(getattr(row, "signal_sth_sopr")),
+                "signalSthMvrv": bool(getattr(row, "signal_sth_mvrv")),
                 "signalPuell": bool(getattr(row, "signal_puell")),
-                "signalNupl": bool(getattr(row, "signal_nupl")),
                 "signalCount": int(getattr(row, "signal_count")),
+                "scorePriceMa200w": int(getattr(row, "score_price_ma200w")),
+                "scorePriceRealized": int(getattr(row, "score_price_realized")),
+                "scoreReserveRisk": int(getattr(row, "score_reserve_risk")),
+                "scoreSthSopr": int(getattr(row, "score_sth_sopr")),
+                "scoreSthMvrv": int(getattr(row, "score_sth_mvrv")),
+                "scorePuell": int(getattr(row, "score_puell")),
+                "signalScoreV2": int(getattr(row, "signal_score_v2")),
+                "signalScoreV2Min3d": _safe_float(getattr(row, "signal_score_v2_min3d")),
+                "signalConfirmed3d": bool(getattr(row, "signal_confirmed_3d")),
+                "signalBandV2": str(getattr(row, "signal_band_v2")),
                 "api_data_date": {
                     "price_ma200w": _safe_iso_date(getattr(row, "btc_price_date")),
-                    "mvrv_z": _safe_iso_date(getattr(row, "mvrv_z_score_date")),
-                    "lth_mvrv": _safe_iso_date(getattr(row, "lth_mvrv_date")),
+                    "price_realized": _safe_iso_date(getattr(row, "realized_price_date")),
+                    "reserve_risk": _safe_iso_date(getattr(row, "reserve_risk_date")),
+                    "sth_sopr": _safe_iso_date(getattr(row, "sth_sopr_date")),
+                    "sth_mvrv": _safe_iso_date(getattr(row, "sth_mvrv_date")),
                     "puell": _safe_iso_date(getattr(row, "puell_multiple_date")),
-                    "nupl": _safe_iso_date(getattr(row, "nupl_date")),
                 },
             }
         )
@@ -337,7 +451,10 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
     return records
 
 
-def build_latest_json(frontend_df: pd.DataFrame) -> Dict[str, object]:
+def build_latest_json(
+    frontend_df: pd.DataFrame,
+    thresholds: Dict[str, Dict[str, float]],
+) -> Dict[str, object]:
     """Build latest snapshot JSON from the last history row."""
     if frontend_df.empty:
         raise ValueError("Cannot build latest JSON from empty dataframe")
@@ -350,27 +467,36 @@ def build_latest_json(frontend_df: pd.DataFrame) -> Dict[str, object]:
     latest_payload = {
         "date": date_value,
         "btcPrice": _safe_float(last["btc_price"]) or 0.0,
+        "realizedPrice": _safe_float(last["realized_price"]) or 0.0,
         "priceMa200wRatio": _safe_float(last["price_200w_ma_ratio"]) or 0.0,
+        "priceRealizedRatio": _safe_float(last["price_realized_ratio"]) or 0.0,
+        "reserveRisk": _safe_float(last["reserve_risk"]) or 0.0,
+        "sthSopr": _safe_float(last["sth_sopr"]) or 0.0,
+        "sthMvrv": _safe_float(last["sth_mvrv"]) or 0.0,
         "ma200w": _safe_float(last["ma200w"]),
-        "mvrvZscore": _safe_float(last["mvrv_z_score"]) or 0.0,
-        "lthMvrv": _safe_float(last["lth_mvrv"]) or 0.0,
         "puellMultiple": _safe_float(last["puell_multiple"]) or 0.0,
-        "nupl": _safe_float(last["nupl"]) or 0.0,
         "signalCount": int(last["signal_count"]),
+        "signalScoreV2": int(last["signal_score_v2"]),
+        "signalScoreV2Min3d": _safe_float(last["signal_score_v2_min3d"]),
+        "signalConfirmed3d": bool(last["signal_confirmed_3d"]),
+        "signalBandV2": str(last["signal_band_v2"]),
         "signals": {
-            "priceMa200w": bool(last["signal_price_ma"]),
-            "mvrvZ": bool(last["signal_mvrv_z"]),
-            "lthMvrv": bool(last["signal_lth_mvrv"]),
+            "priceMa200w": bool(last["signal_price_ma200w"]),
+            "priceRealized": bool(last["signal_price_realized"]),
+            "reserveRisk": bool(last["signal_reserve_risk"]),
+            "sthSopr": bool(last["signal_sth_sopr"]),
+            "sthMvrv": bool(last["signal_sth_mvrv"]),
             "puell": bool(last["signal_puell"]),
-            "nupl": bool(last["signal_nupl"]),
         },
         "indicatorDates": {
             "priceMa200w": _safe_iso_date(last["btc_price_date"]) or date_value,
-            "mvrvZ": _safe_iso_date(last["mvrv_z_score_date"]) or date_value,
-            "lthMvrv": _safe_iso_date(last["lth_mvrv_date"]) or date_value,
+            "priceRealized": _safe_iso_date(last["realized_price_date"]) or date_value,
+            "reserveRisk": _safe_iso_date(last["reserve_risk_date"]) or date_value,
+            "sthSopr": _safe_iso_date(last["sth_sopr_date"]) or date_value,
+            "sthMvrv": _safe_iso_date(last["sth_mvrv_date"]) or date_value,
             "puell": _safe_iso_date(last["puell_multiple_date"]) or date_value,
-            "nupl": _safe_iso_date(last["nupl_date"]) or date_value,
         },
+        "thresholds": thresholds,
         "lastUpdated": datetime.now(timezone.utc).isoformat(),
     }
     return latest_payload
@@ -403,6 +529,7 @@ def build_manifest_json(
     latest_json: Dict[str, object],
     history_rows: int,
     light_rows: int,
+    thresholds: Dict[str, Dict[str, float]],
 ) -> Dict[str, object]:
     """Build a small manifest for observability/debugging and cache-busting hints."""
     return {
@@ -411,7 +538,9 @@ def build_manifest_json(
         "lastUpdated": latest_json.get("lastUpdated"),
         "historyRows": history_rows,
         "historyLightRows": light_rows,
-        "schemaVersion": "v2",
+        "schemaVersion": "v3",
+        "indicatorSet": "core6_bottom_v2",
+        "thresholds": thresholds,
     }
 
 
@@ -466,7 +595,15 @@ def print_summary(
 
     print()
     print("Source URLs used:")
-    for key in ["btc_price", "ma200w", "mvrv_z_score", "lth_mvrv", "puell_multiple", "nupl"]:
+    for key in [
+        "btc_price",
+        "ma200w",
+        "realized_price",
+        "reserve_risk",
+        "sth_sopr",
+        "sth_mvrv",
+        "puell_multiple",
+    ]:
         print(f"  - {key}: {sources.get(key, '-')}")
 
     print()
@@ -539,16 +676,17 @@ def main() -> int:
         print("No data after filtering. Nothing saved.")
         return 1
 
-    frontend_df = enrich_for_frontend(base_df)
+    frontend_df, thresholds = enrich_for_frontend(base_df)
     tabular_df = build_tabular_view(frontend_df)
 
     history_json = dataframe_to_history_json(frontend_df)
-    latest_json = build_latest_json(frontend_df)
+    latest_json = build_latest_json(frontend_df, thresholds=thresholds)
     history_light_json = build_light_history_json(history_json, years=max(1, args.history_light_years))
     manifest_json = build_manifest_json(
         latest_json=latest_json,
         history_rows=len(history_json),
         light_rows=len(history_light_json),
+        thresholds=thresholds,
     )
 
     history_path = Path(args.history_json_path)

@@ -9,43 +9,49 @@ class ValidateDataQualityTests(unittest.TestCase):
             {
                 "d": "2026-03-27",
                 "priceMa200wRatio": 0.95,
-                "mvrvZscore": -0.2,
-                "lthMvrv": 0.9,
+                "priceRealizedRatio": 0.98,
+                "reserveRisk": 0.0012,
+                "sthSopr": 0.98,
+                "sthMvrv": 0.95,
                 "puellMultiple": 0.4,
-                "nupl": -0.1,
-                "signalPriceMa": True,
-                "signalMvrvZ": True,
-                "signalLthMvrv": True,
+                "signalPriceMa200w": True,
+                "signalPriceRealized": True,
+                "signalReserveRisk": True,
+                "signalSthSopr": True,
+                "signalSthMvrv": True,
                 "signalPuell": True,
-                "signalNupl": True,
-                "signalCount": 5,
+                "signalCount": 6,
                 "api_data_date": {
                     "price_ma200w": "2026-03-27",
-                    "mvrv_z": "2026-03-27",
-                    "lth_mvrv": "2026-03-27",
+                    "price_realized": "2026-03-27",
+                    "reserve_risk": "2026-03-27",
+                    "sth_sopr": "2026-03-27",
+                    "sth_mvrv": "2026-03-27",
                     "puell": "2026-03-27",
-                    "nupl": "2026-03-27",
                 },
             },
             {
                 "d": "2026-03-28",
                 "priceMa200wRatio": 0.96,
-                "mvrvZscore": -0.1,
-                "lthMvrv": 0.95,
+                "priceRealizedRatio": 0.97,
+                "reserveRisk": 0.0011,
+                "sthSopr": 0.97,
+                "sthMvrv": 0.92,
                 "puellMultiple": 0.45,
-                "nupl": -0.05,
-                "signalPriceMa": True,
-                "signalMvrvZ": True,
-                "signalLthMvrv": True,
+                "signalPriceMa200w": True,
+                "signalPriceRealized": True,
+                "signalReserveRisk": True,
+                "signalSthSopr": True,
+                "signalSthMvrv": True,
                 "signalPuell": True,
-                "signalNupl": True,
-                "signalCount": 5,
+                "signalCount": 6,
                 "api_data_date": {
                     "price_ma200w": "2026-03-28",
-                    "mvrv_z": "2026-03-28",
-                    "lth_mvrv": "2026-03-28",
+                    "price_realized": "2026-03-28",
+                    "reserve_risk": "2026-03-28",
+                    "sth_sopr": "2026-03-28",
+                    "sth_mvrv": "2026-03-28",
                     "puell": "2026-03-28",
-                    "nupl": "2026-03-28",
                 },
             },
         ]
@@ -54,24 +60,27 @@ class ValidateDataQualityTests(unittest.TestCase):
         return {
             "date": "2026-03-28",
             "priceMa200wRatio": 0.96,
-            "mvrvZscore": -0.1,
-            "lthMvrv": 0.95,
+            "priceRealizedRatio": 0.97,
+            "reserveRisk": 0.0011,
+            "sthSopr": 0.97,
+            "sthMvrv": 0.92,
             "puellMultiple": 0.45,
-            "nupl": -0.05,
-            "signalCount": 5,
+            "signalCount": 6,
             "signals": {
                 "priceMa200w": True,
-                "mvrvZ": True,
-                "lthMvrv": True,
+                "priceRealized": True,
+                "reserveRisk": True,
+                "sthSopr": True,
+                "sthMvrv": True,
                 "puell": True,
-                "nupl": True,
             },
             "indicatorDates": {
                 "priceMa200w": "2026-03-28",
-                "mvrvZ": "2026-03-28",
-                "lthMvrv": "2026-03-28",
+                "priceRealized": "2026-03-28",
+                "reserveRisk": "2026-03-28",
+                "sthSopr": "2026-03-28",
+                "sthMvrv": "2026-03-28",
                 "puell": "2026-03-28",
-                "nupl": "2026-03-28",
             },
         }
 
@@ -88,7 +97,7 @@ class ValidateDataQualityTests(unittest.TestCase):
 
     def test_validate_current_pair_fails_when_indicator_dates_are_stale(self):
         latest = self.build_latest()
-        latest["indicatorDates"]["mvrvZ"] = "2026-02-20"
+        latest["indicatorDates"]["sthSopr"] = "2026-02-20"
 
         ok, errors = validate_current_pair(
             self.build_history(),
@@ -98,7 +107,7 @@ class ValidateDataQualityTests(unittest.TestCase):
         )
 
         self.assertFalse(ok)
-        self.assertTrue(any("stale" in error and "mvrvZ" in error for error in errors))
+        self.assertTrue(any("stale" in error and "sthSopr" in error for error in errors))
 
     def test_validate_current_pair_uses_history_api_data_date_as_fallback(self):
         latest = self.build_latest()

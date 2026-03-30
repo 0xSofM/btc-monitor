@@ -1,52 +1,87 @@
-﻿export interface IndicatorData {
+export interface IndicatorData {
   d: string;
   unixTs?: number;
   btcPrice?: number;
   priceMa200wRatio?: number;
+  priceRealizedRatio?: number;
   ma200w?: number;
+  realizedPrice?: number;
+  reserveRisk?: number;
+  sthSopr?: number;
+  sthMvrv?: number;
+  puellMultiple?: number;
+  signalPriceMa200w?: boolean;
+  signalPriceRealized?: boolean;
+  signalReserveRisk?: boolean;
+  signalSthSopr?: boolean;
+  signalSthMvrv?: boolean;
+  signalPuell?: boolean;
+  signalCount?: number;
+  scorePriceMa200w?: number;
+  scorePriceRealized?: number;
+  scoreReserveRisk?: number;
+  scoreSthSopr?: number;
+  scoreSthMvrv?: number;
+  scorePuell?: number;
+  signalScoreV2?: number;
+  signalScoreV2Min3d?: number;
+  signalConfirmed3d?: boolean;
+  signalBandV2?: string;
+  indicatorDates?: {
+    priceMa200w?: string;
+    priceRealized?: string;
+    reserveRisk?: string;
+    sthSopr?: string;
+    sthMvrv?: string;
+    puell?: string;
+  };
+  // Legacy V1 compatibility fields
   mvrvZscore?: number;
   lthMvrv?: number;
-  puellMultiple?: number;
   nupl?: number;
   signalPriceMa?: boolean;
   signalMvrvZ?: boolean;
   signalLthMvrv?: boolean;
-  signalPuell?: boolean;
   signalNupl?: boolean;
-  signalCount?: number;
-  indicatorDates?: {
-    priceMa200w?: string;
-    mvrvZ?: string;
-    lthMvrv?: string;
-    puell?: string;
-    nupl?: string;
-  };
 }
 
 export interface LatestData {
   date: string;
   btcPrice: number;
   priceMa200wRatio: number;
+  priceRealizedRatio: number;
   ma200w?: number;
-  mvrvZscore: number;
-  lthMvrv: number;
+  realizedPrice?: number;
+  reserveRisk: number;
+  sthSopr: number;
+  sthMvrv: number;
   puellMultiple: number;
-  nupl: number;
   signalCount: number;
+  signalScoreV2?: number;
+  signalScoreV2Min3d?: number | null;
+  signalConfirmed3d?: boolean;
+  signalBandV2?: string;
   signals: {
     priceMa200w: boolean;
-    mvrvZ: boolean;
-    lthMvrv: boolean;
+    priceRealized: boolean;
+    reserveRisk: boolean;
+    sthSopr: boolean;
+    sthMvrv: boolean;
     puell: boolean;
-    nupl: boolean;
   };
   indicatorDates?: {
     priceMa200w?: string;
-    mvrvZ?: string;
-    lthMvrv?: string;
+    priceRealized?: string;
+    reserveRisk?: string;
+    sthSopr?: string;
+    sthMvrv?: string;
     puell?: string;
-    nupl?: string;
   };
+  thresholds?: Record<string, { trigger: number; deep: number }>;
+  // Legacy V1 compatibility fields
+  mvrvZscore?: number;
+  lthMvrv?: number;
+  nupl?: number;
 }
 
 export interface IndicatorConfig {

@@ -1,4 +1,4 @@
-﻿import type { IndicatorData, LatestData } from '@/types';
+import type { IndicatorData, LatestData } from '@/types';
 
 import type { ApiDatePayload } from './contracts';
 
@@ -87,12 +87,15 @@ function normalizeApiDatePayload(value: unknown): ApiDatePayload | undefined {
   return {
     priceMa200w: asString(payload.priceMa200w),
     price_ma200w: asString(payload.price_ma200w),
-    mvrvZ: asString(payload.mvrvZ),
-    mvrv_z: asString(payload.mvrv_z),
-    lthMvrv: asString(payload.lthMvrv),
-    lth_mvrv: asString(payload.lth_mvrv),
+    priceRealized: asString(payload.priceRealized),
+    price_realized: asString(payload.price_realized),
+    reserveRisk: asString(payload.reserveRisk),
+    reserve_risk: asString(payload.reserve_risk),
+    sthSopr: asString(payload.sthSopr),
+    sth_sopr: asString(payload.sth_sopr),
+    sthMvrv: asString(payload.sthMvrv),
+    sth_mvrv: asString(payload.sth_mvrv),
     puell: asString(payload.puell),
-    nupl: asString(payload.nupl),
   };
 }
 
@@ -104,10 +107,11 @@ function normalizeIndicatorDates(
 
   return {
     priceMa200w: payload?.priceMa200w ?? payload?.price_ma200w ?? fallbackDate,
-    mvrvZ: payload?.mvrvZ ?? payload?.mvrv_z ?? fallbackDate,
-    lthMvrv: payload?.lthMvrv ?? payload?.lth_mvrv ?? fallbackDate,
+    priceRealized: payload?.priceRealized ?? payload?.price_realized ?? fallbackDate,
+    reserveRisk: payload?.reserveRisk ?? payload?.reserve_risk ?? fallbackDate,
+    sthSopr: payload?.sthSopr ?? payload?.sth_sopr ?? fallbackDate,
+    sthMvrv: payload?.sthMvrv ?? payload?.sth_mvrv ?? fallbackDate,
     puell: payload?.puell ?? fallbackDate,
-    nupl: payload?.nupl ?? fallbackDate,
   };
 }
 
@@ -134,19 +138,40 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     d: date,
     unixTs: Number.isNaN(unixTs ?? Number.NaN) ? undefined : unixTs,
     btcPrice: toNumberOrNull(record.btcPrice ?? record.btc_price) ?? undefined,
-    priceMa200wRatio: toNumberOrNull(record.priceMa200wRatio ?? record.price_ma200w_ratio) ?? undefined,
     ma200w: toNumberOrNull(record.ma200w) ?? undefined,
+    realizedPrice: toNumberOrNull(record.realizedPrice ?? record.realized_price) ?? undefined,
+    priceMa200wRatio: toNumberOrNull(record.priceMa200wRatio ?? record.price_ma200w_ratio) ?? undefined,
+    priceRealizedRatio: toNumberOrNull(record.priceRealizedRatio ?? record.price_realized_ratio) ?? undefined,
+    reserveRisk: toNumberOrNull(record.reserveRisk ?? record.reserve_risk) ?? undefined,
+    sthSopr: toNumberOrNull(record.sthSopr ?? record.sth_sopr) ?? undefined,
+    sthMvrv: toNumberOrNull(record.sthMvrv ?? record.sth_mvrv) ?? undefined,
+    puellMultiple: toNumberOrNull(record.puellMultiple ?? record.puell_multiple) ?? undefined,
+    signalPriceMa200w: asBoolean(record.signalPriceMa200w ?? record.signal_price_ma200w ?? record.signalPriceMa ?? record.signal_price_ma),
+    signalPriceRealized: asBoolean(record.signalPriceRealized ?? record.signal_price_realized),
+    signalReserveRisk: asBoolean(record.signalReserveRisk ?? record.signal_reserve_risk),
+    signalSthSopr: asBoolean(record.signalSthSopr ?? record.signal_sth_sopr),
+    signalSthMvrv: asBoolean(record.signalSthMvrv ?? record.signal_sth_mvrv),
+    signalPuell: asBoolean(record.signalPuell ?? record.signal_puell),
+    signalCount: toNumberOrNull(record.signalCount ?? record.signal_count) ?? undefined,
+    scorePriceMa200w: toNumberOrNull(record.scorePriceMa200w ?? record.score_price_ma200w) ?? undefined,
+    scorePriceRealized: toNumberOrNull(record.scorePriceRealized ?? record.score_price_realized) ?? undefined,
+    scoreReserveRisk: toNumberOrNull(record.scoreReserveRisk ?? record.score_reserve_risk) ?? undefined,
+    scoreSthSopr: toNumberOrNull(record.scoreSthSopr ?? record.score_sth_sopr) ?? undefined,
+    scoreSthMvrv: toNumberOrNull(record.scoreSthMvrv ?? record.score_sth_mvrv) ?? undefined,
+    scorePuell: toNumberOrNull(record.scorePuell ?? record.score_puell) ?? undefined,
+    signalScoreV2: toNumberOrNull(record.signalScoreV2 ?? record.signal_score_v2) ?? undefined,
+    signalScoreV2Min3d: toNumberOrNull(record.signalScoreV2Min3d ?? record.signal_score_v2_min3d) ?? undefined,
+    signalConfirmed3d: asBoolean(record.signalConfirmed3d ?? record.signal_confirmed_3d),
+    signalBandV2: asString(record.signalBandV2 ?? record.signal_band_v2),
+    indicatorDates,
+    // Legacy V1 fields for backward compatibility
     mvrvZscore: toNumberOrNull(record.mvrvZscore ?? record.mvrv_zscore) ?? undefined,
     lthMvrv: toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? undefined,
-    puellMultiple: toNumberOrNull(record.puellMultiple ?? record.puell_multiple) ?? undefined,
     nupl: toNumberOrNull(record.nupl) ?? undefined,
     signalPriceMa: asBoolean(record.signalPriceMa ?? record.signal_price_ma),
     signalMvrvZ: asBoolean(record.signalMvrvZ ?? record.signal_mvrv_z),
     signalLthMvrv: asBoolean(record.signalLthMvrv ?? record.signal_lth_mvrv),
-    signalPuell: asBoolean(record.signalPuell ?? record.signal_puell),
     signalNupl: asBoolean(record.signalNupl ?? record.signal_nupl),
-    signalCount: toNumberOrNull(record.signalCount ?? record.signal_count) ?? undefined,
-    indicatorDates,
   };
 }
 
@@ -166,23 +191,27 @@ export function normalizeLatestData(item: unknown): LatestData | null {
 
   const btcPrice = toNumberOrNull(record.btcPrice ?? record.btc_price) ?? 0;
   const priceMa200wRatio = toNumberOrNull(record.priceMa200wRatio ?? record.price_ma200w_ratio) ?? 0;
-  const mvrvZscore = toNumberOrNull(record.mvrvZscore ?? record.mvrv_zscore) ?? 0;
-  const lthMvrv = toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? 0;
+  const priceRealizedRatio = toNumberOrNull(record.priceRealizedRatio ?? record.price_realized_ratio) ?? 0;
+  const reserveRisk = toNumberOrNull(record.reserveRisk ?? record.reserve_risk) ?? 0;
+  const sthSopr = toNumberOrNull(record.sthSopr ?? record.sth_sopr) ?? 0;
+  const sthMvrv = toNumberOrNull(record.sthMvrv ?? record.sth_mvrv) ?? 0;
   const puellMultiple = toNumberOrNull(record.puellMultiple ?? record.puell_multiple) ?? 0;
-  const nupl = toNumberOrNull(record.nupl) ?? 0;
   const ma200w = toNumberOrNull(record.ma200w) ?? undefined;
+  const realizedPrice = toNumberOrNull(record.realizedPrice ?? record.realized_price) ?? undefined;
 
   const signals = {
-    priceMa200w: asBoolean(incomingSignals?.priceMa200w ?? record.signalPriceMa ?? record.signal_price_ma)
+    priceMa200w: asBoolean(incomingSignals?.priceMa200w ?? record.signalPriceMa200w ?? record.signal_price_ma200w ?? record.signalPriceMa ?? record.signal_price_ma)
       ?? (priceMa200wRatio < 1),
-    mvrvZ: asBoolean(incomingSignals?.mvrvZ ?? record.signalMvrvZ ?? record.signal_mvrv_z)
-      ?? (mvrvZscore < 0),
-    lthMvrv: asBoolean(incomingSignals?.lthMvrv ?? record.signalLthMvrv ?? record.signal_lth_mvrv)
-      ?? (lthMvrv < 1),
+    priceRealized: asBoolean(incomingSignals?.priceRealized ?? record.signalPriceRealized ?? record.signal_price_realized)
+      ?? (priceRealizedRatio < 1),
+    reserveRisk: asBoolean(incomingSignals?.reserveRisk ?? record.signalReserveRisk ?? record.signal_reserve_risk)
+      ?? (reserveRisk < 0.0016),
+    sthSopr: asBoolean(incomingSignals?.sthSopr ?? record.signalSthSopr ?? record.signal_sth_sopr)
+      ?? (sthSopr < 1),
+    sthMvrv: asBoolean(incomingSignals?.sthMvrv ?? record.signalSthMvrv ?? record.signal_sth_mvrv)
+      ?? (sthMvrv < 1),
     puell: asBoolean(incomingSignals?.puell ?? record.signalPuell ?? record.signal_puell)
-      ?? (puellMultiple < 0.5),
-    nupl: asBoolean(incomingSignals?.nupl ?? record.signalNupl ?? record.signal_nupl)
-      ?? (nupl < 0),
+      ?? (puellMultiple < 0.6),
   };
 
   const signalCountRaw = record.signalCount ?? record.signal_count;
@@ -194,13 +223,24 @@ export function normalizeLatestData(item: unknown): LatestData | null {
     date,
     btcPrice,
     priceMa200wRatio,
+    priceRealizedRatio,
     ma200w,
-    mvrvZscore,
-    lthMvrv,
+    realizedPrice,
+    reserveRisk,
+    sthSopr,
+    sthMvrv,
     puellMultiple,
-    nupl,
     signalCount,
+    signalScoreV2: toNumberOrNull(record.signalScoreV2 ?? record.signal_score_v2) ?? undefined,
+    signalScoreV2Min3d: toNumberOrNull(record.signalScoreV2Min3d ?? record.signal_score_v2_min3d),
+    signalConfirmed3d: asBoolean(record.signalConfirmed3d ?? record.signal_confirmed_3d),
+    signalBandV2: asString(record.signalBandV2 ?? record.signal_band_v2),
     signals,
     indicatorDates: normalizeIndicatorDates(incomingIndicatorDates, date),
+    thresholds: asRecord(record.thresholds) as Record<string, { trigger: number; deep: number }> | undefined,
+    // Legacy fields
+    mvrvZscore: toNumberOrNull(record.mvrvZscore ?? record.mvrv_zscore) ?? undefined,
+    lthMvrv: toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? undefined,
+    nupl: toNumberOrNull(record.nupl) ?? undefined,
   };
 }

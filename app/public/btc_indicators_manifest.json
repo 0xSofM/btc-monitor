@@ -1,8 +1,35 @@
 {
-  "generatedAt": "2026-03-30T06:26:35.974838+00:00",
+  "generatedAt": "2026-03-30T12:47:53.855712+00:00",
   "latestDate": "2026-03-30",
-  "lastUpdated": "2026-03-30T06:26:35.942742+00:00",
-  "historyRows": 5558,
+  "lastUpdated": "2026-03-30T12:47:53.794293+00:00",
+  "historyRows": 5407,
   "historyLightRows": 2911,
-  "schemaVersion": "v2"
+  "schemaVersion": "v3",
+  "indicatorSet": "core6_bottom_v2",
+  "thresholds": {
+    "priceMa200wRatio": {
+      "trigger": 1.0,
+      "deep": 0.85
+    },
+    "priceRealizedRatio": {
+      "trigger": 1.0,
+      "deep": 0.9
+    },
+    "reserveRisk": {
+      "trigger": 0.0016374,
+      "deep": 0.001251
+    },
+    "sthSopr": {
+      "trigger": 1.0,
+      "deep": 0.97
+    },
+    "sthMvrv": {
+      "trigger": 1.0,
+      "deep": 0.85
+    },
+    "puellMultiple": {
+      "trigger": 0.6,
+      "deep": 0.5
+    }
+  }
 }

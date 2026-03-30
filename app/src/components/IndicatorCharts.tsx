@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import {
   Area,
   AreaChart,
@@ -24,7 +24,7 @@ interface IndicatorChartsProps {
   onRequestFullHistory?: () => void | Promise<void>;
 }
 
-type IndicatorType = 'priceMa200w' | 'mvrvZ' | 'lthMvrv' | 'puell' | 'nupl';
+type IndicatorType = 'priceMa200w' | 'priceRealized' | 'reserveRisk' | 'sthSopr' | 'sthMvrv' | 'puell';
 
 type DetailSeriesPoint = {
   date: string;
@@ -40,25 +40,34 @@ type MaSeriesPoint = {
   signal: boolean;
 };
 
-const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'mvrvZ', 'lthMvrv', 'puell', 'nupl'];
+const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'priceRealized', 'reserveRisk', 'sthSopr', 'sthMvrv', 'puell'];
 
 const TIME_RANGES = [
-  { key: 'all', label: '全部' },
-  { key: '1y', label: '1年' },
-  { key: '6m', label: '6个月' },
-  { key: '1m', label: '1个月' },
-  { key: '1w', label: '1周' },
+  { key: 'all', label: 'All' },
+  { key: '1y', label: '1Y' },
+  { key: '6m', label: '6M' },
+  { key: '1m', label: '1M' },
+  { key: '1w', label: '1W' },
 ] as const;
 
-const BUY_ZONE_CONFIG: Record<IndicatorType, { min: number; max: number; description: string }> = {
-  priceMa200w: { min: 0, max: 1, description: '0 ~ 1' },
-  mvrvZ: { min: -1, max: 0, description: '-1 ~ 0' },
-  lthMvrv: { min: 0, max: 1, description: '0 ~ 1' },
-  puell: { min: 0, max: 0.5, description: '0 ~ 0.5' },
-  nupl: { min: -1, max: 0, description: '-1 ~ 0' },
+const RANGE_DAYS: Record<(typeof TIME_RANGES)[number]['key'], number> = {
+  all: 0,
+  '1y': 365,
+  '6m': 180,
+  '1m': 30,
+  '1w': 7,
 };
 
-type TooltipPayloadItem = {
+const BUY_ZONE_CONFIG: Record<IndicatorType, { min: number; max: number; description: string }> = {
+  priceMa200w: { min: 0, max: 1, description: '< 1 (deep < 0.85)' },
+  priceRealized: { min: 0, max: 1, description: '< 1 (deep < 0.90)' },
+  reserveRisk: { min: 0, max: 0.0016, description: '< p20 (deep < p10)' },
+  sthSopr: { min: 0, max: 1, description: '< 1 (deep < 0.97)' },
+  sthMvrv: { min: 0, max: 1, description: '< 1 (deep < 0.85)' },
+  puell: { min: 0, max: 0.6, description: '< 0.6 (deep < 0.5)' },
+};
+
+type TooltipEntry = {
   color?: string;
   name?: string;
   value?: number;
@@ -67,56 +76,75 @@ type TooltipPayloadItem = {
   };
 };
 
-type TooltipProps = {
-  active?: boolean;
-  payload?: TooltipPayloadItem[];
-  label?: string;
-};
-
-type LineDotProps = {
-  cx?: number;
-  cy?: number;
-  payload?: {
-    signal?: boolean;
-  };
-};
-
 function formatDate(value: string): string {
-  if (!value) return '';
+  if (!value) {
+    return '';
+  }
+
   const parts = value.split('-');
   if (parts.length === 3) {
     return `${parts[0].slice(2)}/${parts[1]}/${parts[2]}`;
   }
+
   return value;
 }
 
 function formatNumber(value: number): string {
-  if (!Number.isFinite(value)) return '-';
-  if (Math.abs(value) >= 1000) return value.toLocaleString('en-US', { maximumFractionDigits: 0 });
-  if (Math.abs(value) >= 10) return value.toFixed(2);
-  if (Math.abs(value) >= 1) return value.toFixed(3);
+  if (!Number.isFinite(value)) {
+    return '-';
+  }
+
+  if (Math.abs(value) >= 1000) {
+    return value.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  }
+
+  if (Math.abs(value) >= 10) {
+    return value.toFixed(2);
+  }
+
+  if (Math.abs(value) >= 1) {
+    return value.toFixed(3);
+  }
+
   return value.toFixed(4);
 }
 
-function formatCurrencyShort(value: number): string {
-  if (!Number.isFinite(value)) return '-';
-  if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`;
+function formatPriceAxis(value: number): string {
+  if (!Number.isFinite(value)) {
+    return '-';
+  }
+
+  if (value >= 1000) {
+    return `$${(value / 1000).toFixed(0)}K`;
+  }
+
   return `$${value.toFixed(0)}`;
 }
 
-function IndicatorTooltip({ active, payload, label }: TooltipProps) {
-  if (!active || !payload || payload.length === 0) return null;
+function IndicatorTooltip({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: TooltipEntry[];
+  label?: string;
+}) {
+  if (!active || !payload || payload.length === 0) {
+    return null;
+  }
+
   return (
-    <div className="rounded-lg border bg-white p-3 text-sm shadow-lg dark:bg-gray-900">
-      <p className="mb-1 font-medium">{formatDate(label ?? '')}</p>
+    <div className="rounded-lg border bg-background/95 p-3 text-xs shadow-lg backdrop-blur">
+      <p className="mb-1 text-sm font-semibold">{formatDate(label ?? '')}</p>
       {payload.map((entry, index) => (
-        <p key={index} style={{ color: entry.color }}>
+        <p key={`${entry.name ?? 'line'}-${index}`} style={{ color: entry.color }}>
           {entry.name}: {formatNumber(entry.value ?? 0)}
         </p>
       ))}
       {payload[0]?.payload?.btcPrice && (
         <p className="mt-1 text-muted-foreground">
-          BTC: ${Number(payload[0].payload.btcPrice).toLocaleString()}
+          BTC: ${Number(payload[0].payload.btcPrice).toLocaleString('en-US')}
         </p>
       )}
     </div>
@@ -130,83 +158,88 @@ export function IndicatorCharts({
   onRequestFullHistory,
 }: IndicatorChartsProps) {
   const [activeIndicator, setActiveIndicator] = useState<IndicatorType>('priceMa200w');
-  const [brushKey, setBrushKey] = useState(0);
-  const [brushStartIndex, setBrushStartIndex] = useState(0);
-  const [brushEndIndex, setBrushEndIndex] = useState<number | undefined>(undefined);
   const [showThresholds, setShowThresholds] = useState(true);
   const [selectedRange, setSelectedRange] = useState<(typeof TIME_RANGES)[number]['key']>('all');
+  const [brushStartIndex, setBrushStartIndex] = useState(0);
+  const [brushEndIndex, setBrushEndIndex] = useState<number | undefined>(undefined);
+  const [brushKey, setBrushKey] = useState(0);
 
   const detailSeries = useMemo(() => {
     if (activeIndicator === 'priceMa200w') {
       return getMA200ChartData(data, 'all') as MaSeriesPoint[];
     }
+
     return getIndicatorChartData(data, activeIndicator, 'all') as DetailSeriesPoint[];
   }, [activeIndicator, data]);
 
   const miniSeriesMap = useMemo(() => {
-    const map: Record<IndicatorType, DetailSeriesPoint[]> = {
+    return {
       priceMa200w: getIndicatorChartData(data, 'priceMa200w', '1y') as DetailSeriesPoint[],
-      mvrvZ: getIndicatorChartData(data, 'mvrvZ', '1y') as DetailSeriesPoint[],
-      lthMvrv: getIndicatorChartData(data, 'lthMvrv', '1y') as DetailSeriesPoint[],
+      priceRealized: getIndicatorChartData(data, 'priceRealized', '1y') as DetailSeriesPoint[],
+      reserveRisk: getIndicatorChartData(data, 'reserveRisk', '1y') as DetailSeriesPoint[],
+      sthSopr: getIndicatorChartData(data, 'sthSopr', '1y') as DetailSeriesPoint[],
+      sthMvrv: getIndicatorChartData(data, 'sthMvrv', '1y') as DetailSeriesPoint[],
       puell: getIndicatorChartData(data, 'puell', '1y') as DetailSeriesPoint[],
-      nupl: getIndicatorChartData(data, 'nupl', '1y') as DetailSeriesPoint[],
     };
-    return map;
   }, [data]);
 
   const config = INDICATOR_CONFIG[activeIndicator];
   const buyZone = BUY_ZONE_CONFIG[activeIndicator];
   const totalPoints = detailSeries.length;
+
   const resolvedEndIndex = totalPoints > 0
     ? Math.min(brushEndIndex ?? (totalPoints - 1), totalPoints - 1)
     : 0;
+
   const resolvedStartIndex = totalPoints > 0
     ? Math.min(brushStartIndex, resolvedEndIndex)
     : 0;
 
   const activateIndicator = (indicator: IndicatorType) => {
     setActiveIndicator(indicator);
+    setSelectedRange('all');
     setBrushStartIndex(0);
     setBrushEndIndex(undefined);
-    setSelectedRange('all');
     setBrushKey((prev) => prev + 1);
   };
 
   const handleTimeRangeSelect = (rangeKey: (typeof TIME_RANGES)[number]['key']) => {
-    const total = totalPoints;
-    if (!total) return;
+    if (!totalPoints) {
+      return;
+    }
 
-    let start = 0;
-    if (rangeKey === '1w') start = Math.max(0, total - 7);
-    if (rangeKey === '1m') start = Math.max(0, total - 30);
-    if (rangeKey === '6m') start = Math.max(0, total - 180);
-    if (rangeKey === '1y') start = Math.max(0, total - 365);
+    const days = RANGE_DAYS[rangeKey];
+    const startIndex = rangeKey === 'all' ? 0 : Math.max(0, totalPoints - days);
 
-    setBrushStartIndex(start);
-    setBrushEndIndex(total - 1);
     setSelectedRange(rangeKey);
+    setBrushStartIndex(startIndex);
+    setBrushEndIndex(totalPoints - 1);
     setBrushKey((prev) => prev + 1);
   };
 
-  const handleResetView = () => {
+  const resetView = () => {
+    setSelectedRange('all');
     setBrushStartIndex(0);
     setBrushEndIndex(undefined);
-    setSelectedRange('all');
     setBrushKey((prev) => prev + 1);
   };
 
   const handleBrushChange = (range: { startIndex?: number; endIndex?: number } | null | undefined) => {
-    if (!range) return;
+    if (!range) {
+      return;
+    }
+
     if (typeof range.startIndex === 'number') {
       setBrushStartIndex(range.startIndex);
     }
+
     if (typeof range.endIndex === 'number') {
       setBrushEndIndex(range.endIndex);
     }
   };
 
   const renderMiniCards = () => (
-    <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
+    <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-6">
       {INDICATOR_ORDER.map((indicatorKey) => {
         const indicatorConfig = INDICATOR_CONFIG[indicatorKey];
         const points = miniSeriesMap[indicatorKey];
@@ -219,27 +252,28 @@ export function IndicatorCharts({
             key={indicatorKey}
             type="button"
             onClick={() => activateIndicator(indicatorKey)}
-            className={`rounded-xl border bg-card p-3 text-left transition-all ${
-              isActive ? 'ring-2 ring-offset-1' : 'hover:border-muted-foreground/30'
+            className={`rounded-xl border bg-card/80 p-3 text-left transition-all ${
+              isActive
+                ? 'ring-1 ring-primary/60 shadow-sm'
+                : 'hover:-translate-y-0.5 hover:border-muted-foreground/30'
             }`}
-            style={isActive ? { boxShadow: `0 0 0 2px ${indicatorConfig.color}33` } : undefined}
           >
             <div className="mb-2 flex items-center justify-between">
               <span className="text-xs font-semibold text-muted-foreground">{indicatorConfig.name}</span>
               <span
                 className={`rounded-full px-2 py-0.5 text-[11px] ${
-                  latest?.signal ? 'bg-emerald-100 text-emerald-700' : 'bg-muted text-muted-foreground'
+                  latest?.signal
+                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                    : 'bg-muted text-muted-foreground'
                 }`}
               >
-                {latest?.signal ? '触发' : '中性'}
+                {latest?.signal ? 'Triggered' : 'Neutral'}
               </span>
             </div>
 
-            <div className="mb-2 text-lg font-semibold">
-              {latest ? formatNumber(latest.value) : '-'}
-            </div>
+            <div className="mb-2 text-lg font-semibold">{latest ? formatNumber(latest.value) : '-'}</div>
 
-            <div className="h-20">
+            <div className="h-16">
               {points.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={points}>
@@ -250,7 +284,7 @@ export function IndicatorCharts({
                       </linearGradient>
                     </defs>
                     {showThresholds && (
-                      <ReferenceLine y={zone.max} stroke={indicatorConfig.color} strokeDasharray="2 2" strokeOpacity={0.5} />
+                      <ReferenceLine y={zone.max} stroke={indicatorConfig.color} strokeDasharray="2 2" strokeOpacity={0.45} />
                     )}
                     <Area
                       type="monotone"
@@ -263,11 +297,11 @@ export function IndicatorCharts({
                   </AreaChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="flex h-full items-center justify-center text-xs text-muted-foreground">暂无数据</div>
+                <div className="flex h-full items-center justify-center text-xs text-muted-foreground">No data</div>
               )}
             </div>
 
-            <div className="mt-2 text-[11px] text-muted-foreground">买入区间：{zone.description}</div>
+            <p className="mt-2 text-[11px] text-muted-foreground">Trigger zone: {zone.description}</p>
           </button>
         );
       })}
@@ -277,29 +311,32 @@ export function IndicatorCharts({
   const renderPriceChart = () => {
     const series = detailSeries as MaSeriesPoint[];
     if (!series.length) {
-      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">暂无均线数据</div>;
+      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">No MA200 data</div>;
     }
 
     const visible = series.slice(resolvedStartIndex, resolvedEndIndex + 1);
-    const allValues = visible.flatMap((row) => [row.price, row.ma200]).filter((v) => Number.isFinite(v) && v > 0);
-    const min = allValues.length ? Math.min(...allValues) : 0;
-    const max = allValues.length ? Math.max(...allValues) : 0;
-    const padding = (max - min) * 0.05;
+    const visibleValues = visible
+      .flatMap((row) => [row.price, row.ma200])
+      .filter((value) => Number.isFinite(value) && value > 0);
+
+    const min = visibleValues.length ? Math.min(...visibleValues) : 0;
+    const max = visibleValues.length ? Math.max(...visibleValues) : 0;
+    const padding = (max - min) * 0.06;
     const domainMin = Math.max(0, min - padding);
     const domainMax = max + padding;
 
     return (
       <ResponsiveContainer width="100%" height={420}>
         <LineChart data={series} margin={{ top: 10, right: 24, left: 8, bottom: 30 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#d4d4d8" />
           <XAxis dataKey="date" tickFormatter={formatDate} tick={{ fontSize: 11 }} interval="preserveStartEnd" />
-          <YAxis yAxisId="left" tick={{ fontSize: 11 }} tickFormatter={formatCurrencyShort} domain={[domainMin, domainMax]} />
+          <YAxis yAxisId="left" domain={[domainMin, domainMax]} tick={{ fontSize: 11 }} tickFormatter={formatPriceAxis} />
           <YAxis
             yAxisId="right"
             orientation="right"
-            tick={{ fontSize: 11 }}
-            tickFormatter={formatCurrencyShort}
             domain={[domainMin, domainMax]}
+            tick={{ fontSize: 11 }}
+            tickFormatter={formatPriceAxis}
           />
           <Tooltip content={<IndicatorTooltip />} />
 
@@ -307,7 +344,7 @@ export function IndicatorCharts({
             yAxisId="left"
             type="monotone"
             dataKey="price"
-            name="BTC 价格"
+            name="BTC Price"
             stroke="#F7931A"
             strokeWidth={2}
             dot={false}
@@ -317,11 +354,11 @@ export function IndicatorCharts({
             yAxisId="right"
             type="monotone"
             dataKey="ma200"
-            name="200 周均线"
+            name="200W MA"
             stroke="#3B82F6"
             strokeWidth={2}
-            dot={false}
             strokeDasharray="6 4"
+            dot={false}
             isAnimationActive={false}
           />
 
@@ -344,33 +381,26 @@ export function IndicatorCharts({
   const renderIndicatorChart = () => {
     const series = detailSeries as DetailSeriesPoint[];
     if (!series.length) {
-      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">暂无指标数据</div>;
+      return <div className="flex h-[420px] items-center justify-center text-muted-foreground">No indicator data</div>;
     }
 
     const visible = series.slice(resolvedStartIndex, resolvedEndIndex + 1);
-    const values = visible.map((row) => row.value).filter((v) => Number.isFinite(v));
+    const values = visible.map((row) => row.value).filter((value) => Number.isFinite(value));
     const dataMin = values.length ? Math.min(...values) : 0;
     const dataMax = values.length ? Math.max(...values) : 0;
-    const padding = (dataMax - dataMin) * 0.1 || 0.5;
+    const padding = (dataMax - dataMin) * 0.12 || 0.5;
     const yMin = Math.min(dataMin - padding, buyZone.min);
     const yMax = Math.max(dataMax + padding, buyZone.max);
 
     return (
       <ResponsiveContainer width="100%" height={420}>
         <LineChart data={series} margin={{ top: 10, right: 24, left: 8, bottom: 30 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#d4d4d8" />
           <XAxis dataKey="date" tickFormatter={formatDate} tick={{ fontSize: 11 }} interval="preserveStartEnd" />
           <YAxis tick={{ fontSize: 11 }} domain={[yMin, yMax]} tickFormatter={formatNumber} />
           <Tooltip content={<IndicatorTooltip />} />
 
-          {showThresholds && (
-            <ReferenceLine
-              y={buyZone.max}
-              stroke="#10B981"
-              strokeDasharray="4 4"
-              label={{ value: `买入阈值 ${buyZone.description}`, position: 'right', fontSize: 10, fill: '#10B981' }}
-            />
-          )}
+          {showThresholds && <ReferenceLine y={buyZone.max} stroke="#10B981" strokeDasharray="4 4" />}
 
           <Line
             type="monotone"
@@ -378,11 +408,16 @@ export function IndicatorCharts({
             name={config.name}
             stroke={config.color}
             strokeWidth={2}
-            dot={(props: LineDotProps) => {
-              if (props?.payload?.signal) {
-                return <circle cx={props.cx} cy={props.cy} r={3.5} fill="#10B981" stroke="#fff" strokeWidth={1.5} />;
+            dot={(dotProps) => {
+              const payload = dotProps.payload as { signal?: boolean } | undefined;
+              if (!payload?.signal) {
+                return <></>;
               }
-              return <></>;
+
+              const cx = typeof dotProps.cx === 'number' ? dotProps.cx : 0;
+              const cy = typeof dotProps.cy === 'number' ? dotProps.cy : 0;
+
+              return <circle cx={cx} cy={cy} r={3.5} fill="#10B981" stroke="#ffffff" strokeWidth={1.5} />;
             }}
             activeDot={{ r: 6 }}
             isAnimationActive={false}
@@ -405,15 +440,22 @@ export function IndicatorCharts({
   };
 
   return (
-    <Card className="mb-6">
+    <Card className="surface-card mb-6">
       <CardHeader>
-        <div className="flex flex-col gap-3">
+        <div className="space-y-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle className="text-lg font-semibold">五指标历史图表</CardTitle>
+            <CardTitle className="text-lg font-semibold">Core-6 Historical Charts</CardTitle>
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className={`rounded-full px-2 py-1 ${isFullHistoryLoaded ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}>
-                {isFullHistoryLoaded ? '已加载全量历史' : '当前为轻量历史'}
+              <span
+                className={`rounded-full px-2.5 py-1 ${
+                  isFullHistoryLoaded
+                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                    : 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
+                }`}
+              >
+                {isFullHistoryLoaded ? 'Full history loaded' : 'Light history loaded'}
               </span>
+
               {!isFullHistoryLoaded && (
                 <button
                   type="button"
@@ -421,7 +463,7 @@ export function IndicatorCharts({
                   disabled={isFullHistoryLoading}
                   className="rounded-md border px-2 py-1 transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {isFullHistoryLoading ? '正在加载全量...' : '加载全量历史'}
+                  {isFullHistoryLoading ? 'Loading full history...' : 'Load full history'}
                 </button>
               )}
             </div>
@@ -433,28 +475,30 @@ export function IndicatorCharts({
                 key={range.key}
                 type="button"
                 onClick={() => handleTimeRangeSelect(range.key)}
-                className={`rounded-md px-2 py-1 text-xs transition-colors ${
+                className={`rounded-md px-2.5 py-1 text-xs transition-colors ${
                   selectedRange === range.key
                     ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted hover:bg-muted/80'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
                 }`}
               >
                 {range.label}
               </button>
             ))}
+
             <button
               type="button"
-              onClick={handleResetView}
-              className="rounded-md border px-2 py-1 text-xs transition-colors hover:bg-muted"
+              onClick={resetView}
+              className="rounded-md border px-2.5 py-1 text-xs transition-colors hover:bg-muted"
             >
-              重置视图
+              Reset view
             </button>
+
             <button
               type="button"
               onClick={() => setShowThresholds((prev) => !prev)}
-              className="rounded-md border px-2 py-1 text-xs transition-colors hover:bg-muted"
+              className="rounded-md border px-2.5 py-1 text-xs transition-colors hover:bg-muted"
             >
-              {showThresholds ? '隐藏阈值线' : '显示阈值线'}
+              {showThresholds ? 'Hide thresholds' : 'Show thresholds'}
             </button>
           </div>
         </div>
@@ -465,8 +509,9 @@ export function IndicatorCharts({
 
         <div className="mb-4 flex flex-wrap gap-2">
           {INDICATOR_ORDER.map((indicatorKey) => {
-            const item = INDICATOR_CONFIG[indicatorKey];
+            const indicator = INDICATOR_CONFIG[indicatorKey];
             const isActive = indicatorKey === activeIndicator;
+
             return (
               <button
                 key={indicatorKey}
@@ -475,15 +520,15 @@ export function IndicatorCharts({
                 className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
                   isActive ? 'text-white' : 'bg-muted text-muted-foreground hover:bg-muted/80'
                 }`}
-                style={{ backgroundColor: isActive ? item.color : undefined }}
+                style={{ backgroundColor: isActive ? indicator.color : undefined }}
               >
-                {item.name}
+                {indicator.name}
               </button>
             );
           })}
         </div>
 
-        <div className="mb-4 rounded-lg bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
+        <div className="mb-4 rounded-lg border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
           <span className="font-medium" style={{ color: config.color }}>
             {config.name}
           </span>
@@ -498,22 +543,23 @@ export function IndicatorCharts({
             <div className="h-3 w-3 rounded-full" style={{ backgroundColor: config.color }} />
             <span>{config.name}</span>
           </div>
+
           {activeIndicator === 'priceMa200w' ? (
             <div className="flex items-center gap-1">
               <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #3B82F6' }} />
-              <span>200 周均线</span>
+              <span>200W MA</span>
             </div>
           ) : (
             <>
               {showThresholds && (
                 <div className="flex items-center gap-1">
                   <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #10B981' }} />
-                  <span>买入阈值（{buyZone.description}）</span>
+                  <span>Trigger zone ({buyZone.description})</span>
                 </div>
               )}
               <div className="flex items-center gap-1">
-                <div className="h-2 w-2 rounded-full bg-green-500" />
-                <span>信号点</span>
+                <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                <span>Signal points</span>
               </div>
             </>
           )}

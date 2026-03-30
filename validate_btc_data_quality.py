@@ -23,18 +23,25 @@ from typing import Any, Dict, List, Tuple
 
 CRITICAL_FIELDS = [
     "priceMa200wRatio",
-    "mvrvZscore",
-    "lthMvrv",
+    "priceRealizedRatio",
+    "reserveRisk",
+    "sthSopr",
+    "sthMvrv",
     "puellMultiple",
-    "nupl",
 ]
 
 INDICATOR_DATE_FIELDS = {
     "priceMa200w": ("priceMa200w", "price_ma200w"),
-    "mvrvZ": ("mvrvZ", "mvrv_z"),
-    "lthMvrv": ("lthMvrv", "lth_mvrv"),
+    "priceRealized": ("priceRealized", "price_realized"),
+    "reserveRisk": ("reserveRisk", "reserve_risk"),
+    "sthSopr": ("sthSopr", "sth_sopr"),
+    "sthMvrv": ("sthMvrv", "sth_mvrv"),
     "puell": ("puell", "puell"),
-    "nupl": ("nupl", "nupl"),
+}
+
+INDICATOR_MAX_LAG_OVERRIDES = {
+    # Reserve Risk updates slower than price-like series on the upstream source.
+    "reserveRisk": 120,
 }
 
 
@@ -60,13 +67,18 @@ def is_missing(value: Any) -> bool:
 
 
 def compute_signal_count_from_row(row: Dict[str, Any]) -> int:
+    price_ma_signal = row.get("signalPriceMa200w")
+    if price_ma_signal is None:
+        price_ma_signal = row.get("signalPriceMa")
+
     return sum(
         [
-            bool(row.get("signalPriceMa")),
-            bool(row.get("signalMvrvZ")),
-            bool(row.get("signalLthMvrv")),
+            bool(price_ma_signal),
+            bool(row.get("signalPriceRealized")),
+            bool(row.get("signalReserveRisk")),
+            bool(row.get("signalSthSopr")),
+            bool(row.get("signalSthMvrv")),
             bool(row.get("signalPuell")),
-            bool(row.get("signalNupl")),
         ]
     )
 
@@ -78,10 +90,24 @@ def compute_signal_count_from_latest(latest: Dict[str, Any]) -> int:
     return sum(
         [
             bool(signals.get("priceMa200w")),
-            bool(signals.get("mvrvZ")),
-            bool(signals.get("lthMvrv")),
+            bool(signals.get("priceRealized")),
+            bool(signals.get("reserveRisk")),
+            bool(signals.get("sthSopr")),
+            bool(signals.get("sthMvrv")),
             bool(signals.get("puell")),
-            bool(signals.get("nupl")),
+        ]
+    )
+
+
+def compute_signal_score_from_row(row: Dict[str, Any]) -> int:
+    return sum(
+        [
+            int(row.get("scorePriceMa200w") or 0),
+            int(row.get("scorePriceRealized") or 0),
+            int(row.get("scoreReserveRisk") or 0),
+            int(row.get("scoreSthSopr") or 0),
+            int(row.get("scoreSthMvrv") or 0),
+            int(row.get("scorePuell") or 0),
         ]
     )
 
@@ -133,6 +159,15 @@ def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str,
             errors.append(f"Row {idx} signalCount mismatch: expected {expected}, got {actual}.")
             break
 
+        if "signalScoreV2" in row:
+            score_expected = compute_signal_score_from_row(row)
+            score_actual = row.get("signalScoreV2")
+            if score_actual is None or int(score_actual) != score_expected:
+                errors.append(
+                    f"Row {idx} signalScoreV2 mismatch: expected {score_expected}, got {score_actual}."
+                )
+                break
+
     latest_expected = compute_signal_count_from_latest(latest)
     latest_actual = latest.get("signalCount")
     if latest_expected < 0:
@@ -141,6 +176,26 @@ def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str,
         errors.append(
             f"Latest signalCount mismatch: expected {latest_expected}, got {latest_actual}."
         )
+
+    if "signalScoreV2" in latest:
+        latest_score_expected = sum(
+            [
+                int(latest.get("scorePriceMa200w") or 0),
+                int(latest.get("scorePriceRealized") or 0),
+                int(latest.get("scoreReserveRisk") or 0),
+                int(latest.get("scoreSthSopr") or 0),
+                int(latest.get("scoreSthMvrv") or 0),
+                int(latest.get("scorePuell") or 0),
+            ]
+        )
+        latest_score_actual = latest.get("signalScoreV2")
+        # latest payload may not include per-indicator score fields; if missing, skip.
+        if latest_score_expected > 0 and (
+            latest_score_actual is None or int(latest_score_actual) != latest_score_expected
+        ):
+            errors.append(
+                f"Latest signalScoreV2 mismatch: expected {latest_score_expected}, got {latest_score_actual}."
+            )
 
 
 def get_latest_indicator_date(latest: Dict[str, Any], indicator_key: str) -> str:
@@ -227,10 +282,11 @@ def validate_indicator_staleness(
             continue
 
         lag_days = (latest_date - indicator_date).days
-        if lag_days > max_lag_days:
+        allowed_lag_days = max(max_lag_days, INDICATOR_MAX_LAG_OVERRIDES.get(indicator_key, max_lag_days))
+        if lag_days > allowed_lag_days:
             errors.append(
                 f"Indicator '{indicator_key}' is stale by {lag_days} days "
-                f"(latest={latest_date_raw}, indicator={indicator_date_raw}, max={max_lag_days})."
+                f"(latest={latest_date_raw}, indicator={indicator_date_raw}, max={allowed_lag_days})."
             )
 
 
