@@ -34,6 +34,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
 
+import numpy as np
 import pandas as pd
 import requests
 
@@ -54,6 +55,14 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
     "reserve_risk": {
         "display_name": "Reserve Risk",
         "url": "https://charts.bgeometrics.com/files/reserve_risk.json",
+    },
+    "lth_mvrv": {
+        "display_name": "LTH-MVRV",
+        "url": "https://charts.bgeometrics.com/files/lth_mvrv.json",
+    },
+    "mvrv_zscore": {
+        "display_name": "MVRV Z-Score",
+        "url": "https://charts.bgeometrics.com/files/mvrv_zscore_data.json",
     },
     "sth_sopr": {
         "display_name": "STH-SOPR",
@@ -91,7 +100,14 @@ SCORE_BANDS: List[Tuple[int, int, str]] = [
 SCORING_INDICATOR_COUNT = 5
 SCORE_CONFIRM_RATIO = 7 / 12
 DEFAULT_RESERVE_RISK_DISABLE_LAG_DAYS = 30
-SCORING_MODEL_VERSION = "v2_sth_grouped"
+SCORING_MODEL_VERSION = "v3_no_lookahead_replacement"
+
+ROLLING_THRESHOLD_WINDOW_DAYS = 1460
+ROLLING_THRESHOLD_MIN_HISTORY_DAYS = 365
+RESERVE_RISK_TRIGGER_QUANTILE = 0.20
+RESERVE_RISK_DEEP_QUANTILE = 0.10
+STH_TRIGGER_QUANTILE = 0.27
+STH_DEEP_QUANTILE = 0.135
 
 THRESHOLD_STATIC: Dict[str, Dict[str, float]] = {
     "price_ma200w_ratio": {"trigger": 1.0, "deep": 0.85},
@@ -99,6 +115,8 @@ THRESHOLD_STATIC: Dict[str, Dict[str, float]] = {
     "sth_sopr": {"trigger": 1.0, "deep": 0.97},
     "sth_mvrv": {"trigger": 1.0, "deep": 0.85},
     "puell_multiple": {"trigger": 0.6, "deep": 0.5},
+    "lth_mvrv": {"trigger": 1.0, "deep": 0.9},
+    "mvrv_zscore": {"trigger": 0.0, "deep": -0.5},
 }
 
 GROUPED_SIGNAL_COLUMNS = [
@@ -402,6 +420,8 @@ def build_base_dataframe(
         "ma200w",
         "realized_price",
         "reserve_risk",
+        "lth_mvrv",
+        "mvrv_zscore",
         "sth_sopr",
         "sth_mvrv",
         "puell_multiple",
@@ -431,6 +451,40 @@ def _score_by_lt(value: object, trigger: float, deep: float) -> int:
     return 0
 
 
+def _score_by_lt_series(
+    values: pd.Series,
+    trigger_series: pd.Series,
+    deep_series: pd.Series,
+) -> pd.Series:
+    numeric_values = pd.to_numeric(values, errors="coerce")
+    trigger_values = pd.to_numeric(trigger_series, errors="coerce")
+    deep_values = pd.to_numeric(deep_series, errors="coerce")
+    deep_values = pd.concat([deep_values, trigger_values], axis=1).min(axis=1)
+
+    scores = pd.Series(0, index=values.index, dtype="int64")
+    valid_mask = numeric_values.notna() & trigger_values.notna() & deep_values.notna()
+    scores.loc[valid_mask & (numeric_values < trigger_values)] = 1
+    scores.loc[valid_mask & (numeric_values < deep_values)] = 2
+    return scores
+
+
+def _build_rolling_lt_thresholds(
+    values: pd.Series,
+    trigger_quantile: float,
+    deep_quantile: float,
+    fallback_trigger: float,
+    fallback_deep: float,
+    window_days: int = ROLLING_THRESHOLD_WINDOW_DAYS,
+    min_history_days: int = ROLLING_THRESHOLD_MIN_HISTORY_DAYS,
+) -> Tuple[pd.Series, pd.Series]:
+    numeric_values = pd.to_numeric(values, errors="coerce")
+    history = numeric_values.shift(1).rolling(window=max(2, int(window_days)), min_periods=max(2, int(min_history_days)))
+    trigger_series = history.quantile(trigger_quantile).fillna(fallback_trigger)
+    deep_series = history.quantile(deep_quantile).fillna(fallback_deep)
+    deep_series = pd.concat([deep_series, trigger_series], axis=1).min(axis=1)
+    return trigger_series, deep_series
+
+
 def _classify_score_band(score: int, max_score: int) -> str:
     if max_score <= 0:
         return "watch"
@@ -446,7 +500,7 @@ def enrich_for_frontend(
     base_df: pd.DataFrame,
     reserve_risk_disable_lag_days: int = DEFAULT_RESERVE_RISK_DISABLE_LAG_DAYS,
     reserve_risk_primary_last_date: pd.Timestamp | None = None,
-) -> Tuple[pd.DataFrame, Dict[str, Dict[str, float]]]:
+) -> Tuple[pd.DataFrame, Dict[str, Dict[str, object]]]:
     """Build frontend-ready columns including ffilled metrics and V2 signals/scores."""
     df = base_df.copy()
     reserve_risk_disable_lag_days = max(0, int(reserve_risk_disable_lag_days))
@@ -456,10 +510,16 @@ def enrich_for_frontend(
         "ma200w",
         "realized_price",
         "reserve_risk",
+        "lth_mvrv",
+        "mvrv_zscore",
         "sth_sopr",
         "sth_mvrv",
         "puell_multiple",
     ]
+
+    for col in metric_cols:
+        if col not in df.columns:
+            df[col] = pd.NA
 
     # Track last real update date per indicator (before forward-fill).
     for col in metric_cols:
@@ -498,40 +558,133 @@ def enrich_for_frontend(
     df["price_200w_ma_ratio"] = df["btc_price"] / df["ma200w"].replace(0, pd.NA)
     df["price_realized_ratio"] = df["btc_price"] / df["realized_price"].replace(0, pd.NA)
 
-    reserve_series = df["reserve_risk"].dropna()
-    reserve_trigger = float(reserve_series.quantile(0.2)) if not reserve_series.empty else 0.0016
-    reserve_deep = float(reserve_series.quantile(0.1)) if not reserve_series.empty else 0.0012
-
-    thresholds = {
-        "priceMa200wRatio": THRESHOLD_STATIC["price_ma200w_ratio"],
-        "priceRealizedRatio": THRESHOLD_STATIC["price_realized_ratio"],
-        "reserveRisk": {"trigger": reserve_trigger, "deep": reserve_deep},
-        "sthSopr": THRESHOLD_STATIC["sth_sopr"],
-        "sthMvrv": THRESHOLD_STATIC["sth_mvrv"],
-        "puellMultiple": THRESHOLD_STATIC["puell_multiple"],
-    }
+    reserve_trigger_series, reserve_deep_series = _build_rolling_lt_thresholds(
+        values=df["reserve_risk"],
+        trigger_quantile=RESERVE_RISK_TRIGGER_QUANTILE,
+        deep_quantile=RESERVE_RISK_DEEP_QUANTILE,
+        fallback_trigger=0.0016,
+        fallback_deep=0.0012,
+    )
+    sth_sopr_trigger_series, sth_sopr_deep_series = _build_rolling_lt_thresholds(
+        values=df["sth_sopr"],
+        trigger_quantile=STH_TRIGGER_QUANTILE,
+        deep_quantile=STH_DEEP_QUANTILE,
+        fallback_trigger=THRESHOLD_STATIC["sth_sopr"]["trigger"],
+        fallback_deep=THRESHOLD_STATIC["sth_sopr"]["deep"],
+    )
+    sth_mvrv_trigger_series, sth_mvrv_deep_series = _build_rolling_lt_thresholds(
+        values=df["sth_mvrv"],
+        trigger_quantile=STH_TRIGGER_QUANTILE,
+        deep_quantile=STH_DEEP_QUANTILE,
+        fallback_trigger=THRESHOLD_STATIC["sth_mvrv"]["trigger"],
+        fallback_deep=THRESHOLD_STATIC["sth_mvrv"]["deep"],
+    )
 
     df["score_price_ma200w"] = df["price_200w_ma_ratio"].apply(
-        lambda v: _score_by_lt(v, thresholds["priceMa200wRatio"]["trigger"], thresholds["priceMa200wRatio"]["deep"])
+        lambda v: _score_by_lt(v, THRESHOLD_STATIC["price_ma200w_ratio"]["trigger"], THRESHOLD_STATIC["price_ma200w_ratio"]["deep"])
     )
     df["score_price_realized"] = df["price_realized_ratio"].apply(
-        lambda v: _score_by_lt(v, thresholds["priceRealizedRatio"]["trigger"], thresholds["priceRealizedRatio"]["deep"])
+        lambda v: _score_by_lt(v, THRESHOLD_STATIC["price_realized_ratio"]["trigger"], THRESHOLD_STATIC["price_realized_ratio"]["deep"])
     )
-    df["score_reserve_risk"] = df["reserve_risk"].apply(
-        lambda v: _score_by_lt(v, thresholds["reserveRisk"]["trigger"], thresholds["reserveRisk"]["deep"])
+    df["score_reserve_risk_primary"] = _score_by_lt_series(
+        values=df["reserve_risk"],
+        trigger_series=reserve_trigger_series,
+        deep_series=reserve_deep_series,
     )
-    df.loc[~df["reserve_risk_active"], "score_reserve_risk"] = 0
-    df["score_sth_sopr"] = df["sth_sopr"].apply(
-        lambda v: _score_by_lt(v, thresholds["sthSopr"]["trigger"], thresholds["sthSopr"]["deep"])
+    df["score_sth_sopr"] = _score_by_lt_series(
+        values=df["sth_sopr"],
+        trigger_series=sth_sopr_trigger_series,
+        deep_series=sth_sopr_deep_series,
     )
-    df["score_sth_mvrv"] = df["sth_mvrv"].apply(
-        lambda v: _score_by_lt(v, thresholds["sthMvrv"]["trigger"], thresholds["sthMvrv"]["deep"])
+    df["score_sth_mvrv"] = _score_by_lt_series(
+        values=df["sth_mvrv"],
+        trigger_series=sth_mvrv_trigger_series,
+        deep_series=sth_mvrv_deep_series,
     )
     # STH-SOPR and STH-MVRV are highly correlated, so score them as one grouped dimension.
     df["score_sth_group"] = df[["score_sth_sopr", "score_sth_mvrv"]].max(axis=1)
     df["score_puell"] = df["puell_multiple"].apply(
-        lambda v: _score_by_lt(v, thresholds["puellMultiple"]["trigger"], thresholds["puellMultiple"]["deep"])
+        lambda v: _score_by_lt(v, THRESHOLD_STATIC["puell_multiple"]["trigger"], THRESHOLD_STATIC["puell_multiple"]["deep"])
     )
+    df["score_lth_mvrv"] = df["lth_mvrv"].apply(
+        lambda v: _score_by_lt(v, THRESHOLD_STATIC["lth_mvrv"]["trigger"], THRESHOLD_STATIC["lth_mvrv"]["deep"])
+    )
+    df["score_mvrv_zscore"] = df["mvrv_zscore"].apply(
+        lambda v: _score_by_lt(v, THRESHOLD_STATIC["mvrv_zscore"]["trigger"], THRESHOLD_STATIC["mvrv_zscore"]["deep"])
+    )
+    df["score_reserve_risk_replacement"] = df[["score_lth_mvrv", "score_mvrv_zscore"]].max(axis=1)
+
+    df["lth_mvrv_lag_days"] = (df["date"] - df["lth_mvrv_date"]).dt.days
+    df["mvrv_zscore_lag_days"] = (df["date"] - df["mvrv_zscore_date"]).dt.days
+    replacement_lag = df[["lth_mvrv_lag_days", "mvrv_zscore_lag_days"]].min(axis=1, skipna=True)
+    replacement_available_mask = df[["lth_mvrv_date", "mvrv_zscore_date"]].notna().any(axis=1)
+    df["reserve_risk_replacement_lag_days"] = replacement_lag.where(replacement_available_mask, pd.NA)
+    df["reserve_risk_replacement_active"] = (
+        ~df["reserve_risk_active"]
+        & df["reserve_risk_replacement_lag_days"].fillna(reserve_risk_disable_lag_days + 1).le(reserve_risk_disable_lag_days)
+    )
+    reserve_replacement_source = pd.Series(
+        np.where(
+            df["score_lth_mvrv"] >= df["score_mvrv_zscore"],
+            "lth_mvrv",
+            "mvrv_zscore_data",
+        ),
+        index=df.index,
+        dtype="object",
+    )
+    df["reserve_risk_replacement_source"] = reserve_replacement_source.where(
+        df["reserve_risk_replacement_active"],
+        None,
+    )
+
+    df["reserve_risk_source_mode"] = np.where(
+        df["reserve_risk_active"],
+        "primary",
+        np.where(df["reserve_risk_replacement_active"], "replacement", "inactive"),
+    )
+    df["reserve_dimension_active"] = df["reserve_risk_source_mode"] != "inactive"
+    df["score_reserve_risk"] = df["score_reserve_risk_primary"]
+    replacement_mask = ~df["reserve_risk_active"] & df["reserve_risk_replacement_active"]
+    df.loc[replacement_mask, "score_reserve_risk"] = df.loc[replacement_mask, "score_reserve_risk_replacement"]
+    df.loc[~df["reserve_dimension_active"], "score_reserve_risk"] = 0
+    df["score_reserve_risk"] = df["score_reserve_risk"].fillna(0).astype(int)
+
+    thresholds = {
+        "priceMa200wRatio": THRESHOLD_STATIC["price_ma200w_ratio"],
+        "priceRealizedRatio": THRESHOLD_STATIC["price_realized_ratio"],
+        "reserveRisk": {
+            "trigger": float(reserve_trigger_series.iloc[-1]),
+            "deep": float(reserve_deep_series.iloc[-1]),
+            "method": "rolling_quantile_no_lookahead",
+            "windowDays": ROLLING_THRESHOLD_WINDOW_DAYS,
+            "minHistoryDays": ROLLING_THRESHOLD_MIN_HISTORY_DAYS,
+            "triggerQuantile": RESERVE_RISK_TRIGGER_QUANTILE,
+            "deepQuantile": RESERVE_RISK_DEEP_QUANTILE,
+        },
+        "sthSopr": {
+            "trigger": float(sth_sopr_trigger_series.iloc[-1]),
+            "deep": float(sth_sopr_deep_series.iloc[-1]),
+            "method": "rolling_quantile_no_lookahead",
+            "windowDays": ROLLING_THRESHOLD_WINDOW_DAYS,
+            "minHistoryDays": ROLLING_THRESHOLD_MIN_HISTORY_DAYS,
+            "triggerQuantile": STH_TRIGGER_QUANTILE,
+            "deepQuantile": STH_DEEP_QUANTILE,
+        },
+        "sthMvrv": {
+            "trigger": float(sth_mvrv_trigger_series.iloc[-1]),
+            "deep": float(sth_mvrv_deep_series.iloc[-1]),
+            "method": "rolling_quantile_no_lookahead",
+            "windowDays": ROLLING_THRESHOLD_WINDOW_DAYS,
+            "minHistoryDays": ROLLING_THRESHOLD_MIN_HISTORY_DAYS,
+            "triggerQuantile": STH_TRIGGER_QUANTILE,
+            "deepQuantile": STH_DEEP_QUANTILE,
+        },
+        "puellMultiple": THRESHOLD_STATIC["puell_multiple"],
+        "reserveRiskReplacement": {
+            "lthMvrv": THRESHOLD_STATIC["lth_mvrv"],
+            "mvrvZscore": THRESHOLD_STATIC["mvrv_zscore"],
+        },
+    }
 
     # Signal flags and composite score.
     df["signal_price_ma200w"] = df["score_price_ma200w"] > 0
@@ -542,7 +695,7 @@ def enrich_for_frontend(
     df["signal_sth_group"] = df["score_sth_group"] > 0
     df["signal_puell"] = df["score_puell"] > 0
 
-    df["inactive_indicator_count"] = (~df["reserve_risk_active"]).astype(int)
+    df["inactive_indicator_count"] = (~df["reserve_dimension_active"]).astype(int)
     df["active_indicator_count"] = SCORING_INDICATOR_COUNT - df["inactive_indicator_count"]
     df["max_signal_score_v2"] = df["active_indicator_count"] * 2
     df["signal_count"] = df[GROUPED_SIGNAL_COLUMNS].sum(axis=1).astype(int)
@@ -611,6 +764,8 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "priceMa200wRatio": _safe_float(getattr(row, "price_200w_ma_ratio")),
                 "priceRealizedRatio": _safe_float(getattr(row, "price_realized_ratio")),
                 "reserveRisk": _safe_float(getattr(row, "reserve_risk")),
+                "lthMvrv": _safe_float(getattr(row, "lth_mvrv")),
+                "mvrvZscore": _safe_float(getattr(row, "mvrv_zscore")),
                 "sthSopr": _safe_float(getattr(row, "sth_sopr")),
                 "sthMvrv": _safe_float(getattr(row, "sth_mvrv")),
                 "puellMultiple": _safe_float(getattr(row, "puell_multiple")),
@@ -626,6 +781,10 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "scorePriceMa200w": int(getattr(row, "score_price_ma200w")),
                 "scorePriceRealized": int(getattr(row, "score_price_realized")),
                 "scoreReserveRisk": int(getattr(row, "score_reserve_risk")),
+                "scoreReserveRiskPrimary": int(getattr(row, "score_reserve_risk_primary")),
+                "scoreReserveRiskReplacement": int(getattr(row, "score_reserve_risk_replacement")),
+                "scoreLthMvrv": int(getattr(row, "score_lth_mvrv")),
+                "scoreMvrvZscore": int(getattr(row, "score_mvrv_zscore")),
                 "scoreSthSopr": int(getattr(row, "score_sth_sopr")),
                 "scoreSthMvrv": int(getattr(row, "score_sth_mvrv")),
                 "scoreSthGroup": int(getattr(row, "score_sth_group")),
@@ -636,12 +795,18 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "signalConfirmed3d": bool(getattr(row, "signal_confirmed_3d")),
                 "signalBandV2": str(getattr(row, "signal_band_v2")),
                 "reserveRiskActive": bool(getattr(row, "reserve_risk_active")),
+                "reserveRiskReplacementActive": bool(getattr(row, "reserve_risk_replacement_active")),
+                "reserveRiskReplacementSource": getattr(row, "reserve_risk_replacement_source"),
+                "reserveRiskSourceMode": str(getattr(row, "reserve_risk_source_mode")),
                 "reserveRiskLagDays": _safe_int(getattr(row, "reserve_risk_lag_days")),
                 "reserveRiskPrimaryLagDays": _safe_int(getattr(row, "reserve_risk_primary_lag_days")),
+                "reserveRiskReplacementLagDays": _safe_int(getattr(row, "reserve_risk_replacement_lag_days")),
                 "api_data_date": {
                     "price_ma200w": _safe_iso_date(getattr(row, "btc_price_date")),
                     "price_realized": _safe_iso_date(getattr(row, "realized_price_date")),
                     "reserve_risk": _safe_iso_date(getattr(row, "reserve_risk_date")),
+                    "lth_mvrv": _safe_iso_date(getattr(row, "lth_mvrv_date")),
+                    "mvrv_zscore": _safe_iso_date(getattr(row, "mvrv_zscore_date")),
                     "sth_sopr": _safe_iso_date(getattr(row, "sth_sopr_date")),
                     "sth_mvrv": _safe_iso_date(getattr(row, "sth_mvrv_date")),
                     "puell": _safe_iso_date(getattr(row, "puell_multiple_date")),
@@ -654,7 +819,7 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
 
 def build_latest_json(
     frontend_df: pd.DataFrame,
-    thresholds: Dict[str, Dict[str, float]],
+    thresholds: Dict[str, Dict[str, object]],
 ) -> Dict[str, object]:
     """Build latest snapshot JSON from the last history row."""
     if frontend_df.empty:
@@ -671,9 +836,22 @@ def build_latest_json(
     reserve_risk_disable_lag_days = _safe_int(last.get("reserve_risk_disable_lag_days"))
     reserve_risk_date = _safe_iso_date(last["reserve_risk_date"]) or date_value
     reserve_risk_primary_date = _safe_iso_date(last.get("reserve_risk_primary_date"))
+    reserve_risk_replacement_active = bool(last.get("reserve_risk_replacement_active", False))
+    reserve_risk_replacement_source = last.get("reserve_risk_replacement_source")
+    reserve_risk_replacement_lag_days = _safe_int(last.get("reserve_risk_replacement_lag_days"))
+    reserve_risk_source_mode = str(last.get("reserve_risk_source_mode", "primary"))
+    lth_mvrv_date = _safe_iso_date(last.get("lth_mvrv_date")) or date_value
+    mvrv_zscore_date = _safe_iso_date(last.get("mvrv_zscore_date")) or date_value
+
+    reserve_risk_effective_date = reserve_risk_date
+    if reserve_risk_source_mode == "replacement":
+        if reserve_risk_replacement_source == "mvrv_zscore_data":
+            reserve_risk_effective_date = mvrv_zscore_date
+        else:
+            reserve_risk_effective_date = lth_mvrv_date
 
     inactive_indicators: List[Dict[str, object]] = []
-    if not reserve_risk_active:
+    if reserve_risk_source_mode == "inactive":
         inactive_reason = "stale_source_lag"
         if (
             reserve_risk_primary_lag_days is not None
@@ -703,6 +881,8 @@ def build_latest_json(
         "priceMa200wRatio": _safe_float(last["price_200w_ma_ratio"]) or 0.0,
         "priceRealizedRatio": _safe_float(last["price_realized_ratio"]) or 0.0,
         "reserveRisk": _safe_float(last["reserve_risk"]) or 0.0,
+        "lthMvrv": _safe_float(last["lth_mvrv"]),
+        "mvrvZscore": _safe_float(last["mvrv_zscore"]),
         "sthSopr": _safe_float(last["sth_sopr"]) or 0.0,
         "sthMvrv": _safe_float(last["sth_mvrv"]) or 0.0,
         "ma200w": _safe_float(last["ma200w"]),
@@ -714,10 +894,18 @@ def build_latest_json(
         "signalScoreV2Min3d": _safe_float(last["signal_score_v2_min3d"]),
         "signalConfirmed3d": bool(last["signal_confirmed_3d"]),
         "signalBandV2": str(last["signal_band_v2"]),
+        "scoreReserveRiskPrimary": int(last["score_reserve_risk_primary"]),
+        "scoreReserveRiskReplacement": int(last["score_reserve_risk_replacement"]),
+        "scoreLthMvrv": int(last["score_lth_mvrv"]),
+        "scoreMvrvZscore": int(last["score_mvrv_zscore"]),
         "scoreSthGroup": int(last["score_sth_group"]),
         "signalSthGroup": bool(last["signal_sth_group"]),
         "scoringModelVersion": SCORING_MODEL_VERSION,
         "reserveRiskActive": reserve_risk_active,
+        "reserveRiskReplacementActive": reserve_risk_replacement_active,
+        "reserveRiskReplacementSource": reserve_risk_replacement_source,
+        "reserveRiskReplacementLagDays": reserve_risk_replacement_lag_days,
+        "reserveRiskSourceMode": reserve_risk_source_mode,
         "reserveRiskLagDays": reserve_risk_lag_days,
         "reserveRiskPrimaryLagDays": reserve_risk_primary_lag_days,
         "inactiveIndicators": inactive_indicators,
@@ -733,7 +921,7 @@ def build_latest_json(
         "indicatorDates": {
             "priceMa200w": _safe_iso_date(last["btc_price_date"]) or date_value,
             "priceRealized": _safe_iso_date(last["realized_price_date"]) or date_value,
-            "reserveRisk": reserve_risk_date,
+            "reserveRisk": reserve_risk_effective_date,
             "sthSopr": _safe_iso_date(last["sth_sopr_date"]) or date_value,
             "sthMvrv": _safe_iso_date(last["sth_mvrv_date"]) or date_value,
             "puell": _safe_iso_date(last["puell_multiple_date"]) or date_value,
@@ -771,7 +959,7 @@ def build_manifest_json(
     latest_json: Dict[str, object],
     history_rows: int,
     light_rows: int,
-    thresholds: Dict[str, Dict[str, float]],
+    thresholds: Dict[str, Dict[str, object]],
 ) -> Dict[str, object]:
     """Build a small manifest for observability/debugging and cache-busting hints."""
     return {
@@ -786,6 +974,7 @@ def build_manifest_json(
         "thresholds": thresholds,
         "activeIndicatorCount": latest_json.get("activeIndicatorCount", SCORING_INDICATOR_COUNT),
         "maxSignalScoreV2": latest_json.get("maxSignalScoreV2", SCORING_INDICATOR_COUNT * 2),
+        "reserveRiskSourceMode": latest_json.get("reserveRiskSourceMode", "primary"),
         "inactiveIndicators": latest_json.get("inactiveIndicators", []),
     }
 
@@ -846,6 +1035,8 @@ def print_summary(
         "ma200w",
         "realized_price",
         "reserve_risk",
+        "lth_mvrv",
+        "mvrv_zscore",
         "sth_sopr",
         "sth_mvrv",
         "puell_multiple",

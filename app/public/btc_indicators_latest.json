@@ -5,39 +5,34 @@
   "priceMa200wRatio": 1.1268200081113542,
   "priceRealizedRatio": 1.2457702398182482,
   "reserveRisk": 0.0005671274,
+  "lthMvrv": 1.52,
+  "mvrvZscore": 0.4311,
   "sthSopr": 1.2020877652,
   "sthMvrv": 0.79,
   "ma200w": 59329.3511996225,
   "puellMultiple": 0.7257142857,
   "signalCount": 1,
-  "activeIndicatorCount": 4,
+  "activeIndicatorCount": 5,
   "signalScoreV2": 2,
-  "maxSignalScoreV2": 8,
+  "maxSignalScoreV2": 10,
   "signalScoreV2Min3d": 2.0,
   "signalConfirmed3d": false,
   "signalBandV2": "watch",
+  "scoreReserveRiskPrimary": 2,
+  "scoreReserveRiskReplacement": 0,
+  "scoreLthMvrv": 0,
+  "scoreMvrvZscore": 0,
   "scoreSthGroup": 2,
   "signalSthGroup": true,
-  "scoringModelVersion": "v2_sth_grouped",
+  "scoringModelVersion": "v3_no_lookahead_replacement",
   "reserveRiskActive": false,
+  "reserveRiskReplacementActive": true,
+  "reserveRiskReplacementSource": "lth_mvrv",
+  "reserveRiskReplacementLagDays": 2,
+  "reserveRiskSourceMode": "replacement",
   "reserveRiskLagDays": 1,
   "reserveRiskPrimaryLagDays": 93,
-  "inactiveIndicators": [
-    {
-      "key": "reserveRisk",
-      "reason": "primary_source_stale",
-      "sourceDate": "2026-03-30",
-      "primarySourceDate": "2025-12-28",
-      "latestDate": "2026-03-31",
-      "lagDays": 1,
-      "primaryLagDays": 93,
-      "disableLagDays": 30,
-      "replacementCandidates": [
-        "lth_mvrv",
-        "mvrv_zscore_data"
-      ]
-    }
-  ],
+  "inactiveIndicators": [],
   "signals": {
     "priceMa200w": false,
     "priceRealized": false,
@@ -50,7 +45,7 @@
   "indicatorDates": {
     "priceMa200w": "2026-03-31",
     "priceRealized": "2026-03-29",
-    "reserveRisk": "2026-03-30",
+    "reserveRisk": "2026-03-29",
     "sthSopr": "2026-03-29",
     "sthMvrv": "2026-03-29",
     "puell": "2026-03-30"
@@ -65,21 +60,46 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.001637,
-      "deep": 0.0012493
+      "trigger": 0.001148,
+      "deep": 0.0010489,
+      "method": "rolling_quantile_no_lookahead",
+      "windowDays": 1460,
+      "minHistoryDays": 365,
+      "triggerQuantile": 0.2,
+      "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 1.0,
-      "deep": 0.97
+      "trigger": 0.994434103919,
+      "deep": 0.985334538925,
+      "method": "rolling_quantile_no_lookahead",
+      "windowDays": 1460,
+      "minHistoryDays": 365,
+      "triggerQuantile": 0.27,
+      "deepQuantile": 0.135
     },
     "sthMvrv": {
-      "trigger": 1.0,
-      "deep": 0.85
+      "trigger": 0.915,
+      "deep": 0.85,
+      "method": "rolling_quantile_no_lookahead",
+      "windowDays": 1460,
+      "minHistoryDays": 365,
+      "triggerQuantile": 0.27,
+      "deepQuantile": 0.135
     },
     "puellMultiple": {
       "trigger": 0.6,
       "deep": 0.5
+    },
+    "reserveRiskReplacement": {
+      "lthMvrv": {
+        "trigger": 1.0,
+        "deep": 0.9
+      },
+      "mvrvZscore": {
+        "trigger": 0.0,
+        "deep": -0.5
+      }
     }
   },
-  "lastUpdated": "2026-03-31T02:50:08.625340+00:00"
+  "lastUpdated": "2026-03-31T03:41:41.986219+00:00"
 }

@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-03-31T02:50:08.675249+00:00",
+  "generatedAt": "2026-03-31T03:41:42.041383+00:00",
   "latestDate": "2026-03-31",
-  "lastUpdated": "2026-03-31T02:50:08.625340+00:00",
+  "lastUpdated": "2026-03-31T03:41:41.986219+00:00",
   "historyRows": 5408,
   "historyLightRows": 2911,
   "schemaVersion": "v3",
   "indicatorSet": "core6_bottom_v2_sth_grouped",
-  "scoringModelVersion": "v2_sth_grouped",
+  "scoringModelVersion": "v3_no_lookahead_replacement",
   "thresholds": {
     "priceMa200wRatio": {
       "trigger": 1.0,
@@ -17,38 +17,49 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.001637,
-      "deep": 0.0012493
+      "trigger": 0.001148,
+      "deep": 0.0010489,
+      "method": "rolling_quantile_no_lookahead",
+      "windowDays": 1460,
+      "minHistoryDays": 365,
+      "triggerQuantile": 0.2,
+      "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 1.0,
-      "deep": 0.97
+      "trigger": 0.994434103919,
+      "deep": 0.985334538925,
+      "method": "rolling_quantile_no_lookahead",
+      "windowDays": 1460,
+      "minHistoryDays": 365,
+      "triggerQuantile": 0.27,
+      "deepQuantile": 0.135
     },
     "sthMvrv": {
-      "trigger": 1.0,
-      "deep": 0.85
+      "trigger": 0.915,
+      "deep": 0.85,
+      "method": "rolling_quantile_no_lookahead",
+      "windowDays": 1460,
+      "minHistoryDays": 365,
+      "triggerQuantile": 0.27,
+      "deepQuantile": 0.135
     },
     "puellMultiple": {
       "trigger": 0.6,
       "deep": 0.5
+    },
+    "reserveRiskReplacement": {
+      "lthMvrv": {
+        "trigger": 1.0,
+        "deep": 0.9
+      },
+      "mvrvZscore": {
+        "trigger": 0.0,
+        "deep": -0.5
+      }
     }
   },
-  "activeIndicatorCount": 4,
-  "maxSignalScoreV2": 8,
-  "inactiveIndicators": [
-    {
-      "key": "reserveRisk",
-      "reason": "primary_source_stale",
-      "sourceDate": "2026-03-30",
-      "primarySourceDate": "2025-12-28",
-      "latestDate": "2026-03-31",
-      "lagDays": 1,
-      "primaryLagDays": 93,
-      "disableLagDays": 30,
-      "replacementCandidates": [
-        "lth_mvrv",
-        "mvrv_zscore_data"
-      ]
-    }
-  ]
+  "activeIndicatorCount": 5,
+  "maxSignalScoreV2": 10,
+  "reserveRiskSourceMode": "replacement",
+  "inactiveIndicators": []
 }

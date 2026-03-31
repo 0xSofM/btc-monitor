@@ -15,6 +15,8 @@ V2 scoring:
 
 - per-indicator score: `0 / 1 / 2`
 - short-term group de-correlation: `STH-SOPR` + `STH-MVRV` are merged as one scoring dimension (`max(scoreSthSopr, scoreSthMvrv)`)
+- no-lookahead thresholds: `Reserve Risk` / `STH-SOPR` / `STH-MVRV` use rolling quantile thresholds computed only from past data
+- Reserve Risk replacement: when Reserve Risk becomes stale, `LTH-MVRV` and `MVRV Z-Score` replace that scoring dimension automatically
 - total score: `signalScoreV2` (grouped baseline `0..10`, dynamic max available in `maxSignalScoreV2`)
 - confirmation flag: `signalConfirmed3d` (3-day confirmation)
 
@@ -59,7 +61,7 @@ Generate only frontend JSON (used in CI automation):
 python fetch_btc_indicators_history_files.py --skip-tabular
 ```
 
-Reserve Risk auto-exclusion (recommended when upstream is stale):
+Reserve Risk stale handling (recommended when upstream is stale):
 
 ```bash
 python fetch_btc_indicators_history_files.py --skip-tabular --reserve-risk-disable-lag-days 30
@@ -76,8 +78,8 @@ python validate_btc_data_quality.py \
 
 Note:
 
-- When `reserveRisk` source-date lag exceeds `--reserve-risk-disable-lag-days` (default `30`), it is automatically excluded from scoring.
-- Exclusion metadata is written to `inactiveIndicators`, `activeIndicatorCount`, and `maxSignalScoreV2` in latest/history outputs.
+- When `reserveRisk` source-date lag exceeds `--reserve-risk-disable-lag-days` (default `30`), the pipeline first tries replacement scoring from `LTH-MVRV` / `MVRV Z-Score`; only when replacement is unavailable does it reduce active dimensions.
+- Source mode metadata is written to `reserveRiskSourceMode`, `reserveRiskReplacementActive`, and `inactiveIndicators` in latest/history outputs.
 
 Run frontend:
 

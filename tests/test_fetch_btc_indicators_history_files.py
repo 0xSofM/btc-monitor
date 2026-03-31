@@ -19,6 +19,8 @@ class FetchHistoryPipelineTests(unittest.TestCase):
                 "ma200w": [120.0, 120.0, 120.0],
                 "realized_price": [130.0, None, 90.0],
                 "reserve_risk": [0.0030, 0.0020, 0.0010],
+                "lth_mvrv": [1.05, 0.98, 0.88],
+                "mvrv_zscore": [0.2, -0.1, -0.8],
                 "sth_sopr": [1.05, None, 0.96],
                 "sth_mvrv": [1.10, 0.95, None],
                 "puell_multiple": [0.6, None, 0.4],
@@ -29,6 +31,8 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         enriched, thresholds = enrich_for_frontend(self.build_base_df())
 
         self.assertIn("reserveRisk", thresholds)
+        self.assertEqual(str(thresholds["reserveRisk"]["method"]), "rolling_quantile_no_lookahead")
+        self.assertEqual(str(thresholds["sthSopr"]["method"]), "rolling_quantile_no_lookahead")
         self.assertAlmostEqual(float(enriched.iloc[1]["realized_price"]), 130.0)
         self.assertAlmostEqual(float(enriched.iloc[2]["sth_mvrv"]), 0.95)
 
@@ -93,6 +97,25 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         latest = history[-1]
 
         self.assertFalse(bool(latest["reserveRiskActive"]))
+        self.assertTrue(bool(latest["reserveRiskReplacementActive"]))
+        self.assertEqual(str(latest["reserveRiskSourceMode"]), "replacement")
+        self.assertEqual(int(latest["activeIndicatorCount"]), 5)
+        self.assertEqual(int(latest["maxSignalScoreV2"]), 10)
+        self.assertEqual(int(latest["scoreReserveRisk"]), 2)
+
+    def test_reserve_risk_stale_without_replacement_reduces_dimensions(self) -> None:
+        base = self.build_base_df().copy()
+        base["reserve_risk"] = [0.003, None, None]
+        base["lth_mvrv"] = [None, None, None]
+        base["mvrv_zscore"] = [None, None, None]
+
+        enriched, _ = enrich_for_frontend(base, reserve_risk_disable_lag_days=1)
+        history = dataframe_to_history_json(enriched)
+        latest = history[-1]
+
+        self.assertFalse(bool(latest["reserveRiskActive"]))
+        self.assertFalse(bool(latest["reserveRiskReplacementActive"]))
+        self.assertEqual(str(latest["reserveRiskSourceMode"]), "inactive")
         self.assertEqual(int(latest["activeIndicatorCount"]), 4)
         self.assertEqual(int(latest["maxSignalScoreV2"]), 8)
         self.assertEqual(int(latest["scoreReserveRisk"]), 0)
