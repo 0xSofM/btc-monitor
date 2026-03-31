@@ -14,7 +14,8 @@ A BTC indicator dashboard with a static-data pipeline designed for reliable depl
 V2 scoring:
 
 - per-indicator score: `0 / 1 / 2`
-- total score: `signalScoreV2` (`0..12`)
+- short-term group de-correlation: `STH-SOPR` + `STH-MVRV` are merged as one scoring dimension (`max(scoreSthSopr, scoreSthMvrv)`)
+- total score: `signalScoreV2` (grouped baseline `0..10`, dynamic max available in `maxSignalScoreV2`)
 - confirmation flag: `signalConfirmed3d` (3-day confirmation)
 
 ## Project Structure
@@ -32,7 +33,7 @@ V2 scoring:
 ## Data Flow
 
 1. Script fetches historical series from `charts.bgeometrics.com/files/*.json`.
-2. Script computes derived ratios and Core-6 V2 signal/score fields.
+2. Script computes derived ratios and Core-6 V2 signal/score fields (with grouped short-term cohort scoring).
 3. Script writes full + light history, latest snapshot, and manifest JSON files.
 4. Data quality validator checks structural/incremental consistency.
 5. GitHub Actions runs on schedule and commits updated JSON.
@@ -58,6 +59,12 @@ Generate only frontend JSON (used in CI automation):
 python fetch_btc_indicators_history_files.py --skip-tabular
 ```
 
+Reserve Risk auto-exclusion (recommended when upstream is stale):
+
+```bash
+python fetch_btc_indicators_history_files.py --skip-tabular --reserve-risk-disable-lag-days 30
+```
+
 Run data quality validation:
 
 ```bash
@@ -69,7 +76,8 @@ python validate_btc_data_quality.py \
 
 Note:
 
-- `reserveRisk` uses a slower upstream cadence, and the validator applies an internal per-indicator lag override for that series.
+- When `reserveRisk` source-date lag exceeds `--reserve-risk-disable-lag-days` (default `30`), it is automatically excluded from scoring.
+- Exclusion metadata is written to `inactiveIndicators`, `activeIndicatorCount`, and `maxSignalScoreV2` in latest/history outputs.
 
 Run frontend:
 

@@ -68,10 +68,20 @@ function sourceLabel(source: DataSource): string {
   return '静态快照';
 }
 
-function scoreBandLabel(score: number): string {
-  if (score >= 10) return '极端底部';
-  if (score >= 7) return '分批配置';
-  if (score >= 4) return '重点关注';
+function resolveScoreThresholds(maxScore: number) {
+  const safeMax = Math.max(1, maxScore);
+  return {
+    focus: Math.max(1, Math.ceil((safeMax * 4) / 12)),
+    accumulate: Math.max(1, Math.ceil((safeMax * 7) / 12)),
+    extreme: Math.max(1, Math.ceil((safeMax * 10) / 12)),
+  };
+}
+
+function scoreBandLabel(score: number, maxScore: number): string {
+  const thresholds = resolveScoreThresholds(maxScore);
+  if (score >= thresholds.extreme) return '极端底部';
+  if (score >= thresholds.accumulate) return '分批配置';
+  if (score >= thresholds.focus) return '重点关注';
   return '观察';
 }
 
@@ -199,8 +209,10 @@ function App() {
         applyLatestData(latest, 'api');
 
         const score = latest.signalScoreV2 ?? 0;
-        if (mode === 'manual' && score >= 7) {
-          toast.success(`V2 信号触发：${score}/12`, {
+        const maxScore = latest.maxSignalScoreV2 ?? 10;
+        const { accumulate } = resolveScoreThresholds(maxScore);
+        if (mode === 'manual' && score >= accumulate) {
+          toast.success(`V2 信号触发：${score}/${maxScore}`, {
             description: `BTC 价格：$${latest.btcPrice.toLocaleString()}`,
             duration: 8000,
           });
@@ -291,18 +303,21 @@ function App() {
 
   const latestDataAgeHours = latestData ? getDataFreshnessHours(latestData.date) : 0;
   const signalScoreV2 = latestData?.signalScoreV2 ?? 0;
+  const maxSignalScoreV2 = latestData?.maxSignalScoreV2 ?? 10;
+  const activeIndicatorCount = latestData?.activeIndicatorCount ?? 5;
+  const scoreThresholds = resolveScoreThresholds(maxSignalScoreV2);
 
   const statusTiles = useMemo(() => {
     if (!latestData) return [];
     return [
       {
         label: 'V2评分',
-        value: `${signalScoreV2}/12`,
-        note: scoreBandLabel(signalScoreV2),
+        value: `${signalScoreV2}/${maxSignalScoreV2}`,
+        note: scoreBandLabel(signalScoreV2, maxSignalScoreV2),
       },
       {
         label: '触发数量',
-        value: `${latestData.signalCount}/6`,
+        value: `${latestData.signalCount}/${activeIndicatorCount}`,
         note: latestData.signalConfirmed3d ? '已满足3日确认' : '等待3日确认',
       },
       {
@@ -311,7 +326,7 @@ function App() {
         note: `截至 ${latestData.date}`,
       },
     ];
-  }, [latestData, signalScoreV2, dataSource]);
+  }, [latestData, signalScoreV2, maxSignalScoreV2, activeIndicatorCount, dataSource]);
 
   const indicators = latestData
     ? [
@@ -389,32 +404,32 @@ function App() {
     : [];
 
   const marketAssessment = latestData
-    ? signalScoreV2 >= 10
+    ? signalScoreV2 >= scoreThresholds.extreme
       ? {
           boxClass: 'border-green-300 bg-green-50 dark:border-green-800 dark:bg-green-950/50',
           iconClass: 'text-green-600 dark:text-green-300',
           titleClass: 'text-green-800 dark:text-green-200',
           textClass: 'text-green-700 dark:text-green-300',
           title: '极端底部区',
-          description: `当前评分 ${signalScoreV2}/12，市场处于深度价值区间，可在风控前提下执行分批入场。`,
+          description: `当前评分 ${signalScoreV2}/${maxSignalScoreV2}，市场处于深度价值区间，可在风控前提下执行分批入场。`,
         }
-      : signalScoreV2 >= 7
+      : signalScoreV2 >= scoreThresholds.accumulate
       ? {
           boxClass: 'border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/50',
           iconClass: 'text-emerald-600 dark:text-emerald-300',
           titleClass: 'text-emerald-800 dark:text-emerald-200',
           textClass: 'text-emerald-700 dark:text-emerald-300',
           title: '分批配置区',
-          description: `当前评分 ${signalScoreV2}/12，信号较强，适合按计划分批配置。`,
+          description: `当前评分 ${signalScoreV2}/${maxSignalScoreV2}，信号较强，适合按计划分批配置。`,
         }
-      : signalScoreV2 >= 4
+      : signalScoreV2 >= scoreThresholds.focus
       ? {
           boxClass: 'border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/50',
           iconClass: 'text-amber-600 dark:text-amber-300',
           titleClass: 'text-amber-800 dark:text-amber-200',
           textClass: 'text-amber-700 dark:text-amber-300',
           title: '重点关注区',
-          description: `当前评分 ${signalScoreV2}/12，状态改善中，但尚未进入高确定性区间。`,
+          description: `当前评分 ${signalScoreV2}/${maxSignalScoreV2}，状态改善中，但尚未进入高确定性区间。`,
         }
       : {
           boxClass: 'border-slate-300 bg-slate-50 dark:border-slate-700 dark:bg-slate-900/60',
@@ -422,7 +437,7 @@ function App() {
           titleClass: 'text-slate-800 dark:text-slate-200',
           textClass: 'text-slate-700 dark:text-slate-300',
           title: '观察区',
-          description: `当前评分 ${signalScoreV2}/12，暂未出现强大周期底部信号。`,
+          description: `当前评分 ${signalScoreV2}/${maxSignalScoreV2}，暂未出现强大周期底部信号。`,
         }
     : null;
 
@@ -442,7 +457,7 @@ function App() {
                 <div>
                   <h1 className="text-xl font-bold tracking-tight">BTC 大周期底部监测 V2</h1>
                   <p className="text-sm text-muted-foreground">
-                    Core-6 模型，采用加权评分与 3 日确认机制
+                    Core-6 指标 + 短期分组计分，采用加权评分与 3 日确认机制
                   </p>
                 </div>
               </div>
@@ -548,8 +563,9 @@ function App() {
                   <SignalOverview
                     btcPrice={latestData.btcPrice}
                     signalCount={latestData.signalCount}
-                    totalIndicators={6}
+                    totalIndicators={activeIndicatorCount}
                     signalScoreV2={latestData.signalScoreV2}
+                    maxSignalScoreV2={maxSignalScoreV2}
                     signalConfirmed3d={latestData.signalConfirmed3d}
                     dataTimestampLabel={dataTimestampLabel}
                     dataSource={dataSource}
@@ -664,7 +680,7 @@ function App() {
 
         <footer className="footer-line mt-12">
           <div className="app-container flex flex-col items-center justify-between gap-3 py-6 text-sm text-muted-foreground md:flex-row">
-            <p>数据来源：BGeometrics 文件端点 | 模型：Core-6 V2</p>
+            <p>数据来源：BGeometrics 文件端点 | 模型：Core-6 V2（短期组去重计分）</p>
             <p>
               数据时间：{dataTimestampLabel}
               {manifestGeneratedAt ? ` | 清单生成时间：${manifestGeneratedAt}` : ''}

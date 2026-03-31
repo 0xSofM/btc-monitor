@@ -44,6 +44,7 @@ jobs:
         run: |
           python fetch_btc_indicators_history_files.py \
             --skip-tabular \
+            --reserve-risk-disable-lag-days 30 \
             --history-json-path app/public/btc_indicators_history.json \
             --history-light-json-path app/public/btc_indicators_history_light.json \
             --latest-json-path app/public/btc_indicators_latest.json \

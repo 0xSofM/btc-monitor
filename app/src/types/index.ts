@@ -15,13 +15,17 @@ export interface IndicatorData {
   signalReserveRisk?: boolean;
   signalSthSopr?: boolean;
   signalSthMvrv?: boolean;
+  signalSthGroup?: boolean;
   signalPuell?: boolean;
   signalCount?: number;
+  activeIndicatorCount?: number;
+  maxSignalScoreV2?: number;
   scorePriceMa200w?: number;
   scorePriceRealized?: number;
   scoreReserveRisk?: number;
   scoreSthSopr?: number;
   scoreSthMvrv?: number;
+  scoreSthGroup?: number;
   scorePuell?: number;
   signalScoreV2?: number;
   signalScoreV2Min3d?: number;
@@ -57,16 +61,22 @@ export interface LatestData {
   sthMvrv: number;
   puellMultiple: number;
   signalCount: number;
+  activeIndicatorCount?: number;
+  maxSignalScoreV2?: number;
   signalScoreV2?: number;
   signalScoreV2Min3d?: number | null;
   signalConfirmed3d?: boolean;
   signalBandV2?: string;
+  scoreSthGroup?: number;
+  signalSthGroup?: boolean;
+  scoringModelVersion?: string;
   signals: {
     priceMa200w: boolean;
     priceRealized: boolean;
     reserveRisk: boolean;
     sthSopr: boolean;
     sthMvrv: boolean;
+    sthGroup?: boolean;
     puell: boolean;
   };
   indicatorDates?: {

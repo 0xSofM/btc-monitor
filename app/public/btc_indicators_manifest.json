@@ -1,11 +1,12 @@
 {
-  "generatedAt": "2026-03-30T20:07:12.807346+00:00",
-  "latestDate": "2026-03-30",
-  "lastUpdated": "2026-03-30T20:07:12.777056+00:00",
-  "historyRows": 5407,
+  "generatedAt": "2026-03-31T02:50:08.675249+00:00",
+  "latestDate": "2026-03-31",
+  "lastUpdated": "2026-03-31T02:50:08.625340+00:00",
+  "historyRows": 5408,
   "historyLightRows": 2911,
   "schemaVersion": "v3",
-  "indicatorSet": "core6_bottom_v2",
+  "indicatorSet": "core6_bottom_v2_sth_grouped",
+  "scoringModelVersion": "v2_sth_grouped",
   "thresholds": {
     "priceMa200wRatio": {
       "trigger": 1.0,
@@ -17,7 +18,7 @@
     },
     "reserveRisk": {
       "trigger": 0.001637,
-      "deep": 0.0012492
+      "deep": 0.0012493
     },
     "sthSopr": {
       "trigger": 1.0,
@@ -31,5 +32,23 @@
       "trigger": 0.6,
       "deep": 0.5
     }
-  }
+  },
+  "activeIndicatorCount": 4,
+  "maxSignalScoreV2": 8,
+  "inactiveIndicators": [
+    {
+      "key": "reserveRisk",
+      "reason": "primary_source_stale",
+      "sourceDate": "2026-03-30",
+      "primarySourceDate": "2025-12-28",
+      "latestDate": "2026-03-31",
+      "lagDays": 1,
+      "primaryLagDays": 93,
+      "disableLagDays": 30,
+      "replacementCandidates": [
+        "lth_mvrv",
+        "mvrv_zscore_data"
+      ]
+    }
+  ]
 }

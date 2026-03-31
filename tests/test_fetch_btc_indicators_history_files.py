@@ -38,8 +38,10 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(enriched.iloc[1]["sth_sopr_date"].strftime("%Y-%m-%d"), "2024-01-01")
 
         self.assertEqual(int(enriched.iloc[1]["signal_count"]), 3)
-        self.assertEqual(int(enriched.iloc[2]["signal_count"]), 6)
-        self.assertGreaterEqual(int(enriched.iloc[2]["signal_score_v2"]), 10)
+        self.assertEqual(int(enriched.iloc[2]["signal_count"]), 5)
+        self.assertEqual(int(enriched.iloc[2]["signal_score_v2"]), 10)
+        self.assertEqual(int(enriched.iloc[2]["score_sth_group"]), 2)
+        self.assertTrue(bool(enriched.iloc[2]["signal_sth_group"]))
 
     def test_history_json_contains_expected_fields(self) -> None:
         enriched, _ = enrich_for_frontend(self.build_base_df())
@@ -48,8 +50,10 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(len(history), 3)
         last = history[-1]
         self.assertEqual(last["d"], "2024-01-03")
-        self.assertEqual(last["signalCount"], 6)
+        self.assertEqual(last["signalCount"], 5)
         self.assertIn("signalScoreV2", last)
+        self.assertEqual(last["scoreSthGroup"], 2)
+        self.assertTrue(last["signalSthGroup"])
         self.assertIsInstance(last["unixTs"], int)
         self.assertIn("api_data_date", last)
         self.assertEqual(last["api_data_date"]["sth_mvrv"], "2024-01-02")
@@ -60,11 +64,13 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         latest = build_latest_json(enriched, thresholds=thresholds)
 
         self.assertEqual(latest["date"], "2024-01-03")
-        self.assertEqual(latest["signalCount"], 6)
-        self.assertGreaterEqual(int(latest["signalScoreV2"]), 10)
+        self.assertEqual(latest["signalCount"], 5)
+        self.assertEqual(int(latest["signalScoreV2"]), 10)
         self.assertTrue(latest["signals"]["priceMa200w"])
         self.assertTrue(latest["signals"]["priceRealized"])
         self.assertTrue(latest["signals"]["sthMvrv"])
+        self.assertTrue(latest["signals"]["sthGroup"])
+        self.assertEqual(int(latest["scoreSthGroup"]), 2)
         self.assertEqual(latest["indicatorDates"]["sthMvrv"], "2024-01-02")
         self.assertEqual(latest["indicatorDates"]["priceRealized"], "2024-01-03")
 
@@ -77,6 +83,19 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         light = build_light_history_json(history, years=1)
 
         self.assertEqual([row["d"] for row in light], ["2023-06-01", "2024-01-01"])
+
+    def test_reserve_risk_auto_excluded_when_stale(self) -> None:
+        base = self.build_base_df().copy()
+        base["reserve_risk"] = [0.003, None, None]
+
+        enriched, _ = enrich_for_frontend(base, reserve_risk_disable_lag_days=1)
+        history = dataframe_to_history_json(enriched)
+        latest = history[-1]
+
+        self.assertFalse(bool(latest["reserveRiskActive"]))
+        self.assertEqual(int(latest["activeIndicatorCount"]), 4)
+        self.assertEqual(int(latest["maxSignalScoreV2"]), 8)
+        self.assertEqual(int(latest["scoreReserveRisk"]), 0)
 
 
 if __name__ == "__main__":

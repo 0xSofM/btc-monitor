@@ -50,6 +50,15 @@ export function HistoryReview({ data }: HistoryReviewProps) {
   const [minSignals, setMinSignals] = useState(4);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const maxSignalCount = useMemo(
+    () => data.reduce((max, row) => Math.max(max, row.activeIndicatorCount ?? 0, row.signalCount ?? 0), 5),
+    [data],
+  );
+  const strongSignalThreshold = Math.max(1, maxSignalCount - 1);
+  const thresholdOptions = useMemo(() => {
+    const start = Math.max(1, maxSignalCount - 2);
+    return Array.from({ length: maxSignalCount - start + 1 }, (_, index) => start + index);
+  }, [maxSignalCount]);
 
   const dateRange = useMemo(() => {
     if (!data.length) {
@@ -123,7 +132,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Calendar className="h-5 w-5" />
-          历史复盘（Core-6）
+          历史复盘（Core-6 指标）
         </CardTitle>
       </CardHeader>
 
@@ -141,10 +150,11 @@ export function HistoryReview({ data }: HistoryReviewProps) {
               onChange={(event) => setMinSignals(Number(event.target.value))}
               className="mt-1 w-full rounded-md border bg-background p-2"
             >
-              <option value={3}>3（观察）</option>
-              <option value={4}>4（关注）</option>
-              <option value={5}>5（强）</option>
-              <option value={6}>6（极强）</option>
+              {thresholdOptions.map((value) => (
+                <option key={value} value={value}>
+                  {value}（{value >= maxSignalCount ? '极强' : value >= strongSignalThreshold ? '强' : '关注'}）
+                </option>
+              ))}
             </select>
           </div>
 
@@ -232,15 +242,24 @@ export function HistoryReview({ data }: HistoryReviewProps) {
                     <TableCell>{item.d}</TableCell>
                     <TableCell className="font-medium">{formatPrice(parsePrice(item.btcPrice))}</TableCell>
                     <TableCell>
-                      <Badge
-                        variant={(item.signalCount ?? 0) >= 5 ? 'default' : 'secondary'}
-                        className={(item.signalCount ?? 0) >= 5 ? 'bg-emerald-600 text-white hover:bg-emerald-600' : ''}
-                      >
-                        {item.signalCount ?? 0} / 6
-                      </Badge>
+                      {(() => {
+                        const rowTotalSignals = item.activeIndicatorCount ?? maxSignalCount;
+                        const rowSignalCount = item.signalCount ?? 0;
+                        const rowStrong = rowSignalCount >= Math.max(1, rowTotalSignals - 1);
+                        return (
+                          <Badge
+                            variant={rowStrong ? 'default' : 'secondary'}
+                            className={rowStrong ? 'bg-emerald-600 text-white hover:bg-emerald-600' : ''}
+                          >
+                            {rowSignalCount} / {rowTotalSignals}
+                          </Badge>
+                        );
+                      })()}
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline">{item.signalScoreV2 ?? '-'} / 12</Badge>
+                      <Badge variant="outline">
+                        {item.signalScoreV2 ?? '-'} / {item.maxSignalScoreV2 ?? ((item.activeIndicatorCount ?? maxSignalCount) * 2)}
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">

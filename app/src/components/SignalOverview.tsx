@@ -9,6 +9,7 @@ interface SignalOverviewProps {
   signalCount: number;
   totalIndicators: number;
   signalScoreV2?: number;
+  maxSignalScoreV2?: number;
   signalConfirmed3d?: boolean;
   dataTimestampLabel: string;
   dataSource: 'api' | 'static' | 'history';
@@ -24,8 +25,19 @@ type SignalStatus = {
   iconToneClass: string;
 };
 
-function getSignalStatus(score: number, signalCount: number): SignalStatus {
-  if (score >= 10) {
+function resolveScoreThresholds(maxScore: number) {
+  const safeMax = Math.max(1, maxScore);
+  return {
+    focus: Math.max(1, Math.ceil((safeMax * 4) / 12)),
+    accumulate: Math.max(1, Math.ceil((safeMax * 7) / 12)),
+    extreme: Math.max(1, Math.ceil((safeMax * 10) / 12)),
+  };
+}
+
+function getSignalStatus(score: number, signalCount: number, maxScore: number): SignalStatus {
+  const thresholds = resolveScoreThresholds(maxScore);
+
+  if (score >= thresholds.extreme) {
     return {
       label: '极端底部',
       toneClass: 'text-green-700 dark:text-green-300',
@@ -33,7 +45,7 @@ function getSignalStatus(score: number, signalCount: number): SignalStatus {
     };
   }
 
-  if (score >= 7) {
+  if (score >= thresholds.accumulate) {
     return {
       label: '分批配置',
       toneClass: 'text-emerald-700 dark:text-emerald-300',
@@ -41,7 +53,7 @@ function getSignalStatus(score: number, signalCount: number): SignalStatus {
     };
   }
 
-  if (score >= 4) {
+  if (score >= thresholds.focus) {
     return {
       label: '重点关注',
       toneClass: 'text-amber-700 dark:text-amber-300',
@@ -118,6 +130,7 @@ export function SignalOverview({
   signalCount,
   totalIndicators,
   signalScoreV2 = 0,
+  maxSignalScoreV2 = 10,
   signalConfirmed3d = false,
   dataTimestampLabel,
   dataSource,
@@ -126,11 +139,12 @@ export function SignalOverview({
   laggingIndicators,
   oldestIndicatorDate,
 }: SignalOverviewProps) {
-  const status = getSignalStatus(signalScoreV2, signalCount);
+  const thresholds = resolveScoreThresholds(maxSignalScoreV2);
+  const status = getSignalStatus(signalScoreV2, signalCount, maxSignalScoreV2);
   const sourceBadge = getSourceBadge(dataSource);
   const freshnessBadge = getFreshnessBadge(latestDataAgeHours);
   const hasLaggingIndicators = laggingIndicators.length > 0;
-  const scoreProgress = Math.max(0, Math.min(100, (signalScoreV2 / 12) * 100));
+  const scoreProgress = Math.max(0, Math.min(100, (signalScoreV2 / Math.max(1, maxSignalScoreV2)) * 100));
 
   return (
     <Card className="surface-card mb-6">
@@ -139,7 +153,7 @@ export function SignalOverview({
           <div>
             <CardTitle className="text-lg font-semibold">信号总览</CardTitle>
             <p className="mt-1 text-sm text-muted-foreground">
-              基于 Core-6 加权评分，并附带数据一致性校验，用于大周期底部监测。
+              基于 Core-6 指标与短期分组计分，并附带数据一致性校验，用于大周期底部监测。
             </p>
           </div>
 
@@ -178,13 +192,13 @@ export function SignalOverview({
               {signalCount}
               <span className="ml-1 text-sm font-normal text-muted-foreground">/ {totalIndicators}</span>
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">V2 加权评分：{signalScoreV2}/12</p>
+            <p className="mt-1 text-xs text-muted-foreground">V2 加权评分：{signalScoreV2}/{maxSignalScoreV2}</p>
           </article>
 
           <article className="rounded-xl border bg-background/70 p-4">
             <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
               <span className={`rounded-full p-1 ${status.iconToneClass}`}>
-                {signalScoreV2 >= 7 ? <CheckCircle2 className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}
+                {signalScoreV2 >= thresholds.accumulate ? <CheckCircle2 className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}
               </span>
               市场状态
             </div>
@@ -224,10 +238,10 @@ export function SignalOverview({
           </div>
           <Progress value={scoreProgress} className="h-2.5" />
           <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-            <span>0-3 观察</span>
-            <span>4-6 关注</span>
-            <span>7-9 分批</span>
-            <span>10-12 极端</span>
+            <span>0-{Math.max(0, thresholds.focus - 1)} 观察</span>
+            <span>{thresholds.focus}-{Math.max(thresholds.focus, thresholds.accumulate - 1)} 关注</span>
+            <span>{thresholds.accumulate}-{Math.max(thresholds.accumulate, thresholds.extreme - 1)} 分批</span>
+            <span>{thresholds.extreme}-{maxSignalScoreV2} 极端</span>
           </div>
         </section>
       </CardContent>

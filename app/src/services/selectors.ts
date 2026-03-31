@@ -148,8 +148,19 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     reserveRisk: latest.signalReserveRisk ?? reserveRisk < DEFAULT_THRESHOLDS.reserveRisk,
     sthSopr: latest.signalSthSopr ?? sthSopr < DEFAULT_THRESHOLDS.sthSopr,
     sthMvrv: latest.signalSthMvrv ?? sthMvrv < DEFAULT_THRESHOLDS.sthMvrv,
+    sthGroup: latest.signalSthGroup ?? ((latest.signalSthSopr ?? sthSopr < DEFAULT_THRESHOLDS.sthSopr) || (latest.signalSthMvrv ?? sthMvrv < DEFAULT_THRESHOLDS.sthMvrv)),
     puell: latest.signalPuell ?? puellMultiple < DEFAULT_THRESHOLDS.puell,
   };
+
+  const groupedSignalCount = [
+    signals.priceMa200w,
+    signals.priceRealized,
+    signals.reserveRisk,
+    signals.sthGroup ?? (signals.sthSopr || signals.sthMvrv),
+    signals.puell,
+  ].filter(Boolean).length;
+  const activeIndicatorCount = latest.activeIndicatorCount ?? 5;
+  const maxSignalScoreV2 = latest.maxSignalScoreV2 ?? (activeIndicatorCount * 2);
 
   return {
     date: latest.d,
@@ -162,11 +173,15 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     sthSopr,
     sthMvrv,
     puellMultiple,
-    signalCount: latest.signalCount ?? Object.values(signals).filter(Boolean).length,
+    signalCount: latest.signalCount ?? groupedSignalCount,
+    activeIndicatorCount,
+    maxSignalScoreV2,
     signalScoreV2: latest.signalScoreV2,
     signalScoreV2Min3d: latest.signalScoreV2Min3d ?? null,
     signalConfirmed3d: latest.signalConfirmed3d,
     signalBandV2: latest.signalBandV2,
+    scoreSthGroup: latest.scoreSthGroup,
+    signalSthGroup: latest.signalSthGroup,
     signals,
     indicatorDates: findIndicatorDates(data),
   };

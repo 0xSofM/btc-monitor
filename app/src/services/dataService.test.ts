@@ -44,7 +44,7 @@ describe('dataService helpers (V2)', () => {
     const latest = getLatestFromHistory(history);
     expect(latest).not.toBeNull();
     expect(latest?.date).toBe('2026-03-28');
-    expect(latest?.signalCount).toBe(6);
+    expect(latest?.signalCount).toBe(5);
     expect(latest?.indicatorDates?.priceRealized).toBe('2026-03-27');
     expect(latest?.indicatorDates?.reserveRisk).toBe('2026-03-27');
     expect(latest?.indicatorDates?.puell).toBe('2026-03-28');

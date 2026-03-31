@@ -151,13 +151,17 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     signalReserveRisk: asBoolean(record.signalReserveRisk ?? record.signal_reserve_risk),
     signalSthSopr: asBoolean(record.signalSthSopr ?? record.signal_sth_sopr),
     signalSthMvrv: asBoolean(record.signalSthMvrv ?? record.signal_sth_mvrv),
+    signalSthGroup: asBoolean(record.signalSthGroup ?? record.signal_sth_group),
     signalPuell: asBoolean(record.signalPuell ?? record.signal_puell),
     signalCount: toNumberOrNull(record.signalCount ?? record.signal_count) ?? undefined,
+    activeIndicatorCount: toNumberOrNull(record.activeIndicatorCount ?? record.active_indicator_count) ?? undefined,
+    maxSignalScoreV2: toNumberOrNull(record.maxSignalScoreV2 ?? record.max_signal_score_v2) ?? undefined,
     scorePriceMa200w: toNumberOrNull(record.scorePriceMa200w ?? record.score_price_ma200w) ?? undefined,
     scorePriceRealized: toNumberOrNull(record.scorePriceRealized ?? record.score_price_realized) ?? undefined,
     scoreReserveRisk: toNumberOrNull(record.scoreReserveRisk ?? record.score_reserve_risk) ?? undefined,
     scoreSthSopr: toNumberOrNull(record.scoreSthSopr ?? record.score_sth_sopr) ?? undefined,
     scoreSthMvrv: toNumberOrNull(record.scoreSthMvrv ?? record.score_sth_mvrv) ?? undefined,
+    scoreSthGroup: toNumberOrNull(record.scoreSthGroup ?? record.score_sth_group) ?? undefined,
     scorePuell: toNumberOrNull(record.scorePuell ?? record.score_puell) ?? undefined,
     signalScoreV2: toNumberOrNull(record.signalScoreV2 ?? record.signal_score_v2) ?? undefined,
     signalScoreV2Min3d: toNumberOrNull(record.signalScoreV2Min3d ?? record.signal_score_v2_min3d) ?? undefined,
@@ -210,14 +214,23 @@ export function normalizeLatestData(item: unknown): LatestData | null {
       ?? (sthSopr < 1),
     sthMvrv: asBoolean(incomingSignals?.sthMvrv ?? record.signalSthMvrv ?? record.signal_sth_mvrv)
       ?? (sthMvrv < 1),
+    sthGroup: asBoolean(incomingSignals?.sthGroup ?? record.signalSthGroup ?? record.signal_sth_group)
+      ?? (sthSopr < 1 || sthMvrv < 1),
     puell: asBoolean(incomingSignals?.puell ?? record.signalPuell ?? record.signal_puell)
       ?? (puellMultiple < 0.6),
   };
 
   const signalCountRaw = record.signalCount ?? record.signal_count;
+  const groupedSignalCount = [
+    signals.priceMa200w,
+    signals.priceRealized,
+    signals.reserveRisk,
+    signals.sthGroup ?? (signals.sthSopr || signals.sthMvrv),
+    signals.puell,
+  ].filter(Boolean).length;
   const signalCount = signalCountRaw === undefined || signalCountRaw === null
-    ? Object.values(signals).filter(Boolean).length
-    : toFiniteNumber(signalCountRaw, Object.values(signals).filter(Boolean).length);
+    ? groupedSignalCount
+    : toFiniteNumber(signalCountRaw, groupedSignalCount);
 
   return {
     date,
@@ -231,10 +244,15 @@ export function normalizeLatestData(item: unknown): LatestData | null {
     sthMvrv,
     puellMultiple,
     signalCount,
+    activeIndicatorCount: toNumberOrNull(record.activeIndicatorCount ?? record.active_indicator_count) ?? undefined,
+    maxSignalScoreV2: toNumberOrNull(record.maxSignalScoreV2 ?? record.max_signal_score_v2) ?? undefined,
     signalScoreV2: toNumberOrNull(record.signalScoreV2 ?? record.signal_score_v2) ?? undefined,
     signalScoreV2Min3d: toNumberOrNull(record.signalScoreV2Min3d ?? record.signal_score_v2_min3d),
     signalConfirmed3d: asBoolean(record.signalConfirmed3d ?? record.signal_confirmed_3d),
     signalBandV2: asString(record.signalBandV2 ?? record.signal_band_v2),
+    scoreSthGroup: toNumberOrNull(record.scoreSthGroup ?? record.score_sth_group) ?? undefined,
+    signalSthGroup: asBoolean(record.signalSthGroup ?? record.signal_sth_group),
+    scoringModelVersion: asString(record.scoringModelVersion ?? record.scoring_model_version),
     signals,
     indicatorDates: normalizeIndicatorDates(incomingIndicatorDates, date),
     thresholds: asRecord(record.thresholds) as Record<string, { trigger: number; deep: number }> | undefined,

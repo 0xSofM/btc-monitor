@@ -93,9 +93,9 @@ export function IndicatorExplanation() {
             <div>
               <h3 className="font-semibold text-blue-800 dark:text-blue-200">V2 评分框架</h3>
               <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
-                Core-6 每个指标按 0/1/2 分计分，总分 12 分。评分分区为：
-                0-3 观察区，4-6 关注区，7-9 分批配置区，10-12 极端底部区。
-                同时加入 3 日确认机制，以降低单日噪声影响。
+                Core-6 指标中，短期 SOPR 与短期 MVRV 采用“分组去重计分”（取两者得分较高值），
+                因此基准满分为 10 分（Reserve Risk 不活跃时会进一步动态下调）。
+                评分区间按比例映射到当前满分，并加入 3 日确认机制，以降低单日噪声影响。
               </p>
             </div>
           </div>

@@ -40,8 +40,8 @@ INDICATOR_DATE_FIELDS = {
 }
 
 INDICATOR_MAX_LAG_OVERRIDES = {
-    # Reserve Risk updates slower than price-like series on the upstream source.
-    "reserveRisk": 120,
+    # Reserve Risk can be slower, but should still be excluded automatically when too stale.
+    "reserveRisk": 30,
 }
 
 
@@ -66,18 +66,44 @@ def is_missing(value: Any) -> bool:
     return False
 
 
+def _as_int(value: Any) -> int:
+    if value is None:
+        return 0
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _grouped_short_term_signal(sopr: Any, mvrv: Any, group: Any = None) -> bool:
+    if group is not None:
+        return bool(group)
+    return bool(sopr) or bool(mvrv)
+
+
+def _grouped_short_term_score(sopr: Any, mvrv: Any, group: Any = None) -> int:
+    if group is not None:
+        return _as_int(group)
+    return max(_as_int(sopr), _as_int(mvrv))
+
+
 def compute_signal_count_from_row(row: Dict[str, Any]) -> int:
     price_ma_signal = row.get("signalPriceMa200w")
     if price_ma_signal is None:
         price_ma_signal = row.get("signalPriceMa")
+
+    short_term_group = _grouped_short_term_signal(
+        row.get("signalSthSopr"),
+        row.get("signalSthMvrv"),
+        row.get("signalSthGroup"),
+    )
 
     return sum(
         [
             bool(price_ma_signal),
             bool(row.get("signalPriceRealized")),
             bool(row.get("signalReserveRisk")),
-            bool(row.get("signalSthSopr")),
-            bool(row.get("signalSthMvrv")),
+            short_term_group,
             bool(row.get("signalPuell")),
         ]
     )
@@ -87,27 +113,38 @@ def compute_signal_count_from_latest(latest: Dict[str, Any]) -> int:
     signals = latest.get("signals")
     if not isinstance(signals, dict):
         return -1
+
+    short_term_group = _grouped_short_term_signal(
+        signals.get("sthSopr"),
+        signals.get("sthMvrv"),
+        signals.get("sthGroup"),
+    )
+
     return sum(
         [
             bool(signals.get("priceMa200w")),
             bool(signals.get("priceRealized")),
             bool(signals.get("reserveRisk")),
-            bool(signals.get("sthSopr")),
-            bool(signals.get("sthMvrv")),
+            short_term_group,
             bool(signals.get("puell")),
         ]
     )
 
 
 def compute_signal_score_from_row(row: Dict[str, Any]) -> int:
+    short_term_group_score = _grouped_short_term_score(
+        row.get("scoreSthSopr"),
+        row.get("scoreSthMvrv"),
+        row.get("scoreSthGroup"),
+    )
+
     return sum(
         [
-            int(row.get("scorePriceMa200w") or 0),
-            int(row.get("scorePriceRealized") or 0),
-            int(row.get("scoreReserveRisk") or 0),
-            int(row.get("scoreSthSopr") or 0),
-            int(row.get("scoreSthMvrv") or 0),
-            int(row.get("scorePuell") or 0),
+            _as_int(row.get("scorePriceMa200w")),
+            _as_int(row.get("scorePriceRealized")),
+            _as_int(row.get("scoreReserveRisk")),
+            short_term_group_score,
+            _as_int(row.get("scorePuell")),
         ]
     )
 
@@ -180,12 +217,15 @@ def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str,
     if "signalScoreV2" in latest:
         latest_score_expected = sum(
             [
-                int(latest.get("scorePriceMa200w") or 0),
-                int(latest.get("scorePriceRealized") or 0),
-                int(latest.get("scoreReserveRisk") or 0),
-                int(latest.get("scoreSthSopr") or 0),
-                int(latest.get("scoreSthMvrv") or 0),
-                int(latest.get("scorePuell") or 0),
+                _as_int(latest.get("scorePriceMa200w")),
+                _as_int(latest.get("scorePriceRealized")),
+                _as_int(latest.get("scoreReserveRisk")),
+                _grouped_short_term_score(
+                    latest.get("scoreSthSopr"),
+                    latest.get("scoreSthMvrv"),
+                    latest.get("scoreSthGroup"),
+                ),
+                _as_int(latest.get("scorePuell")),
             ]
         )
         latest_score_actual = latest.get("signalScoreV2")
@@ -216,6 +256,25 @@ def get_latest_indicator_date(latest: Dict[str, Any], indicator_key: str) -> str
                 return value
 
     return ""
+
+
+def get_inactive_indicator_keys(latest: Dict[str, Any]) -> set[str]:
+    inactive_raw = latest.get("inactiveIndicators")
+    if not isinstance(inactive_raw, list):
+        return set()
+
+    inactive: set[str] = set()
+    for item in inactive_raw:
+        if isinstance(item, str):
+            inactive.add(item)
+            continue
+
+        if isinstance(item, dict):
+            key = item.get("key")
+            if isinstance(key, str) and key:
+                inactive.add(key)
+
+    return inactive
 
 
 def get_history_tail_indicator_date(history: List[Dict[str, Any]], indicator_key: str) -> str:
@@ -262,7 +321,12 @@ def validate_indicator_staleness(
         errors.append(f"Cannot validate indicator staleness: invalid latest date ({exc}).")
         return
 
+    inactive_indicators = get_inactive_indicator_keys(latest)
+
     for indicator_key in INDICATOR_DATE_FIELDS:
+        if indicator_key in inactive_indicators:
+            continue
+
         indicator_date_raw = get_latest_indicator_date(latest, indicator_key)
         if not indicator_date_raw:
             indicator_date_raw = get_history_tail_indicator_date(history, indicator_key)
