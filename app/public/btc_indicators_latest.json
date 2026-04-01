@@ -1,16 +1,16 @@
 {
-  "date": "2026-03-31",
-  "btcPrice": 66853.5,
-  "realizedPrice": 53994.4021750906,
-  "priceMa200wRatio": 1.1268187804837446,
-  "priceRealizedRatio": 1.238156129281893,
-  "reserveRisk": 0.0005671274,
-  "lthMvrv": 1.52,
-  "mvrvZscore": 0.4311,
+  "date": "2026-04-01",
+  "btcPrice": 68251.5,
+  "realizedPrice": 53646.15,
+  "priceMa200wRatio": 1.1498571938140478,
+  "priceRealizedRatio": 1.2722534608727747,
+  "reserveRisk": 0.001786,
+  "lthMvrv": 1.54,
+  "mvrvZscore": 0.4131,
   "sthSopr": 1.0050788233,
-  "sthMvrv": 0.79,
-  "ma200w": 59329.4158367681,
-  "puellMultiple": 0.7257142857,
+  "sthMvrv": 0.8,
+  "ma200w": 59356.5012830954,
+  "puellMultiple": 0.7297142857,
   "signalCount": 1,
   "activeIndicatorCount": 5,
   "signalScoreV2": 2,
@@ -18,7 +18,13 @@
   "signalScoreV2Min3d": 2.0,
   "signalConfirmed3d": false,
   "signalBandV2": "watch",
-  "scoreReserveRiskPrimary": 2,
+  "scorePriceMa200w": 0,
+  "scorePriceRealized": 0,
+  "scoreReserveRisk": 0,
+  "scoreSthSopr": 0,
+  "scoreSthMvrv": 2,
+  "scorePuell": 0,
+  "scoreReserveRiskPrimary": 0,
   "scoreReserveRiskReplacement": 0,
   "scoreLthMvrv": 0,
   "scoreMvrvZscore": 0,
@@ -30,8 +36,8 @@
   "reserveRiskReplacementSource": "lth_mvrv",
   "reserveRiskReplacementLagDays": 2,
   "reserveRiskSourceMode": "replacement",
-  "reserveRiskLagDays": 1,
-  "reserveRiskPrimaryLagDays": 93,
+  "reserveRiskLagDays": 94,
+  "reserveRiskPrimaryLagDays": 94,
   "inactiveIndicators": [],
   "signals": {
     "priceMa200w": false,
@@ -43,12 +49,12 @@
     "puell": false
   },
   "indicatorDates": {
-    "priceMa200w": "2026-03-31",
+    "priceMa200w": "2026-04-01",
     "priceRealized": "2026-03-30",
-    "reserveRisk": "2026-03-29",
+    "reserveRisk": "2026-03-30",
     "sthSopr": "2026-03-30",
-    "sthMvrv": "2026-03-29",
-    "puell": "2026-03-30"
+    "sthMvrv": "2026-03-30",
+    "puell": "2026-03-31"
   },
   "thresholds": {
     "priceMa200wRatio": {
@@ -60,8 +66,8 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.001148,
-      "deep": 0.0010489,
+      "trigger": 0.0011488,
+      "deep": 0.001049,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -101,5 +107,5 @@
       }
     }
   },
-  "lastUpdated": "2026-03-31T05:59:29.388587+00:00"
+  "lastUpdated": "2026-04-01T02:55:23.101214+00:00"
 }

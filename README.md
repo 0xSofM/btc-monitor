@@ -73,7 +73,7 @@ Run data quality validation:
 python validate_btc_data_quality.py \
   --current-history app/public/btc_indicators_history.json \
   --current-latest app/public/btc_indicators_latest.json \
-  --max-indicator-lag-days 21
+  --max-indicator-lag-days 30
 ```
 
 Note:

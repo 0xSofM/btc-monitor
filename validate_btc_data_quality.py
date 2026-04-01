@@ -149,6 +149,51 @@ def compute_signal_score_from_row(row: Dict[str, Any]) -> int:
     )
 
 
+def compute_signal_score_from_latest_payload(latest: Dict[str, Any]) -> int | None:
+    reserve_score = latest.get("scoreReserveRisk")
+    if reserve_score is None:
+        source_mode = str(latest.get("reserveRiskSourceMode") or "").lower()
+        if source_mode == "replacement":
+            reserve_score = latest.get("scoreReserveRiskReplacement")
+        elif source_mode == "primary":
+            reserve_score = latest.get("scoreReserveRiskPrimary")
+        else:
+            reserve_score = latest.get("scoreReserveRiskPrimary")
+            if reserve_score is None:
+                reserve_score = latest.get("scoreReserveRiskReplacement")
+
+    has_any_component_score = any(
+        latest.get(key) is not None
+        for key in (
+            "scorePriceMa200w",
+            "scorePriceRealized",
+            "scoreReserveRisk",
+            "scoreReserveRiskPrimary",
+            "scoreReserveRiskReplacement",
+            "scoreSthSopr",
+            "scoreSthMvrv",
+            "scoreSthGroup",
+            "scorePuell",
+        )
+    )
+    if not has_any_component_score:
+        return None
+
+    return sum(
+        [
+            _as_int(latest.get("scorePriceMa200w")),
+            _as_int(latest.get("scorePriceRealized")),
+            _as_int(reserve_score),
+            _grouped_short_term_score(
+                latest.get("scoreSthSopr"),
+                latest.get("scoreSthMvrv"),
+                latest.get("scoreSthGroup"),
+            ),
+            _as_int(latest.get("scorePuell")),
+        ]
+    )
+
+
 def validate_history_structure(history: List[Dict[str, Any]], errors: List[str]) -> None:
     if not history:
         errors.append("Current history is empty.")
@@ -215,22 +260,12 @@ def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str,
         )
 
     if "signalScoreV2" in latest:
-        latest_score_expected = sum(
-            [
-                _as_int(latest.get("scorePriceMa200w")),
-                _as_int(latest.get("scorePriceRealized")),
-                _as_int(latest.get("scoreReserveRisk")),
-                _grouped_short_term_score(
-                    latest.get("scoreSthSopr"),
-                    latest.get("scoreSthMvrv"),
-                    latest.get("scoreSthGroup"),
-                ),
-                _as_int(latest.get("scorePuell")),
-            ]
-        )
+        latest_score_expected = compute_signal_score_from_latest_payload(latest)
+        if latest_score_expected is None and history:
+            tail_score = history[-1].get("signalScoreV2")
+            latest_score_expected = _as_int(tail_score) if tail_score is not None else None
         latest_score_actual = latest.get("signalScoreV2")
-        # latest payload may not include per-indicator score fields; if missing, skip.
-        if latest_score_expected > 0 and (
+        if latest_score_expected is not None and (
             latest_score_actual is None or int(latest_score_actual) != latest_score_expected
         ):
             errors.append(

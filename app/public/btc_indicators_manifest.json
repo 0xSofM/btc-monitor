@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-03-31T05:59:29.421157+00:00",
-  "latestDate": "2026-03-31",
-  "lastUpdated": "2026-03-31T05:59:29.388587+00:00",
-  "historyRows": 5559,
+  "generatedAt": "2026-04-01T02:55:23.142532+00:00",
+  "latestDate": "2026-04-01",
+  "lastUpdated": "2026-04-01T02:55:23.101214+00:00",
+  "historyRows": 5409,
   "historyLightRows": 2911,
   "schemaVersion": "v3",
   "indicatorSet": "core6_bottom_v2_sth_grouped",
@@ -17,8 +17,8 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.001148,
-      "deep": 0.0010489,
+      "trigger": 0.0011488,
+      "deep": 0.001049,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,

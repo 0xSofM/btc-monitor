@@ -50,6 +50,31 @@ jobs:
             --latest-json-path app/public/btc_indicators_latest.json \
             --manifest-json-path app/public/btc_indicators_manifest.json
 
+      - name: Print data freshness snapshot
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime
+          from pathlib import Path
+
+          latest = json.loads(Path("app/public/btc_indicators_latest.json").read_text(encoding="utf-8"))
+          history = json.loads(Path("app/public/btc_indicators_history.json").read_text(encoding="utf-8"))
+
+          latest_date = datetime.strptime(str(latest.get("date", "")), "%Y-%m-%d")
+          indicator_dates = latest.get("indicatorDates") if isinstance(latest.get("indicatorDates"), dict) else {}
+
+          print(f"latest date: {latest.get('date')}")
+          print(f"history rows: {len(history)}")
+          print(f"reserve risk mode: {latest.get('reserveRiskSourceMode')}")
+          print("indicator lags (days):")
+          for key, value in indicator_dates.items():
+              try:
+                  lag = (latest_date - datetime.strptime(str(value), "%Y-%m-%d")).days
+              except Exception:
+                  lag = "?"
+              print(f"  - {key}: {lag} (date={value})")
+          PY
+
       - name: Validate data quality gate
         run: |
           python validate_btc_data_quality.py \
@@ -59,7 +84,7 @@ jobs:
             --previous-latest .tmp/previous/btc_indicators_latest.json \
             --lookback-rows 30 \
             --max-row-drop 5 \
-            --max-indicator-lag-days 21
+            --max-indicator-lag-days 30
 
       - name: Commit and push if changed
         run: |

@@ -166,6 +166,24 @@ class ValidateDataQualityTests(unittest.TestCase):
         self.assertTrue(ok)
         self.assertEqual(errors, [])
 
+    def test_validate_current_pair_accepts_reserve_replacement_score_fields(self):
+        latest = self.build_latest()
+        latest["signalScoreV2"] = 4
+        latest["scoreSthGroup"] = 2
+        latest["scoreReserveRiskPrimary"] = 0
+        latest["scoreReserveRiskReplacement"] = 2
+        latest["reserveRiskSourceMode"] = "replacement"
+
+        ok, errors = validate_current_pair(
+            self.build_history(),
+            latest,
+            lookback_rows=30,
+            max_indicator_lag_days=7,
+        )
+
+        self.assertTrue(ok)
+        self.assertEqual(errors, [])
+
 
 if __name__ == "__main__":
     unittest.main()
