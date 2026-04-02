@@ -239,7 +239,9 @@ def parse_series(metric_key: str, raw_rows: Iterable[object]) -> pd.DataFrame:
     return df.sort_values("date").groupby("date", as_index=False).last()
 
 
-def fetch_metric(metric_key: str, config: Dict[str, object]) -> Tuple[pd.DataFrame, str]:
+def fetch_metric(
+    metric_key: str, config: Dict[str, object]
+) -> Tuple[pd.DataFrame, str]:
     """Fetch one metric; try primary URL then fallback URLs."""
     urls = [str(config["url"])] + [str(x) for x in config.get("fallback_urls", [])]
     last_error: Exception | None = None
@@ -364,7 +366,11 @@ def patch_reserve_risk_tail(df: pd.DataFrame) -> Tuple[pd.DataFrame, str | None]
             ],
             ignore_index=True,
         )
-        patched = patched.sort_values("date").drop_duplicates(subset=["date"], keep="last").reset_index(drop=True)
+        patched = (
+            patched.sort_values("date")
+            .drop_duplicates(subset=["date"], keep="last")
+            .reset_index(drop=True)
+        )
 
     applied_info = (
         f"{backup_date.strftime('%Y-%m-%d')} -> {backup_value:.10f} "
@@ -401,12 +407,18 @@ def build_base_dataframe(
             selected_sources[key] = selected_url
             print(f"  Rows: {len(df):,} | Source: {selected_url}")
 
-    reserve_primary_non_null = dfs["reserve_risk"].loc[dfs["reserve_risk"]["reserve_risk"].notna(), "date"]
+    reserve_primary_non_null = dfs["reserve_risk"].loc[
+        dfs["reserve_risk"]["reserve_risk"].notna(), "date"
+    ]
     reserve_primary_last_date = (
-        pd.to_datetime(reserve_primary_non_null.max()) if not reserve_primary_non_null.empty else None
+        pd.to_datetime(reserve_primary_non_null.max())
+        if not reserve_primary_non_null.empty
+        else None
     )
 
-    reserve_patched_df, reserve_patch_info = patch_reserve_risk_tail(dfs["reserve_risk"])
+    reserve_patched_df, reserve_patch_info = patch_reserve_risk_tail(
+        dfs["reserve_risk"]
+    )
     if reserve_patch_info:
         dfs["reserve_risk"] = reserve_patched_df
         selected_sources["reserve_risk"] = (
@@ -427,7 +439,11 @@ def build_base_dataframe(
         "puell_multiple",
     ]:
         current = dfs[key]
-        merged = current if merged is None else pd.merge(merged, current, on="date", how="outer")
+        merged = (
+            current
+            if merged is None
+            else pd.merge(merged, current, on="date", how="outer")
+        )
 
     assert merged is not None
     merged = merged.sort_values("date").reset_index(drop=True)
@@ -478,7 +494,9 @@ def _build_rolling_lt_thresholds(
     min_history_days: int = ROLLING_THRESHOLD_MIN_HISTORY_DAYS,
 ) -> Tuple[pd.Series, pd.Series]:
     numeric_values = pd.to_numeric(values, errors="coerce")
-    history = numeric_values.shift(1).rolling(window=max(2, int(window_days)), min_periods=max(2, int(min_history_days)))
+    history = numeric_values.shift(1).rolling(
+        window=max(2, int(window_days)), min_periods=max(2, int(min_history_days))
+    )
     trigger_series = history.quantile(trigger_quantile).fillna(fallback_trigger)
     deep_series = history.quantile(deep_quantile).fillna(fallback_deep)
     deep_series = pd.concat([deep_series, trigger_series], axis=1).min(axis=1)
@@ -533,30 +551,44 @@ def enrich_for_frontend(
     if reserve_risk_primary_last_date is None:
         reserve_primary_series = df.loc[df["reserve_risk"].notna(), "date"]
         reserve_risk_primary_last_date = (
-            pd.to_datetime(reserve_primary_series.max()) if not reserve_primary_series.empty else None
+            pd.to_datetime(reserve_primary_series.max())
+            if not reserve_primary_series.empty
+            else None
         )
 
     # Track Reserve Risk lag so stale series can be excluded from scoring.
     df["reserve_risk_lag_days"] = (df["date"] - df["reserve_risk_date"]).dt.days
-    reserve_primary_date = pd.to_datetime(reserve_risk_primary_last_date) if reserve_risk_primary_last_date is not None else pd.NaT
+    reserve_primary_date = (
+        pd.to_datetime(reserve_risk_primary_last_date)
+        if reserve_risk_primary_last_date is not None
+        else pd.NaT
+    )
     df["reserve_risk_primary_date"] = reserve_primary_date
     if pd.isna(reserve_primary_date):
         df["reserve_risk_primary_lag_days"] = pd.NA
         reserve_primary_is_fresh = pd.Series(False, index=df.index)
     else:
-        df["reserve_risk_primary_lag_days"] = (df["date"] - reserve_primary_date).dt.days
-        reserve_primary_is_fresh = df["reserve_risk_primary_lag_days"].le(reserve_risk_disable_lag_days)
+        df["reserve_risk_primary_lag_days"] = (
+            df["date"] - reserve_primary_date
+        ).dt.days
+        reserve_primary_is_fresh = df["reserve_risk_primary_lag_days"].le(
+            reserve_risk_disable_lag_days
+        )
 
     df["reserve_risk_active"] = (
         df["reserve_risk_date"].notna()
         & reserve_primary_is_fresh
-        & df["reserve_risk_lag_days"].fillna(reserve_risk_disable_lag_days + 1).le(reserve_risk_disable_lag_days)
+        & df["reserve_risk_lag_days"]
+        .fillna(reserve_risk_disable_lag_days + 1)
+        .le(reserve_risk_disable_lag_days)
     )
     df["reserve_risk_disable_lag_days"] = reserve_risk_disable_lag_days
 
     # Derived metrics.
     df["price_200w_ma_ratio"] = df["btc_price"] / df["ma200w"].replace(0, pd.NA)
-    df["price_realized_ratio"] = df["btc_price"] / df["realized_price"].replace(0, pd.NA)
+    df["price_realized_ratio"] = df["btc_price"] / df["realized_price"].replace(
+        0, pd.NA
+    )
 
     reserve_trigger_series, reserve_deep_series = _build_rolling_lt_thresholds(
         values=df["reserve_risk"],
@@ -581,10 +613,18 @@ def enrich_for_frontend(
     )
 
     df["score_price_ma200w"] = df["price_200w_ma_ratio"].apply(
-        lambda v: _score_by_lt(v, THRESHOLD_STATIC["price_ma200w_ratio"]["trigger"], THRESHOLD_STATIC["price_ma200w_ratio"]["deep"])
+        lambda v: _score_by_lt(
+            v,
+            THRESHOLD_STATIC["price_ma200w_ratio"]["trigger"],
+            THRESHOLD_STATIC["price_ma200w_ratio"]["deep"],
+        )
     )
     df["score_price_realized"] = df["price_realized_ratio"].apply(
-        lambda v: _score_by_lt(v, THRESHOLD_STATIC["price_realized_ratio"]["trigger"], THRESHOLD_STATIC["price_realized_ratio"]["deep"])
+        lambda v: _score_by_lt(
+            v,
+            THRESHOLD_STATIC["price_realized_ratio"]["trigger"],
+            THRESHOLD_STATIC["price_realized_ratio"]["deep"],
+        )
     )
     df["score_reserve_risk_primary"] = _score_by_lt_series(
         values=df["reserve_risk"],
@@ -604,25 +644,44 @@ def enrich_for_frontend(
     # STH-SOPR and STH-MVRV are highly correlated, so score them as one grouped dimension.
     df["score_sth_group"] = df[["score_sth_sopr", "score_sth_mvrv"]].max(axis=1)
     df["score_puell"] = df["puell_multiple"].apply(
-        lambda v: _score_by_lt(v, THRESHOLD_STATIC["puell_multiple"]["trigger"], THRESHOLD_STATIC["puell_multiple"]["deep"])
+        lambda v: _score_by_lt(
+            v,
+            THRESHOLD_STATIC["puell_multiple"]["trigger"],
+            THRESHOLD_STATIC["puell_multiple"]["deep"],
+        )
     )
     df["score_lth_mvrv"] = df["lth_mvrv"].apply(
-        lambda v: _score_by_lt(v, THRESHOLD_STATIC["lth_mvrv"]["trigger"], THRESHOLD_STATIC["lth_mvrv"]["deep"])
+        lambda v: _score_by_lt(
+            v,
+            THRESHOLD_STATIC["lth_mvrv"]["trigger"],
+            THRESHOLD_STATIC["lth_mvrv"]["deep"],
+        )
     )
     df["score_mvrv_zscore"] = df["mvrv_zscore"].apply(
-        lambda v: _score_by_lt(v, THRESHOLD_STATIC["mvrv_zscore"]["trigger"], THRESHOLD_STATIC["mvrv_zscore"]["deep"])
+        lambda v: _score_by_lt(
+            v,
+            THRESHOLD_STATIC["mvrv_zscore"]["trigger"],
+            THRESHOLD_STATIC["mvrv_zscore"]["deep"],
+        )
     )
-    df["score_reserve_risk_replacement"] = df[["score_lth_mvrv", "score_mvrv_zscore"]].max(axis=1)
+    df["score_reserve_risk_replacement"] = df[
+        ["score_lth_mvrv", "score_mvrv_zscore"]
+    ].max(axis=1)
 
     df["lth_mvrv_lag_days"] = (df["date"] - df["lth_mvrv_date"]).dt.days
     df["mvrv_zscore_lag_days"] = (df["date"] - df["mvrv_zscore_date"]).dt.days
-    replacement_lag = df[["lth_mvrv_lag_days", "mvrv_zscore_lag_days"]].min(axis=1, skipna=True)
-    replacement_available_mask = df[["lth_mvrv_date", "mvrv_zscore_date"]].notna().any(axis=1)
-    df["reserve_risk_replacement_lag_days"] = replacement_lag.where(replacement_available_mask, pd.NA)
-    df["reserve_risk_replacement_active"] = (
-        ~df["reserve_risk_active"]
-        & df["reserve_risk_replacement_lag_days"].fillna(reserve_risk_disable_lag_days + 1).le(reserve_risk_disable_lag_days)
+    replacement_lag = df[["lth_mvrv_lag_days", "mvrv_zscore_lag_days"]].min(
+        axis=1, skipna=True
     )
+    replacement_available_mask = (
+        df[["lth_mvrv_date", "mvrv_zscore_date"]].notna().any(axis=1)
+    )
+    df["reserve_risk_replacement_lag_days"] = replacement_lag.where(
+        replacement_available_mask, pd.NA
+    )
+    df["reserve_risk_replacement_active"] = ~df["reserve_risk_active"] & df[
+        "reserve_risk_replacement_lag_days"
+    ].fillna(reserve_risk_disable_lag_days + 1).le(reserve_risk_disable_lag_days)
     reserve_replacement_source = pd.Series(
         np.where(
             df["score_lth_mvrv"] >= df["score_mvrv_zscore"],
@@ -644,8 +703,12 @@ def enrich_for_frontend(
     )
     df["reserve_dimension_active"] = df["reserve_risk_source_mode"] != "inactive"
     df["score_reserve_risk"] = df["score_reserve_risk_primary"]
-    replacement_mask = ~df["reserve_risk_active"] & df["reserve_risk_replacement_active"]
-    df.loc[replacement_mask, "score_reserve_risk"] = df.loc[replacement_mask, "score_reserve_risk_replacement"]
+    replacement_mask = (
+        ~df["reserve_risk_active"] & df["reserve_risk_replacement_active"]
+    )
+    df.loc[replacement_mask, "score_reserve_risk"] = df.loc[
+        replacement_mask, "score_reserve_risk_replacement"
+    ]
     df.loc[~df["reserve_dimension_active"], "score_reserve_risk"] = 0
     df["score_reserve_risk"] = df["score_reserve_risk"].fillna(0).astype(int)
 
@@ -696,11 +759,15 @@ def enrich_for_frontend(
     df["signal_puell"] = df["score_puell"] > 0
 
     df["inactive_indicator_count"] = (~df["reserve_dimension_active"]).astype(int)
-    df["active_indicator_count"] = SCORING_INDICATOR_COUNT - df["inactive_indicator_count"]
+    df["active_indicator_count"] = (
+        SCORING_INDICATOR_COUNT - df["inactive_indicator_count"]
+    )
     df["max_signal_score_v2"] = df["active_indicator_count"] * 2
     df["signal_count"] = df[GROUPED_SIGNAL_COLUMNS].sum(axis=1).astype(int)
     df["signal_score_v2"] = df[GROUPED_SCORE_COLUMNS].sum(axis=1).astype(int)
-    df["signal_score_v2_min3d"] = df["signal_score_v2"].rolling(window=3, min_periods=3).min()
+    df["signal_score_v2_min3d"] = (
+        df["signal_score_v2"].rolling(window=3, min_periods=3).min()
+    )
     min3d_ratio = (
         df["signal_score_v2_min3d"] / df["max_signal_score_v2"].replace(0, pd.NA)
     ).fillna(0)
@@ -781,8 +848,12 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "scorePriceMa200w": int(getattr(row, "score_price_ma200w")),
                 "scorePriceRealized": int(getattr(row, "score_price_realized")),
                 "scoreReserveRisk": int(getattr(row, "score_reserve_risk")),
-                "scoreReserveRiskPrimary": int(getattr(row, "score_reserve_risk_primary")),
-                "scoreReserveRiskReplacement": int(getattr(row, "score_reserve_risk_replacement")),
+                "scoreReserveRiskPrimary": int(
+                    getattr(row, "score_reserve_risk_primary")
+                ),
+                "scoreReserveRiskReplacement": int(
+                    getattr(row, "score_reserve_risk_replacement")
+                ),
                 "scoreLthMvrv": int(getattr(row, "score_lth_mvrv")),
                 "scoreMvrvZscore": int(getattr(row, "score_mvrv_zscore")),
                 "scoreSthSopr": int(getattr(row, "score_sth_sopr")),
@@ -791,19 +862,31 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "scorePuell": int(getattr(row, "score_puell")),
                 "signalScoreV2": int(getattr(row, "signal_score_v2")),
                 "maxSignalScoreV2": int(getattr(row, "max_signal_score_v2")),
-                "signalScoreV2Min3d": _safe_float(getattr(row, "signal_score_v2_min3d")),
+                "signalScoreV2Min3d": _safe_float(
+                    getattr(row, "signal_score_v2_min3d")
+                ),
                 "signalConfirmed3d": bool(getattr(row, "signal_confirmed_3d")),
                 "signalBandV2": str(getattr(row, "signal_band_v2")),
                 "reserveRiskActive": bool(getattr(row, "reserve_risk_active")),
-                "reserveRiskReplacementActive": bool(getattr(row, "reserve_risk_replacement_active")),
-                "reserveRiskReplacementSource": getattr(row, "reserve_risk_replacement_source"),
+                "reserveRiskReplacementActive": bool(
+                    getattr(row, "reserve_risk_replacement_active")
+                ),
+                "reserveRiskReplacementSource": getattr(
+                    row, "reserve_risk_replacement_source"
+                ),
                 "reserveRiskSourceMode": str(getattr(row, "reserve_risk_source_mode")),
                 "reserveRiskLagDays": _safe_int(getattr(row, "reserve_risk_lag_days")),
-                "reserveRiskPrimaryLagDays": _safe_int(getattr(row, "reserve_risk_primary_lag_days")),
-                "reserveRiskReplacementLagDays": _safe_int(getattr(row, "reserve_risk_replacement_lag_days")),
+                "reserveRiskPrimaryLagDays": _safe_int(
+                    getattr(row, "reserve_risk_primary_lag_days")
+                ),
+                "reserveRiskReplacementLagDays": _safe_int(
+                    getattr(row, "reserve_risk_replacement_lag_days")
+                ),
                 "api_data_date": {
                     "price_ma200w": _safe_iso_date(getattr(row, "btc_price_date")),
-                    "price_realized": _safe_iso_date(getattr(row, "realized_price_date")),
+                    "price_realized": _safe_iso_date(
+                        getattr(row, "realized_price_date")
+                    ),
                     "reserve_risk": _safe_iso_date(getattr(row, "reserve_risk_date")),
                     "lth_mvrv": _safe_iso_date(getattr(row, "lth_mvrv_date")),
                     "mvrv_zscore": _safe_iso_date(getattr(row, "mvrv_zscore_date")),
@@ -836,9 +919,13 @@ def build_latest_json(
     reserve_risk_disable_lag_days = _safe_int(last.get("reserve_risk_disable_lag_days"))
     reserve_risk_date = _safe_iso_date(last["reserve_risk_date"]) or date_value
     reserve_risk_primary_date = _safe_iso_date(last.get("reserve_risk_primary_date"))
-    reserve_risk_replacement_active = bool(last.get("reserve_risk_replacement_active", False))
+    reserve_risk_replacement_active = bool(
+        last.get("reserve_risk_replacement_active", False)
+    )
     reserve_risk_replacement_source = last.get("reserve_risk_replacement_source")
-    reserve_risk_replacement_lag_days = _safe_int(last.get("reserve_risk_replacement_lag_days"))
+    reserve_risk_replacement_lag_days = _safe_int(
+        last.get("reserve_risk_replacement_lag_days")
+    )
     reserve_risk_source_mode = str(last.get("reserve_risk_source_mode", "primary"))
     lth_mvrv_date = _safe_iso_date(last.get("lth_mvrv_date")) or date_value
     mvrv_zscore_date = _safe_iso_date(last.get("mvrv_zscore_date")) or date_value
@@ -976,10 +1063,16 @@ def build_manifest_json(
         "historyLightRows": light_rows,
         "schemaVersion": "v3",
         "indicatorSet": "core6_bottom_v2_sth_grouped",
-        "scoringModelVersion": latest_json.get("scoringModelVersion", SCORING_MODEL_VERSION),
+        "scoringModelVersion": latest_json.get(
+            "scoringModelVersion", SCORING_MODEL_VERSION
+        ),
         "thresholds": thresholds,
-        "activeIndicatorCount": latest_json.get("activeIndicatorCount", SCORING_INDICATOR_COUNT),
-        "maxSignalScoreV2": latest_json.get("maxSignalScoreV2", SCORING_INDICATOR_COUNT * 2),
+        "activeIndicatorCount": latest_json.get(
+            "activeIndicatorCount", SCORING_INDICATOR_COUNT
+        ),
+        "maxSignalScoreV2": latest_json.get(
+            "maxSignalScoreV2", SCORING_INDICATOR_COUNT * 2
+        ),
         "reserveRiskSourceMode": latest_json.get("reserveRiskSourceMode", "primary"),
         "inactiveIndicators": latest_json.get("inactiveIndicators", []),
     }
@@ -993,7 +1086,9 @@ def write_json(path: Path, payload: object) -> None:
         f.write("\n")
 
 
-def save_tabular_outputs(df: pd.DataFrame, output_dir: Path, file_prefix: str) -> Dict[str, Path]:
+def save_tabular_outputs(
+    df: pd.DataFrame, output_dir: Path, file_prefix: str
+) -> Dict[str, Path]:
     """Save DataFrame to CSV and XLSX."""
     output_dir.mkdir(parents=True, exist_ok=True)
     saved: Dict[str, Path] = {}
@@ -1030,7 +1125,9 @@ def print_summary(
 
     print(f"Rows: {len(tabular_df):,}")
     if not tabular_df.empty:
-        print(f"Date range: {tabular_df['Date'].min().date()} -> {tabular_df['Date'].max().date()}")
+        print(
+            f"Date range: {tabular_df['Date'].min().date()} -> {tabular_df['Date'].max().date()}"
+        )
         print("Latest 5 rows:")
         print(tabular_df.tail(5).to_string(index=False))
 
@@ -1123,7 +1220,9 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    base_df, sources, reserve_primary_last_date = build_base_dataframe(args.start_date, args.end_date)
+    base_df, sources, reserve_primary_last_date = build_base_dataframe(
+        args.start_date, args.end_date
+    )
     if base_df.empty:
         print("No data after filtering. Nothing saved.")
         return 1
@@ -1136,8 +1235,34 @@ def main() -> int:
     tabular_df = build_tabular_view(frontend_df)
 
     history_json = dataframe_to_history_json(frontend_df)
+
+    # Merge with existing history to preserve rows no longer returned by the API
+    history_path = Path(args.history_json_path)
+    if history_path.exists():
+        try:
+            with history_path.open("r", encoding="utf-8") as f:
+                existing_history = json.load(f)
+            if isinstance(existing_history, list):
+                existing_by_date = {row.get("d"): row for row in existing_history}
+                new_by_date = {row.get("d"): row for row in history_json}
+                # Keep existing rows whose dates are NOT in the new fetch
+                for date_key, row in existing_by_date.items():
+                    if date_key not in new_by_date:
+                        history_json.append(row)
+                # Sort by date to maintain ordering
+                history_json.sort(key=lambda r: r.get("d", ""))
+                print(
+                    f"History merged: {len(new_by_date)} new + {len(existing_by_date) - len(new_by_date)} preserved = {len(history_json)} total"
+                )
+        except Exception as exc:
+            print(
+                f"WARNING: Could not merge with existing history ({exc}). Using fresh data only."
+            )
+
     latest_json = build_latest_json(frontend_df, thresholds=thresholds)
-    history_light_json = build_light_history_json(history_json, years=max(1, args.history_light_years))
+    history_light_json = build_light_history_json(
+        history_json, years=max(1, args.history_light_years)
+    )
     manifest_json = build_manifest_json(
         latest_json=latest_json,
         history_rows=len(history_json),
@@ -1145,7 +1270,6 @@ def main() -> int:
         thresholds=thresholds,
     )
 
-    history_path = Path(args.history_json_path)
     history_light_path = Path(args.history_light_json_path)
     latest_path = Path(args.latest_json_path)
     manifest_path = Path(args.manifest_json_path)
@@ -1156,7 +1280,9 @@ def main() -> int:
 
     saved_files: Dict[str, Path] = {}
     if not args.skip_tabular:
-        saved_files = save_tabular_outputs(tabular_df, Path(args.output_dir), args.file_prefix)
+        saved_files = save_tabular_outputs(
+            tabular_df, Path(args.output_dir), args.file_prefix
+        )
 
     print()
     if saved_files:
