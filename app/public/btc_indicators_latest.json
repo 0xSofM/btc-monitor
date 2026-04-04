@@ -1,16 +1,16 @@
 {
-  "date": "2026-04-03",
-  "btcPrice": 66937.51,
+  "date": "2026-04-04",
+  "btcPrice": 66902.04,
   "realizedPrice": 53608.48,
-  "priceMa200wRatio": 1.1266848882964478,
-  "priceRealizedRatio": 1.2486365962996897,
-  "reserveRisk": 0.0005673301,
+  "priceMa200wRatio": 1.1255827585529388,
+  "priceRealizedRatio": 1.2479749472471517,
+  "reserveRisk": 0.0005675168,
   "lthMvrv": 1.53,
   "mvrvZscore": 0.4892,
   "sthSopr": 0.9926080591,
   "sthMvrv": 0.81,
-  "ma200w": 59411.0302670428,
-  "puellMultiple": 0.7134285714,
+  "ma200w": 59437.6908242713,
+  "puellMultiple": 0.6992857143,
   "signalCount": 1,
   "activeIndicatorCount": 5,
   "signalScoreV2": 2,
@@ -34,10 +34,10 @@
   "reserveRiskActive": false,
   "reserveRiskReplacementActive": true,
   "reserveRiskReplacementSource": "lth_mvrv",
-  "reserveRiskReplacementLagDays": 1,
+  "reserveRiskReplacementLagDays": 2,
   "reserveRiskSourceMode": "replacement",
   "reserveRiskLagDays": 1,
-  "reserveRiskPrimaryLagDays": 96,
+  "reserveRiskPrimaryLagDays": 97,
   "inactiveIndicators": [],
   "signals": {
     "priceMa200w": false,
@@ -49,12 +49,12 @@
     "puell": false
   },
   "indicatorDates": {
-    "priceMa200w": "2026-04-03",
+    "priceMa200w": "2026-04-04",
     "priceRealized": "2026-04-02",
     "reserveRisk": "2026-04-02",
     "sthSopr": "2026-04-02",
     "sthMvrv": "2026-04-02",
-    "puell": "2026-04-02"
+    "puell": "2026-04-03"
   },
   "thresholds": {
     "priceMa200wRatio": {
@@ -75,7 +75,7 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.9943785409289999,
+      "trigger": 0.994341372302,
       "deep": 0.985334538925,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
@@ -84,8 +84,8 @@
       "deepQuantile": 0.135
     },
     "sthMvrv": {
-      "trigger": 0.91493,
-      "deep": 0.849895,
+      "trigger": 0.914,
+      "deep": 0.847,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -107,5 +107,5 @@
       }
     }
   },
-  "lastUpdated": "2026-04-03T19:57:03.746787+00:00"
+  "lastUpdated": "2026-04-04T05:17:41.293681+00:00"
 }
