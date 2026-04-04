@@ -1,15 +1,15 @@
 {
   "date": "2026-04-04",
   "btcPrice": 66902.04,
-  "realizedPrice": 53608.48,
-  "priceMa200wRatio": 1.1255827585529388,
-  "priceRealizedRatio": 1.2479749472471517,
+  "realizedPrice": 54003.8480228581,
+  "priceMa200wRatio": 1.1255833776339441,
+  "priceRealizedRatio": 1.238838387436438,
   "reserveRisk": 0.0005675168,
   "lthMvrv": 1.53,
   "mvrvZscore": 0.4892,
-  "sthSopr": 0.9926080591,
+  "sthSopr": 0.9989663203,
   "sthMvrv": 0.81,
-  "ma200w": 59437.6908242713,
+  "ma200w": 59437.6581330055,
   "puellMultiple": 0.6992857143,
   "signalCount": 1,
   "activeIndicatorCount": 5,
@@ -21,7 +21,7 @@
   "scorePriceMa200w": 0,
   "scorePriceRealized": 0,
   "scoreReserveRisk": 0,
-  "scoreSthSopr": 1,
+  "scoreSthSopr": 0,
   "scoreSthMvrv": 2,
   "scorePuell": 0,
   "scoreReserveRiskPrimary": 2,
@@ -43,16 +43,16 @@
     "priceMa200w": false,
     "priceRealized": false,
     "reserveRisk": false,
-    "sthSopr": true,
+    "sthSopr": false,
     "sthMvrv": true,
     "sthGroup": true,
     "puell": false
   },
   "indicatorDates": {
     "priceMa200w": "2026-04-04",
-    "priceRealized": "2026-04-02",
+    "priceRealized": "2026-04-03",
     "reserveRisk": "2026-04-02",
-    "sthSopr": "2026-04-02",
+    "sthSopr": "2026-04-03",
     "sthMvrv": "2026-04-02",
     "puell": "2026-04-03"
   },
@@ -75,7 +75,7 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.994341372302,
+      "trigger": 0.9943785409289999,
       "deep": 0.985334538925,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
@@ -107,5 +107,5 @@
       }
     }
   },
-  "lastUpdated": "2026-04-04T05:17:41.293681+00:00"
+  "lastUpdated": "2026-04-04T08:02:26.226059+00:00"
 }

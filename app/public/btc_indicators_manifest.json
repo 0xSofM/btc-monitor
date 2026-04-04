@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-04-04T05:17:41.321544+00:00",
+  "generatedAt": "2026-04-04T08:02:26.255995+00:00",
   "latestDate": "2026-04-04",
-  "lastUpdated": "2026-04-04T05:17:41.293681+00:00",
+  "lastUpdated": "2026-04-04T08:02:26.226059+00:00",
   "historyRows": 5563,
   "historyLightRows": 2911,
   "schemaVersion": "v3",
@@ -26,7 +26,7 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.994341372302,
+      "trigger": 0.9943785409289999,
       "deep": 0.985334538925,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
