@@ -1,16 +1,16 @@
 {
-  "date": "2026-04-04",
-  "btcPrice": 66902.04,
-  "realizedPrice": 53583.54,
-  "priceMa200wRatio": 1.1255833776339441,
-  "priceRealizedRatio": 1.2485558065032656,
-  "reserveRisk": 0.0005675168,
+  "date": "2026-04-05",
+  "btcPrice": 67346.27,
+  "realizedPrice": 53925.5893514307,
+  "priceMa200wRatio": 1.1325345370013944,
+  "priceRealizedRatio": 1.248874065355268,
+  "reserveRisk": 0.0005701735,
   "lthMvrv": 1.53,
   "mvrvZscore": 0.4481,
-  "sthSopr": 0.9989663203,
+  "sthSopr": 1.0010328646,
   "sthMvrv": 0.82,
-  "ma200w": 59437.6581330055,
-  "puellMultiple": 0.6992857143,
+  "ma200w": 59465.0916150534,
+  "puellMultiple": 0.6638571429,
   "signalCount": 1,
   "activeIndicatorCount": 5,
   "signalScoreV2": 2,
@@ -34,10 +34,10 @@
   "reserveRiskActive": false,
   "reserveRiskReplacementActive": true,
   "reserveRiskReplacementSource": "lth_mvrv",
-  "reserveRiskReplacementLagDays": 1,
+  "reserveRiskReplacementLagDays": 2,
   "reserveRiskSourceMode": "replacement",
   "reserveRiskLagDays": 1,
-  "reserveRiskPrimaryLagDays": 97,
+  "reserveRiskPrimaryLagDays": 98,
   "inactiveIndicators": [],
   "signals": {
     "priceMa200w": false,
@@ -49,12 +49,12 @@
     "puell": false
   },
   "indicatorDates": {
-    "priceMa200w": "2026-04-04",
-    "priceRealized": "2026-04-03",
+    "priceMa200w": "2026-04-05",
+    "priceRealized": "2026-04-04",
     "reserveRisk": "2026-04-03",
-    "sthSopr": "2026-04-03",
+    "sthSopr": "2026-04-04",
     "sthMvrv": "2026-04-03",
-    "puell": "2026-04-03"
+    "puell": "2026-04-04"
   },
   "thresholds": {
     "priceMa200wRatio": {
@@ -85,7 +85,7 @@
     },
     "sthMvrv": {
       "trigger": 0.914,
-      "deep": 0.847,
+      "deep": 0.846965,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -107,5 +107,5 @@
       }
     }
   },
-  "lastUpdated": "2026-04-04T19:47:47.857513+00:00"
+  "lastUpdated": "2026-04-05T05:58:01.957580+00:00"
 }
