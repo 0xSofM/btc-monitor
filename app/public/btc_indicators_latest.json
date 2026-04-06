@@ -1,14 +1,14 @@
 {
   "date": "2026-04-06",
   "btcPrice": 67508.71,
-  "realizedPrice": 53958.6110013643,
+  "realizedPrice": 53596.21,
   "priceMa200wRatio": 1.1347145867216726,
-  "priceRealizedRatio": 1.2511202335859444,
+  "priceRealizedRatio": 1.259579921789246,
   "reserveRisk": 0.0005840876,
-  "lthMvrv": 1.54,
-  "mvrvZscore": 0.4504,
+  "lthMvrv": 1.57,
+  "mvrvZscore": 0.4622,
   "sthSopr": 0.999905488,
-  "sthMvrv": 0.82,
+  "sthMvrv": 0.84,
   "ma200w": 59494.000332754,
   "puellMultiple": 0.6755714286,
   "signalCount": 1,
@@ -34,7 +34,7 @@
   "reserveRiskActive": false,
   "reserveRiskReplacementActive": true,
   "reserveRiskReplacementSource": "lth_mvrv",
-  "reserveRiskReplacementLagDays": 2,
+  "reserveRiskReplacementLagDays": 1,
   "reserveRiskSourceMode": "replacement",
   "reserveRiskLagDays": 1,
   "reserveRiskPrimaryLagDays": 99,
@@ -51,9 +51,9 @@
   "indicatorDates": {
     "priceMa200w": "2026-04-06",
     "priceRealized": "2026-04-05",
-    "reserveRisk": "2026-04-04",
+    "reserveRisk": "2026-04-05",
     "sthSopr": "2026-04-05",
-    "sthMvrv": "2026-04-04",
+    "sthMvrv": "2026-04-05",
     "puell": "2026-04-05"
   },
   "thresholds": {
@@ -107,5 +107,5 @@
       }
     }
   },
-  "lastUpdated": "2026-04-06T06:21:04.552341+00:00"
+  "lastUpdated": "2026-04-06T15:08:20.378176+00:00"
 }
