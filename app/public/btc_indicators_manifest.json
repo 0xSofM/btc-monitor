@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-04-08T06:08:38.461173+00:00",
+  "generatedAt": "2026-04-08T09:54:59.570134+00:00",
   "latestDate": "2026-04-08",
-  "lastUpdated": "2026-04-08T06:08:38.430184+00:00",
+  "lastUpdated": "2026-04-08T09:54:59.539666+00:00",
   "historyRows": 5567,
   "historyLightRows": 2911,
   "schemaVersion": "v3",
@@ -36,7 +36,7 @@
     },
     "sthMvrv": {
       "trigger": 0.914,
-      "deep": 0.845965,
+      "deep": 0.846,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
