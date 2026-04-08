@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-07T20:07:30.883202+00:00",
-  "latestDate": "2026-04-07",
-  "lastUpdated": "2026-04-07T20:07:30.852905+00:00",
-  "historyRows": 5566,
+  "generatedAt": "2026-04-08T06:08:38.461173+00:00",
+  "latestDate": "2026-04-08",
+  "lastUpdated": "2026-04-08T06:08:38.430184+00:00",
+  "historyRows": 5567,
   "historyLightRows": 2911,
   "schemaVersion": "v3",
   "indicatorSet": "core6_bottom_v2_sth_grouped",
@@ -36,7 +36,7 @@
     },
     "sthMvrv": {
       "trigger": 0.914,
-      "deep": 0.846,
+      "deep": 0.845965,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
