@@ -1,15 +1,15 @@
 {
-  "date": "2026-04-10",
-  "btcPrice": 72297.62,
-  "realizedPrice": 53631.76,
-  "priceMa200wRatio": 1.2127834321835707,
-  "priceRealizedRatio": 1.348037431551752,
+  "date": "2026-04-11",
+  "btcPrice": 73154.87,
+  "realizedPrice": 54067.984168787,
+  "priceMa200wRatio": 1.2265174067475324,
+  "priceRealizedRatio": 1.3530164130334212,
   "reserveRisk": 0.0006063711,
   "lthMvrv": 1.62,
   "mvrvZscore": 0.5899,
-  "sthSopr": 1.0005750271,
+  "sthSopr": 1.0052921304,
   "sthMvrv": 0.88,
-  "ma200w": 59612.9680546764,
+  "ma200w": 59644.3797679084,
   "puellMultiple": 0.6791428571,
   "signalCount": 1,
   "activeIndicatorCount": 5,
@@ -34,10 +34,10 @@
   "reserveRiskActive": false,
   "reserveRiskReplacementActive": true,
   "reserveRiskReplacementSource": "lth_mvrv",
-  "reserveRiskReplacementLagDays": 1,
+  "reserveRiskReplacementLagDays": 2,
   "reserveRiskSourceMode": "replacement",
-  "reserveRiskLagDays": 1,
-  "reserveRiskPrimaryLagDays": 103,
+  "reserveRiskLagDays": 2,
+  "reserveRiskPrimaryLagDays": 104,
   "inactiveIndicators": [],
   "signals": {
     "priceMa200w": false,
@@ -49,10 +49,10 @@
     "puell": false
   },
   "indicatorDates": {
-    "priceMa200w": "2026-04-10",
-    "priceRealized": "2026-04-09",
+    "priceMa200w": "2026-04-11",
+    "priceRealized": "2026-04-10",
     "reserveRisk": "2026-04-09",
-    "sthSopr": "2026-04-09",
+    "sthSopr": "2026-04-10",
     "sthMvrv": "2026-04-09",
     "puell": "2026-04-09"
   },
@@ -66,8 +66,8 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.001148,
-      "deep": 0.0010489,
+      "trigger": 0.0011478,
+      "deep": 0.001048,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -84,7 +84,7 @@
       "deepQuantile": 0.135
     },
     "sthMvrv": {
-      "trigger": 0.914,
+      "trigger": 0.91393,
       "deep": 0.846,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
@@ -107,5 +107,5 @@
       }
     }
   },
-  "lastUpdated": "2026-04-10T20:01:42.187644+00:00"
+  "lastUpdated": "2026-04-11T05:39:21.378912+00:00"
 }

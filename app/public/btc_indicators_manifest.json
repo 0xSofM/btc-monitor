@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-10T20:01:42.218178+00:00",
-  "latestDate": "2026-04-10",
-  "lastUpdated": "2026-04-10T20:01:42.187644+00:00",
-  "historyRows": 5569,
+  "generatedAt": "2026-04-11T05:39:21.406157+00:00",
+  "latestDate": "2026-04-11",
+  "lastUpdated": "2026-04-11T05:39:21.378912+00:00",
+  "historyRows": 5570,
   "historyLightRows": 2911,
   "schemaVersion": "v3",
   "indicatorSet": "core6_bottom_v2_sth_grouped",
@@ -17,8 +17,8 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.001148,
-      "deep": 0.0010489,
+      "trigger": 0.0011478,
+      "deep": 0.001048,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -35,7 +35,7 @@
       "deepQuantile": 0.135
     },
     "sthMvrv": {
-      "trigger": 0.914,
+      "trigger": 0.91393,
       "deep": 0.846,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
