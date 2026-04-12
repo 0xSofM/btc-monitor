@@ -4,7 +4,7 @@
   "realizedPrice": 54082.1823693325,
   "priceMa200wRatio": 1.2297766040265103,
   "priceRealizedRatio": 1.3569515279326876,
-  "reserveRisk": 0.0006063711,
+  "reserveRisk": 0.0006150599,
   "lthMvrv": 1.62,
   "mvrvZscore": 0.5899,
   "sthSopr": 1.007003031,
@@ -36,7 +36,7 @@
   "reserveRiskReplacementSource": "lth_mvrv",
   "reserveRiskReplacementLagDays": 3,
   "reserveRiskSourceMode": "replacement",
-  "reserveRiskLagDays": 3,
+  "reserveRiskLagDays": 2,
   "reserveRiskPrimaryLagDays": 105,
   "inactiveIndicators": [],
   "signals": {
@@ -66,8 +66,8 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.0011468000000000001,
-      "deep": 0.0010478000000000002,
+      "trigger": 0.0011478,
+      "deep": 0.001048,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -107,5 +107,5 @@
       }
     }
   },
-  "lastUpdated": "2026-04-12T08:34:02.055162+00:00"
+  "lastUpdated": "2026-04-12T14:27:49.168524+00:00"
 }
