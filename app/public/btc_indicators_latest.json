@@ -1,15 +1,15 @@
 {
-  "date": "2026-04-11",
-  "btcPrice": 73154.87,
-  "realizedPrice": 54067.984168787,
-  "priceMa200wRatio": 1.2265174067475324,
-  "priceRealizedRatio": 1.3530164130334212,
+  "date": "2026-04-12",
+  "btcPrice": 73386.9,
+  "realizedPrice": 54082.1823693325,
+  "priceMa200wRatio": 1.2297766040265103,
+  "priceRealizedRatio": 1.3569515279326876,
   "reserveRisk": 0.0006063711,
   "lthMvrv": 1.62,
   "mvrvZscore": 0.5899,
-  "sthSopr": 1.0052921304,
+  "sthSopr": 1.007003031,
   "sthMvrv": 0.88,
-  "ma200w": 59644.3797679084,
+  "ma200w": 59674.9846758493,
   "puellMultiple": 0.6791428571,
   "signalCount": 1,
   "activeIndicatorCount": 5,
@@ -34,10 +34,10 @@
   "reserveRiskActive": false,
   "reserveRiskReplacementActive": true,
   "reserveRiskReplacementSource": "lth_mvrv",
-  "reserveRiskReplacementLagDays": 2,
+  "reserveRiskReplacementLagDays": 3,
   "reserveRiskSourceMode": "replacement",
-  "reserveRiskLagDays": 2,
-  "reserveRiskPrimaryLagDays": 104,
+  "reserveRiskLagDays": 3,
+  "reserveRiskPrimaryLagDays": 105,
   "inactiveIndicators": [],
   "signals": {
     "priceMa200w": false,
@@ -49,10 +49,10 @@
     "puell": false
   },
   "indicatorDates": {
-    "priceMa200w": "2026-04-11",
-    "priceRealized": "2026-04-10",
+    "priceMa200w": "2026-04-12",
+    "priceRealized": "2026-04-11",
     "reserveRisk": "2026-04-09",
-    "sthSopr": "2026-04-10",
+    "sthSopr": "2026-04-11",
     "sthMvrv": "2026-04-09",
     "puell": "2026-04-09"
   },
@@ -66,8 +66,8 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.0011478,
-      "deep": 0.001048,
+      "trigger": 0.0011468000000000001,
+      "deep": 0.0010478000000000002,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -75,8 +75,8 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.9943785409289999,
-      "deep": 0.985334538925,
+      "trigger": 0.994434103919,
+      "deep": 0.985514057874,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -84,7 +84,7 @@
       "deepQuantile": 0.135
     },
     "sthMvrv": {
-      "trigger": 0.91393,
+      "trigger": 0.913,
       "deep": 0.846,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
@@ -107,5 +107,5 @@
       }
     }
   },
-  "lastUpdated": "2026-04-11T19:52:45.117956+00:00"
+  "lastUpdated": "2026-04-12T06:13:19.904887+00:00"
 }
