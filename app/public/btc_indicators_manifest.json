@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-04-12T14:27:49.199631+00:00",
+  "generatedAt": "2026-04-12T19:56:02.786719+00:00",
   "latestDate": "2026-04-12",
-  "lastUpdated": "2026-04-12T14:27:49.168524+00:00",
+  "lastUpdated": "2026-04-12T19:56:02.758895+00:00",
   "historyRows": 5571,
   "historyLightRows": 2911,
   "schemaVersion": "v3",
@@ -17,8 +17,8 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.0011478,
-      "deep": 0.001048,
+      "trigger": 0.001148,
+      "deep": 0.0010489,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
