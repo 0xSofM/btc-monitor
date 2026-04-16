@@ -61,7 +61,7 @@ function hasCore6Coverage(rows: IndicatorData[]): boolean {
   const required: Array<keyof IndicatorData> = [
     'priceMa200wRatio',
     'priceRealizedRatio',
-    'reserveRisk',
+    'mvrvZscore',
     'lthMvrv',
     'sthMvrv',
     'puellMultiple',

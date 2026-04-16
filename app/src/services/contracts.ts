@@ -3,6 +3,7 @@ export type HistoryMode = 'light' | 'full';
 export type IndicatorKey =
   | 'priceMa200w'
   | 'priceRealized'
+  | 'mvrvZscore'
   | 'reserveRisk'
   | 'lthMvrv'
   | 'sthSopr'
@@ -32,6 +33,7 @@ export type ApiMetricPoint = {
   btcPrice?: string | number;
   realizedPrice?: string | number;
   reserveRisk?: string | number;
+  mvrvZscore?: string | number;
   sthSopr?: string | number;
   sthMvrv?: string | number;
   puellMultiple?: string | number;

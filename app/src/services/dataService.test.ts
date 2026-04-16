@@ -17,6 +17,7 @@ describe('dataService helpers', () => {
         priceMa200wRatio: 1.2,
         priceRealizedRatio: 1.05,
         reserveRisk: 0.002,
+        mvrvZscore: 0.2,
         sthSopr: 1.01,
         sthMvrv: 1.1,
         puellMultiple: 0.8,
@@ -27,6 +28,7 @@ describe('dataService helpers', () => {
         priceMa200wRatio: 0.95,
         priceRealizedRatio: 0.97,
         reserveRisk: 0.0012,
+        mvrvZscore: -0.3,
         lthMvrv: 0.92,
         sthSopr: 0.99,
         sthMvrv: 0.92,
@@ -36,10 +38,12 @@ describe('dataService helpers', () => {
         maxTotalScoreV4: 12,
         signalLthMvrv: true,
         signalReserveRiskV4: true,
+        signalMvrvZscoreCore: true,
         api_data_date: {
           price_ma200w: '2026-03-28',
           price_realized: '2026-03-27',
           reserve_risk: '2026-03-27',
+          mvrv_zscore: '2026-03-27',
           lth_mvrv: '2026-03-27',
           sth_sopr: '2026-03-28',
           sth_mvrv: '2026-03-27',
@@ -56,8 +60,10 @@ describe('dataService helpers', () => {
     expect(latest?.totalScoreV4).toBe(9);
     expect(latest?.indicatorDates?.priceRealized).toBe('2026-03-27');
     expect(latest?.indicatorDates?.reserveRisk).toBe('2026-03-27');
+    expect(latest?.indicatorDates?.mvrvZscore).toBe('2026-03-27');
     expect(latest?.indicatorDates?.lthMvrv).toBe('2026-03-27');
     expect(latest?.indicatorDates?.puell).toBe('2026-03-28');
+    expect(latest?.signalsV4?.mvrvZscore).toBe(true);
   });
 
   it('getIndicatorChartData filters placeholder zero rows', () => {
@@ -72,40 +78,40 @@ describe('dataService helpers', () => {
     expect(chartData[0].signal).toBe(true);
   });
 
-  it('getIndicatorChartData keeps Reserve Risk stale carry-forward days as chart gaps', () => {
+  it('getIndicatorChartData keeps MVRV Z-Score stale carry-forward days as chart gaps', () => {
     const history = [
       {
         d: '2025-12-28',
         btcPrice: 95000,
-        reserveRisk: 0.001786,
-        indicatorDates: { reserveRisk: '2025-12-28' },
+        mvrvZscore: -0.84,
+        indicatorDates: { mvrvZscore: '2025-12-28' },
       },
       {
         d: '2025-12-29',
         btcPrice: 95200,
-        reserveRisk: 0.001786,
-        indicatorDates: { reserveRisk: '2025-12-28' },
+        mvrvZscore: -0.84,
+        indicatorDates: { mvrvZscore: '2025-12-28' },
       },
       {
         d: '2026-04-15',
         btcPrice: 84000,
-        reserveRisk: 0.0006285492,
-        indicatorDates: { reserveRisk: '2026-04-15' },
+        mvrvZscore: -0.21,
+        indicatorDates: { mvrvZscore: '2026-04-15' },
       },
       {
         d: '2026-04-16',
         btcPrice: 84500,
-        reserveRisk: 0.0006285492,
-        indicatorDates: { reserveRisk: '2026-04-15' },
+        mvrvZscore: -0.21,
+        indicatorDates: { mvrvZscore: '2026-04-15' },
       },
     ] as IndicatorData[];
 
-    const chartData = getIndicatorChartData(history, 'reserveRisk', 'all');
+    const chartData = getIndicatorChartData(history, 'mvrvZscore', 'all');
     expect(chartData).toHaveLength(4);
     expect(chartData.map((point) => point.value)).toEqual([
-      0.001786,
+      -0.84,
       null,
-      0.0006285492,
+      -0.21,
       null,
     ]);
   });

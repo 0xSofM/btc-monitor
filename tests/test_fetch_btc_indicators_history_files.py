@@ -80,6 +80,8 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(last["signalCountV4"], 6)
         self.assertEqual(last["activeIndicatorCountV4"], 6)
         self.assertEqual(last["totalScoreV4"], 11)
+        self.assertTrue(last["signalMvrvZscoreCore"])
+        self.assertEqual(int(last["scoreMvrvZscoreCore"]), 2)
         self.assertTrue(last["signalLthMvrv"])
         self.assertEqual(last["indicatorDates"]["lthMvrv"], "2024-01-03")
 
@@ -107,8 +109,10 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(int(latest["signalCountV4"]), 6)
         self.assertEqual(int(latest["activeIndicatorCountV4"]), 6)
         self.assertEqual(int(latest["totalScoreV4"]), 11)
+        self.assertTrue(bool(latest["signalsV4"]["mvrvZscore"]))
+        self.assertTrue(bool(latest["signalMvrvZscoreCore"]))
         self.assertTrue(bool(latest["signalsV4"]["lthMvrv"]))
-        self.assertEqual(str(latest["scoringModelVersion"]), "v4_layered_core6")
+        self.assertEqual(str(latest["scoringModelVersion"]), "v4_core6_mvrv_substitute")
         self.assertEqual(str(latest["legacyScoringModelVersion"]), "v3_no_lookahead_replacement")
         self.assertIn("reserveRiskDiagnostics", latest)
 
@@ -136,11 +140,12 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(int(latest["activeIndicatorCount"]), 5)
         self.assertEqual(int(latest["maxSignalScoreV2"]), 10)
         self.assertEqual(int(latest["scoreReserveRisk"]), 2)
-        self.assertTrue(bool(latest["reserveRiskSoftFallbackActive"]))
-        self.assertEqual(str(latest["reserveRiskSourceModeV4"]), "soft_fallback")
-        self.assertEqual(int(latest["scoreReserveRiskV4"]), 1)
+        self.assertFalse(bool(latest["reserveRiskSoftFallbackActive"]))
+        self.assertEqual(str(latest["reserveRiskSourceModeV4"]), "compat_mvrv_zscore")
+        self.assertEqual(int(latest["scoreReserveRiskV4"]), 2)
+        self.assertEqual(int(latest["scoreMvrvZscoreCore"]), 2)
         self.assertEqual(int(latest["activeIndicatorCountV4"]), 6)
-        self.assertEqual(int(latest["maxTotalScoreV4"]), 11)
+        self.assertEqual(int(latest["maxTotalScoreV4"]), 12)
 
     def test_reserve_risk_stale_without_replacement_reduces_dimensions(self) -> None:
         base = self.build_base_df().copy()
@@ -162,6 +167,7 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(str(latest["reserveRiskSourceModeV4"]), "inactive")
         self.assertEqual(int(latest["activeIndicatorCountV4"]), 5)
         self.assertEqual(int(latest["maxTotalScoreV4"]), 10)
+        self.assertEqual(str(latest["fallbackMode"]), "mvrv_zscore_inactive")
 
     def test_patch_reserve_risk_tail_prefers_freshest_point_source(self) -> None:
         reserve_df = pd.DataFrame(

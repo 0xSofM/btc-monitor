@@ -170,11 +170,9 @@ export function SignalOverview({
   const hasLaggingIndicators = laggingIndicators.length > 0;
   const scoreProgress = Math.max(0, Math.min(100, (effectiveScore / Math.max(1, effectiveMaxScore)) * 100));
   const confidencePercent = signalConfidence === undefined ? null : Math.round(signalConfidence * 100);
-  const fallbackLabel = fallbackMode === 'reserve_risk_soft_fallback'
-    ? 'Reserve Risk 已切换为 MVRV Z-Score 软回退'
-    : fallbackMode === 'reserve_risk_inactive'
-      ? 'Reserve Risk 暂时不计入 V4 总分'
-      : null;
+  const fallbackLabel = fallbackMode === 'mvrv_zscore_inactive'
+    ? 'MVRV Z-Score 暂时不计入 V4 总分'
+    : null;
 
   return (
     <Card className="surface-card mb-6">

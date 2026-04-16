@@ -35,7 +35,14 @@ import {
 import './App.css';
 
 type DataSource = 'api' | 'static' | 'history';
-type IndicatorDateKey = 'priceMa200w' | 'priceRealized' | 'reserveRisk' | 'lthMvrv' | 'sthMvrv' | 'puell';
+type IndicatorDateKey =
+  | 'priceMa200w'
+  | 'priceRealized'
+  | 'reserveRisk'
+  | 'mvrvZscore'
+  | 'lthMvrv'
+  | 'sthMvrv'
+  | 'puell';
 type AppTab = 'dashboard' | 'history' | 'guide';
 
 const IndicatorChartsPanel = lazy(async () => {
@@ -103,12 +110,8 @@ function formatFallbackModeLabel(fallbackMode: string | undefined): string | nul
     return null;
   }
 
-  if (fallbackMode === 'reserve_risk_soft_fallback') {
-    return 'Reserve Risk 软回退生效';
-  }
-
-  if (fallbackMode === 'reserve_risk_inactive') {
-    return 'Reserve Risk 暂不计分';
+  if (fallbackMode === 'mvrv_zscore_inactive') {
+    return 'MVRV Z-Score 暂不计分';
   }
 
   return '主模型正常';
@@ -123,7 +126,7 @@ function hasCore6Coverage(rows: IndicatorData[]): boolean {
   return [
     'priceMa200wRatio',
     'priceRealizedRatio',
-    'reserveRisk',
+    'mvrvZscore',
     'lthMvrv',
     'sthMvrv',
     'puellMultiple',
@@ -299,10 +302,10 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const indicatorDateLabels: Record<IndicatorDateKey, string> = {
+  const indicatorDateLabels: Partial<Record<IndicatorDateKey, string>> = {
     priceMa200w: 'Price / 200W-MA',
     priceRealized: 'Price / Realized Price',
-    reserveRisk: 'Reserve Risk',
+    mvrvZscore: 'MVRV Z-Score',
     lthMvrv: 'LTH-MVRV',
     sthMvrv: 'STH-MVRV',
     puell: 'Puell Multiple',
@@ -311,7 +314,7 @@ function App() {
   const indicatorDateEntries = latestData?.indicatorDates
     ? (Object.entries(latestData.indicatorDates) as Array<[IndicatorDateKey, string | undefined]>)
         .reduce<Array<[IndicatorDateKey, string]>>((entries, [key, value]) => {
-          if (value && Object.prototype.hasOwnProperty.call(indicatorDateLabels, key)) {
+          if (value && indicatorDateLabels[key]) {
             entries.push([key, value]);
           }
           return entries;
@@ -321,7 +324,7 @@ function App() {
   const laggingIndicators = latestData
     ? indicatorDateEntries
         .filter(([, value]) => value < latestData.date)
-        .map(([key]) => indicatorDateLabels[key])
+        .map(([key]) => indicatorDateLabels[key] ?? key)
     : [];
 
   const oldestIndicatorDate = indicatorDateEntries.length > 0
@@ -434,18 +437,22 @@ function App() {
           detailValue: latestData.realizedPrice ? `Realized Price $${Math.round(latestData.realizedPrice).toLocaleString()}` : undefined,
         },
         {
-          name: 'Reserve Risk',
-          description: '长期持有者风险回报区间',
-          currentValue: latestData.reserveRisk,
-          targetValue: latestData.thresholds?.reserveRisk?.trigger ?? 0.0016,
+          name: 'MVRV Z-Score',
+          description: '估值温度主刻度',
+          currentValue: latestData.mvrvZscore ?? 0,
+          targetValue: latestData.thresholds?.mvrvZscoreCore?.trigger ?? latestData.thresholds?.mvrvZscore?.trigger ?? 0,
           targetOperator: 'lt' as const,
-          triggered: latestData.signalsV4?.reserveRisk ?? latestData.signals.reserveRisk,
+          triggered: latestData.signalsV4?.mvrvZscore
+            ?? latestData.signalMvrvZscoreCore
+            ?? latestData.signalMvrvZ
+            ?? latestData.signalsV4?.reserveRisk
+            ?? false,
           format: 'number' as const,
           color: '#10B981',
-          dataDate: latestData.indicatorDates?.reserveRisk || latestData.date,
-          detailValue: latestData.fallbackMode === 'reserve_risk_soft_fallback'
-            ? '主源存在时滞，V4 当前以 MVRV Z-Score 进行降权软回退。'
-            : undefined,
+          dataDate: latestData.indicatorDates?.mvrvZscore || latestData.date,
+          detailValue: latestData.indicatorDates?.reserveRisk
+            ? `Reserve Risk 仅作观测：${latestData.reserveRisk.toFixed(6)}（${latestData.indicatorDates.reserveRisk}）`
+            : 'Reserve Risk 仅作观测，不参与当前 Core-6 计分。',
         },
         {
           name: 'LTH-MVRV',
@@ -792,7 +799,7 @@ function App() {
 
         <footer className="footer-line mt-12">
           <div className="app-container flex flex-col items-center justify-between gap-3 py-6 text-sm text-muted-foreground md:flex-row">
-            <p>数据来源：BGeometrics 文件端点 | 模型：Core-6 V4（分层计分 + 软回退 + 3日确认）</p>
+            <p>数据来源：BGeometrics 文件端点 | 模型：Core-6 V4（分层计分 + MVRV 替换 + 3日确认）</p>
             <p>
               数据时间：{dataTimestampLabel}
               {manifestGeneratedAt ? ` | 清单生成时间：${manifestGeneratedAt}` : ''}

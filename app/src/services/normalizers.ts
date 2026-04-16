@@ -156,6 +156,7 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     signalPriceRealized: asBoolean(record.signalPriceRealized ?? record.signal_price_realized),
     signalReserveRisk: asBoolean(record.signalReserveRisk ?? record.signal_reserve_risk),
     signalReserveRiskV4: asBoolean(record.signalReserveRiskV4 ?? record.signal_reserve_risk_v4),
+    signalMvrvZscoreCore: asBoolean(record.signalMvrvZscoreCore ?? record.signal_mvrv_zscore_core),
     signalSthSopr: asBoolean(record.signalSthSopr ?? record.signal_sth_sopr),
     signalSthMvrv: asBoolean(record.signalSthMvrv ?? record.signal_sth_mvrv),
     signalSthGroup: asBoolean(record.signalSthGroup ?? record.signal_sth_group),
@@ -171,6 +172,7 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     scorePriceRealized: toNumberOrNull(record.scorePriceRealized ?? record.score_price_realized) ?? undefined,
     scoreReserveRisk: toNumberOrNull(record.scoreReserveRisk ?? record.score_reserve_risk) ?? undefined,
     scoreReserveRiskV4: toNumberOrNull(record.scoreReserveRiskV4 ?? record.score_reserve_risk_v4) ?? undefined,
+    scoreMvrvZscoreCore: toNumberOrNull(record.scoreMvrvZscoreCore ?? record.score_mvrv_zscore_core) ?? undefined,
     scoreSthSopr: toNumberOrNull(record.scoreSthSopr ?? record.score_sth_sopr) ?? undefined,
     scoreSthMvrv: toNumberOrNull(record.scoreSthMvrv ?? record.score_sth_mvrv) ?? undefined,
     scoreSthGroup: toNumberOrNull(record.scoreSthGroup ?? record.score_sth_group) ?? undefined,
@@ -230,6 +232,7 @@ export function normalizeLatestData(item: unknown): LatestData | null {
   const priceMa200wRatio = toNumberOrNull(record.priceMa200wRatio ?? record.price_ma200w_ratio) ?? 0;
   const priceRealizedRatio = toNumberOrNull(record.priceRealizedRatio ?? record.price_realized_ratio) ?? 0;
   const reserveRisk = toNumberOrNull(record.reserveRisk ?? record.reserve_risk) ?? 0;
+  const mvrvZscore = toNumberOrNull(record.mvrvZscore ?? record.mvrv_zscore) ?? 0;
   const sthSopr = toNumberOrNull(record.sthSopr ?? record.sth_sopr) ?? 0;
   const sthMvrv = toNumberOrNull(record.sthMvrv ?? record.sth_mvrv) ?? 0;
   const puellMultiple = toNumberOrNull(record.puellMultiple ?? record.puell_multiple) ?? 0;
@@ -256,7 +259,22 @@ export function normalizeLatestData(item: unknown): LatestData | null {
     ? {
         priceMa200w: asBoolean(incomingSignalsV4.priceMa200w) ?? signals.priceMa200w,
         priceRealized: asBoolean(incomingSignalsV4.priceRealized) ?? signals.priceRealized,
-        reserveRisk: asBoolean(incomingSignalsV4.reserveRisk ?? record.signalReserveRiskV4 ?? record.signal_reserve_risk_v4) ?? signals.reserveRisk,
+        reserveRisk: asBoolean(
+          incomingSignalsV4.reserveRisk
+          ?? incomingSignalsV4.mvrvZscore
+          ?? record.signalReserveRiskV4
+          ?? record.signal_reserve_risk_v4,
+        ) ?? (mvrvZscore < 0),
+        mvrvZscore: asBoolean(
+          incomingSignalsV4.mvrvZscore
+          ?? incomingSignalsV4.reserveRisk
+          ?? record.signalMvrvZscoreCore
+          ?? record.signal_mvrv_zscore_core
+          ?? record.signalReserveRiskV4
+          ?? record.signal_reserve_risk_v4
+          ?? record.signalMvrvZ
+          ?? record.signal_mvrv_z,
+        ) ?? (mvrvZscore < 0),
         sthMvrv: asBoolean(incomingSignalsV4.sthMvrv ?? record.signalSthMvrv ?? record.signal_sth_mvrv) ?? signals.sthMvrv,
         lthMvrv: asBoolean(incomingSignalsV4.lthMvrv ?? record.signalLthMvrv ?? record.signal_lth_mvrv)
           ?? ((toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? 0) < 1),
@@ -314,6 +332,8 @@ export function normalizeLatestData(item: unknown): LatestData | null {
     signalConfidence: toNumberOrNull(record.signalConfidence ?? record.signal_confidence) ?? undefined,
     dataFreshnessScore: toNumberOrNull(record.dataFreshnessScore ?? record.data_freshness_score) ?? undefined,
     fallbackMode: asString(record.fallbackMode ?? record.fallback_mode),
+    scoreMvrvZscoreCore: toNumberOrNull(record.scoreMvrvZscoreCore ?? record.score_mvrv_zscore_core) ?? undefined,
+    signalMvrvZscoreCore: asBoolean(record.signalMvrvZscoreCore ?? record.signal_mvrv_zscore_core),
     scoreSthGroup: toNumberOrNull(record.scoreSthGroup ?? record.score_sth_group) ?? undefined,
     signalSthGroup: asBoolean(record.signalSthGroup ?? record.signal_sth_group),
     scoringModelVersion: asString(record.scoringModelVersion ?? record.scoring_model_version),

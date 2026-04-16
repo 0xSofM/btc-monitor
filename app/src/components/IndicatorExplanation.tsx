@@ -29,12 +29,12 @@ const valuationIndicators: IndicatorItem[] = [
     rationale: '价格低于实现价格常对应低估区，是大周期底部的重要估值锚。',
   },
   {
-    id: 'reserve-risk',
-    name: 'Reserve Risk',
+    id: 'mvrv-zscore',
+    name: 'MVRV Z-Score',
     icon: TrendingDown,
-    target: '< p20（深度 < p10）',
-    description: '衡量长期持有者信念与价格风险的相对关系。',
-    rationale: '历史低分位的储备风险通常对应长期配置窗口。',
+    target: '< 0（深度 < -0.5）',
+    description: '用标准差方式衡量 BTC 估值冷热，作为当前 Core-6 的第三个估值锚点。',
+    rationale: '当 MVRV Z-Score 回到 0 以下时，通常说明市场已经明显降温，更适合进入大周期观察区。',
   },
   {
     id: 'puell',
@@ -78,12 +78,12 @@ const auxiliaryIndicators: IndicatorItem[] = [
     rationale: 'V4 中不再单独占据 Core-6 计分位，而是提升触发信号的置信度。',
   },
   {
-    id: 'mvrv-zscore',
-    name: 'MVRV Z-Score (Fallback)',
+    id: 'reserve-risk',
+    name: 'Reserve Risk (Observation)',
     icon: Info,
-    target: '< 0（深度 < -0.5）',
-    description: '当 Reserve Risk 数据过旧时，作为软回退参考项，仅提供有限分值。',
-    rationale: '这样可以减少与 Price / Realized、LTH-MVRV 的重复计票。',
+    target: '< p20（深度 < p10）',
+    description: '继续保留原始数值和诊断信息，用于观察长期持有者风险回报区间，但不再占据 Core-6 主评分位。',
+    rationale: '这样可以避免主源时滞直接影响 V4 总分，同时保留旧版本对照和回滚能力。',
   },
 ];
 
@@ -131,7 +131,7 @@ export function IndicatorExplanation() {
         <IndicatorGrid title="估值层" items={valuationIndicators} />
         <IndicatorGrid title="触发层" items={triggerIndicators} />
         <IndicatorGrid title="确认层" items={confirmationIndicators} />
-        <IndicatorGrid title="辅助与回退" items={auxiliaryIndicators} />
+        <IndicatorGrid title="辅助与观测" items={auxiliaryIndicators} />
 
         <section className="rounded-xl border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950">
           <div className="flex items-start gap-3">
@@ -140,8 +140,8 @@ export function IndicatorExplanation() {
               <h3 className="font-semibold text-blue-800 dark:text-blue-200">V4 评分框架</h3>
               <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
                 V4 不再把 6 个指标平铺加总，而是拆成“估值层 + 触发层 + 确认层”。
-                Reserve Risk 在主数据陈旧时只允许 MVRV Z-Score 软回退，避免与 LTH-MVRV 重复计票。
-                同时保留 3 日确认、全指标 freshness 评分和旧版 V2 字段，便于归档、对照与回滚。
+                当前版本已将 MVRV Z-Score 正式提升为 Core-6 估值层主指标，Reserve Risk 降级为观测与诊断项。
+                同时保留 3 日确认、全指标 freshness 评分和旧版 V2/Reserve Risk 兼容字段，便于归档、对照与回滚。
               </p>
             </div>
           </div>

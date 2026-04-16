@@ -16,9 +16,9 @@ const COINGECKO_SPOT_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bi
 const RESERVE_RISK_DISABLE_LAG_DAYS = 30;
 const SCORE_CONFIRM_RATIO = 7 / 12;
 const SCHEMA_VERSION = 'v4';
-const SCORING_MODEL_VERSION = 'v4_layered_core6';
+const SCORING_MODEL_VERSION = 'v4_core6_mvrv_substitute';
 const LEGACY_SCORING_MODEL_VERSION = 'v3_no_lookahead_replacement';
-const CORE_INDICATOR_SET = 'core6_bottom_v4_layered';
+const CORE_INDICATOR_SET = 'core6_bottom_v4_mvrv_substitute';
 
 const BGEOMETRICS_SERIES = {
   btcPrice: {
@@ -87,7 +87,8 @@ const DEFAULT_THRESHOLDS = {
   puellMultiple: { trigger: 0.6, deep: 0.5 },
   lthMvrv: { trigger: 1, deep: 0.9 },
   mvrvZscore: { trigger: 0, deep: -0.5 },
-  reserveRiskV4Fallback: { source: 'mvrv_zscore_soft', maxScore: 1 },
+  mvrvZscoreCore: { trigger: 0, deep: -0.5, role: 'valuation_core_v4' },
+  reserveRiskV4Compatibility: { aliasOf: 'mvrvZscoreCore', deprecated: true },
 };
 
 const FRESHNESS_LIMITS = {
@@ -457,7 +458,8 @@ function buildThresholdBundle(staticLatest) {
     puellMultiple: getThresholdConfig(staticLatest, 'puellMultiple'),
     lthMvrv: getThresholdConfig(staticLatest, 'lthMvrv'),
     mvrvZscore: getThresholdConfig(staticLatest, 'mvrvZscore'),
-    reserveRiskV4Fallback: getThresholdConfig(staticLatest, 'reserveRiskV4Fallback'),
+    mvrvZscoreCore: getThresholdConfig(staticLatest, 'mvrvZscoreCore'),
+    reserveRiskV4Compatibility: getThresholdConfig(staticLatest, 'reserveRiskV4Compatibility'),
   };
 }
 
@@ -713,6 +715,8 @@ function buildRuntimePayload({
   const scorePuell = scoreByLt(puellMultiple, thresholds.puellMultiple.trigger, thresholds.puellMultiple.deep);
   const scoreLthMvrv = scoreByLt(lthMvrv, thresholds.lthMvrv.trigger, thresholds.lthMvrv.deep);
   const scoreMvrvZscore = scoreByLt(mvrvZscore, thresholds.mvrvZscore.trigger, thresholds.mvrvZscore.deep);
+  const mvrvZscoreCoreActive = Boolean(points.mvrvZscore?.d && mvrvZscoreIsFresh);
+  const scoreMvrvZscoreCore = mvrvZscoreCoreActive ? scoreMvrvZscore : 0;
 
   const reserveRiskPrimaryLagDays = daysBetween(latestDate, seriesPoints.reserveRiskPrimary?.d);
   const reserveRiskActive = Boolean(
@@ -740,16 +744,11 @@ function buildRuntimePayload({
     ? scoreReserveRiskPrimary
     : (reserveRiskReplacementActive ? scoreReserveRiskReplacement : 0);
 
-  const reserveRiskSoftFallbackActive = !reserveRiskActive && Boolean(points.mvrvZscore?.d && mvrvZscoreIsFresh);
-  const scoreReserveRiskV4 = reserveRiskActive
-    ? scoreReserveRiskPrimary
-    : (reserveRiskSoftFallbackActive ? Math.min(scoreMvrvZscore, 1) : 0);
-  const maxReserveRiskScoreV4 = reserveRiskActive ? 2 : (reserveRiskSoftFallbackActive ? 1 : 0);
-  const reserveRiskSourceModeV4 = reserveRiskActive
-    ? 'primary'
-    : (reserveRiskSoftFallbackActive ? 'soft_fallback' : 'inactive');
-  const reserveDimensionActiveV4 = reserveRiskSourceModeV4 !== 'inactive';
-  const reserveRiskFallbackLagDaysV4 = reserveRiskSoftFallbackActive ? mvrvZscoreLagDays : null;
+  const reserveRiskSoftFallbackActive = false;
+  const scoreReserveRiskV4 = scoreMvrvZscoreCore;
+  const maxReserveRiskScoreV4 = mvrvZscoreCoreActive ? 2 : 0;
+  const reserveRiskSourceModeV4 = mvrvZscoreCoreActive ? 'compat_mvrv_zscore' : 'inactive';
+  const reserveRiskFallbackLagDaysV4 = null;
 
   const signalPriceMa200w = scorePriceMa200w > 0;
   const signalPriceRealized = scorePriceRealized > 0;
@@ -758,7 +757,8 @@ function buildRuntimePayload({
   const signalSthMvrv = scoreSthMvrv > 0;
   const signalSthGroup = scoreSthGroup > 0;
   const signalPuell = scorePuell > 0;
-  const signalReserveRiskV4 = scoreReserveRiskV4 > 0;
+  const signalMvrvZscoreCore = scoreMvrvZscoreCore > 0;
+  const signalReserveRiskV4 = signalMvrvZscoreCore;
   const signalLthMvrv = scoreLthMvrv > 0;
   const signalSthSoprAux = scoreSthSopr > 0;
 
@@ -774,7 +774,7 @@ function buildRuntimePayload({
   const signalScoreV2 = scorePriceMa200w + scorePriceRealized + scoreReserveRisk + scoreSthGroup + scorePuell;
   const maxSignalScoreV2 = activeIndicatorCount * 2;
 
-  const valuationScore = scorePriceMa200w + scorePriceRealized + scoreReserveRiskV4 + scorePuell;
+  const valuationScore = scorePriceMa200w + scorePriceRealized + scoreMvrvZscoreCore + scorePuell;
   const maxValuationScore = 6 + maxReserveRiskScoreV4;
   const triggerScore = scoreSthMvrv;
   const maxTriggerScore = 2;
@@ -782,7 +782,7 @@ function buildRuntimePayload({
   const maxConfirmationScore = 2;
   const auxiliaryScore = scoreSthSopr;
   const maxAuxiliaryScore = 2;
-  const activeIndicatorCountV4 = 5 + (reserveDimensionActiveV4 ? 1 : 0);
+  const activeIndicatorCountV4 = 5 + (mvrvZscoreCoreActive ? 1 : 0);
   const signalCountV4 = [
     signalPriceMa200w,
     signalPriceRealized,
@@ -805,9 +805,7 @@ function buildRuntimePayload({
   const signalBandV2 = classifyScoreBand(signalScoreV2, maxSignalScoreV2);
   const signalBandV4 = classifyScoreBand(totalScoreV4, maxTotalScoreV4);
 
-  const reserveEffectiveFreshness = reserveRiskActive
-    ? reserveRiskFreshnessScore
-    : (reserveRiskSoftFallbackActive ? mvrvZscoreFreshnessScore : 0);
+  const reserveEffectiveFreshness = mvrvZscoreCoreActive ? mvrvZscoreFreshnessScore : 0;
   const dataFreshnessScore = round(
     (
       btcPriceFreshnessScore
@@ -823,7 +821,7 @@ function buildRuntimePayload({
   const baseScoreRatio = maxTotalScoreV4 > 0 ? totalScoreV4 / maxTotalScoreV4 : 0;
   const auxiliaryBonus = signalSthSoprAux ? 0.1 : 0;
   const confirmationBonus = signalConfirmed3dV4 ? 0.1 : 0;
-  const fallbackPenalty = reserveRiskSoftFallbackActive ? 0.1 : (!reserveDimensionActiveV4 ? 0.2 : 0);
+  const fallbackPenalty = mvrvZscoreCoreActive ? 0 : 0.2;
   const signalConfidence = round(
     clamp(
       (0.5 * baseScoreRatio) + (0.3 * dataFreshnessScore) + auxiliaryBonus + confirmationBonus - fallbackPenalty,
@@ -838,13 +836,10 @@ function buildRuntimePayload({
       ? (points.mvrvZscore?.d ?? latestDate)
       : (points.lthMvrv?.d ?? latestDate))
     : (points.reserveRisk?.d ?? latestDate);
-  const reserveRiskEffectiveDateV4 = reserveRiskSourceModeV4 === 'soft_fallback'
-    ? (points.mvrvZscore?.d ?? latestDate)
-    : (points.reserveRisk?.d ?? latestDate);
   const indicatorLagDays = {
     priceMa200w: ma200wLagDays,
     priceRealized: realizedPriceLagDays,
-    reserveRisk: reserveRiskSourceModeV4 === 'primary' ? reserveRiskLagDays : reserveRiskFallbackLagDaysV4,
+    reserveRisk: reserveRiskLagDays,
     lthMvrv: lthMvrvLagDays,
     mvrvZscore: mvrvZscoreLagDays,
     sthSopr: sthSoprLagDays,
@@ -854,7 +849,7 @@ function buildRuntimePayload({
   const indicatorDates = {
     priceMa200w: points.btcPrice?.d ?? latestDate,
     priceRealized: points.realizedPrice?.d ?? latestDate,
-    reserveRisk: reserveRiskEffectiveDateV4,
+    reserveRisk: points.reserveRisk?.d ?? latestDate,
     lthMvrv: points.lthMvrv?.d ?? latestDate,
     mvrvZscore: points.mvrvZscore?.d ?? latestDate,
     sthSopr: points.sthSopr?.d ?? latestDate,
@@ -865,12 +860,12 @@ function buildRuntimePayload({
   const staleIndicatorKeys = [];
   if (!ma200wIsFresh) staleIndicatorKeys.push('priceMa200w');
   if (!realizedPriceIsFresh) staleIndicatorKeys.push('priceRealized');
-  if (!reserveDimensionActiveV4) staleIndicatorKeys.push('reserveRisk');
+  if (!reserveRiskIsFresh) staleIndicatorKeys.push('reserveRisk');
   if (!sthSoprIsFresh) staleIndicatorKeys.push('sthSopr');
   if (!sthMvrvIsFresh) staleIndicatorKeys.push('sthMvrv');
   if (!lthMvrvIsFresh) staleIndicatorKeys.push('lthMvrv');
   if (!puellIsFresh) staleIndicatorKeys.push('puell');
-  if (!mvrvZscoreIsFresh) staleIndicatorKeys.push('mvrvZscore');
+  if (!mvrvZscoreCoreActive) staleIndicatorKeys.push('mvrvZscore');
 
   const staleIndicators = staleIndicatorKeys.map((key) => {
     const freshnessLimitMap = {
@@ -908,15 +903,14 @@ function buildRuntimePayload({
       replacementCandidates: ['lth_mvrv', 'mvrv_zscore_data'],
     });
   }
-  if (reserveRiskSourceModeV4 === 'inactive') {
+  if (!mvrvZscoreCoreActive) {
     inactiveIndicators.push({
-      key: 'reserveRiskV4',
-      reason: 'primary_source_stale_without_soft_fallback',
-      sourceDate: points.reserveRisk?.d ?? null,
+      key: 'mvrvZscore',
+      reason: 'core_indicator_stale',
+      sourceDate: points.mvrvZscore?.d ?? null,
       latestDate,
-      primaryLagDays: reserveRiskPrimaryLagDays,
-      disableLagDays: RESERVE_RISK_DISABLE_LAG_DAYS,
-      softFallbackCandidate: 'mvrv_zscore_soft',
+      lagDays: mvrvZscoreLagDays,
+      disableLagDays: FRESHNESS_LIMITS.mvrvZscore,
     });
   }
 
@@ -957,9 +951,7 @@ function buildRuntimePayload({
     signalBandV4,
     signalConfidence,
     dataFreshnessScore,
-    fallbackMode: reserveRiskSoftFallbackActive
-      ? 'reserve_risk_soft_fallback'
-      : (!reserveDimensionActiveV4 ? 'reserve_risk_inactive' : 'none'),
+    fallbackMode: mvrvZscoreCoreActive ? 'none' : 'mvrv_zscore_inactive',
     scorePriceMa200w,
     scorePriceRealized,
     scoreReserveRisk,
@@ -971,8 +963,10 @@ function buildRuntimePayload({
     scoreReserveRiskReplacement,
     scoreLthMvrv,
     scoreMvrvZscore,
+    scoreMvrvZscoreCore,
     scoreSthGroup,
     signalSthGroup,
+    signalMvrvZscoreCore,
     scoringModelVersion: asString(staticLatest?.scoringModelVersion) ?? SCORING_MODEL_VERSION,
     legacyScoringModelVersion: asString(staticLatest?.legacyScoringModelVersion) ?? LEGACY_SCORING_MODEL_VERSION,
     reserveRiskActive,
@@ -1001,6 +995,7 @@ function buildRuntimePayload({
       priceMa200w: signalPriceMa200w,
       priceRealized: signalPriceRealized,
       reserveRisk: signalReserveRiskV4,
+      mvrvZscore: signalMvrvZscoreCore,
       sthMvrv: signalSthMvrv,
       lthMvrv: signalLthMvrv,
       puell: signalPuell,

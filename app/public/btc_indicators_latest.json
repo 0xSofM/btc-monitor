@@ -21,7 +21,7 @@
   "signalConfirmed3d": false,
   "signalBandV2": "watch",
   "valuationScore": 0,
-  "maxValuationScore": 7,
+  "maxValuationScore": 8,
   "triggerScore": 0,
   "maxTriggerScore": 2,
   "confirmationScore": 0,
@@ -29,13 +29,13 @@
   "auxiliaryScore": 0,
   "maxAuxiliaryScore": 2,
   "totalScoreV4": 0,
-  "maxTotalScoreV4": 11,
+  "maxTotalScoreV4": 12,
   "totalScoreV4Min3d": 0.0,
   "signalConfirmed3dV4": false,
   "signalBandV4": "watch",
-  "signalConfidence": 0.1694,
+  "signalConfidence": 0.2694,
   "dataFreshnessScore": 0.8979591836734695,
-  "fallbackMode": "reserve_risk_soft_fallback",
+  "fallbackMode": "none",
   "scorePriceMa200w": 0,
   "scorePriceRealized": 0,
   "scoreReserveRisk": 0,
@@ -43,24 +43,26 @@
   "scoreSthSopr": 0,
   "scoreSthMvrv": 0,
   "scorePuell": 0,
-  "scoreReserveRiskPrimary": 2,
+  "scoreReserveRiskPrimary": 0,
   "scoreReserveRiskReplacement": 0,
   "scoreLthMvrv": 0,
   "scoreMvrvZscore": 0,
+  "scoreMvrvZscoreCore": 0,
   "scoreSthGroup": 0,
   "signalSthGroup": false,
-  "scoringModelVersion": "v4_layered_core6",
+  "signalMvrvZscoreCore": false,
+  "scoringModelVersion": "v4_core6_mvrv_substitute",
   "legacyScoringModelVersion": "v3_no_lookahead_replacement",
-  "reserveRiskActive": false,
-  "reserveRiskReplacementActive": true,
-  "reserveRiskReplacementSource": "lth_mvrv",
+  "reserveRiskActive": true,
+  "reserveRiskReplacementActive": false,
+  "reserveRiskReplacementSource": null,
   "reserveRiskReplacementLagDays": 1,
-  "reserveRiskSourceMode": "replacement",
-  "reserveRiskSourceModeV4": "soft_fallback",
-  "reserveRiskSoftFallbackActive": true,
-  "reserveRiskFallbackLagDaysV4": 1,
+  "reserveRiskSourceMode": "primary",
+  "reserveRiskSourceModeV4": "compat_mvrv_zscore",
+  "reserveRiskSoftFallbackActive": false,
+  "reserveRiskFallbackLagDaysV4": null,
   "reserveRiskLagDays": 1,
-  "reserveRiskPrimaryLagDays": 109,
+  "reserveRiskPrimaryLagDays": 1,
   "inactiveIndicators": [],
   "staleIndicators": [],
   "indicatorLagDays": {
@@ -86,6 +88,7 @@
     "priceMa200w": false,
     "priceRealized": false,
     "reserveRisk": false,
+    "mvrvZscore": false,
     "sthMvrv": false,
     "lthMvrv": false,
     "puell": false,
@@ -101,7 +104,7 @@
     "sthMvrv": "2026-04-15",
     "puell": "2026-04-15"
   },
-  "coreIndicatorSet": "core6_bottom_v4_layered",
+  "coreIndicatorSet": "core6_bottom_v4_mvrv_substitute",
   "schemaVersion": "v4",
   "thresholds": {
     "priceMa200wRatio": {
@@ -113,8 +116,8 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.001148,
-      "deep": 0.0010489,
+      "trigger": 0.00058878408,
+      "deep": 0.00054528838,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -122,7 +125,7 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.994434103919,
+      "trigger": 0.994341372302,
       "deep": 0.985514057874,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
@@ -131,8 +134,8 @@
       "deepQuantile": 0.135
     },
     "sthMvrv": {
-      "trigger": 0.913,
-      "deep": 0.846,
+      "trigger": 0.914,
+      "deep": 0.845965,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -151,6 +154,11 @@
       "trigger": 0.0,
       "deep": -0.5
     },
+    "mvrvZscoreCore": {
+      "trigger": 0.0,
+      "deep": -0.5,
+      "role": "valuation_core_v4"
+    },
     "reserveRiskReplacementLegacy": {
       "lthMvrv": {
         "trigger": 1.0,
@@ -161,31 +169,60 @@
         "deep": -0.5
       }
     },
-    "reserveRiskV4Fallback": {
-      "source": "mvrv_zscore_soft",
-      "maxScore": 1
+    "reserveRiskV4Compatibility": {
+      "aliasOf": "mvrvZscoreCore",
+      "deprecated": true
     }
   },
   "reserveRiskDiagnostics": {
     "primarySeries": {
-      "key": "bgeometrics_primary",
-      "displayName": "BGeometrics Reserve Risk",
+      "key": "bitcoin_data_history",
+      "displayName": "bitcoin-data Reserve Risk history",
       "mode": "series",
       "priority": 0,
       "latestObservedDate": "2026-04-15",
-      "latestObservedValue": null,
-      "latestNonNullDate": "2025-12-28",
-      "latestNonNullValue": 0.001786,
-      "trailingNullRows": 108,
-      "trailingNullDays": 108,
-      "healthStatus": "null_tail"
+      "latestObservedValue": 0.0006285492,
+      "latestNonNullDate": "2026-04-15",
+      "latestNonNullValue": 0.0006285492,
+      "trailingNullRows": 0,
+      "trailingNullDays": 0,
+      "healthStatus": "healthy"
+    },
+    "supportingSeries": [
+      {
+        "key": "bgeometrics_primary",
+        "displayName": "BGeometrics Reserve Risk legacy bridge",
+        "mode": "series",
+        "priority": 1,
+        "latestObservedDate": "2026-04-15",
+        "latestObservedValue": null,
+        "latestNonNullDate": "2025-12-28",
+        "latestNonNullValue": 0.001786,
+        "trailingNullRows": 108,
+        "trailingNullDays": 108,
+        "healthStatus": "null_tail"
+      }
+    ],
+    "assembledSeries": {
+      "key": "assembled_bridge",
+      "displayName": "Reserve Risk assembled history",
+      "mode": "assembled",
+      "priority": 999,
+      "latestObservedDate": "2026-04-15",
+      "latestObservedValue": 0.0006285492,
+      "latestNonNullDate": "2026-04-15",
+      "latestNonNullValue": 0.0006285492,
+      "trailingNullRows": 0,
+      "trailingNullDays": 0,
+      "healthStatus": "healthy",
+      "sourceLabel": "https://bitcoin-data.com/v1/reserve-risk + legacy_bridge(https://charts.bgeometrics.com/files/reserve_risk.json < 2022-04-16)"
     },
     "pointSources": [
       {
         "key": "bitcoin_data_latest",
         "displayName": "bitcoin-data Reserve Risk latest",
         "mode": "point",
-        "priority": 1,
+        "priority": 2,
         "available": true,
         "selectedUrl": "https://bitcoin-data.com/v1/reserve-risk/1",
         "latestDate": "2026-04-15",
@@ -193,24 +230,24 @@
         "error": null
       }
     ],
-    "selectedPointSourceKey": "bitcoin_data_latest",
-    "selectedPointSourceApplied": true,
+    "selectedPointSourceKey": null,
+    "selectedPointSourceApplied": false,
     "shadowCompare": {
       "candidateKey": "bitcoin_data_latest",
       "candidateDisplayName": "bitcoin-data Reserve Risk latest",
       "candidateLatestDate": "2026-04-15",
       "candidateLatestValue": 0.0006285492,
       "primaryLatestObservedDate": "2026-04-15",
-      "primaryLatestObservedValue": null,
-      "primaryLatestNonNullDate": "2025-12-28",
-      "primaryLatestNonNullValue": 0.001786,
-      "sameDayComparable": false,
+      "primaryLatestObservedValue": 0.0006285492,
+      "primaryLatestNonNullDate": "2026-04-15",
+      "primaryLatestNonNullValue": 0.0006285492,
+      "sameDayComparable": true,
       "primarySameDayAvailable": true,
-      "primarySameDayValue": null,
-      "sameDayDelta": null,
-      "sameDayRatio": null,
+      "primarySameDayValue": 0.0006285492,
+      "sameDayDelta": 0.0,
+      "sameDayRatio": 1.0,
       "latestDateGapDays": 0,
-      "status": "primary_same_day_missing"
+      "status": "same_day_comparable"
     }
   },
   "reserveRiskShadowCompare": {
@@ -219,16 +256,16 @@
     "candidateLatestDate": "2026-04-15",
     "candidateLatestValue": 0.0006285492,
     "primaryLatestObservedDate": "2026-04-15",
-    "primaryLatestObservedValue": null,
-    "primaryLatestNonNullDate": "2025-12-28",
-    "primaryLatestNonNullValue": 0.001786,
-    "sameDayComparable": false,
+    "primaryLatestObservedValue": 0.0006285492,
+    "primaryLatestNonNullDate": "2026-04-15",
+    "primaryLatestNonNullValue": 0.0006285492,
+    "sameDayComparable": true,
     "primarySameDayAvailable": true,
-    "primarySameDayValue": null,
-    "sameDayDelta": null,
-    "sameDayRatio": null,
+    "primarySameDayValue": 0.0006285492,
+    "sameDayDelta": 0.0,
+    "sameDayRatio": 1.0,
     "latestDateGapDays": 0,
-    "status": "primary_same_day_missing"
+    "status": "same_day_comparable"
   },
-  "lastUpdated": "2026-04-16T08:02:41.267462+00:00"
+  "lastUpdated": "2026-04-16T10:31:58.544067+00:00"
 }

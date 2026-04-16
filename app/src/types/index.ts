@@ -14,6 +14,7 @@ export interface IndicatorData {
   signalPriceRealized?: boolean;
   signalReserveRisk?: boolean;
   signalReserveRiskV4?: boolean;
+  signalMvrvZscoreCore?: boolean;
   signalSthSopr?: boolean;
   signalSthMvrv?: boolean;
   signalSthGroup?: boolean;
@@ -29,6 +30,7 @@ export interface IndicatorData {
   scorePriceRealized?: number;
   scoreReserveRisk?: number;
   scoreReserveRiskV4?: number;
+  scoreMvrvZscoreCore?: number;
   scoreSthSopr?: number;
   scoreSthMvrv?: number;
   scoreSthGroup?: number;
@@ -111,6 +113,8 @@ export interface LatestData {
   signalConfidence?: number;
   dataFreshnessScore?: number;
   fallbackMode?: string;
+  scoreMvrvZscoreCore?: number;
+  signalMvrvZscoreCore?: boolean;
   scoreSthGroup?: number;
   signalSthGroup?: boolean;
   scoringModelVersion?: string;
@@ -130,6 +134,7 @@ export interface LatestData {
     priceMa200w: boolean;
     priceRealized: boolean;
     reserveRisk: boolean;
+    mvrvZscore?: boolean;
     sthMvrv: boolean;
     lthMvrv: boolean;
     puell: boolean;
@@ -151,6 +156,7 @@ export interface LatestData {
   mvrvZscore?: number;
   lthMvrv?: number;
   nupl?: number;
+  signalMvrvZ?: boolean;
 }
 
 export interface IndicatorConfig {

@@ -126,9 +126,9 @@ SCORING_INDICATOR_COUNT_V4 = 6
 SCORE_CONFIRM_RATIO = 7 / 12
 DEFAULT_RESERVE_RISK_DISABLE_LAG_DAYS = 30
 LEGACY_SCORING_MODEL_VERSION = "v3_no_lookahead_replacement"
-SCORING_MODEL_VERSION = "v4_layered_core6"
+SCORING_MODEL_VERSION = "v4_core6_mvrv_substitute"
 SCHEMA_VERSION = "v4"
-INDICATOR_SET = "core6_bottom_v4_layered"
+INDICATOR_SET = "core6_bottom_v4_mvrv_substitute"
 ARCHIVE_ROOT_DEFAULT = "archive/releases"
 SIGNAL_EVENTS_V4_JSON_PATH_DEFAULT = "app/public/btc_signal_events_v4.json"
 ROLLBACK_METADATA_FILE = "release_metadata.json"
@@ -1198,6 +1198,12 @@ def enrich_for_frontend(
     )
     df["lth_mvrv_lag_days"] = (df["date"] - df["lth_mvrv_date"]).dt.days
     df["mvrv_zscore_lag_days"] = (df["date"] - df["mvrv_zscore_date"]).dt.days
+    df["mvrv_zscore_core_active"] = (
+        df["mvrv_zscore_date"].notna() & df["mvrv_zscore_is_fresh"]
+    )
+    df["score_mvrv_zscore_core"] = np.where(
+        df["mvrv_zscore_core_active"], df["score_mvrv_zscore"], 0
+    ).astype(int)
 
     # Legacy V2/V3 Reserve Risk replacement logic kept for rollback compatibility.
     df["score_reserve_risk_replacement"] = df[
@@ -1244,46 +1250,19 @@ def enrich_for_frontend(
     df.loc[~df["reserve_dimension_active"], "score_reserve_risk"] = 0
     df["score_reserve_risk"] = df["score_reserve_risk"].fillna(0).astype(int)
 
-    # V4 layered model: Reserve Risk uses soft MVRV Z-Score fallback only.
-    df["reserve_risk_soft_fallback_active"] = (
-        ~df["reserve_risk_active"]
-        & df["mvrv_zscore_date"].notna()
-        & df["mvrv_zscore_is_fresh"]
-    )
-    df["reserve_risk_soft_fallback_source"] = np.where(
-        df["reserve_risk_soft_fallback_active"],
-        "mvrv_zscore_soft",
-        None,
-    )
-    df["score_reserve_risk_v4"] = df["score_reserve_risk_primary"]
-    df.loc[df["reserve_risk_soft_fallback_active"], "score_reserve_risk_v4"] = (
-        df.loc[df["reserve_risk_soft_fallback_active"], "score_mvrv_zscore"]
-        .clip(upper=1)
-        .astype(int)
-    )
-    df.loc[
-        ~(df["reserve_risk_active"] | df["reserve_risk_soft_fallback_active"]),
-        "score_reserve_risk_v4",
-    ] = 0
-    df["score_reserve_risk_v4"] = df["score_reserve_risk_v4"].fillna(0).astype(int)
+    # V4 layered model: MVRV Z-Score now occupies the valuation slot directly.
+    # Keep Reserve Risk V4 fields as compatibility aliases for rollback safety.
+    df["reserve_risk_soft_fallback_active"] = False
+    df["reserve_risk_soft_fallback_source"] = None
+    df["score_reserve_risk_v4"] = df["score_mvrv_zscore_core"].astype(int)
     df["max_reserve_risk_score_v4"] = np.where(
-        df["reserve_risk_active"],
-        2,
-        np.where(df["reserve_risk_soft_fallback_active"], 1, 0),
+        df["mvrv_zscore_core_active"], 2, 0
     ).astype(int)
     df["reserve_risk_source_mode_v4"] = np.where(
-        df["reserve_risk_active"],
-        "primary",
-        np.where(df["reserve_risk_soft_fallback_active"], "soft_fallback", "inactive"),
+        df["mvrv_zscore_core_active"], "compat_mvrv_zscore", "inactive"
     )
-    df["reserve_dimension_active_v4"] = (
-        df["reserve_risk_source_mode_v4"] != "inactive"
-    )
-    df["reserve_risk_fallback_lag_days_v4"] = np.where(
-        df["reserve_risk_soft_fallback_active"],
-        df["mvrv_zscore_lag_days"],
-        pd.NA,
-    )
+    df["reserve_dimension_active_v4"] = df["mvrv_zscore_core_active"]
+    df["reserve_risk_fallback_lag_days_v4"] = pd.NA
 
     thresholds = {
         "priceMa200wRatio": THRESHOLD_STATIC["price_ma200w_ratio"],
@@ -1318,13 +1297,17 @@ def enrich_for_frontend(
         "puellMultiple": THRESHOLD_STATIC["puell_multiple"],
         "lthMvrv": THRESHOLD_STATIC["lth_mvrv"],
         "mvrvZscore": THRESHOLD_STATIC["mvrv_zscore"],
+        "mvrvZscoreCore": {
+            **THRESHOLD_STATIC["mvrv_zscore"],
+            "role": "valuation_core_v4",
+        },
         "reserveRiskReplacementLegacy": {
             "lthMvrv": THRESHOLD_STATIC["lth_mvrv"],
             "mvrvZscore": THRESHOLD_STATIC["mvrv_zscore"],
         },
-        "reserveRiskV4Fallback": {
-            "source": "mvrv_zscore_soft",
-            "maxScore": 1,
+        "reserveRiskV4Compatibility": {
+            "aliasOf": "mvrvZscoreCore",
+            "deprecated": True,
         },
     }
 
@@ -1356,17 +1339,18 @@ def enrich_for_frontend(
     ]
 
     # V4 layered scores and signals.
-    df["signal_reserve_risk_v4"] = df["score_reserve_risk_v4"] > 0
+    df["signal_mvrv_zscore_core"] = df["score_mvrv_zscore_core"] > 0
+    df["signal_reserve_risk_v4"] = df["signal_mvrv_zscore_core"]
     df["signal_lth_mvrv"] = df["score_lth_mvrv"] > 0
     df["signal_sth_sopr_aux"] = df["score_sth_sopr"] > 0
     df["valuation_score"] = (
         df["score_price_ma200w"]
         + df["score_price_realized"]
-        + df["score_reserve_risk_v4"]
+        + df["score_mvrv_zscore_core"]
         + df["score_puell"]
     ).astype(int)
     df["max_valuation_score"] = (
-        6 + df["max_reserve_risk_score_v4"]
+        6 + (df["mvrv_zscore_core_active"].astype(int) * 2)
     ).astype(int)
     df["trigger_score"] = df["score_sth_mvrv"].astype(int)
     df["max_trigger_score"] = 2
@@ -1375,14 +1359,14 @@ def enrich_for_frontend(
     df["auxiliary_score"] = df["score_sth_sopr"].astype(int)
     df["max_auxiliary_score"] = 2
     df["active_indicator_count_v4"] = (
-        5 + df["reserve_dimension_active_v4"].astype(int)
+        5 + df["mvrv_zscore_core_active"].astype(int)
     ).astype(int)
     df["signal_count_v4"] = (
         df[
             [
                 "signal_price_ma200w",
                 "signal_price_realized",
-                "signal_reserve_risk_v4",
+                "signal_mvrv_zscore_core",
                 "signal_sth_mvrv",
                 "signal_lth_mvrv",
                 "signal_puell",
@@ -1411,11 +1395,8 @@ def enrich_for_frontend(
         for score, max_score in zip(df["total_score_v4"], df["max_total_score_v4"])
     ]
 
-    reserve_effective_freshness = df["reserve_risk_freshness_score"].where(
-        df["reserve_risk_active"], df["mvrv_zscore_freshness_score"]
-    )
-    reserve_effective_freshness = reserve_effective_freshness.where(
-        df["reserve_dimension_active_v4"], 0.0
+    mvrv_core_freshness = df["mvrv_zscore_freshness_score"].where(
+        df["mvrv_zscore_core_active"], 0.0
     ).fillna(0.0)
     df["data_freshness_score"] = (
         df[
@@ -1428,18 +1409,14 @@ def enrich_for_frontend(
                 "puell_multiple_freshness_score",
             ]
         ].sum(axis=1)
-        + reserve_effective_freshness
+        + mvrv_core_freshness
     ) / 7
     base_score_ratio = (
         df["total_score_v4"] / df["max_total_score_v4"].replace(0, pd.NA)
     ).fillna(0)
     auxiliary_bonus = np.where(df["signal_sth_sopr_aux"], 0.1, 0.0)
     confirmation_bonus = np.where(df["signal_confirmed_3d_v4"], 0.1, 0.0)
-    fallback_penalty = np.where(
-        df["reserve_risk_soft_fallback_active"],
-        0.1,
-        np.where(~df["reserve_dimension_active_v4"], 0.2, 0.0),
-    )
+    fallback_penalty = np.where(~df["mvrv_zscore_core_active"], 0.2, 0.0)
     df["signal_confidence"] = (
         (
             0.5 * base_score_ratio
@@ -1456,12 +1433,12 @@ def enrich_for_frontend(
         {
             "priceMa200w": ~df["ma200w_is_fresh"],
             "priceRealized": ~df["realized_price_is_fresh"],
-            "reserveRisk": ~df["reserve_dimension_active_v4"],
+            "reserveRisk": ~df["reserve_risk_is_fresh"],
             "sthSopr": ~df["sth_sopr_is_fresh"],
             "sthMvrv": ~df["sth_mvrv_is_fresh"],
             "lthMvrv": ~df["lth_mvrv_is_fresh"],
             "puell": ~df["puell_multiple_is_fresh"],
-            "mvrvZscore": ~df["mvrv_zscore_is_fresh"],
+            "mvrvZscore": ~df["mvrv_zscore_core_active"],
         }
     )
     df["stale_indicators"] = [
@@ -1469,9 +1446,9 @@ def enrich_for_frontend(
         for flags in stale_flags.to_dict(orient="records")
     ]
     df["fallback_mode"] = np.where(
-        df["reserve_risk_soft_fallback_active"],
-        "reserve_risk_soft_fallback",
-        np.where(~df["reserve_dimension_active_v4"], "reserve_risk_inactive", "none"),
+        ~df["mvrv_zscore_core_active"],
+        "mvrv_zscore_inactive",
+        "none",
     )
 
     return df, thresholds
@@ -1552,6 +1529,9 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "signalSthMvrv": bool(getattr(row, "signal_sth_mvrv")),
                 "signalSthGroup": bool(getattr(row, "signal_sth_group")),
                 "signalReserveRiskV4": bool(getattr(row, "signal_reserve_risk_v4")),
+                "signalMvrvZscoreCore": bool(
+                    getattr(row, "signal_mvrv_zscore_core")
+                ),
                 "signalLthMvrv": bool(getattr(row, "signal_lth_mvrv")),
                 "signalSthSoprAux": bool(getattr(row, "signal_sth_sopr_aux")),
                 "signalPuell": bool(getattr(row, "signal_puell")),
@@ -1573,6 +1553,7 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 ),
                 "scoreLthMvrv": int(getattr(row, "score_lth_mvrv")),
                 "scoreMvrvZscore": int(getattr(row, "score_mvrv_zscore")),
+                "scoreMvrvZscoreCore": int(getattr(row, "score_mvrv_zscore_core")),
                 "scoreSthSopr": int(getattr(row, "score_sth_sopr")),
                 "scoreSthMvrv": int(getattr(row, "score_sth_mvrv")),
                 "scoreSthGroup": int(getattr(row, "score_sth_group")),
@@ -1704,6 +1685,7 @@ def build_latest_json(
     )
     lth_mvrv_date = _safe_iso_date(last.get("lth_mvrv_date")) or date_value
     mvrv_zscore_date = _safe_iso_date(last.get("mvrv_zscore_date")) or date_value
+    mvrv_zscore_core_active = bool(last.get("mvrv_zscore_core_active", False))
 
     reserve_risk_effective_date = reserve_risk_date
     if reserve_risk_source_mode == "replacement":
@@ -1712,18 +1694,10 @@ def build_latest_json(
         else:
             reserve_risk_effective_date = lth_mvrv_date
 
-    reserve_risk_effective_date_v4 = reserve_risk_date
-    if reserve_risk_source_mode_v4 == "soft_fallback":
-        reserve_risk_effective_date_v4 = mvrv_zscore_date
-
     indicator_lag_days = {
         "priceMa200w": _safe_int(last.get("ma200w_lag_days")),
         "priceRealized": _safe_int(last.get("realized_price_lag_days")),
-        "reserveRisk": (
-            reserve_risk_lag_days
-            if reserve_risk_source_mode_v4 == "primary"
-            else reserve_risk_fallback_lag_days_v4
-        ),
+        "reserveRisk": reserve_risk_lag_days,
         "lthMvrv": _safe_int(last.get("lth_mvrv_lag_days")),
         "mvrvZscore": _safe_int(last.get("mvrv_zscore_lag_days")),
         "sthSopr": _safe_int(last.get("sth_sopr_lag_days")),
@@ -1733,7 +1707,7 @@ def build_latest_json(
     indicator_dates = {
         "priceMa200w": _safe_iso_date(last["btc_price_date"]) or date_value,
         "priceRealized": _safe_iso_date(last["realized_price_date"]) or date_value,
-        "reserveRisk": reserve_risk_effective_date_v4,
+        "reserveRisk": reserve_risk_date,
         "lthMvrv": lth_mvrv_date,
         "mvrvZscore": mvrv_zscore_date,
         "sthSopr": _safe_iso_date(last["sth_sopr_date"]) or date_value,
@@ -1785,16 +1759,15 @@ def build_latest_json(
                 "replacementCandidates": ["lth_mvrv", "mvrv_zscore_data"],
             }
         )
-    if reserve_risk_source_mode_v4 == "inactive":
+    if not mvrv_zscore_core_active:
         inactive_indicators.append(
             {
-                "key": "reserveRiskV4",
-                "reason": "primary_source_stale_without_soft_fallback",
-                "sourceDate": reserve_risk_date,
+                "key": "mvrvZscore",
+                "reason": "core_indicator_stale",
+                "sourceDate": mvrv_zscore_date,
                 "latestDate": date_value,
-                "primaryLagDays": reserve_risk_primary_lag_days,
-                "disableLagDays": reserve_risk_disable_lag_days,
-                "softFallbackCandidate": "mvrv_zscore_soft",
+                "lagDays": _safe_int(last.get("mvrv_zscore_lag_days")),
+                "disableLagDays": INDICATOR_FRESHNESS_MAX_LAG_DAYS["mvrv_zscore"],
             }
         )
 
@@ -1847,8 +1820,10 @@ def build_latest_json(
         "scoreReserveRiskReplacement": int(last["score_reserve_risk_replacement"]),
         "scoreLthMvrv": int(last["score_lth_mvrv"]),
         "scoreMvrvZscore": int(last["score_mvrv_zscore"]),
+        "scoreMvrvZscoreCore": int(last["score_mvrv_zscore_core"]),
         "scoreSthGroup": int(last["score_sth_group"]),
         "signalSthGroup": bool(last["signal_sth_group"]),
+        "signalMvrvZscoreCore": bool(last["signal_mvrv_zscore_core"]),
         "scoringModelVersion": SCORING_MODEL_VERSION,
         "legacyScoringModelVersion": LEGACY_SCORING_MODEL_VERSION,
         "reserveRiskActive": reserve_risk_active,
@@ -1877,6 +1852,7 @@ def build_latest_json(
             "priceMa200w": bool(last["signal_price_ma200w"]),
             "priceRealized": bool(last["signal_price_realized"]),
             "reserveRisk": bool(last["signal_reserve_risk_v4"]),
+            "mvrvZscore": bool(last["signal_mvrv_zscore_core"]),
             "sthMvrv": bool(last["signal_sth_mvrv"]),
             "lthMvrv": bool(last["signal_lth_mvrv"]),
             "puell": bool(last["signal_puell"]),

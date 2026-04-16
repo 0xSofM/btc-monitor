@@ -38,7 +38,7 @@ function getSignalBadges(item: IndicatorData): string[] {
 
   if (item.signalPriceMa200w || item.signalPriceMa) signals.push('Price / 200W-MA');
   if (item.signalPriceRealized) signals.push('Price / Realized Price');
-  if (item.signalReserveRiskV4 ?? item.signalReserveRisk) signals.push('Reserve Risk');
+  if (item.signalMvrvZscoreCore ?? item.signalReserveRiskV4 ?? item.signalMvrvZ) signals.push('MVRV Z-Score');
   if (item.signalSthMvrv) signals.push('STH-MVRV');
   if (item.signalLthMvrv) signals.push('LTH-MVRV');
   if (item.signalPuell) signals.push('Puell Multiple');

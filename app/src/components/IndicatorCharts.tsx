@@ -24,7 +24,7 @@ interface IndicatorChartsProps {
   onRequestFullHistory?: () => void | Promise<void>;
 }
 
-type IndicatorType = 'priceMa200w' | 'priceRealized' | 'reserveRisk' | 'lthMvrv' | 'sthMvrv' | 'puell';
+type IndicatorType = 'priceMa200w' | 'priceRealized' | 'mvrvZscore' | 'lthMvrv' | 'sthMvrv' | 'puell';
 
 type DetailSeriesPoint = {
   date: string;
@@ -40,7 +40,7 @@ type MaSeriesPoint = {
   signal: boolean;
 };
 
-const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'priceRealized', 'reserveRisk', 'lthMvrv', 'sthMvrv', 'puell'];
+const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'priceRealized', 'mvrvZscore', 'lthMvrv', 'sthMvrv', 'puell'];
 
 const TIME_RANGES = [
   { key: 'all', label: '全部' },
@@ -61,7 +61,7 @@ const RANGE_DAYS: Record<(typeof TIME_RANGES)[number]['key'], number> = {
 const BUY_ZONE_CONFIG: Record<IndicatorType, { min: number; max: number; description: string }> = {
   priceMa200w: { min: 0, max: 1, description: '< 1（深度 < 0.85）' },
   priceRealized: { min: 0, max: 1, description: '< 1（深度 < 0.90）' },
-  reserveRisk: { min: 0, max: 0.0016, description: '< p20（深度 < p10）' },
+  mvrvZscore: { min: -1.5, max: 0, description: '< 0（深度 < -0.5）' },
   lthMvrv: { min: 0, max: 1, description: '< 1（深度 < 0.90）' },
   sthMvrv: { min: 0, max: 1, description: '< 1（深度 < 0.85）' },
   puell: { min: 0, max: 0.6, description: '< 0.6（深度 < 0.5）' },
@@ -187,7 +187,7 @@ export function IndicatorCharts({
     return {
       priceMa200w: getIndicatorChartData(data, 'priceMa200w', '1y') as DetailSeriesPoint[],
       priceRealized: getIndicatorChartData(data, 'priceRealized', '1y') as DetailSeriesPoint[],
-      reserveRisk: getIndicatorChartData(data, 'reserveRisk', '1y') as DetailSeriesPoint[],
+      mvrvZscore: getIndicatorChartData(data, 'mvrvZscore', '1y') as DetailSeriesPoint[],
       lthMvrv: getIndicatorChartData(data, 'lthMvrv', '1y') as DetailSeriesPoint[],
       sthMvrv: getIndicatorChartData(data, 'sthMvrv', '1y') as DetailSeriesPoint[],
       puell: getIndicatorChartData(data, 'puell', '1y') as DetailSeriesPoint[],

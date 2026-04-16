@@ -24,7 +24,7 @@ from typing import Any, Dict, List, Tuple
 CRITICAL_FIELDS = [
     "priceMa200wRatio",
     "priceRealizedRatio",
-    "reserveRisk",
+    "mvrvZscore",
     "lthMvrv",
     "sthSopr",
     "sthMvrv",
@@ -35,6 +35,7 @@ INDICATOR_DATE_FIELDS = {
     "priceMa200w": ("priceMa200w", "price_ma200w"),
     "priceRealized": ("priceRealized", "price_realized"),
     "reserveRisk": ("reserveRisk", "reserve_risk"),
+    "mvrvZscore": ("mvrvZscore", "mvrv_zscore"),
     "lthMvrv": ("lthMvrv", "lth_mvrv"),
     "sthSopr": ("sthSopr", "sth_sopr"),
     "sthMvrv": ("sthMvrv", "sth_mvrv"),
@@ -42,7 +43,7 @@ INDICATOR_DATE_FIELDS = {
 }
 
 INDICATOR_MAX_LAG_OVERRIDES = {
-    # Reserve Risk can be slower, but should still be excluded automatically when too stale.
+    # Reserve Risk remains an observation metric and can legitimately lag more than Core-6.
     "reserveRisk": 30,
 }
 
@@ -201,7 +202,7 @@ def compute_signal_count_v4_from_row(row: Dict[str, Any]) -> int:
         [
             bool(row.get("signalPriceMa200w") or row.get("signalPriceMa")),
             bool(row.get("signalPriceRealized")),
-            bool(row.get("signalReserveRiskV4")),
+            bool(row.get("signalMvrvZscoreCore") or row.get("signalReserveRiskV4")),
             bool(row.get("signalSthMvrv")),
             bool(row.get("signalLthMvrv")),
             bool(row.get("signalPuell")),
@@ -218,7 +219,7 @@ def compute_signal_count_v4_from_latest(latest: Dict[str, Any]) -> int:
         [
             bool(signals.get("priceMa200w")),
             bool(signals.get("priceRealized")),
-            bool(signals.get("reserveRisk")),
+            bool(signals.get("mvrvZscore") or signals.get("reserveRisk")),
             bool(signals.get("sthMvrv")),
             bool(signals.get("lthMvrv")),
             bool(signals.get("puell")),
