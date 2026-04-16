@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-04-16T10:31:58.713142+00:00",
+  "generatedAt": "2026-04-16T14:10:27.758839+00:00",
   "latestDate": "2026-04-16",
-  "lastUpdated": "2026-04-16T10:31:58.544067+00:00",
+  "lastUpdated": "2026-04-16T14:10:27.683462+00:00",
   "historyRows": 5434,
   "historyLightRows": 2921,
   "signalEventsV4Rows": 13,
@@ -184,7 +184,7 @@
   "inactiveIndicators": [],
   "archive": {
     "archiveRoot": "archive/releases",
-    "archivedSnapshotPath": "archive\\releases\\snapshot_20260416_103158_reserve-risk-to-mvrv-substitute",
-    "rollbackHint": "python fetch_btc_indicators_history_files.py --rollback-from archive\\releases\\snapshot_20260416_103158_reserve-risk-to-mvrv-substitute"
+    "archivedSnapshotPath": "archive/releases/snapshot_20260416_141027",
+    "rollbackHint": "python fetch_btc_indicators_history_files.py --rollback-from archive/releases/snapshot_20260416_141027"
   }
 }
