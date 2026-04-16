@@ -264,10 +264,6 @@ export function filterDataByTimeRange(data: IndicatorData[], range: TimeRange): 
   return data.filter((item) => Date.parse(`${item.d}T00:00:00Z`) >= cutoffTime);
 }
 
-function isChartDataPoint(item: ChartDataPoint | null): item is ChartDataPoint {
-  return item !== null;
-}
-
 export function getIndicatorChartData(
   data: IndicatorData[],
   indicator: IndicatorKey,
@@ -279,6 +275,7 @@ export function getIndicatorChartData(
     .map((item): ChartDataPoint | null => {
       let value: number | null = null;
       let signal = false;
+      let preserveGap = false;
 
       if (indicator === 'priceMa200w') {
         value = item.priceMa200wRatio ?? null;
@@ -291,8 +288,13 @@ export function getIndicatorChartData(
       }
 
       if (indicator === 'reserveRisk') {
-        value = item.reserveRisk ?? null;
+        const observedDate = item.indicatorDates?.reserveRisk;
+        const hasObservedDate = typeof observedDate === 'string' && observedDate.length > 0;
+        value = hasObservedDate
+          ? (observedDate === item.d ? (item.reserveRisk ?? null) : null)
+          : (item.reserveRisk ?? null);
         signal = item.signalReserveRiskV4 ?? item.signalReserveRisk ?? false;
+        preserveGap = true;
       }
 
       if (indicator === 'lthMvrv') {
@@ -315,12 +317,8 @@ export function getIndicatorChartData(
         signal = item.signalPuell ?? false;
       }
 
-      if (value === null) {
-        return null;
-      }
-
       const btcPrice = toNumericPrice(item.btcPrice);
-      if (value === 0 && btcPrice === 0) {
+      if ((value === null && !preserveGap) || (value === 0 && btcPrice === 0)) {
         return null;
       }
 
@@ -331,7 +329,7 @@ export function getIndicatorChartData(
         signal,
       };
     })
-    .filter(isChartDataPoint);
+    .filter((item): item is ChartDataPoint => item !== null);
 }
 
 export function getMA200ChartData(

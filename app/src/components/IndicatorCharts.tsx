@@ -28,7 +28,7 @@ type IndicatorType = 'priceMa200w' | 'priceRealized' | 'reserveRisk' | 'lthMvrv'
 
 type DetailSeriesPoint = {
   date: string;
-  value: number;
+  value: number | null;
   signal: boolean;
   btcPrice?: number;
 };
@@ -107,6 +107,17 @@ function formatNumber(value: number): string {
   }
 
   return value.toFixed(4);
+}
+
+function findLatestObservedPoint(points: DetailSeriesPoint[]): DetailSeriesPoint | null {
+  for (let index = points.length - 1; index >= 0; index -= 1) {
+    const point = points[index];
+    if (typeof point?.value === 'number' && Number.isFinite(point.value)) {
+      return point;
+    }
+  }
+
+  return null;
 }
 
 function formatPriceAxis(value: number): string {
@@ -243,7 +254,7 @@ export function IndicatorCharts({
       {INDICATOR_ORDER.map((indicatorKey) => {
         const indicatorConfig = INDICATOR_CONFIG[indicatorKey];
         const points = miniSeriesMap[indicatorKey];
-        const latest = points.length > 0 ? points[points.length - 1] : null;
+        const latest = points.length > 0 ? findLatestObservedPoint(points) : null;
         const zone = BUY_ZONE_CONFIG[indicatorKey];
         const isActive = activeIndicator === indicatorKey;
 
@@ -271,7 +282,9 @@ export function IndicatorCharts({
               </span>
             </div>
 
-            <div className="mb-2 text-lg font-semibold">{latest ? formatNumber(latest.value) : '-'}</div>
+            <div className="mb-2 text-lg font-semibold">
+              {latest && typeof latest.value === 'number' ? formatNumber(latest.value) : '-'}
+            </div>
 
             <div className="h-16">
               {points.length > 0 ? (
@@ -292,6 +305,7 @@ export function IndicatorCharts({
                       stroke={indicatorConfig.color}
                       strokeWidth={2}
                       fill={`url(#mini-${indicatorKey})`}
+                      connectNulls={false}
                       isAnimationActive={false}
                     />
                   </AreaChart>
@@ -385,7 +399,9 @@ export function IndicatorCharts({
     }
 
     const visible = series.slice(resolvedStartIndex, resolvedEndIndex + 1);
-    const values = visible.map((row) => row.value).filter((value) => Number.isFinite(value));
+    const values = visible
+      .map((row) => row.value)
+      .filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
     const dataMin = values.length ? Math.min(...values) : 0;
     const dataMax = values.length ? Math.max(...values) : 0;
     const padding = (dataMax - dataMin) * 0.12 || 0.5;
@@ -408,6 +424,7 @@ export function IndicatorCharts({
             name={config.name}
             stroke={config.color}
             strokeWidth={2}
+            connectNulls={false}
             dot={(dotProps) => {
               const payload = dotProps.payload as { signal?: boolean } | undefined;
               if (!payload?.signal) {

@@ -178,7 +178,7 @@ export type TimeRange = '1w' | '1m' | '6m' | '1y' | 'all';
 
 export interface ChartDataPoint {
   date: string;
-  value: number;
+  value: number | null;
   btcPrice?: number;
   signal?: boolean;
 }

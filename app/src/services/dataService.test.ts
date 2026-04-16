@@ -72,6 +72,44 @@ describe('dataService helpers', () => {
     expect(chartData[0].signal).toBe(true);
   });
 
+  it('getIndicatorChartData keeps Reserve Risk stale carry-forward days as chart gaps', () => {
+    const history = [
+      {
+        d: '2025-12-28',
+        btcPrice: 95000,
+        reserveRisk: 0.001786,
+        indicatorDates: { reserveRisk: '2025-12-28' },
+      },
+      {
+        d: '2025-12-29',
+        btcPrice: 95200,
+        reserveRisk: 0.001786,
+        indicatorDates: { reserveRisk: '2025-12-28' },
+      },
+      {
+        d: '2026-04-15',
+        btcPrice: 84000,
+        reserveRisk: 0.0006285492,
+        indicatorDates: { reserveRisk: '2026-04-15' },
+      },
+      {
+        d: '2026-04-16',
+        btcPrice: 84500,
+        reserveRisk: 0.0006285492,
+        indicatorDates: { reserveRisk: '2026-04-15' },
+      },
+    ] as IndicatorData[];
+
+    const chartData = getIndicatorChartData(history, 'reserveRisk', 'all');
+    expect(chartData).toHaveLength(4);
+    expect(chartData.map((point) => point.value)).toEqual([
+      0.001786,
+      null,
+      0.0006285492,
+      null,
+    ]);
+  });
+
   it('getMA200ChartData derives ma200 from ratio when ma200w is missing', () => {
     const history = [
       {
