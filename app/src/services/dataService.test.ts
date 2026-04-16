@@ -8,7 +8,7 @@ import {
   getMA200ChartData,
 } from '@/services/dataService';
 
-describe('dataService helpers (V2)', () => {
+describe('dataService helpers', () => {
   it('getLatestFromHistory reads latest row and api_data_date fields', () => {
     const history = [
       {
@@ -27,13 +27,20 @@ describe('dataService helpers (V2)', () => {
         priceMa200wRatio: 0.95,
         priceRealizedRatio: 0.97,
         reserveRisk: 0.0012,
+        lthMvrv: 0.92,
         sthSopr: 0.99,
         sthMvrv: 0.92,
         puellMultiple: 0.45,
+        signalCountV4: 6,
+        totalScoreV4: 9,
+        maxTotalScoreV4: 12,
+        signalLthMvrv: true,
+        signalReserveRiskV4: true,
         api_data_date: {
           price_ma200w: '2026-03-28',
           price_realized: '2026-03-27',
           reserve_risk: '2026-03-27',
+          lth_mvrv: '2026-03-27',
           sth_sopr: '2026-03-28',
           sth_mvrv: '2026-03-27',
           puell: '2026-03-28',
@@ -45,8 +52,11 @@ describe('dataService helpers (V2)', () => {
     expect(latest).not.toBeNull();
     expect(latest?.date).toBe('2026-03-28');
     expect(latest?.signalCount).toBe(5);
+    expect(latest?.signalCountV4).toBe(6);
+    expect(latest?.totalScoreV4).toBe(9);
     expect(latest?.indicatorDates?.priceRealized).toBe('2026-03-27');
     expect(latest?.indicatorDates?.reserveRisk).toBe('2026-03-27');
+    expect(latest?.indicatorDates?.lthMvrv).toBe('2026-03-27');
     expect(latest?.indicatorDates?.puell).toBe('2026-03-28');
   });
 

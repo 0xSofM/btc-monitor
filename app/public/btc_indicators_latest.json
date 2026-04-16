@@ -13,14 +13,33 @@
   "puellMultiple": 0.7282857143,
   "signalCount": 0,
   "activeIndicatorCount": 5,
+  "signalCountV4": 0,
+  "activeIndicatorCountV4": 6,
   "signalScoreV2": 0,
   "maxSignalScoreV2": 10,
   "signalScoreV2Min3d": 0.0,
   "signalConfirmed3d": false,
   "signalBandV2": "watch",
+  "valuationScore": 0,
+  "maxValuationScore": 7,
+  "triggerScore": 0,
+  "maxTriggerScore": 2,
+  "confirmationScore": 0,
+  "maxConfirmationScore": 2,
+  "auxiliaryScore": 0,
+  "maxAuxiliaryScore": 2,
+  "totalScoreV4": 0,
+  "maxTotalScoreV4": 11,
+  "totalScoreV4Min3d": 0.0,
+  "signalConfirmed3dV4": false,
+  "signalBandV4": "watch",
+  "signalConfidence": 0.1694,
+  "dataFreshnessScore": 0.8979591836734695,
+  "fallbackMode": "reserve_risk_soft_fallback",
   "scorePriceMa200w": 0,
   "scorePriceRealized": 0,
   "scoreReserveRisk": 0,
+  "scoreReserveRiskV4": 0,
   "scoreSthSopr": 0,
   "scoreSthMvrv": 0,
   "scorePuell": 0,
@@ -30,15 +49,30 @@
   "scoreMvrvZscore": 0,
   "scoreSthGroup": 0,
   "signalSthGroup": false,
-  "scoringModelVersion": "v3_no_lookahead_replacement",
+  "scoringModelVersion": "v4_layered_core6",
+  "legacyScoringModelVersion": "v3_no_lookahead_replacement",
   "reserveRiskActive": false,
   "reserveRiskReplacementActive": true,
   "reserveRiskReplacementSource": "lth_mvrv",
   "reserveRiskReplacementLagDays": 1,
   "reserveRiskSourceMode": "replacement",
+  "reserveRiskSourceModeV4": "soft_fallback",
+  "reserveRiskSoftFallbackActive": true,
+  "reserveRiskFallbackLagDaysV4": 1,
   "reserveRiskLagDays": 1,
   "reserveRiskPrimaryLagDays": 109,
   "inactiveIndicators": [],
+  "staleIndicators": [],
+  "indicatorLagDays": {
+    "priceMa200w": 0,
+    "priceRealized": 1,
+    "reserveRisk": 1,
+    "lthMvrv": 1,
+    "mvrvZscore": 1,
+    "sthSopr": 1,
+    "sthMvrv": 1,
+    "puell": 1
+  },
   "signals": {
     "priceMa200w": false,
     "priceRealized": false,
@@ -48,14 +82,27 @@
     "sthGroup": false,
     "puell": false
   },
+  "signalsV4": {
+    "priceMa200w": false,
+    "priceRealized": false,
+    "reserveRisk": false,
+    "sthMvrv": false,
+    "lthMvrv": false,
+    "puell": false,
+    "sthSoprAux": false
+  },
   "indicatorDates": {
     "priceMa200w": "2026-04-16",
     "priceRealized": "2026-04-15",
     "reserveRisk": "2026-04-15",
+    "lthMvrv": "2026-04-15",
+    "mvrvZscore": "2026-04-15",
     "sthSopr": "2026-04-15",
     "sthMvrv": "2026-04-15",
     "puell": "2026-04-15"
   },
+  "coreIndicatorSet": "core6_bottom_v4_layered",
+  "schemaVersion": "v4",
   "thresholds": {
     "priceMa200wRatio": {
       "trigger": 1.0,
@@ -96,7 +143,15 @@
       "trigger": 0.6,
       "deep": 0.5
     },
-    "reserveRiskReplacement": {
+    "lthMvrv": {
+      "trigger": 1.0,
+      "deep": 0.9
+    },
+    "mvrvZscore": {
+      "trigger": 0.0,
+      "deep": -0.5
+    },
+    "reserveRiskReplacementLegacy": {
       "lthMvrv": {
         "trigger": 1.0,
         "deep": 0.9
@@ -105,7 +160,11 @@
         "trigger": 0.0,
         "deep": -0.5
       }
+    },
+    "reserveRiskV4Fallback": {
+      "source": "mvrv_zscore_soft",
+      "maxScore": 1
     }
   },
-  "lastUpdated": "2026-04-16T03:45:08.918228+00:00"
+  "lastUpdated": "2026-04-16T05:03:41.492532+00:00"
 }

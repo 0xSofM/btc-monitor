@@ -13,16 +13,22 @@ export interface IndicatorData {
   signalPriceMa200w?: boolean;
   signalPriceRealized?: boolean;
   signalReserveRisk?: boolean;
+  signalReserveRiskV4?: boolean;
   signalSthSopr?: boolean;
   signalSthMvrv?: boolean;
   signalSthGroup?: boolean;
+  signalLthMvrv?: boolean;
+  signalSthSoprAux?: boolean;
   signalPuell?: boolean;
   signalCount?: number;
+  signalCountV4?: number;
   activeIndicatorCount?: number;
+  activeIndicatorCountV4?: number;
   maxSignalScoreV2?: number;
   scorePriceMa200w?: number;
   scorePriceRealized?: number;
   scoreReserveRisk?: number;
+  scoreReserveRiskV4?: number;
   scoreSthSopr?: number;
   scoreSthMvrv?: number;
   scoreSthGroup?: number;
@@ -31,10 +37,31 @@ export interface IndicatorData {
   signalScoreV2Min3d?: number;
   signalConfirmed3d?: boolean;
   signalBandV2?: string;
+  valuationScore?: number;
+  maxValuationScore?: number;
+  triggerScore?: number;
+  maxTriggerScore?: number;
+  confirmationScore?: number;
+  maxConfirmationScore?: number;
+  auxiliaryScore?: number;
+  maxAuxiliaryScore?: number;
+  totalScoreV4?: number;
+  maxTotalScoreV4?: number;
+  totalScoreV4Min3d?: number;
+  signalConfirmed3dV4?: boolean;
+  signalBandV4?: string;
+  signalConfidence?: number;
+  dataFreshnessScore?: number;
+  fallbackMode?: string;
+  staleIndicators?: Array<string | { key?: string; lagDays?: number; maxLagDays?: number; sourceDate?: string }>;
+  coreIndicatorSet?: string;
+  scoringModelVersion?: string;
   indicatorDates?: {
     priceMa200w?: string;
     priceRealized?: string;
     reserveRisk?: string;
+    lthMvrv?: string;
+    mvrvZscore?: string;
     sthSopr?: string;
     sthMvrv?: string;
     puell?: string;
@@ -45,7 +72,6 @@ export interface IndicatorData {
   nupl?: number;
   signalPriceMa?: boolean;
   signalMvrvZ?: boolean;
-  signalLthMvrv?: boolean;
   signalNupl?: boolean;
 }
 
@@ -62,14 +88,35 @@ export interface LatestData {
   puellMultiple: number;
   signalCount: number;
   activeIndicatorCount?: number;
+  signalCountV4?: number;
+  activeIndicatorCountV4?: number;
   maxSignalScoreV2?: number;
   signalScoreV2?: number;
   signalScoreV2Min3d?: number | null;
   signalConfirmed3d?: boolean;
   signalBandV2?: string;
+  valuationScore?: number;
+  maxValuationScore?: number;
+  triggerScore?: number;
+  maxTriggerScore?: number;
+  confirmationScore?: number;
+  maxConfirmationScore?: number;
+  auxiliaryScore?: number;
+  maxAuxiliaryScore?: number;
+  totalScoreV4?: number;
+  maxTotalScoreV4?: number;
+  totalScoreV4Min3d?: number | null;
+  signalConfirmed3dV4?: boolean;
+  signalBandV4?: string;
+  signalConfidence?: number;
+  dataFreshnessScore?: number;
+  fallbackMode?: string;
   scoreSthGroup?: number;
   signalSthGroup?: boolean;
   scoringModelVersion?: string;
+  legacyScoringModelVersion?: string;
+  schemaVersion?: string;
+  coreIndicatorSet?: string;
   signals: {
     priceMa200w: boolean;
     priceRealized: boolean;
@@ -79,14 +126,26 @@ export interface LatestData {
     sthGroup?: boolean;
     puell: boolean;
   };
+  signalsV4?: {
+    priceMa200w: boolean;
+    priceRealized: boolean;
+    reserveRisk: boolean;
+    sthMvrv: boolean;
+    lthMvrv: boolean;
+    puell: boolean;
+    sthSoprAux?: boolean;
+  };
   indicatorDates?: {
     priceMa200w?: string;
     priceRealized?: string;
     reserveRisk?: string;
+    lthMvrv?: string;
+    mvrvZscore?: string;
     sthSopr?: string;
     sthMvrv?: string;
     puell?: string;
   };
+  staleIndicators?: Array<string | { key?: string; lagDays?: number; maxLagDays?: number; sourceDate?: string }>;
   thresholds?: Record<string, { trigger: number; deep: number }>;
   // Legacy V1 compatibility fields
   mvrvZscore?: number;

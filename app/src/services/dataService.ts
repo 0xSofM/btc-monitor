@@ -6,6 +6,7 @@ import {
   STATIC_HISTORY_FULL_PATH,
   STATIC_HISTORY_LIGHT_PATH,
   checkEndpoint,
+  fetchRuntimeLatestRaw,
   fetchStaticHistoryRaw,
   fetchStaticLatestRaw,
   fetchStaticManifestRaw,
@@ -61,7 +62,7 @@ function hasCore6Coverage(rows: IndicatorData[]): boolean {
     'priceMa200wRatio',
     'priceRealizedRatio',
     'reserveRisk',
-    'sthSopr',
+    'lthMvrv',
     'sthMvrv',
     'puellMultiple',
   ];
@@ -254,6 +255,29 @@ export async function fetchStaticLatestData(options: FetchStaticLatestOptions = 
   }
 }
 
+export async function fetchRuntimeLatestData(): Promise<LatestData | null> {
+  if (!PROXY_URL) {
+    return null;
+  }
+
+  try {
+    const raw = await fetchRuntimeLatestRaw();
+    const normalized = normalizeLatestData(raw);
+    if (!normalized) {
+      throw new Error('Invalid runtime latest data format');
+    }
+
+    const history = cache.historyLight.length > 0
+      ? cache.historyLight
+      : (cache.historyFull.length > 0 ? cache.historyFull : await fetchHistoricalData({ mode: 'light' }));
+
+    return enrichLatestDataWithHistory(normalized, history);
+  } catch (error) {
+    console.error('[DataService] Error fetching runtime latest data:', error);
+    return null;
+  }
+}
+
 export async function fetchAllLatestIndicators(useCache = true): Promise<LatestData | null> {
   const now = Date.now();
   if (useCache && cache.latest && (now - cache.latestTimestamp) < CACHE_DURATION) {
@@ -332,7 +356,7 @@ export async function checkDataSource(): Promise<{
   ]);
 
   const proxyAvailable = PROXY_URL
-    ? await checkEndpoint(`${PROXY_URL}/v1/btc-price/1`)
+    ? await checkEndpoint(`${PROXY_URL}/latest`)
     : false;
 
   return {

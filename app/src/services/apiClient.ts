@@ -72,6 +72,19 @@ export async function fetchBtcPrice(days = 1): Promise<ApiMetricPoint[]> {
   return fetchMetricSeries(`/v1/btc-price/${days}`, 'BTC Price');
 }
 
+export async function fetchRuntimeLatestRaw(): Promise<unknown> {
+  if (!PROXY_URL) {
+    return null;
+  }
+
+  const response = await fetchWithTimeout(`${PROXY_URL}/latest`, 15000);
+  if (!response.ok) {
+    throw new Error('Failed to fetch runtime latest data');
+  }
+
+  return response.json();
+}
+
 export async function fetchStaticLatestRaw(): Promise<unknown> {
   const response = await fetchWithTimeout(STATIC_LATEST_PATH, 10000);
   if (!response.ok) {

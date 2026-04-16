@@ -11,17 +11,21 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "priceMa200wRatio": 0.95,
                 "priceRealizedRatio": 0.98,
                 "reserveRisk": 0.0012,
+                "lthMvrv": 0.95,
                 "sthSopr": 0.98,
                 "sthMvrv": 0.95,
                 "puellMultiple": 0.4,
                 "signalPriceMa200w": True,
                 "signalPriceRealized": True,
                 "signalReserveRisk": True,
+                "signalReserveRiskV4": True,
                 "signalSthSopr": True,
                 "signalSthMvrv": True,
                 "signalSthGroup": True,
+                "signalLthMvrv": True,
                 "signalPuell": True,
                 "signalCount": 5,
+                "signalCountV4": 6,
                 "scorePriceMa200w": 1,
                 "scorePriceRealized": 1,
                 "scoreReserveRisk": 1,
@@ -30,10 +34,15 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "scoreSthGroup": 1,
                 "scorePuell": 1,
                 "signalScoreV2": 5,
+                "valuationScore": 4,
+                "triggerScore": 1,
+                "confirmationScore": 1,
+                "totalScoreV4": 6,
                 "api_data_date": {
                     "price_ma200w": "2026-03-27",
                     "price_realized": "2026-03-27",
                     "reserve_risk": "2026-03-27",
+                    "lth_mvrv": "2026-03-27",
                     "sth_sopr": "2026-03-27",
                     "sth_mvrv": "2026-03-27",
                     "puell": "2026-03-27",
@@ -44,17 +53,21 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "priceMa200wRatio": 0.96,
                 "priceRealizedRatio": 0.97,
                 "reserveRisk": 0.0011,
+                "lthMvrv": 0.94,
                 "sthSopr": 0.97,
                 "sthMvrv": 0.92,
                 "puellMultiple": 0.45,
                 "signalPriceMa200w": True,
                 "signalPriceRealized": True,
                 "signalReserveRisk": True,
+                "signalReserveRiskV4": True,
                 "signalSthSopr": True,
                 "signalSthMvrv": True,
                 "signalSthGroup": True,
+                "signalLthMvrv": True,
                 "signalPuell": True,
                 "signalCount": 5,
+                "signalCountV4": 6,
                 "scorePriceMa200w": 1,
                 "scorePriceRealized": 1,
                 "scoreReserveRisk": 1,
@@ -63,10 +76,15 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "scoreSthGroup": 1,
                 "scorePuell": 1,
                 "signalScoreV2": 5,
+                "valuationScore": 4,
+                "triggerScore": 1,
+                "confirmationScore": 1,
+                "totalScoreV4": 6,
                 "api_data_date": {
                     "price_ma200w": "2026-03-28",
                     "price_realized": "2026-03-28",
                     "reserve_risk": "2026-03-28",
+                    "lth_mvrv": "2026-03-28",
                     "sth_sopr": "2026-03-28",
                     "sth_mvrv": "2026-03-28",
                     "puell": "2026-03-28",
@@ -80,10 +98,12 @@ class ValidateDataQualityTests(unittest.TestCase):
             "priceMa200wRatio": 0.96,
             "priceRealizedRatio": 0.97,
             "reserveRisk": 0.0011,
+            "lthMvrv": 0.94,
             "sthSopr": 0.97,
             "sthMvrv": 0.92,
             "puellMultiple": 0.45,
             "signalCount": 5,
+            "signalCountV4": 6,
             "signals": {
                 "priceMa200w": True,
                 "priceRealized": True,
@@ -93,16 +113,30 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "sthGroup": True,
                 "puell": True,
             },
+            "signalsV4": {
+                "priceMa200w": True,
+                "priceRealized": True,
+                "reserveRisk": True,
+                "sthMvrv": True,
+                "lthMvrv": True,
+                "puell": True,
+                "sthSoprAux": True,
+            },
             "indicatorDates": {
                 "priceMa200w": "2026-03-28",
                 "priceRealized": "2026-03-28",
                 "reserveRisk": "2026-03-28",
+                "lthMvrv": "2026-03-28",
                 "sthSopr": "2026-03-28",
                 "sthMvrv": "2026-03-28",
                 "puell": "2026-03-28",
             },
             "activeIndicatorCount": 5,
             "maxSignalScoreV2": 10,
+            "valuationScore": 4,
+            "triggerScore": 1,
+            "confirmationScore": 1,
+            "totalScoreV4": 6,
         }
 
     def test_validate_current_pair_passes_with_recent_indicator_dates(self):
@@ -155,6 +189,8 @@ class ValidateDataQualityTests(unittest.TestCase):
         ]
         latest["activeIndicatorCount"] = 4
         latest["maxSignalScoreV2"] = 8
+        latest["signalCountV4"] = 5
+        latest["signalsV4"]["reserveRisk"] = False
 
         ok, errors = validate_current_pair(
             self.build_history(),
@@ -176,6 +212,20 @@ class ValidateDataQualityTests(unittest.TestCase):
 
         ok, errors = validate_current_pair(
             self.build_history(),
+            latest,
+            lookback_rows=30,
+            max_indicator_lag_days=7,
+        )
+
+        self.assertTrue(ok)
+        self.assertEqual(errors, [])
+
+    def test_validate_current_pair_accepts_v4_counts_and_scores(self):
+        latest = self.build_latest()
+        history = self.build_history()
+
+        ok, errors = validate_current_pair(
+            history,
             latest,
             lookback_rows=30,
             max_indicator_lag_days=7,

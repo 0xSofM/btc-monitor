@@ -38,10 +38,11 @@ function getSignalBadges(item: IndicatorData): string[] {
 
   if (item.signalPriceMa200w || item.signalPriceMa) signals.push('价格 / 200周均线');
   if (item.signalPriceRealized) signals.push('价格 / 实现价格');
-  if (item.signalReserveRisk) signals.push('储备风险');
-  if (item.signalSthSopr) signals.push('短期SOPR');
+  if (item.signalReserveRiskV4 ?? item.signalReserveRisk) signals.push('储备风险');
   if (item.signalSthMvrv) signals.push('短期MVRV');
+  if (item.signalLthMvrv) signals.push('LTH-MVRV');
   if (item.signalPuell) signals.push('Puell倍数');
+  if (item.signalSthSoprAux ?? item.signalSthSopr) signals.push('短期SOPR(辅助)');
 
   return signals;
 }
@@ -51,7 +52,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const maxSignalCount = useMemo(
-    () => data.reduce((max, row) => Math.max(max, row.activeIndicatorCount ?? 0, row.signalCount ?? 0), 5),
+    () => data.reduce((max, row) => Math.max(max, row.activeIndicatorCountV4 ?? row.activeIndicatorCount ?? 0, row.signalCountV4 ?? row.signalCount ?? 0), 6),
     [data],
   );
   const strongSignalThreshold = Math.max(1, maxSignalCount - 1);
@@ -78,7 +79,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
 
     return data
       .filter((item) => {
-        const signalCount = item.signalCount ?? 0;
+        const signalCount = item.signalCountV4 ?? item.signalCount ?? 0;
         if (signalCount < minSignals) {
           return false;
         }
@@ -132,7 +133,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Calendar className="h-5 w-5" />
-          历史复盘（Core-6 指标）
+          历史复盘（Core-6 V4）
         </CardTitle>
       </CardHeader>
 
@@ -231,20 +232,20 @@ export function HistoryReview({ data }: HistoryReviewProps) {
                   <TableHead>日期</TableHead>
                   <TableHead>BTC价格</TableHead>
                   <TableHead>触发数</TableHead>
-                  <TableHead>V2评分</TableHead>
+                  <TableHead>V4评分</TableHead>
                   <TableHead>触发指标</TableHead>
                 </TableRow>
               </TableHeader>
 
               <TableBody>
                 {filteredData.slice(0, 120).map((item) => (
-                  <TableRow key={`${item.d}-${item.signalCount ?? 0}`}>
+                  <TableRow key={`${item.d}-${item.signalCountV4 ?? item.signalCount ?? 0}`}>
                     <TableCell>{item.d}</TableCell>
                     <TableCell className="font-medium">{formatPrice(parsePrice(item.btcPrice))}</TableCell>
                     <TableCell>
                       {(() => {
-                        const rowTotalSignals = item.activeIndicatorCount ?? maxSignalCount;
-                        const rowSignalCount = item.signalCount ?? 0;
+                        const rowTotalSignals = item.activeIndicatorCountV4 ?? item.activeIndicatorCount ?? maxSignalCount;
+                        const rowSignalCount = item.signalCountV4 ?? item.signalCount ?? 0;
                         const rowStrong = rowSignalCount >= Math.max(1, rowTotalSignals - 1);
                         return (
                           <Badge
@@ -258,7 +259,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline">
-                        {item.signalScoreV2 ?? '-'} / {item.maxSignalScoreV2 ?? ((item.activeIndicatorCount ?? maxSignalCount) * 2)}
+                        {item.totalScoreV4 ?? item.signalScoreV2 ?? '-'} / {item.maxTotalScoreV4 ?? item.maxSignalScoreV2 ?? ((item.activeIndicatorCountV4 ?? item.activeIndicatorCount ?? maxSignalCount) * 2)}
                       </Badge>
                     </TableCell>
                     <TableCell>

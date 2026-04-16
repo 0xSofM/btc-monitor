@@ -1,12 +1,14 @@
 {
-  "generatedAt": "2026-04-16T03:45:08.951321+00:00",
+  "generatedAt": "2026-04-16T05:03:41.736630+00:00",
   "latestDate": "2026-04-16",
-  "lastUpdated": "2026-04-16T03:45:08.918228+00:00",
-  "historyRows": 5575,
+  "lastUpdated": "2026-04-16T05:03:41.492532+00:00",
+  "historyRows": 5424,
   "historyLightRows": 2911,
-  "schemaVersion": "v3",
-  "indicatorSet": "core6_bottom_v2_sth_grouped",
-  "scoringModelVersion": "v3_no_lookahead_replacement",
+  "signalEventsV4Rows": 14,
+  "schemaVersion": "v4",
+  "indicatorSet": "core6_bottom_v4_layered",
+  "scoringModelVersion": "v4_layered_core6",
+  "legacyScoringModelVersion": "v3_no_lookahead_replacement",
   "thresholds": {
     "priceMa200wRatio": {
       "trigger": 1.0,
@@ -47,7 +49,15 @@
       "trigger": 0.6,
       "deep": 0.5
     },
-    "reserveRiskReplacement": {
+    "lthMvrv": {
+      "trigger": 1.0,
+      "deep": 0.9
+    },
+    "mvrvZscore": {
+      "trigger": 0.0,
+      "deep": -0.5
+    },
+    "reserveRiskReplacementLegacy": {
       "lthMvrv": {
         "trigger": 1.0,
         "deep": 0.9
@@ -56,10 +66,24 @@
         "trigger": 0.0,
         "deep": -0.5
       }
+    },
+    "reserveRiskV4Fallback": {
+      "source": "mvrv_zscore_soft",
+      "maxScore": 1
     }
   },
   "activeIndicatorCount": 5,
   "maxSignalScoreV2": 10,
+  "activeIndicatorCountV4": 6,
+  "maxTotalScoreV4": 11,
+  "signalBandV4": "watch",
+  "signalConfidence": 0.1694,
   "reserveRiskSourceMode": "replacement",
-  "inactiveIndicators": []
+  "reserveRiskSourceModeV4": "soft_fallback",
+  "inactiveIndicators": [],
+  "archive": {
+    "archiveRoot": "archive/releases",
+    "archivedSnapshotPath": null,
+    "rollbackHint": null
+  }
 }

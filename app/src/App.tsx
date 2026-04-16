@@ -23,10 +23,10 @@ import { IndicatorCard } from '@/components/IndicatorCard';
 import { SignalOverview } from '@/components/SignalOverview';
 import type { IndicatorData, LatestData } from '@/types';
 import {
-  fetchAllLatestIndicators,
   fetchDataManifest,
   fetchFullHistoricalData,
   fetchHistoricalData,
+  fetchRuntimeLatestData,
   fetchStaticLatestData,
   getDataFreshnessHours,
   getLatestFromHistory,
@@ -35,7 +35,7 @@ import {
 import './App.css';
 
 type DataSource = 'api' | 'static' | 'history';
-type IndicatorDateKey = 'priceMa200w' | 'priceRealized' | 'reserveRisk' | 'sthSopr' | 'sthMvrv' | 'puell';
+type IndicatorDateKey = 'priceMa200w' | 'priceRealized' | 'reserveRisk' | 'lthMvrv' | 'sthMvrv' | 'puell';
 type AppTab = 'dashboard' | 'history' | 'guide';
 
 const IndicatorChartsPanel = lazy(async () => {
@@ -85,6 +85,35 @@ function scoreBandLabel(score: number, maxScore: number): string {
   return '观察';
 }
 
+function formatSignalBand(code: string | undefined, score: number, maxScore: number): string {
+  if (!code) {
+    return scoreBandLabel(score, maxScore);
+  }
+
+  const normalized = code.trim().toLowerCase();
+  if (normalized === 'watch') return '观察';
+  if (normalized === 'focus') return '重点关注';
+  if (normalized === 'accumulate') return '分批配置';
+  if (normalized === 'extreme_bottom') return '极端底部';
+  return scoreBandLabel(score, maxScore);
+}
+
+function formatFallbackModeLabel(fallbackMode: string | undefined): string | null {
+  if (!fallbackMode) {
+    return null;
+  }
+
+  if (fallbackMode === 'reserve_risk_soft_fallback') {
+    return '储备风险软回退生效';
+  }
+
+  if (fallbackMode === 'reserve_risk_inactive') {
+    return '储备风险暂不计分';
+  }
+
+  return '主模型正常';
+}
+
 function hasCore6Coverage(rows: IndicatorData[]): boolean {
   if (!rows.length) {
     return false;
@@ -95,7 +124,7 @@ function hasCore6Coverage(rows: IndicatorData[]): boolean {
     'priceMa200wRatio',
     'priceRealizedRatio',
     'reserveRisk',
-    'sthSopr',
+    'lthMvrv',
     'sthMvrv',
     'puellMultiple',
   ].every((field) =>
@@ -196,39 +225,36 @@ function App() {
     setError(null);
 
     try {
-      if (mode === 'auto') {
-        const staticData = await fetchStaticLatestData({ enrichWithHistory: true });
-        if (staticData) {
-          applyLatestData(staticData, 'static');
+      if (mode === 'manual') {
+        const runtimeData = await fetchRuntimeLatestData();
+        if (runtimeData) {
+          applyLatestData(runtimeData, 'api');
+
+          const score = runtimeData.totalScoreV4 ?? runtimeData.signalScoreV2 ?? 0;
+          const maxScore = runtimeData.maxTotalScoreV4 ?? runtimeData.maxSignalScoreV2 ?? 10;
+          toast.success(`V4 运行时已刷新：${score}/${maxScore}`, {
+            description: `BTC 价格：$${runtimeData.btcPrice.toLocaleString()}`,
+            duration: 6000,
+          });
           return;
         }
       }
 
-      const latest = await fetchAllLatestIndicators(mode === 'auto');
-      if (latest) {
-        applyLatestData(latest, 'api');
-
-        const score = latest.signalScoreV2 ?? 0;
-        const maxScore = latest.maxSignalScoreV2 ?? 10;
-        const { accumulate } = resolveScoreThresholds(maxScore);
-        if (mode === 'manual' && score >= accumulate) {
-          toast.success(`V2 信号触发：${score}/${maxScore}`, {
-            description: `BTC 价格：$${latest.btcPrice.toLocaleString()}`,
-            duration: 8000,
-          });
-        }
-        return;
-      }
-
-      throw new Error('无可用最新数据');
-    } catch (err) {
-      console.error('Error fetching data:', err);
-
-      const staticData = await fetchStaticLatestData({ enrichWithHistory: true });
+      const staticData = await fetchStaticLatestData({
+        enrichWithHistory: true,
+        forceRefresh: mode === 'manual',
+      });
       if (staticData) {
         applyLatestData(staticData, 'static');
+
         if (mode === 'manual') {
-          toast.info('实时接口不可用，已切换到静态快照。');
+          const score = staticData.totalScoreV4 ?? staticData.signalScoreV2 ?? 0;
+          const maxScore = staticData.maxTotalScoreV4 ?? staticData.maxSignalScoreV2 ?? 10;
+          const scoreLabel = staticData.totalScoreV4 !== undefined ? '运行时不可用，已回退到 V4 快照' : '运行时不可用，已回退到静态快照';
+          toast.info(`${scoreLabel}：${score}/${maxScore}`, {
+            description: `BTC 价格：$${staticData.btcPrice.toLocaleString()}`,
+            duration: 6000,
+          });
         }
         return;
       }
@@ -237,10 +263,15 @@ function App() {
       const backupData = getLatestFromHistory(history);
       if (backupData) {
         applyLatestData(backupData, 'history');
-        toast.info('当前运行在历史回退模式。');
+        if (mode === 'manual') {
+          toast.info('静态快照不可用，已切换到历史回退模式。');
+        }
         return;
       }
 
+      throw new Error('无可用最新数据');
+    } catch (err) {
+      console.error('Error fetching data:', err);
       setError('数据加载失败，请检查连接后重试。');
     } finally {
       setLoading(false);
@@ -272,7 +303,7 @@ function App() {
     priceMa200w: '价格 / 200周均线',
     priceRealized: '价格 / 实现价格',
     reserveRisk: '储备风险',
-    sthSopr: '短期SOPR',
+    lthMvrv: 'LTH-MVRV',
     sthMvrv: '短期MVRV',
     puell: 'Puell倍数',
   };
@@ -280,7 +311,7 @@ function App() {
   const indicatorDateEntries = latestData?.indicatorDates
     ? (Object.entries(latestData.indicatorDates) as Array<[IndicatorDateKey, string | undefined]>)
         .reduce<Array<[IndicatorDateKey, string]>>((entries, [key, value]) => {
-          if (value) {
+          if (value && Object.prototype.hasOwnProperty.call(indicatorDateLabels, key)) {
             entries.push([key, value]);
           }
           return entries;
@@ -304,21 +335,39 @@ function App() {
   const latestDataAgeHours = latestData ? getDataFreshnessHours(latestData.date) : 0;
   const signalScoreV2 = latestData?.signalScoreV2 ?? 0;
   const maxSignalScoreV2 = latestData?.maxSignalScoreV2 ?? 10;
-  const activeIndicatorCount = latestData?.activeIndicatorCount ?? 5;
-  const scoreThresholds = resolveScoreThresholds(maxSignalScoreV2);
+  const totalScoreV4 = latestData?.totalScoreV4;
+  const maxTotalScoreV4 = latestData?.maxTotalScoreV4 ?? 12;
+  const signalCountDisplay = latestData?.signalCountV4 ?? latestData?.signalCount ?? 0;
+  const activeIndicatorCount = latestData?.activeIndicatorCountV4 ?? latestData?.activeIndicatorCount ?? 6;
+  const effectiveScore = totalScoreV4 ?? signalScoreV2;
+  const effectiveMaxScore = totalScoreV4 !== undefined ? maxTotalScoreV4 : maxSignalScoreV2;
+  const effectiveSignalBand = formatSignalBand(
+    latestData?.signalBandV4 ?? latestData?.signalBandV2,
+    effectiveScore,
+    effectiveMaxScore,
+  );
+  const isSignalConfirmed = latestData?.signalConfirmed3dV4 ?? latestData?.signalConfirmed3d ?? false;
+  const fallbackModeLabel = formatFallbackModeLabel(latestData?.fallbackMode);
+  const confidencePercent = latestData?.signalConfidence === undefined
+    ? null
+    : Math.round(latestData.signalConfidence * 100);
+  const freshnessPercent = latestData?.dataFreshnessScore === undefined
+    ? null
+    : Math.round(latestData.dataFreshnessScore * 100);
+  const scoreThresholds = resolveScoreThresholds(effectiveMaxScore);
 
   const statusTiles = useMemo(() => {
     if (!latestData) return [];
-    return [
+    const baseTiles = [
       {
-        label: 'V2评分',
-        value: `${signalScoreV2}/${maxSignalScoreV2}`,
-        note: scoreBandLabel(signalScoreV2, maxSignalScoreV2),
+        label: totalScoreV4 !== undefined ? 'V4总分' : 'V2评分',
+        value: `${effectiveScore}/${effectiveMaxScore}`,
+        note: effectiveSignalBand,
       },
       {
-        label: '触发数量',
-        value: `${latestData.signalCount}/${activeIndicatorCount}`,
-        note: latestData.signalConfirmed3d ? '已满足3日确认' : '等待3日确认',
+        label: '核心触发',
+        value: `${signalCountDisplay}/${activeIndicatorCount}`,
+        note: isSignalConfirmed ? '已满足3日确认' : '等待3日确认',
       },
       {
         label: '数据来源',
@@ -326,7 +375,35 @@ function App() {
         note: `截至 ${latestData.date}`,
       },
     ];
-  }, [latestData, signalScoreV2, maxSignalScoreV2, activeIndicatorCount, dataSource]);
+
+    if (totalScoreV4 === undefined) {
+      return baseTiles;
+    }
+
+    return [
+      baseTiles[0],
+      baseTiles[1],
+      {
+        label: '信号置信度',
+        value: confidencePercent === null ? '-' : `${confidencePercent}%`,
+        note: fallbackModeLabel ?? (freshnessPercent === null ? '无额外说明' : `数据新鲜度 ${freshnessPercent}%`),
+      },
+      baseTiles[2],
+    ];
+  }, [
+    latestData,
+    totalScoreV4,
+    effectiveScore,
+    effectiveMaxScore,
+    effectiveSignalBand,
+    signalCountDisplay,
+    activeIndicatorCount,
+    isSignalConfirmed,
+    confidencePercent,
+    fallbackModeLabel,
+    freshnessPercent,
+    dataSource,
+  ]);
 
   const indicators = latestData
     ? [
@@ -362,29 +439,32 @@ function App() {
           currentValue: latestData.reserveRisk,
           targetValue: latestData.thresholds?.reserveRisk?.trigger ?? 0.0016,
           targetOperator: 'lt' as const,
-          triggered: latestData.signals.reserveRisk,
+          triggered: latestData.signalsV4?.reserveRisk ?? latestData.signals.reserveRisk,
           format: 'number' as const,
           color: '#10B981',
           dataDate: latestData.indicatorDates?.reserveRisk || latestData.date,
+          detailValue: latestData.fallbackMode === 'reserve_risk_soft_fallback'
+            ? '主源存在时滞，V4 当前以 MVRV Z-Score 进行降权软回退。'
+            : undefined,
         },
         {
-          name: '短期SOPR',
-          description: '短期筹码止损脉冲',
-          currentValue: latestData.sthSopr,
-          targetValue: 1,
+          name: 'LTH-MVRV',
+          description: '长期持有者成本结构确认',
+          currentValue: latestData.lthMvrv ?? 0,
+          targetValue: latestData.thresholds?.lthMvrv?.trigger ?? 1,
           targetOperator: 'lt' as const,
-          triggered: latestData.signals.sthSopr,
+          triggered: latestData.signalsV4?.lthMvrv ?? false,
           format: 'ratio' as const,
-          color: '#EAB308',
-          dataDate: latestData.indicatorDates?.sthSopr || latestData.date,
+          color: '#8B5CF6',
+          dataDate: latestData.indicatorDates?.lthMvrv || latestData.date,
         },
         {
           name: '短期MVRV',
           description: '短期群体压力深度',
           currentValue: latestData.sthMvrv,
-          targetValue: 1,
+          targetValue: latestData.thresholds?.sthMvrv?.trigger ?? 1,
           targetOperator: 'lt' as const,
-          triggered: latestData.signals.sthMvrv,
+          triggered: latestData.signalsV4?.sthMvrv ?? latestData.signals.sthMvrv,
           format: 'ratio' as const,
           color: '#22C55E',
           dataDate: latestData.indicatorDates?.sthMvrv || latestData.date,
@@ -393,9 +473,9 @@ function App() {
           name: 'Puell倍数',
           description: '矿工压力确认项',
           currentValue: latestData.puellMultiple,
-          targetValue: 0.6,
+          targetValue: latestData.thresholds?.puellMultiple?.trigger ?? 0.6,
           targetOperator: 'lt' as const,
-          triggered: latestData.signals.puell,
+          triggered: latestData.signalsV4?.puell ?? latestData.signals.puell,
           format: 'ratio' as const,
           color: '#F97316',
           dataDate: latestData.indicatorDates?.puell || latestData.date,
@@ -404,32 +484,38 @@ function App() {
     : [];
 
   const marketAssessment = latestData
-    ? signalScoreV2 >= scoreThresholds.extreme
+    ? effectiveScore >= scoreThresholds.extreme
       ? {
           boxClass: 'border-green-300 bg-green-50 dark:border-green-800 dark:bg-green-950/50',
           iconClass: 'text-green-600 dark:text-green-300',
           titleClass: 'text-green-800 dark:text-green-200',
           textClass: 'text-green-700 dark:text-green-300',
           title: '极端底部区',
-          description: `当前评分 ${signalScoreV2}/${maxSignalScoreV2}，市场处于深度价值区间，可在风控前提下执行分批入场。`,
+          description: totalScoreV4 !== undefined
+            ? `当前 V4 总分 ${effectiveScore}/${effectiveMaxScore}，估值、触发、确认三层已形成共振，可在风控前提下执行高优先级分批建仓。`
+            : `当前评分 ${effectiveScore}/${effectiveMaxScore}，市场处于深度价值区间，可在风控前提下执行分批入场。`,
         }
-      : signalScoreV2 >= scoreThresholds.accumulate
+      : effectiveScore >= scoreThresholds.accumulate
       ? {
           boxClass: 'border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/50',
           iconClass: 'text-emerald-600 dark:text-emerald-300',
           titleClass: 'text-emerald-800 dark:text-emerald-200',
           textClass: 'text-emerald-700 dark:text-emerald-300',
           title: '分批配置区',
-          description: `当前评分 ${signalScoreV2}/${maxSignalScoreV2}，信号较强，适合按计划分批配置。`,
+          description: totalScoreV4 !== undefined
+            ? `当前 V4 总分 ${effectiveScore}/${effectiveMaxScore}，至少两层信号正在协同改善，适合按计划分批配置。`
+            : `当前评分 ${effectiveScore}/${effectiveMaxScore}，信号较强，适合按计划分批配置。`,
         }
-      : signalScoreV2 >= scoreThresholds.focus
+      : effectiveScore >= scoreThresholds.focus
       ? {
           boxClass: 'border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/50',
           iconClass: 'text-amber-600 dark:text-amber-300',
           titleClass: 'text-amber-800 dark:text-amber-200',
           textClass: 'text-amber-700 dark:text-amber-300',
           title: '重点关注区',
-          description: `当前评分 ${signalScoreV2}/${maxSignalScoreV2}，状态改善中，但尚未进入高确定性区间。`,
+          description: totalScoreV4 !== undefined
+            ? `当前 V4 总分 ${effectiveScore}/${effectiveMaxScore}，估值或触发层已有改善，但确认层尚未跟上，适合重点跟踪。`
+            : `当前评分 ${effectiveScore}/${effectiveMaxScore}，状态改善中，但尚未进入高确定性区间。`,
         }
       : {
           boxClass: 'border-slate-300 bg-slate-50 dark:border-slate-700 dark:bg-slate-900/60',
@@ -437,7 +523,9 @@ function App() {
           titleClass: 'text-slate-800 dark:text-slate-200',
           textClass: 'text-slate-700 dark:text-slate-300',
           title: '观察区',
-          description: `当前评分 ${signalScoreV2}/${maxSignalScoreV2}，暂未出现强大周期底部信号。`,
+          description: totalScoreV4 !== undefined
+            ? `当前 V4 总分 ${effectiveScore}/${effectiveMaxScore}，底部共振尚未形成，继续等待估值与确认层同步改善。`
+            : `当前评分 ${effectiveScore}/${effectiveMaxScore}，暂未出现强大周期底部信号。`,
         }
     : null;
 
@@ -455,9 +543,9 @@ function App() {
                   <Bitcoin className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold tracking-tight">BTC 大周期底部监测 V2</h1>
+                  <h1 className="text-xl font-bold tracking-tight">BTC 大周期底部监测 V4</h1>
                   <p className="text-sm text-muted-foreground">
-                    Core-6 指标 + 短期分组计分，采用加权评分与 3 日确认机制
+                    Core-6 分层模型：估值层 + 触发层 + 确认层，并保留旧版字段用于对照、归档与回滚
                   </p>
                 </div>
               </div>
@@ -536,7 +624,7 @@ function App() {
                   <AlertTriangle className="h-4 w-4 text-blue-600" />
                   <AlertTitle className="text-blue-800 dark:text-blue-200">静态快照模式</AlertTitle>
                   <AlertDescription className="text-blue-700 dark:text-blue-300">
-                    为保证稳定性，页面当前优先展示静态快照数据。
+                    当前优先展示可归档、可回滚的静态快照数据，这是 V4 发布链路的默认模式。
                   </AlertDescription>
                 </Alert>
               )}
@@ -546,7 +634,7 @@ function App() {
                   <AlertTriangle className="h-4 w-4 text-yellow-600" />
                   <AlertTitle className="text-yellow-800 dark:text-yellow-200">历史回退模式</AlertTitle>
                   <AlertDescription className="text-yellow-700 dark:text-yellow-300">
-                    API 与快照均不可用，当前展示本地历史数据中的最新记录。
+                    快照暂不可用，当前展示本地历史数据中的最新记录，可配合归档快照进行版本回退。
                   </AlertDescription>
                 </Alert>
               )}
@@ -562,11 +650,22 @@ function App() {
                 <>
                   <SignalOverview
                     btcPrice={latestData.btcPrice}
-                    signalCount={latestData.signalCount}
+                    signalCount={signalCountDisplay}
                     totalIndicators={activeIndicatorCount}
                     signalScoreV2={latestData.signalScoreV2}
                     maxSignalScoreV2={maxSignalScoreV2}
+                    totalScoreV4={latestData.totalScoreV4}
+                    maxTotalScoreV4={latestData.maxTotalScoreV4}
+                    valuationScore={latestData.valuationScore}
+                    maxValuationScore={latestData.maxValuationScore}
+                    triggerScore={latestData.triggerScore}
+                    maxTriggerScore={latestData.maxTriggerScore}
+                    confirmationScore={latestData.confirmationScore}
+                    maxConfirmationScore={latestData.maxConfirmationScore}
+                    signalConfidence={latestData.signalConfidence}
+                    fallbackMode={latestData.fallbackMode}
                     signalConfirmed3d={latestData.signalConfirmed3d}
+                    signalConfirmed3dV4={latestData.signalConfirmed3dV4}
                     dataTimestampLabel={dataTimestampLabel}
                     dataSource={dataSource}
                     latestDataDate={latestData.date}
@@ -625,6 +724,19 @@ function App() {
                     ))}
                   </section>
 
+                  <Alert className="border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900/60">
+                    <AlertTriangle className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                    <AlertTitle className="text-slate-800 dark:text-slate-200">辅助指标：短期 SOPR</AlertTitle>
+                    <AlertDescription className="text-slate-700 dark:text-slate-300">
+                      当前值 {latestData.sthSopr.toFixed(4)}，触发阈值 {'< '}
+                      {(latestData.thresholds?.sthSopr?.trigger ?? 1).toFixed(4)}，
+                      当前状态
+                      {latestData.signalsV4?.sthSoprAux ?? latestData.signals.sthSopr ? ' 已触发' : ' 观察中'}。
+                      该指标保留为辅助观察项，不计入 Core-6 V4 总分。
+                      {fallbackModeLabel ? ` 当前回退状态：${fallbackModeLabel}。` : ''}
+                    </AlertDescription>
+                  </Alert>
+
                   {marketAssessment && (
                     <section className={`surface-card rounded-lg border p-4 ${marketAssessment.boxClass}`}>
                       <div className="flex items-start gap-3">
@@ -680,7 +792,7 @@ function App() {
 
         <footer className="footer-line mt-12">
           <div className="app-container flex flex-col items-center justify-between gap-3 py-6 text-sm text-muted-foreground md:flex-row">
-            <p>数据来源：BGeometrics 文件端点 | 模型：Core-6 V2（短期组去重计分）</p>
+            <p>数据来源：BGeometrics 文件端点 | 模型：Core-6 V4（分层计分 + 软回退 + 3日确认）</p>
             <p>
               数据时间：{dataTimestampLabel}
               {manifestGeneratedAt ? ` | 清单生成时间：${manifestGeneratedAt}` : ''}

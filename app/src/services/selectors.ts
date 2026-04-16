@@ -15,6 +15,7 @@ const DEFAULT_THRESHOLDS = {
   priceMa200w: 1,
   priceRealized: 1,
   reserveRisk: 0.0016,
+  lthMvrv: 1,
   sthSopr: 1,
   sthMvrv: 1,
   puell: 0.6,
@@ -41,6 +42,8 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
       priceMa200w: undefined,
       priceRealized: undefined,
       reserveRisk: undefined,
+      lthMvrv: undefined,
+      mvrvZscore: undefined,
       sthSopr: undefined,
       sthMvrv: undefined,
       puell: undefined,
@@ -53,6 +56,8 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
       priceMa200w: fromPayload.priceMa200w ?? latest.d,
       priceRealized: fromPayload.priceRealized,
       reserveRisk: fromPayload.reserveRisk,
+      lthMvrv: fromPayload.lthMvrv,
+      mvrvZscore: fromPayload.mvrvZscore,
       sthSopr: fromPayload.sthSopr,
       sthMvrv: fromPayload.sthMvrv,
       puell: fromPayload.puell,
@@ -75,6 +80,18 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
           : typeof fromApiDataDate.reserve_risk === 'string'
             ? fromApiDataDate.reserve_risk
             : undefined,
+      lthMvrv:
+        typeof fromApiDataDate.lthMvrv === 'string'
+          ? fromApiDataDate.lthMvrv
+          : typeof fromApiDataDate.lth_mvrv === 'string'
+            ? fromApiDataDate.lth_mvrv
+            : undefined,
+      mvrvZscore:
+        typeof fromApiDataDate.mvrvZscore === 'string'
+          ? fromApiDataDate.mvrvZscore
+          : typeof fromApiDataDate.mvrv_zscore === 'string'
+            ? fromApiDataDate.mvrv_zscore
+            : undefined,
       sthSopr:
         typeof fromApiDataDate.sthSopr === 'string'
           ? fromApiDataDate.sthSopr
@@ -95,6 +112,8 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
     priceMa200w: latest.d,
     priceRealized: undefined,
     reserveRisk: undefined,
+    lthMvrv: undefined,
+    mvrvZscore: undefined,
     sthSopr: undefined,
     sthMvrv: undefined,
     puell: undefined,
@@ -109,6 +128,14 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
 
     if (!dates.reserveRisk && hasUsableValue(row.reserveRisk)) {
       dates.reserveRisk = row.d;
+    }
+
+    if (!dates.lthMvrv && hasUsableValue(row.lthMvrv)) {
+      dates.lthMvrv = row.d;
+    }
+
+    if (!dates.mvrvZscore && hasUsableValue(row.mvrvZscore)) {
+      dates.mvrvZscore = row.d;
     }
 
     if (!dates.sthSopr && hasUsableValue(row.sthSopr)) {
@@ -141,6 +168,7 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   const sthSopr = toFiniteNumber(latest.sthSopr, 0);
   const sthMvrv = toFiniteNumber(latest.sthMvrv, 0);
   const puellMultiple = toFiniteNumber(latest.puellMultiple, 0);
+  const lthMvrv = toFiniteNumber(latest.lthMvrv, 0);
 
   const signals = {
     priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < DEFAULT_THRESHOLDS.priceMa200w,
@@ -150,6 +178,15 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     sthMvrv: latest.signalSthMvrv ?? sthMvrv < DEFAULT_THRESHOLDS.sthMvrv,
     sthGroup: latest.signalSthGroup ?? ((latest.signalSthSopr ?? sthSopr < DEFAULT_THRESHOLDS.sthSopr) || (latest.signalSthMvrv ?? sthMvrv < DEFAULT_THRESHOLDS.sthMvrv)),
     puell: latest.signalPuell ?? puellMultiple < DEFAULT_THRESHOLDS.puell,
+  };
+  const signalsV4 = {
+    priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < DEFAULT_THRESHOLDS.priceMa200w,
+    priceRealized: latest.signalPriceRealized ?? priceRealizedRatio < DEFAULT_THRESHOLDS.priceRealized,
+    reserveRisk: latest.signalReserveRiskV4 ?? latest.signalReserveRisk ?? reserveRisk < DEFAULT_THRESHOLDS.reserveRisk,
+    sthMvrv: latest.signalSthMvrv ?? sthMvrv < DEFAULT_THRESHOLDS.sthMvrv,
+    lthMvrv: latest.signalLthMvrv ?? lthMvrv < DEFAULT_THRESHOLDS.lthMvrv,
+    puell: latest.signalPuell ?? puellMultiple < DEFAULT_THRESHOLDS.puell,
+    sthSoprAux: latest.signalSthSoprAux ?? latest.signalSthSopr ?? sthSopr < DEFAULT_THRESHOLDS.sthSopr,
   };
 
   const groupedSignalCount = [
@@ -170,19 +207,39 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     ma200w: latest.ma200w,
     realizedPrice: latest.realizedPrice,
     reserveRisk,
+    lthMvrv,
     sthSopr,
     sthMvrv,
     puellMultiple,
     signalCount: latest.signalCount ?? groupedSignalCount,
     activeIndicatorCount,
+    signalCountV4: latest.signalCountV4 ?? Object.values(signalsV4).filter(Boolean).length,
+    activeIndicatorCountV4: latest.activeIndicatorCountV4 ?? 6,
     maxSignalScoreV2,
     signalScoreV2: latest.signalScoreV2,
     signalScoreV2Min3d: latest.signalScoreV2Min3d ?? null,
     signalConfirmed3d: latest.signalConfirmed3d,
     signalBandV2: latest.signalBandV2,
+    valuationScore: latest.valuationScore,
+    maxValuationScore: latest.maxValuationScore,
+    triggerScore: latest.triggerScore,
+    maxTriggerScore: latest.maxTriggerScore,
+    confirmationScore: latest.confirmationScore,
+    maxConfirmationScore: latest.maxConfirmationScore,
+    auxiliaryScore: latest.auxiliaryScore,
+    maxAuxiliaryScore: latest.maxAuxiliaryScore,
+    totalScoreV4: latest.totalScoreV4,
+    maxTotalScoreV4: latest.maxTotalScoreV4,
+    totalScoreV4Min3d: latest.totalScoreV4Min3d ?? null,
+    signalConfirmed3dV4: latest.signalConfirmed3dV4,
+    signalBandV4: latest.signalBandV4,
+    signalConfidence: latest.signalConfidence,
+    dataFreshnessScore: latest.dataFreshnessScore,
+    fallbackMode: latest.fallbackMode,
     scoreSthGroup: latest.scoreSthGroup,
     signalSthGroup: latest.signalSthGroup,
     signals,
+    signalsV4,
     indicatorDates: findIndicatorDates(data),
   };
 }
@@ -235,7 +292,12 @@ export function getIndicatorChartData(
 
       if (indicator === 'reserveRisk') {
         value = item.reserveRisk ?? null;
-        signal = item.signalReserveRisk ?? false;
+        signal = item.signalReserveRiskV4 ?? item.signalReserveRisk ?? false;
+      }
+
+      if (indicator === 'lthMvrv') {
+        value = item.lthMvrv ?? null;
+        signal = item.signalLthMvrv ?? false;
       }
 
       if (indicator === 'sthSopr') {
@@ -297,18 +359,19 @@ export function getMA200ChartData(
 
 export function getSignalEvents(data: IndicatorData[], minSignals = 4): SignalEvent[] {
   return data
-    .filter((item) => (item.signalCount ?? 0) >= minSignals)
+    .filter((item) => ((item.signalCountV4 ?? item.signalCount) ?? 0) >= minSignals)
     .map((item) => ({
       date: item.d,
       btcPrice: toNumericPrice(item.btcPrice),
-      signalCount: item.signalCount ?? 0,
+      signalCount: item.signalCountV4 ?? item.signalCount ?? 0,
       triggeredIndicators: [
         item.signalPriceMa200w || item.signalPriceMa ? '价格/200周均线' : '',
         item.signalPriceRealized ? '价格/实现价格' : '',
-        item.signalReserveRisk ? '储备风险' : '',
-        item.signalSthSopr ? '短期SOPR' : '',
+        item.signalReserveRiskV4 ?? item.signalReserveRisk ? '储备风险' : '',
         item.signalSthMvrv ? '短期MVRV' : '',
+        item.signalLthMvrv ? 'LTH-MVRV' : '',
         item.signalPuell ? 'Puell倍数' : '',
+        item.signalSthSoprAux ?? item.signalSthSopr ? '短期SOPR(辅助)' : '',
       ].filter(Boolean),
     }));
 }
@@ -352,6 +415,13 @@ export const INDICATOR_CONFIG = {
     targetValue: 0.0016,
     color: '#10B981',
     description: '长期持有者风险回报区间。',
+  },
+  lthMvrv: {
+    name: 'LTH-MVRV',
+    unit: '',
+    targetValue: 1,
+    color: '#8B5CF6',
+    description: '长期持有者成本结构确认。',
   },
   sthSopr: {
     name: '短期SOPR',

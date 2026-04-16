@@ -91,6 +91,10 @@ function normalizeApiDatePayload(value: unknown): ApiDatePayload | undefined {
     price_realized: asString(payload.price_realized),
     reserveRisk: asString(payload.reserveRisk),
     reserve_risk: asString(payload.reserve_risk),
+    lthMvrv: asString(payload.lthMvrv),
+    lth_mvrv: asString(payload.lth_mvrv),
+    mvrvZscore: asString(payload.mvrvZscore),
+    mvrv_zscore: asString(payload.mvrv_zscore),
     sthSopr: asString(payload.sthSopr),
     sth_sopr: asString(payload.sth_sopr),
     sthMvrv: asString(payload.sthMvrv),
@@ -109,6 +113,8 @@ function normalizeIndicatorDates(
     priceMa200w: payload?.priceMa200w ?? payload?.price_ma200w ?? fallbackDate,
     priceRealized: payload?.priceRealized ?? payload?.price_realized ?? fallbackDate,
     reserveRisk: payload?.reserveRisk ?? payload?.reserve_risk ?? fallbackDate,
+    lthMvrv: payload?.lthMvrv ?? payload?.lth_mvrv ?? fallbackDate,
+    mvrvZscore: payload?.mvrvZscore ?? payload?.mvrv_zscore ?? fallbackDate,
     sthSopr: payload?.sthSopr ?? payload?.sth_sopr ?? fallbackDate,
     sthMvrv: payload?.sthMvrv ?? payload?.sth_mvrv ?? fallbackDate,
     puell: payload?.puell ?? fallbackDate,
@@ -149,16 +155,22 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     signalPriceMa200w: asBoolean(record.signalPriceMa200w ?? record.signal_price_ma200w ?? record.signalPriceMa ?? record.signal_price_ma),
     signalPriceRealized: asBoolean(record.signalPriceRealized ?? record.signal_price_realized),
     signalReserveRisk: asBoolean(record.signalReserveRisk ?? record.signal_reserve_risk),
+    signalReserveRiskV4: asBoolean(record.signalReserveRiskV4 ?? record.signal_reserve_risk_v4),
     signalSthSopr: asBoolean(record.signalSthSopr ?? record.signal_sth_sopr),
     signalSthMvrv: asBoolean(record.signalSthMvrv ?? record.signal_sth_mvrv),
     signalSthGroup: asBoolean(record.signalSthGroup ?? record.signal_sth_group),
+    signalLthMvrv: asBoolean(record.signalLthMvrv ?? record.signal_lth_mvrv),
+    signalSthSoprAux: asBoolean(record.signalSthSoprAux ?? record.signal_sth_sopr_aux),
     signalPuell: asBoolean(record.signalPuell ?? record.signal_puell),
     signalCount: toNumberOrNull(record.signalCount ?? record.signal_count) ?? undefined,
+    signalCountV4: toNumberOrNull(record.signalCountV4 ?? record.signal_count_v4) ?? undefined,
     activeIndicatorCount: toNumberOrNull(record.activeIndicatorCount ?? record.active_indicator_count) ?? undefined,
+    activeIndicatorCountV4: toNumberOrNull(record.activeIndicatorCountV4 ?? record.active_indicator_count_v4) ?? undefined,
     maxSignalScoreV2: toNumberOrNull(record.maxSignalScoreV2 ?? record.max_signal_score_v2) ?? undefined,
     scorePriceMa200w: toNumberOrNull(record.scorePriceMa200w ?? record.score_price_ma200w) ?? undefined,
     scorePriceRealized: toNumberOrNull(record.scorePriceRealized ?? record.score_price_realized) ?? undefined,
     scoreReserveRisk: toNumberOrNull(record.scoreReserveRisk ?? record.score_reserve_risk) ?? undefined,
+    scoreReserveRiskV4: toNumberOrNull(record.scoreReserveRiskV4 ?? record.score_reserve_risk_v4) ?? undefined,
     scoreSthSopr: toNumberOrNull(record.scoreSthSopr ?? record.score_sth_sopr) ?? undefined,
     scoreSthMvrv: toNumberOrNull(record.scoreSthMvrv ?? record.score_sth_mvrv) ?? undefined,
     scoreSthGroup: toNumberOrNull(record.scoreSthGroup ?? record.score_sth_group) ?? undefined,
@@ -167,6 +179,27 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     signalScoreV2Min3d: toNumberOrNull(record.signalScoreV2Min3d ?? record.signal_score_v2_min3d) ?? undefined,
     signalConfirmed3d: asBoolean(record.signalConfirmed3d ?? record.signal_confirmed_3d),
     signalBandV2: asString(record.signalBandV2 ?? record.signal_band_v2),
+    valuationScore: toNumberOrNull(record.valuationScore ?? record.valuation_score) ?? undefined,
+    maxValuationScore: toNumberOrNull(record.maxValuationScore ?? record.max_valuation_score) ?? undefined,
+    triggerScore: toNumberOrNull(record.triggerScore ?? record.trigger_score) ?? undefined,
+    maxTriggerScore: toNumberOrNull(record.maxTriggerScore ?? record.max_trigger_score) ?? undefined,
+    confirmationScore: toNumberOrNull(record.confirmationScore ?? record.confirmation_score) ?? undefined,
+    maxConfirmationScore: toNumberOrNull(record.maxConfirmationScore ?? record.max_confirmation_score) ?? undefined,
+    auxiliaryScore: toNumberOrNull(record.auxiliaryScore ?? record.auxiliary_score) ?? undefined,
+    maxAuxiliaryScore: toNumberOrNull(record.maxAuxiliaryScore ?? record.max_auxiliary_score) ?? undefined,
+    totalScoreV4: toNumberOrNull(record.totalScoreV4 ?? record.total_score_v4) ?? undefined,
+    maxTotalScoreV4: toNumberOrNull(record.maxTotalScoreV4 ?? record.max_total_score_v4) ?? undefined,
+    totalScoreV4Min3d: toNumberOrNull(record.totalScoreV4Min3d ?? record.total_score_v4_min3d) ?? undefined,
+    signalConfirmed3dV4: asBoolean(record.signalConfirmed3dV4 ?? record.signal_confirmed_3d_v4),
+    signalBandV4: asString(record.signalBandV4 ?? record.signal_band_v4),
+    signalConfidence: toNumberOrNull(record.signalConfidence ?? record.signal_confidence) ?? undefined,
+    dataFreshnessScore: toNumberOrNull(record.dataFreshnessScore ?? record.data_freshness_score) ?? undefined,
+    fallbackMode: asString(record.fallbackMode ?? record.fallback_mode),
+    staleIndicators: Array.isArray(record.staleIndicators ?? record.stale_indicators)
+      ? ((record.staleIndicators ?? record.stale_indicators) as IndicatorData['staleIndicators'])
+      : undefined,
+    coreIndicatorSet: asString(record.coreIndicatorSet ?? record.core_indicator_set),
+    scoringModelVersion: asString(record.scoringModelVersion ?? record.scoring_model_version),
     indicatorDates,
     // Legacy V1 fields for backward compatibility
     mvrvZscore: toNumberOrNull(record.mvrvZscore ?? record.mvrv_zscore) ?? undefined,
@@ -174,7 +207,6 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     nupl: toNumberOrNull(record.nupl) ?? undefined,
     signalPriceMa: asBoolean(record.signalPriceMa ?? record.signal_price_ma),
     signalMvrvZ: asBoolean(record.signalMvrvZ ?? record.signal_mvrv_z),
-    signalLthMvrv: asBoolean(record.signalLthMvrv ?? record.signal_lth_mvrv),
     signalNupl: asBoolean(record.signalNupl ?? record.signal_nupl),
   };
 }
@@ -191,6 +223,7 @@ export function normalizeLatestData(item: unknown): LatestData | null {
   }
 
   const incomingSignals = asRecord(record.signals);
+  const incomingSignalsV4 = asRecord(record.signalsV4 ?? record.signals_v4);
   const incomingIndicatorDates = record.indicatorDates ?? record.apiDataDate ?? record.api_data_date;
 
   const btcPrice = toNumberOrNull(record.btcPrice ?? record.btc_price) ?? 0;
@@ -219,6 +252,19 @@ export function normalizeLatestData(item: unknown): LatestData | null {
     puell: asBoolean(incomingSignals?.puell ?? record.signalPuell ?? record.signal_puell)
       ?? (puellMultiple < 0.6),
   };
+  const signalsV4 = incomingSignalsV4
+    ? {
+        priceMa200w: asBoolean(incomingSignalsV4.priceMa200w) ?? signals.priceMa200w,
+        priceRealized: asBoolean(incomingSignalsV4.priceRealized) ?? signals.priceRealized,
+        reserveRisk: asBoolean(incomingSignalsV4.reserveRisk ?? record.signalReserveRiskV4 ?? record.signal_reserve_risk_v4) ?? signals.reserveRisk,
+        sthMvrv: asBoolean(incomingSignalsV4.sthMvrv ?? record.signalSthMvrv ?? record.signal_sth_mvrv) ?? signals.sthMvrv,
+        lthMvrv: asBoolean(incomingSignalsV4.lthMvrv ?? record.signalLthMvrv ?? record.signal_lth_mvrv)
+          ?? ((toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? 0) < 1),
+        puell: asBoolean(incomingSignalsV4.puell ?? record.signalPuell ?? record.signal_puell) ?? signals.puell,
+        sthSoprAux: asBoolean(incomingSignalsV4.sthSoprAux ?? record.signalSthSoprAux ?? record.signal_sth_sopr_aux)
+          ?? signals.sthSopr,
+      }
+    : undefined;
 
   const signalCountRaw = record.signalCount ?? record.signal_count;
   const groupedSignalCount = [
@@ -245,16 +291,41 @@ export function normalizeLatestData(item: unknown): LatestData | null {
     puellMultiple,
     signalCount,
     activeIndicatorCount: toNumberOrNull(record.activeIndicatorCount ?? record.active_indicator_count) ?? undefined,
+    signalCountV4: toNumberOrNull(record.signalCountV4 ?? record.signal_count_v4) ?? undefined,
+    activeIndicatorCountV4: toNumberOrNull(record.activeIndicatorCountV4 ?? record.active_indicator_count_v4) ?? undefined,
     maxSignalScoreV2: toNumberOrNull(record.maxSignalScoreV2 ?? record.max_signal_score_v2) ?? undefined,
     signalScoreV2: toNumberOrNull(record.signalScoreV2 ?? record.signal_score_v2) ?? undefined,
     signalScoreV2Min3d: toNumberOrNull(record.signalScoreV2Min3d ?? record.signal_score_v2_min3d),
     signalConfirmed3d: asBoolean(record.signalConfirmed3d ?? record.signal_confirmed_3d),
     signalBandV2: asString(record.signalBandV2 ?? record.signal_band_v2),
+    valuationScore: toNumberOrNull(record.valuationScore ?? record.valuation_score) ?? undefined,
+    maxValuationScore: toNumberOrNull(record.maxValuationScore ?? record.max_valuation_score) ?? undefined,
+    triggerScore: toNumberOrNull(record.triggerScore ?? record.trigger_score) ?? undefined,
+    maxTriggerScore: toNumberOrNull(record.maxTriggerScore ?? record.max_trigger_score) ?? undefined,
+    confirmationScore: toNumberOrNull(record.confirmationScore ?? record.confirmation_score) ?? undefined,
+    maxConfirmationScore: toNumberOrNull(record.maxConfirmationScore ?? record.max_confirmation_score) ?? undefined,
+    auxiliaryScore: toNumberOrNull(record.auxiliaryScore ?? record.auxiliary_score) ?? undefined,
+    maxAuxiliaryScore: toNumberOrNull(record.maxAuxiliaryScore ?? record.max_auxiliary_score) ?? undefined,
+    totalScoreV4: toNumberOrNull(record.totalScoreV4 ?? record.total_score_v4) ?? undefined,
+    maxTotalScoreV4: toNumberOrNull(record.maxTotalScoreV4 ?? record.max_total_score_v4) ?? undefined,
+    totalScoreV4Min3d: toNumberOrNull(record.totalScoreV4Min3d ?? record.total_score_v4_min3d),
+    signalConfirmed3dV4: asBoolean(record.signalConfirmed3dV4 ?? record.signal_confirmed_3d_v4),
+    signalBandV4: asString(record.signalBandV4 ?? record.signal_band_v4),
+    signalConfidence: toNumberOrNull(record.signalConfidence ?? record.signal_confidence) ?? undefined,
+    dataFreshnessScore: toNumberOrNull(record.dataFreshnessScore ?? record.data_freshness_score) ?? undefined,
+    fallbackMode: asString(record.fallbackMode ?? record.fallback_mode),
     scoreSthGroup: toNumberOrNull(record.scoreSthGroup ?? record.score_sth_group) ?? undefined,
     signalSthGroup: asBoolean(record.signalSthGroup ?? record.signal_sth_group),
     scoringModelVersion: asString(record.scoringModelVersion ?? record.scoring_model_version),
+    legacyScoringModelVersion: asString(record.legacyScoringModelVersion ?? record.legacy_scoring_model_version),
+    coreIndicatorSet: asString(record.coreIndicatorSet ?? record.core_indicator_set),
+    schemaVersion: asString(record.schemaVersion ?? record.schema_version),
     signals,
+    signalsV4,
     indicatorDates: normalizeIndicatorDates(incomingIndicatorDates, date),
+    staleIndicators: Array.isArray(record.staleIndicators ?? record.stale_indicators)
+      ? ((record.staleIndicators ?? record.stale_indicators) as LatestData['staleIndicators'])
+      : undefined,
     thresholds: asRecord(record.thresholds) as Record<string, { trigger: number; deep: number }> | undefined,
     // Legacy fields
     mvrvZscore: toNumberOrNull(record.mvrvZscore ?? record.mvrv_zscore) ?? undefined,

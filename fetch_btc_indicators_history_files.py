@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Fetch BTC indicator history from BGeometrics chart JSON files (V2).
+Fetch BTC indicator history from BGeometrics chart JSON files.
 
 Data sources:
   - https://charts.bgeometrics.com/files/*.json
@@ -13,13 +13,17 @@ Outputs:
      - app/public/btc_indicators_latest.json
      - app/public/btc_indicators_manifest.json
 
-Core-6 bottom indicators:
+Core-6 bottom indicators (V4 layered model):
   - BTC Price / 200W-MA (calculated)
   - BTC Price / Realized Price (calculated)
   - Reserve Risk
-  - STH-SOPR
-  - STH-MVRV
   - Puell Multiple
+  - STH-MVRV
+  - LTH-MVRV
+
+Auxiliary indicators:
+  - STH-SOPR
+  - MVRV Z-Score (soft Reserve Risk fallback)
 """
 
 from __future__ import annotations
@@ -28,6 +32,7 @@ import argparse
 import json
 import math
 import re
+import shutil
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
@@ -97,10 +102,17 @@ SCORE_BANDS: List[Tuple[int, int, str]] = [
     (10, 12, "extreme_bottom"),
 ]
 
-SCORING_INDICATOR_COUNT = 5
+LEGACY_SCORING_INDICATOR_COUNT = 5
+SCORING_INDICATOR_COUNT_V4 = 6
 SCORE_CONFIRM_RATIO = 7 / 12
 DEFAULT_RESERVE_RISK_DISABLE_LAG_DAYS = 30
-SCORING_MODEL_VERSION = "v3_no_lookahead_replacement"
+LEGACY_SCORING_MODEL_VERSION = "v3_no_lookahead_replacement"
+SCORING_MODEL_VERSION = "v4_layered_core6"
+SCHEMA_VERSION = "v4"
+INDICATOR_SET = "core6_bottom_v4_layered"
+ARCHIVE_ROOT_DEFAULT = "archive/releases"
+SIGNAL_EVENTS_V4_JSON_PATH_DEFAULT = "app/public/btc_signal_events_v4.json"
+ROLLBACK_METADATA_FILE = "release_metadata.json"
 
 ROLLING_THRESHOLD_WINDOW_DAYS = 1460
 ROLLING_THRESHOLD_MIN_HISTORY_DAYS = 365
@@ -108,6 +120,18 @@ RESERVE_RISK_TRIGGER_QUANTILE = 0.20
 RESERVE_RISK_DEEP_QUANTILE = 0.10
 STH_TRIGGER_QUANTILE = 0.27
 STH_DEEP_QUANTILE = 0.135
+
+INDICATOR_FRESHNESS_MAX_LAG_DAYS: Dict[str, int] = {
+    "btc_price": 2,
+    "ma200w": 7,
+    "realized_price": 7,
+    "reserve_risk": DEFAULT_RESERVE_RISK_DISABLE_LAG_DAYS,
+    "lth_mvrv": 7,
+    "mvrv_zscore": 7,
+    "sth_sopr": 7,
+    "sth_mvrv": 7,
+    "puell_multiple": 7,
+}
 
 THRESHOLD_STATIC: Dict[str, Dict[str, float]] = {
     "price_ma200w_ratio": {"trigger": 1.0, "deep": 0.85},
@@ -508,10 +532,30 @@ def _classify_score_band(score: int, max_score: int) -> str:
         return "watch"
 
     normalized_score = (score / max_score) * 12
-    for low, high, label in SCORE_BANDS:
-        if low <= normalized_score <= high:
-            return label
-    return "watch"
+    if normalized_score < 4:
+        return "watch"
+    if normalized_score < 7:
+        return "focus"
+    if normalized_score < 10:
+        return "accumulate"
+    return "extreme_bottom"
+
+
+def _freshness_score_series(lag_days: pd.Series, max_lag_days: int) -> pd.Series:
+    safe_max_lag = max(1, int(max_lag_days))
+    numeric_lag = pd.to_numeric(lag_days, errors="coerce")
+    freshness = 1 - (numeric_lag.clip(lower=0) / safe_max_lag)
+    freshness = freshness.clip(lower=0, upper=1)
+    return freshness.where(numeric_lag.notna(), 0.0)
+
+
+def _score_band_thresholds(max_score: int) -> Dict[str, int]:
+    safe_max = max(1, int(max_score))
+    return {
+        "focus": max(1, math.ceil((safe_max * 4) / 12)),
+        "accumulate": max(1, math.ceil((safe_max * 7) / 12)),
+        "extreme_bottom": max(1, math.ceil((safe_max * 10) / 12)),
+    }
 
 
 def enrich_for_frontend(
@@ -519,7 +563,7 @@ def enrich_for_frontend(
     reserve_risk_disable_lag_days: int = DEFAULT_RESERVE_RISK_DISABLE_LAG_DAYS,
     reserve_risk_primary_last_date: pd.Timestamp | None = None,
 ) -> Tuple[pd.DataFrame, Dict[str, Dict[str, object]]]:
-    """Build frontend-ready columns including ffilled metrics and V2 signals/scores."""
+    """Build frontend-ready columns including legacy V2 and layered V4 scores."""
     df = base_df.copy()
     reserve_risk_disable_lag_days = max(0, int(reserve_risk_disable_lag_days))
 
@@ -539,12 +583,10 @@ def enrich_for_frontend(
         if col not in df.columns:
             df[col] = pd.NA
 
-    # Track last real update date per indicator (before forward-fill).
     for col in metric_cols:
         date_col = f"{col}_date"
         df[date_col] = df["date"].where(df[col].notna(), pd.NaT).ffill()
 
-    # Forward-fill indicator values so latest row stays usable in UI.
     for col in metric_cols:
         df[col] = df[col].ffill()
 
@@ -556,8 +598,19 @@ def enrich_for_frontend(
             else None
         )
 
-    # Track Reserve Risk lag so stale series can be excluded from scoring.
-    df["reserve_risk_lag_days"] = (df["date"] - df["reserve_risk_date"]).dt.days
+    for col in metric_cols:
+        lag_col = f"{col}_lag_days"
+        df[lag_col] = (df["date"] - df[f"{col}_date"]).dt.days
+        freshness_limit = INDICATOR_FRESHNESS_MAX_LAG_DAYS[col]
+        df[f"{col}_freshness_score"] = _freshness_score_series(
+            df[lag_col], freshness_limit
+        )
+        df[f"{col}_is_fresh"] = (
+            pd.to_numeric(df[lag_col], errors="coerce")
+            .fillna(freshness_limit + 1)
+            .le(freshness_limit)
+        )
+
     reserve_primary_date = (
         pd.to_datetime(reserve_risk_primary_last_date)
         if reserve_risk_primary_last_date is not None
@@ -584,7 +637,6 @@ def enrich_for_frontend(
     )
     df["reserve_risk_disable_lag_days"] = reserve_risk_disable_lag_days
 
-    # Derived metrics.
     df["price_200w_ma_ratio"] = df["btc_price"] / df["ma200w"].replace(0, pd.NA)
     df["price_realized_ratio"] = df["btc_price"] / df["realized_price"].replace(
         0, pd.NA
@@ -641,7 +693,6 @@ def enrich_for_frontend(
         trigger_series=sth_mvrv_trigger_series,
         deep_series=sth_mvrv_deep_series,
     )
-    # STH-SOPR and STH-MVRV are highly correlated, so score them as one grouped dimension.
     df["score_sth_group"] = df[["score_sth_sopr", "score_sth_mvrv"]].max(axis=1)
     df["score_puell"] = df["puell_multiple"].apply(
         lambda v: _score_by_lt(
@@ -664,19 +715,20 @@ def enrich_for_frontend(
             THRESHOLD_STATIC["mvrv_zscore"]["deep"],
         )
     )
+    df["lth_mvrv_lag_days"] = (df["date"] - df["lth_mvrv_date"]).dt.days
+    df["mvrv_zscore_lag_days"] = (df["date"] - df["mvrv_zscore_date"]).dt.days
+
+    # Legacy V2/V3 Reserve Risk replacement logic kept for rollback compatibility.
     df["score_reserve_risk_replacement"] = df[
         ["score_lth_mvrv", "score_mvrv_zscore"]
     ].max(axis=1)
-
-    df["lth_mvrv_lag_days"] = (df["date"] - df["lth_mvrv_date"]).dt.days
-    df["mvrv_zscore_lag_days"] = (df["date"] - df["mvrv_zscore_date"]).dt.days
-    replacement_lag = df[["lth_mvrv_lag_days", "mvrv_zscore_lag_days"]].min(
+    replacement_lag_legacy = df[["lth_mvrv_lag_days", "mvrv_zscore_lag_days"]].min(
         axis=1, skipna=True
     )
     replacement_available_mask = (
         df[["lth_mvrv_date", "mvrv_zscore_date"]].notna().any(axis=1)
     )
-    df["reserve_risk_replacement_lag_days"] = replacement_lag.where(
+    df["reserve_risk_replacement_lag_days"] = replacement_lag_legacy.where(
         replacement_available_mask, pd.NA
     )
     df["reserve_risk_replacement_active"] = ~df["reserve_risk_active"] & df[
@@ -695,7 +747,6 @@ def enrich_for_frontend(
         df["reserve_risk_replacement_active"],
         None,
     )
-
     df["reserve_risk_source_mode"] = np.where(
         df["reserve_risk_active"],
         "primary",
@@ -703,14 +754,55 @@ def enrich_for_frontend(
     )
     df["reserve_dimension_active"] = df["reserve_risk_source_mode"] != "inactive"
     df["score_reserve_risk"] = df["score_reserve_risk_primary"]
-    replacement_mask = (
+    legacy_replacement_mask = (
         ~df["reserve_risk_active"] & df["reserve_risk_replacement_active"]
     )
-    df.loc[replacement_mask, "score_reserve_risk"] = df.loc[
-        replacement_mask, "score_reserve_risk_replacement"
+    df.loc[legacy_replacement_mask, "score_reserve_risk"] = df.loc[
+        legacy_replacement_mask, "score_reserve_risk_replacement"
     ]
     df.loc[~df["reserve_dimension_active"], "score_reserve_risk"] = 0
     df["score_reserve_risk"] = df["score_reserve_risk"].fillna(0).astype(int)
+
+    # V4 layered model: Reserve Risk uses soft MVRV Z-Score fallback only.
+    df["reserve_risk_soft_fallback_active"] = (
+        ~df["reserve_risk_active"]
+        & df["mvrv_zscore_date"].notna()
+        & df["mvrv_zscore_is_fresh"]
+    )
+    df["reserve_risk_soft_fallback_source"] = np.where(
+        df["reserve_risk_soft_fallback_active"],
+        "mvrv_zscore_soft",
+        None,
+    )
+    df["score_reserve_risk_v4"] = df["score_reserve_risk_primary"]
+    df.loc[df["reserve_risk_soft_fallback_active"], "score_reserve_risk_v4"] = (
+        df.loc[df["reserve_risk_soft_fallback_active"], "score_mvrv_zscore"]
+        .clip(upper=1)
+        .astype(int)
+    )
+    df.loc[
+        ~(df["reserve_risk_active"] | df["reserve_risk_soft_fallback_active"]),
+        "score_reserve_risk_v4",
+    ] = 0
+    df["score_reserve_risk_v4"] = df["score_reserve_risk_v4"].fillna(0).astype(int)
+    df["max_reserve_risk_score_v4"] = np.where(
+        df["reserve_risk_active"],
+        2,
+        np.where(df["reserve_risk_soft_fallback_active"], 1, 0),
+    ).astype(int)
+    df["reserve_risk_source_mode_v4"] = np.where(
+        df["reserve_risk_active"],
+        "primary",
+        np.where(df["reserve_risk_soft_fallback_active"], "soft_fallback", "inactive"),
+    )
+    df["reserve_dimension_active_v4"] = (
+        df["reserve_risk_source_mode_v4"] != "inactive"
+    )
+    df["reserve_risk_fallback_lag_days_v4"] = np.where(
+        df["reserve_risk_soft_fallback_active"],
+        df["mvrv_zscore_lag_days"],
+        pd.NA,
+    )
 
     thresholds = {
         "priceMa200wRatio": THRESHOLD_STATIC["price_ma200w_ratio"],
@@ -743,13 +835,19 @@ def enrich_for_frontend(
             "deepQuantile": STH_DEEP_QUANTILE,
         },
         "puellMultiple": THRESHOLD_STATIC["puell_multiple"],
-        "reserveRiskReplacement": {
+        "lthMvrv": THRESHOLD_STATIC["lth_mvrv"],
+        "mvrvZscore": THRESHOLD_STATIC["mvrv_zscore"],
+        "reserveRiskReplacementLegacy": {
             "lthMvrv": THRESHOLD_STATIC["lth_mvrv"],
             "mvrvZscore": THRESHOLD_STATIC["mvrv_zscore"],
         },
+        "reserveRiskV4Fallback": {
+            "source": "mvrv_zscore_soft",
+            "maxScore": 1,
+        },
     }
 
-    # Signal flags and composite score.
+    # Legacy V2/V3 signal fields.
     df["signal_price_ma200w"] = df["score_price_ma200w"] > 0
     df["signal_price_realized"] = df["score_price_realized"] > 0
     df["signal_reserve_risk"] = df["score_reserve_risk"] > 0
@@ -757,10 +855,9 @@ def enrich_for_frontend(
     df["signal_sth_mvrv"] = df["score_sth_mvrv"] > 0
     df["signal_sth_group"] = df["score_sth_group"] > 0
     df["signal_puell"] = df["score_puell"] > 0
-
     df["inactive_indicator_count"] = (~df["reserve_dimension_active"]).astype(int)
     df["active_indicator_count"] = (
-        SCORING_INDICATOR_COUNT - df["inactive_indicator_count"]
+        LEGACY_SCORING_INDICATOR_COUNT - df["inactive_indicator_count"]
     )
     df["max_signal_score_v2"] = df["active_indicator_count"] * 2
     df["signal_count"] = df[GROUPED_SIGNAL_COLUMNS].sum(axis=1).astype(int)
@@ -768,14 +865,133 @@ def enrich_for_frontend(
     df["signal_score_v2_min3d"] = (
         df["signal_score_v2"].rolling(window=3, min_periods=3).min()
     )
-    min3d_ratio = (
+    min3d_ratio_legacy = (
         df["signal_score_v2_min3d"] / df["max_signal_score_v2"].replace(0, pd.NA)
     ).fillna(0)
-    df["signal_confirmed_3d"] = min3d_ratio >= SCORE_CONFIRM_RATIO
+    df["signal_confirmed_3d"] = min3d_ratio_legacy >= SCORE_CONFIRM_RATIO
     df["signal_band_v2"] = [
         _classify_score_band(int(score), int(max_score))
         for score, max_score in zip(df["signal_score_v2"], df["max_signal_score_v2"])
     ]
+
+    # V4 layered scores and signals.
+    df["signal_reserve_risk_v4"] = df["score_reserve_risk_v4"] > 0
+    df["signal_lth_mvrv"] = df["score_lth_mvrv"] > 0
+    df["signal_sth_sopr_aux"] = df["score_sth_sopr"] > 0
+    df["valuation_score"] = (
+        df["score_price_ma200w"]
+        + df["score_price_realized"]
+        + df["score_reserve_risk_v4"]
+        + df["score_puell"]
+    ).astype(int)
+    df["max_valuation_score"] = (
+        6 + df["max_reserve_risk_score_v4"]
+    ).astype(int)
+    df["trigger_score"] = df["score_sth_mvrv"].astype(int)
+    df["max_trigger_score"] = 2
+    df["confirmation_score"] = df["score_lth_mvrv"].astype(int)
+    df["max_confirmation_score"] = 2
+    df["auxiliary_score"] = df["score_sth_sopr"].astype(int)
+    df["max_auxiliary_score"] = 2
+    df["active_indicator_count_v4"] = (
+        5 + df["reserve_dimension_active_v4"].astype(int)
+    ).astype(int)
+    df["signal_count_v4"] = (
+        df[
+            [
+                "signal_price_ma200w",
+                "signal_price_realized",
+                "signal_reserve_risk_v4",
+                "signal_sth_mvrv",
+                "signal_lth_mvrv",
+                "signal_puell",
+            ]
+        ]
+        .sum(axis=1)
+        .astype(int)
+    )
+    df["max_total_score_v4"] = (
+        df["max_valuation_score"]
+        + df["max_trigger_score"]
+        + df["max_confirmation_score"]
+    ).astype(int)
+    df["total_score_v4"] = (
+        df["valuation_score"] + df["trigger_score"] + df["confirmation_score"]
+    ).astype(int)
+    df["total_score_v4_min3d"] = (
+        df["total_score_v4"].rolling(window=3, min_periods=3).min()
+    )
+    min3d_ratio_v4 = (
+        df["total_score_v4_min3d"] / df["max_total_score_v4"].replace(0, pd.NA)
+    ).fillna(0)
+    df["signal_confirmed_3d_v4"] = min3d_ratio_v4 >= SCORE_CONFIRM_RATIO
+    df["signal_band_v4"] = [
+        _classify_score_band(int(score), int(max_score))
+        for score, max_score in zip(df["total_score_v4"], df["max_total_score_v4"])
+    ]
+
+    reserve_effective_freshness = df["reserve_risk_freshness_score"].where(
+        df["reserve_risk_active"], df["mvrv_zscore_freshness_score"]
+    )
+    reserve_effective_freshness = reserve_effective_freshness.where(
+        df["reserve_dimension_active_v4"], 0.0
+    ).fillna(0.0)
+    df["data_freshness_score"] = (
+        df[
+            [
+                "btc_price_freshness_score",
+                "realized_price_freshness_score",
+                "ma200w_freshness_score",
+                "sth_mvrv_freshness_score",
+                "lth_mvrv_freshness_score",
+                "puell_multiple_freshness_score",
+            ]
+        ].sum(axis=1)
+        + reserve_effective_freshness
+    ) / 7
+    base_score_ratio = (
+        df["total_score_v4"] / df["max_total_score_v4"].replace(0, pd.NA)
+    ).fillna(0)
+    auxiliary_bonus = np.where(df["signal_sth_sopr_aux"], 0.1, 0.0)
+    confirmation_bonus = np.where(df["signal_confirmed_3d_v4"], 0.1, 0.0)
+    fallback_penalty = np.where(
+        df["reserve_risk_soft_fallback_active"],
+        0.1,
+        np.where(~df["reserve_dimension_active_v4"], 0.2, 0.0),
+    )
+    df["signal_confidence"] = (
+        (
+            0.5 * base_score_ratio
+            + 0.3 * df["data_freshness_score"]
+            + auxiliary_bonus
+            + confirmation_bonus
+            - fallback_penalty
+        )
+        .clip(lower=0, upper=1)
+        .round(4)
+    )
+
+    stale_flags = pd.DataFrame(
+        {
+            "priceMa200w": ~df["ma200w_is_fresh"],
+            "priceRealized": ~df["realized_price_is_fresh"],
+            "reserveRisk": ~df["reserve_dimension_active_v4"],
+            "sthSopr": ~df["sth_sopr_is_fresh"],
+            "sthMvrv": ~df["sth_mvrv_is_fresh"],
+            "lthMvrv": ~df["lth_mvrv_is_fresh"],
+            "puell": ~df["puell_multiple_is_fresh"],
+            "mvrvZscore": ~df["mvrv_zscore_is_fresh"],
+        }
+    )
+    df["stale_indicators"] = [
+        [key for key, is_stale in flags.items() if bool(is_stale)]
+        for flags in stale_flags.to_dict(orient="records")
+    ]
+    df["fallback_mode"] = np.where(
+        df["reserve_risk_soft_fallback_active"],
+        "reserve_risk_soft_fallback",
+        np.where(~df["reserve_dimension_active_v4"], "reserve_risk_inactive", "none"),
+    )
 
     return df, thresholds
 
@@ -788,11 +1004,17 @@ def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
             "price_200w_ma_ratio": "BTC_Price_200W_MA_Ratio",
             "price_realized_ratio": "BTC_Price_Realized_Price_Ratio",
             "reserve_risk": "Reserve_Risk",
+            "lth_mvrv": "LTH_MVRV",
             "sth_sopr": "STH_SOPR",
             "sth_mvrv": "STH_MVRV",
             "puell_multiple": "Puell_Multiple",
             "signal_score_v2": "Signal_Score_V2",
+            "valuation_score": "Valuation_Score_V4",
+            "trigger_score": "Trigger_Score_V4",
+            "confirmation_score": "Confirmation_Score_V4",
+            "total_score_v4": "Total_Score_V4",
             "signal_count": "Signal_Count",
+            "signal_count_v4": "Signal_Count_V4",
         }
     )[
         [
@@ -800,11 +1022,17 @@ def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
             "BTC_Price_200W_MA_Ratio",
             "BTC_Price_Realized_Price_Ratio",
             "Reserve_Risk",
+            "LTH_MVRV",
             "STH_SOPR",
             "STH_MVRV",
             "Puell_Multiple",
             "Signal_Score_V2",
+            "Valuation_Score_V4",
+            "Trigger_Score_V4",
+            "Confirmation_Score_V4",
+            "Total_Score_V4",
             "Signal_Count",
+            "Signal_Count_V4",
         ]
     ].reset_index(drop=True)
 
@@ -842,12 +1070,20 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "signalSthSopr": bool(getattr(row, "signal_sth_sopr")),
                 "signalSthMvrv": bool(getattr(row, "signal_sth_mvrv")),
                 "signalSthGroup": bool(getattr(row, "signal_sth_group")),
+                "signalReserveRiskV4": bool(getattr(row, "signal_reserve_risk_v4")),
+                "signalLthMvrv": bool(getattr(row, "signal_lth_mvrv")),
+                "signalSthSoprAux": bool(getattr(row, "signal_sth_sopr_aux")),
                 "signalPuell": bool(getattr(row, "signal_puell")),
                 "signalCount": int(getattr(row, "signal_count")),
                 "activeIndicatorCount": int(getattr(row, "active_indicator_count")),
+                "signalCountV4": int(getattr(row, "signal_count_v4")),
+                "activeIndicatorCountV4": int(
+                    getattr(row, "active_indicator_count_v4")
+                ),
                 "scorePriceMa200w": int(getattr(row, "score_price_ma200w")),
                 "scorePriceRealized": int(getattr(row, "score_price_realized")),
                 "scoreReserveRisk": int(getattr(row, "score_reserve_risk")),
+                "scoreReserveRiskV4": int(getattr(row, "score_reserve_risk_v4")),
                 "scoreReserveRiskPrimary": int(
                     getattr(row, "score_reserve_risk_primary")
                 ),
@@ -867,6 +1103,30 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 ),
                 "signalConfirmed3d": bool(getattr(row, "signal_confirmed_3d")),
                 "signalBandV2": str(getattr(row, "signal_band_v2")),
+                "valuationScore": int(getattr(row, "valuation_score")),
+                "maxValuationScore": int(getattr(row, "max_valuation_score")),
+                "triggerScore": int(getattr(row, "trigger_score")),
+                "maxTriggerScore": int(getattr(row, "max_trigger_score")),
+                "confirmationScore": int(getattr(row, "confirmation_score")),
+                "maxConfirmationScore": int(
+                    getattr(row, "max_confirmation_score")
+                ),
+                "auxiliaryScore": int(getattr(row, "auxiliary_score")),
+                "maxAuxiliaryScore": int(getattr(row, "max_auxiliary_score")),
+                "totalScoreV4": int(getattr(row, "total_score_v4")),
+                "maxTotalScoreV4": int(getattr(row, "max_total_score_v4")),
+                "totalScoreV4Min3d": _safe_float(
+                    getattr(row, "total_score_v4_min3d")
+                ),
+                "signalConfirmed3dV4": bool(
+                    getattr(row, "signal_confirmed_3d_v4")
+                ),
+                "signalBandV4": str(getattr(row, "signal_band_v4")),
+                "signalConfidence": _safe_float(getattr(row, "signal_confidence")),
+                "dataFreshnessScore": _safe_float(
+                    getattr(row, "data_freshness_score")
+                ),
+                "fallbackMode": str(getattr(row, "fallback_mode")),
                 "reserveRiskActive": bool(getattr(row, "reserve_risk_active")),
                 "reserveRiskReplacementActive": bool(
                     getattr(row, "reserve_risk_replacement_active")
@@ -882,6 +1142,16 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "reserveRiskReplacementLagDays": _safe_int(
                     getattr(row, "reserve_risk_replacement_lag_days")
                 ),
+                "reserveRiskSourceModeV4": str(
+                    getattr(row, "reserve_risk_source_mode_v4")
+                ),
+                "reserveRiskSoftFallbackActive": bool(
+                    getattr(row, "reserve_risk_soft_fallback_active")
+                ),
+                "reserveRiskFallbackLagDaysV4": _safe_int(
+                    getattr(row, "reserve_risk_fallback_lag_days_v4")
+                ),
+                "staleIndicators": list(getattr(row, "stale_indicators")),
                 "api_data_date": {
                     "price_ma200w": _safe_iso_date(getattr(row, "btc_price_date")),
                     "price_realized": _safe_iso_date(
@@ -894,6 +1164,20 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                     "sth_mvrv": _safe_iso_date(getattr(row, "sth_mvrv_date")),
                     "puell": _safe_iso_date(getattr(row, "puell_multiple_date")),
                 },
+                "indicatorDates": {
+                    "priceMa200w": _safe_iso_date(getattr(row, "btc_price_date")),
+                    "priceRealized": _safe_iso_date(
+                        getattr(row, "realized_price_date")
+                    ),
+                    "reserveRisk": _safe_iso_date(getattr(row, "reserve_risk_date")),
+                    "lthMvrv": _safe_iso_date(getattr(row, "lth_mvrv_date")),
+                    "mvrvZscore": _safe_iso_date(getattr(row, "mvrv_zscore_date")),
+                    "sthSopr": _safe_iso_date(getattr(row, "sth_sopr_date")),
+                    "sthMvrv": _safe_iso_date(getattr(row, "sth_mvrv_date")),
+                    "puell": _safe_iso_date(getattr(row, "puell_multiple_date")),
+                },
+                "coreIndicatorSet": INDICATOR_SET,
+                "scoringModelVersion": SCORING_MODEL_VERSION,
             }
         )
 
@@ -927,6 +1211,15 @@ def build_latest_json(
         last.get("reserve_risk_replacement_lag_days")
     )
     reserve_risk_source_mode = str(last.get("reserve_risk_source_mode", "primary"))
+    reserve_risk_source_mode_v4 = str(
+        last.get("reserve_risk_source_mode_v4", "primary")
+    )
+    reserve_risk_soft_fallback_active = bool(
+        last.get("reserve_risk_soft_fallback_active", False)
+    )
+    reserve_risk_fallback_lag_days_v4 = _safe_int(
+        last.get("reserve_risk_fallback_lag_days_v4")
+    )
     lth_mvrv_date = _safe_iso_date(last.get("lth_mvrv_date")) or date_value
     mvrv_zscore_date = _safe_iso_date(last.get("mvrv_zscore_date")) or date_value
 
@@ -936,6 +1229,56 @@ def build_latest_json(
             reserve_risk_effective_date = mvrv_zscore_date
         else:
             reserve_risk_effective_date = lth_mvrv_date
+
+    reserve_risk_effective_date_v4 = reserve_risk_date
+    if reserve_risk_source_mode_v4 == "soft_fallback":
+        reserve_risk_effective_date_v4 = mvrv_zscore_date
+
+    indicator_lag_days = {
+        "priceMa200w": _safe_int(last.get("ma200w_lag_days")),
+        "priceRealized": _safe_int(last.get("realized_price_lag_days")),
+        "reserveRisk": (
+            reserve_risk_lag_days
+            if reserve_risk_source_mode_v4 == "primary"
+            else reserve_risk_fallback_lag_days_v4
+        ),
+        "lthMvrv": _safe_int(last.get("lth_mvrv_lag_days")),
+        "mvrvZscore": _safe_int(last.get("mvrv_zscore_lag_days")),
+        "sthSopr": _safe_int(last.get("sth_sopr_lag_days")),
+        "sthMvrv": _safe_int(last.get("sth_mvrv_lag_days")),
+        "puell": _safe_int(last.get("puell_multiple_lag_days")),
+    }
+    indicator_dates = {
+        "priceMa200w": _safe_iso_date(last["btc_price_date"]) or date_value,
+        "priceRealized": _safe_iso_date(last["realized_price_date"]) or date_value,
+        "reserveRisk": reserve_risk_effective_date_v4,
+        "lthMvrv": lth_mvrv_date,
+        "mvrvZscore": mvrv_zscore_date,
+        "sthSopr": _safe_iso_date(last["sth_sopr_date"]) or date_value,
+        "sthMvrv": _safe_iso_date(last["sth_mvrv_date"]) or date_value,
+        "puell": _safe_iso_date(last["puell_multiple_date"]) or date_value,
+    }
+    stale_indicator_keys = list(last.get("stale_indicators", []))
+    stale_indicators = []
+    freshness_limit_map = {
+        "priceMa200w": INDICATOR_FRESHNESS_MAX_LAG_DAYS["ma200w"],
+        "priceRealized": INDICATOR_FRESHNESS_MAX_LAG_DAYS["realized_price"],
+        "reserveRisk": reserve_risk_disable_lag_days,
+        "lthMvrv": INDICATOR_FRESHNESS_MAX_LAG_DAYS["lth_mvrv"],
+        "mvrvZscore": INDICATOR_FRESHNESS_MAX_LAG_DAYS["mvrv_zscore"],
+        "sthSopr": INDICATOR_FRESHNESS_MAX_LAG_DAYS["sth_sopr"],
+        "sthMvrv": INDICATOR_FRESHNESS_MAX_LAG_DAYS["sth_mvrv"],
+        "puell": INDICATOR_FRESHNESS_MAX_LAG_DAYS["puell_multiple"],
+    }
+    for key in stale_indicator_keys:
+        stale_indicators.append(
+            {
+                "key": key,
+                "lagDays": indicator_lag_days.get(key),
+                "maxLagDays": freshness_limit_map.get(key),
+                "sourceDate": indicator_dates.get(key),
+            }
+        )
 
     inactive_indicators: List[Dict[str, object]] = []
     if reserve_risk_source_mode == "inactive":
@@ -960,6 +1303,18 @@ def build_latest_json(
                 "replacementCandidates": ["lth_mvrv", "mvrv_zscore_data"],
             }
         )
+    if reserve_risk_source_mode_v4 == "inactive":
+        inactive_indicators.append(
+            {
+                "key": "reserveRiskV4",
+                "reason": "primary_source_stale_without_soft_fallback",
+                "sourceDate": reserve_risk_date,
+                "latestDate": date_value,
+                "primaryLagDays": reserve_risk_primary_lag_days,
+                "disableLagDays": reserve_risk_disable_lag_days,
+                "softFallbackCandidate": "mvrv_zscore_soft",
+            }
+        )
 
     latest_payload = {
         "date": date_value,
@@ -976,14 +1331,33 @@ def build_latest_json(
         "puellMultiple": _safe_float(last["puell_multiple"]) or 0.0,
         "signalCount": int(last["signal_count"]),
         "activeIndicatorCount": int(last["active_indicator_count"]),
+        "signalCountV4": int(last["signal_count_v4"]),
+        "activeIndicatorCountV4": int(last["active_indicator_count_v4"]),
         "signalScoreV2": int(last["signal_score_v2"]),
         "maxSignalScoreV2": int(last["max_signal_score_v2"]),
         "signalScoreV2Min3d": _safe_float(last["signal_score_v2_min3d"]),
         "signalConfirmed3d": bool(last["signal_confirmed_3d"]),
         "signalBandV2": str(last["signal_band_v2"]),
+        "valuationScore": int(last["valuation_score"]),
+        "maxValuationScore": int(last["max_valuation_score"]),
+        "triggerScore": int(last["trigger_score"]),
+        "maxTriggerScore": int(last["max_trigger_score"]),
+        "confirmationScore": int(last["confirmation_score"]),
+        "maxConfirmationScore": int(last["max_confirmation_score"]),
+        "auxiliaryScore": int(last["auxiliary_score"]),
+        "maxAuxiliaryScore": int(last["max_auxiliary_score"]),
+        "totalScoreV4": int(last["total_score_v4"]),
+        "maxTotalScoreV4": int(last["max_total_score_v4"]),
+        "totalScoreV4Min3d": _safe_float(last["total_score_v4_min3d"]),
+        "signalConfirmed3dV4": bool(last["signal_confirmed_3d_v4"]),
+        "signalBandV4": str(last["signal_band_v4"]),
+        "signalConfidence": _safe_float(last["signal_confidence"]) or 0.0,
+        "dataFreshnessScore": _safe_float(last["data_freshness_score"]) or 0.0,
+        "fallbackMode": str(last.get("fallback_mode", "none")),
         "scorePriceMa200w": int(last["score_price_ma200w"]),
         "scorePriceRealized": int(last["score_price_realized"]),
         "scoreReserveRisk": int(last["score_reserve_risk"]),
+        "scoreReserveRiskV4": int(last["score_reserve_risk_v4"]),
         "scoreSthSopr": int(last["score_sth_sopr"]),
         "scoreSthMvrv": int(last["score_sth_mvrv"]),
         "scorePuell": int(last["score_puell"]),
@@ -994,14 +1368,20 @@ def build_latest_json(
         "scoreSthGroup": int(last["score_sth_group"]),
         "signalSthGroup": bool(last["signal_sth_group"]),
         "scoringModelVersion": SCORING_MODEL_VERSION,
+        "legacyScoringModelVersion": LEGACY_SCORING_MODEL_VERSION,
         "reserveRiskActive": reserve_risk_active,
         "reserveRiskReplacementActive": reserve_risk_replacement_active,
         "reserveRiskReplacementSource": reserve_risk_replacement_source,
         "reserveRiskReplacementLagDays": reserve_risk_replacement_lag_days,
         "reserveRiskSourceMode": reserve_risk_source_mode,
+        "reserveRiskSourceModeV4": reserve_risk_source_mode_v4,
+        "reserveRiskSoftFallbackActive": reserve_risk_soft_fallback_active,
+        "reserveRiskFallbackLagDaysV4": reserve_risk_fallback_lag_days_v4,
         "reserveRiskLagDays": reserve_risk_lag_days,
         "reserveRiskPrimaryLagDays": reserve_risk_primary_lag_days,
         "inactiveIndicators": inactive_indicators,
+        "staleIndicators": stale_indicators,
+        "indicatorLagDays": indicator_lag_days,
         "signals": {
             "priceMa200w": bool(last["signal_price_ma200w"]),
             "priceRealized": bool(last["signal_price_realized"]),
@@ -1011,14 +1391,18 @@ def build_latest_json(
             "sthGroup": bool(last["signal_sth_group"]),
             "puell": bool(last["signal_puell"]),
         },
-        "indicatorDates": {
-            "priceMa200w": _safe_iso_date(last["btc_price_date"]) or date_value,
-            "priceRealized": _safe_iso_date(last["realized_price_date"]) or date_value,
-            "reserveRisk": reserve_risk_effective_date,
-            "sthSopr": _safe_iso_date(last["sth_sopr_date"]) or date_value,
-            "sthMvrv": _safe_iso_date(last["sth_mvrv_date"]) or date_value,
-            "puell": _safe_iso_date(last["puell_multiple_date"]) or date_value,
+        "signalsV4": {
+            "priceMa200w": bool(last["signal_price_ma200w"]),
+            "priceRealized": bool(last["signal_price_realized"]),
+            "reserveRisk": bool(last["signal_reserve_risk_v4"]),
+            "sthMvrv": bool(last["signal_sth_mvrv"]),
+            "lthMvrv": bool(last["signal_lth_mvrv"]),
+            "puell": bool(last["signal_puell"]),
+            "sthSoprAux": bool(last["signal_sth_sopr_aux"]),
         },
+        "indicatorDates": indicator_dates,
+        "coreIndicatorSet": INDICATOR_SET,
+        "schemaVersion": SCHEMA_VERSION,
         "thresholds": thresholds,
         "lastUpdated": datetime.now(timezone.utc).isoformat(),
     }
@@ -1053,6 +1437,9 @@ def build_manifest_json(
     history_rows: int,
     light_rows: int,
     thresholds: Dict[str, Dict[str, object]],
+    signal_events_rows: int = 0,
+    archived_snapshot_path: str | None = None,
+    archive_root: str | None = None,
 ) -> Dict[str, object]:
     """Build a small manifest for observability/debugging and cache-busting hints."""
     return {
@@ -1061,20 +1448,44 @@ def build_manifest_json(
         "lastUpdated": latest_json.get("lastUpdated"),
         "historyRows": history_rows,
         "historyLightRows": light_rows,
-        "schemaVersion": "v3",
-        "indicatorSet": "core6_bottom_v2_sth_grouped",
+        "signalEventsV4Rows": signal_events_rows,
+        "schemaVersion": SCHEMA_VERSION,
+        "indicatorSet": INDICATOR_SET,
         "scoringModelVersion": latest_json.get(
             "scoringModelVersion", SCORING_MODEL_VERSION
         ),
+        "legacyScoringModelVersion": latest_json.get(
+            "legacyScoringModelVersion", LEGACY_SCORING_MODEL_VERSION
+        ),
         "thresholds": thresholds,
         "activeIndicatorCount": latest_json.get(
-            "activeIndicatorCount", SCORING_INDICATOR_COUNT
+            "activeIndicatorCount", LEGACY_SCORING_INDICATOR_COUNT
         ),
         "maxSignalScoreV2": latest_json.get(
-            "maxSignalScoreV2", SCORING_INDICATOR_COUNT * 2
+            "maxSignalScoreV2", LEGACY_SCORING_INDICATOR_COUNT * 2
         ),
+        "activeIndicatorCountV4": latest_json.get(
+            "activeIndicatorCountV4", SCORING_INDICATOR_COUNT_V4
+        ),
+        "maxTotalScoreV4": latest_json.get(
+            "maxTotalScoreV4", SCORING_INDICATOR_COUNT_V4 * 2
+        ),
+        "signalBandV4": latest_json.get("signalBandV4"),
+        "signalConfidence": latest_json.get("signalConfidence"),
         "reserveRiskSourceMode": latest_json.get("reserveRiskSourceMode", "primary"),
+        "reserveRiskSourceModeV4": latest_json.get(
+            "reserveRiskSourceModeV4", "primary"
+        ),
         "inactiveIndicators": latest_json.get("inactiveIndicators", []),
+        "archive": {
+            "archiveRoot": archive_root,
+            "archivedSnapshotPath": archived_snapshot_path,
+            "rollbackHint": (
+                f"python fetch_btc_indicators_history_files.py --rollback-from {archived_snapshot_path}"
+                if archived_snapshot_path
+                else None
+            ),
+        },
     }
 
 
@@ -1084,6 +1495,134 @@ def write_json(path: Path, payload: object) -> None:
     with path.open("w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
         f.write("\n")
+
+
+def load_json_if_exists(path: Path) -> object | None:
+    if not path.exists():
+        return None
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def archive_existing_outputs(
+    output_paths: Dict[str, Path],
+    archive_root: Path,
+    release_label: str = "",
+) -> Path | None:
+    existing_paths = {key: path for key, path in output_paths.items() if path.exists()}
+    if not existing_paths:
+        return None
+
+    archive_root.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    suffix = f"_{release_label.strip()}" if release_label.strip() else ""
+    snapshot_dir = archive_root / f"snapshot_{timestamp}{suffix}"
+    snapshot_dir.mkdir(parents=True, exist_ok=True)
+
+    latest_payload = load_json_if_exists(existing_paths.get("latest", Path()))
+    manifest_payload = load_json_if_exists(existing_paths.get("manifest", Path()))
+    metadata = {
+        "archivedAt": datetime.now(timezone.utc).isoformat(),
+        "snapshotId": snapshot_dir.name,
+        "previousLatestDate": (
+            latest_payload.get("date")
+            if isinstance(latest_payload, dict)
+            else None
+        ),
+        "previousSchemaVersion": (
+            manifest_payload.get("schemaVersion")
+            if isinstance(manifest_payload, dict)
+            else None
+        ),
+        "previousScoringModelVersion": (
+            manifest_payload.get("scoringModelVersion")
+            if isinstance(manifest_payload, dict)
+            else None
+        ),
+        "releaseLabel": release_label or None,
+        "files": {},
+    }
+
+    for key, path in existing_paths.items():
+        target = snapshot_dir / path.name
+        shutil.copy2(path, target)
+        metadata["files"][key] = {
+            "source": str(path),
+            "snapshot": str(target),
+        }
+
+    write_json(snapshot_dir / ROLLBACK_METADATA_FILE, metadata)
+    return snapshot_dir
+
+
+def restore_outputs_from_archive(
+    snapshot_dir: Path,
+    output_paths: Dict[str, Path],
+) -> Dict[str, Path]:
+    if not snapshot_dir.exists():
+        raise FileNotFoundError(f"Snapshot directory does not exist: {snapshot_dir}")
+
+    restored: Dict[str, Path] = {}
+    for key, target_path in output_paths.items():
+        snapshot_path = snapshot_dir / target_path.name
+        if not snapshot_path.exists():
+            continue
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(snapshot_path, target_path)
+        restored[key] = target_path
+    return restored
+
+
+def build_signal_events_v4_json(frontend_df: pd.DataFrame) -> List[Dict[str, object]]:
+    if frontend_df.empty:
+        return []
+
+    events: List[Dict[str, object]] = []
+    confirmed = frontend_df["signal_confirmed_3d_v4"].fillna(False).astype(bool)
+    starts = frontend_df.index[confirmed & ~confirmed.shift(1, fill_value=False)]
+
+    for start_idx in starts.tolist():
+        end_idx = start_idx
+        while (
+            end_idx + 1 < len(frontend_df)
+            and bool(frontend_df.iloc[end_idx + 1]["signal_confirmed_3d_v4"])
+        ):
+            end_idx += 1
+
+        start_row = frontend_df.iloc[start_idx]
+        window = frontend_df.iloc[start_idx : end_idx + 1]
+        entry_price = _safe_float(start_row.get("btc_price")) or 0.0
+        event: Dict[str, object] = {
+            "startDate": _safe_iso_date(start_row.get("date")),
+            "endDate": _safe_iso_date(frontend_df.iloc[end_idx].get("date")),
+            "days": int(end_idx - start_idx + 1),
+            "entryPrice": entry_price,
+            "signalBandV4": str(start_row.get("signal_band_v4")),
+            "signalConfidence": _safe_float(start_row.get("signal_confidence")),
+            "valuationScore": int(start_row.get("valuation_score")),
+            "triggerScore": int(start_row.get("trigger_score")),
+            "confirmationScore": int(start_row.get("confirmation_score")),
+            "totalScoreV4": int(start_row.get("total_score_v4")),
+            "maxTotalScoreV4": int(start_row.get("max_total_score_v4")),
+            "fallbackMode": str(start_row.get("fallback_mode")),
+            "maxScoreDuringEvent": int(window["total_score_v4"].max()),
+            "minPriceDuringEvent": _safe_float(window["btc_price"].min()),
+        }
+
+        for horizon in [30, 90, 180, 365]:
+            target_idx = min(start_idx + horizon, len(frontend_df) - 1)
+            target_price = _safe_float(frontend_df.iloc[target_idx].get("btc_price"))
+            if entry_price > 0 and target_price is not None:
+                event[f"return{horizon}d"] = round((target_price / entry_price) - 1, 6)
+            else:
+                event[f"return{horizon}d"] = None
+
+        events.append(event)
+
+    return events
 
 
 def save_tabular_outputs(
@@ -1205,9 +1744,34 @@ def main() -> int:
         help="Frontend manifest JSON output path.",
     )
     parser.add_argument(
+        "--signal-events-v4-json-path",
+        default=SIGNAL_EVENTS_V4_JSON_PATH_DEFAULT,
+        help="V4 event backtest JSON output path.",
+    )
+    parser.add_argument(
         "--skip-tabular",
         action="store_true",
         help="Skip CSV/XLSX outputs and only write frontend JSON files.",
+    )
+    parser.add_argument(
+        "--archive-root",
+        default=ARCHIVE_ROOT_DEFAULT,
+        help="Directory used to archive current JSON outputs before overwrite.",
+    )
+    parser.add_argument(
+        "--release-label",
+        default="",
+        help="Optional suffix added to archived snapshot directory names.",
+    )
+    parser.add_argument(
+        "--skip-archive",
+        action="store_true",
+        help="Do not archive current JSON outputs before writing a new release.",
+    )
+    parser.add_argument(
+        "--rollback-from",
+        default="",
+        help="Restore JSON outputs from a previously archived snapshot directory and exit.",
     )
     parser.add_argument(
         "--reserve-risk-disable-lag-days",
@@ -1219,6 +1783,29 @@ def main() -> int:
         ),
     )
     args = parser.parse_args()
+
+    history_path = Path(args.history_json_path)
+    history_light_path = Path(args.history_light_json_path)
+    latest_path = Path(args.latest_json_path)
+    manifest_path = Path(args.manifest_json_path)
+    signal_events_v4_path = Path(args.signal_events_v4_json_path)
+    output_paths = {
+        "history": history_path,
+        "historyLight": history_light_path,
+        "latest": latest_path,
+        "manifest": manifest_path,
+        "signalEventsV4": signal_events_v4_path,
+    }
+
+    if args.rollback_from:
+        restored = restore_outputs_from_archive(Path(args.rollback_from), output_paths)
+        if not restored:
+            print(f"No matching output files found in snapshot: {args.rollback_from}")
+            return 1
+        print("Rollback completed.")
+        for key, path in restored.items():
+            print(f"  - restored {key}: {path}")
+        return 0
 
     base_df, sources, reserve_primary_last_date = build_base_dataframe(
         args.start_date, args.end_date
@@ -1237,7 +1824,6 @@ def main() -> int:
     history_json = dataframe_to_history_json(frontend_df)
 
     # Merge with existing history to preserve rows no longer returned by the API
-    history_path = Path(args.history_json_path)
     if history_path.exists():
         try:
             with history_path.open("r", encoding="utf-8") as f:
@@ -1263,20 +1849,28 @@ def main() -> int:
     history_light_json = build_light_history_json(
         history_json, years=max(1, args.history_light_years)
     )
+    signal_events_v4_json = build_signal_events_v4_json(frontend_df)
+    archived_snapshot = None
+    if not args.skip_archive:
+        archived_snapshot = archive_existing_outputs(
+            output_paths=output_paths,
+            archive_root=Path(args.archive_root),
+            release_label=args.release_label,
+        )
     manifest_json = build_manifest_json(
         latest_json=latest_json,
         history_rows=len(history_json),
         light_rows=len(history_light_json),
         thresholds=thresholds,
+        signal_events_rows=len(signal_events_v4_json),
+        archived_snapshot_path=str(archived_snapshot) if archived_snapshot else None,
+        archive_root=args.archive_root,
     )
-
-    history_light_path = Path(args.history_light_json_path)
-    latest_path = Path(args.latest_json_path)
-    manifest_path = Path(args.manifest_json_path)
     write_json(history_path, history_json)
     write_json(history_light_path, history_light_json)
     write_json(latest_path, latest_json)
     write_json(manifest_path, manifest_json)
+    write_json(signal_events_v4_path, signal_events_v4_json)
 
     saved_files: Dict[str, Path] = {}
     if not args.skip_tabular:

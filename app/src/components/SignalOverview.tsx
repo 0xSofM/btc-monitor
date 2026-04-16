@@ -10,7 +10,18 @@ interface SignalOverviewProps {
   totalIndicators: number;
   signalScoreV2?: number;
   maxSignalScoreV2?: number;
+  totalScoreV4?: number;
+  maxTotalScoreV4?: number;
+  valuationScore?: number;
+  maxValuationScore?: number;
+  triggerScore?: number;
+  maxTriggerScore?: number;
+  confirmationScore?: number;
+  maxConfirmationScore?: number;
+  signalConfidence?: number;
+  fallbackMode?: string;
   signalConfirmed3d?: boolean;
+  signalConfirmed3dV4?: boolean;
   dataTimestampLabel: string;
   dataSource: 'api' | 'static' | 'history';
   latestDataDate: string;
@@ -131,7 +142,18 @@ export function SignalOverview({
   totalIndicators,
   signalScoreV2 = 0,
   maxSignalScoreV2 = 10,
+  totalScoreV4,
+  maxTotalScoreV4,
+  valuationScore = 0,
+  maxValuationScore = 8,
+  triggerScore = 0,
+  maxTriggerScore = 2,
+  confirmationScore = 0,
+  maxConfirmationScore = 2,
+  signalConfidence,
+  fallbackMode,
   signalConfirmed3d = false,
+  signalConfirmed3dV4 = false,
   dataTimestampLabel,
   dataSource,
   latestDataDate,
@@ -139,12 +161,20 @@ export function SignalOverview({
   laggingIndicators,
   oldestIndicatorDate,
 }: SignalOverviewProps) {
-  const thresholds = resolveScoreThresholds(maxSignalScoreV2);
-  const status = getSignalStatus(signalScoreV2, signalCount, maxSignalScoreV2);
+  const effectiveScore = totalScoreV4 ?? signalScoreV2;
+  const effectiveMaxScore = maxTotalScoreV4 ?? maxSignalScoreV2;
+  const thresholds = resolveScoreThresholds(effectiveMaxScore);
+  const status = getSignalStatus(effectiveScore, signalCount, effectiveMaxScore);
   const sourceBadge = getSourceBadge(dataSource);
   const freshnessBadge = getFreshnessBadge(latestDataAgeHours);
   const hasLaggingIndicators = laggingIndicators.length > 0;
-  const scoreProgress = Math.max(0, Math.min(100, (signalScoreV2 / Math.max(1, maxSignalScoreV2)) * 100));
+  const scoreProgress = Math.max(0, Math.min(100, (effectiveScore / Math.max(1, effectiveMaxScore)) * 100));
+  const confidencePercent = signalConfidence === undefined ? null : Math.round(signalConfidence * 100);
+  const fallbackLabel = fallbackMode === 'reserve_risk_soft_fallback'
+    ? '储备风险已切换为 MVRV Z-Score 软回退'
+    : fallbackMode === 'reserve_risk_inactive'
+      ? '储备风险暂时不计入 V4 总分'
+      : null;
 
   return (
     <Card className="surface-card mb-6">
@@ -153,7 +183,7 @@ export function SignalOverview({
           <div>
             <CardTitle className="text-lg font-semibold">信号总览</CardTitle>
             <p className="mt-1 text-sm text-muted-foreground">
-              基于 Core-6 指标与短期分组计分，并附带数据一致性校验，用于大周期底部监测。
+              基于 Core-6 V4 分层模型，分别追踪估值、触发与确认三层状态。
             </p>
           </div>
 
@@ -192,22 +222,41 @@ export function SignalOverview({
               {signalCount}
               <span className="ml-1 text-sm font-normal text-muted-foreground">/ {totalIndicators}</span>
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">V2 加权评分：{signalScoreV2}/{maxSignalScoreV2}</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {totalScoreV4 !== undefined ? `V4 总分：${effectiveScore}/${effectiveMaxScore}` : `V2 加权评分：${signalScoreV2}/${maxSignalScoreV2}`}
+            </p>
           </article>
 
           <article className="rounded-xl border bg-background/70 p-4">
             <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
               <span className={`rounded-full p-1 ${status.iconToneClass}`}>
-                {signalScoreV2 >= thresholds.accumulate ? <CheckCircle2 className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}
+                {effectiveScore >= thresholds.accumulate ? <CheckCircle2 className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}
               </span>
               市场状态
             </div>
             <p className={`text-2xl font-bold ${status.toneClass}`}>{status.label}</p>
-            <p className={`mt-1 text-xs ${signalConfirmed3d ? 'text-emerald-600 dark:text-emerald-300' : 'text-muted-foreground'}`}>
-              {signalConfirmed3d ? '已满足 3 日确认' : '尚未满足 3 日确认'}
+            <p className={`mt-1 text-xs ${(signalConfirmed3dV4 || signalConfirmed3d) ? 'text-emerald-600 dark:text-emerald-300' : 'text-muted-foreground'}`}>
+              {(signalConfirmed3dV4 || signalConfirmed3d) ? '已满足 3 日确认' : '尚未满足 3 日确认'}
             </p>
           </article>
         </section>
+
+        {totalScoreV4 !== undefined && (
+          <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <article className="rounded-xl border bg-background/70 p-4">
+              <p className="text-sm text-muted-foreground">估值层</p>
+              <p className="mt-1 text-xl font-semibold">{valuationScore}/{maxValuationScore}</p>
+            </article>
+            <article className="rounded-xl border bg-background/70 p-4">
+              <p className="text-sm text-muted-foreground">触发层</p>
+              <p className="mt-1 text-xl font-semibold">{triggerScore}/{maxTriggerScore}</p>
+            </article>
+            <article className="rounded-xl border bg-background/70 p-4">
+              <p className="text-sm text-muted-foreground">确认层</p>
+              <p className="mt-1 text-xl font-semibold">{confirmationScore}/{maxConfirmationScore}</p>
+            </article>
+          </section>
+        )}
 
         <section className="rounded-xl border bg-muted/30 p-4">
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
@@ -229,11 +278,22 @@ export function SignalOverview({
               {totalIndicators} 个核心指标均已对齐到最新记录日期。
             </p>
           )}
+
+          {(confidencePercent !== null || fallbackLabel) && (
+            <div className="mt-3 flex flex-wrap gap-3 text-sm">
+              {confidencePercent !== null && (
+                <span className="text-muted-foreground">信号置信度：{confidencePercent}%</span>
+              )}
+              {fallbackLabel && (
+                <span className="text-amber-700 dark:text-amber-300">{fallbackLabel}</span>
+              )}
+            </div>
+          )}
         </section>
 
         <section>
           <div className="mb-2 flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">V2 评分强度</span>
+            <span className="text-muted-foreground">{totalScoreV4 !== undefined ? 'V4 评分强度' : 'V2 评分强度'}</span>
             <span className="font-semibold">{scoreProgress.toFixed(0)}%</span>
           </div>
           <Progress value={scoreProgress} className="h-2.5" />
@@ -241,7 +301,7 @@ export function SignalOverview({
             <span>0-{Math.max(0, thresholds.focus - 1)} 观察</span>
             <span>{thresholds.focus}-{Math.max(thresholds.focus, thresholds.accumulate - 1)} 关注</span>
             <span>{thresholds.accumulate}-{Math.max(thresholds.accumulate, thresholds.extreme - 1)} 分批</span>
-            <span>{thresholds.extreme}-{maxSignalScoreV2} 极端</span>
+            <span>{thresholds.extreme}-{effectiveMaxScore} 极端</span>
           </div>
         </section>
       </CardContent>

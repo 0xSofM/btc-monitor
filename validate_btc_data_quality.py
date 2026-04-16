@@ -25,6 +25,7 @@ CRITICAL_FIELDS = [
     "priceMa200wRatio",
     "priceRealizedRatio",
     "reserveRisk",
+    "lthMvrv",
     "sthSopr",
     "sthMvrv",
     "puellMultiple",
@@ -34,6 +35,7 @@ INDICATOR_DATE_FIELDS = {
     "priceMa200w": ("priceMa200w", "price_ma200w"),
     "priceRealized": ("priceRealized", "price_realized"),
     "reserveRisk": ("reserveRisk", "reserve_risk"),
+    "lthMvrv": ("lthMvrv", "lth_mvrv"),
     "sthSopr": ("sthSopr", "sth_sopr"),
     "sthMvrv": ("sthMvrv", "sth_mvrv"),
     "puell": ("puell", "puell"),
@@ -194,6 +196,64 @@ def compute_signal_score_from_latest_payload(latest: Dict[str, Any]) -> int | No
     )
 
 
+def compute_signal_count_v4_from_row(row: Dict[str, Any]) -> int:
+    return sum(
+        [
+            bool(row.get("signalPriceMa200w") or row.get("signalPriceMa")),
+            bool(row.get("signalPriceRealized")),
+            bool(row.get("signalReserveRiskV4")),
+            bool(row.get("signalSthMvrv")),
+            bool(row.get("signalLthMvrv")),
+            bool(row.get("signalPuell")),
+        ]
+    )
+
+
+def compute_signal_count_v4_from_latest(latest: Dict[str, Any]) -> int:
+    signals = latest.get("signalsV4")
+    if not isinstance(signals, dict):
+        return -1
+
+    return sum(
+        [
+            bool(signals.get("priceMa200w")),
+            bool(signals.get("priceRealized")),
+            bool(signals.get("reserveRisk")),
+            bool(signals.get("sthMvrv")),
+            bool(signals.get("lthMvrv")),
+            bool(signals.get("puell")),
+        ]
+    )
+
+
+def compute_total_score_v4_from_row(row: Dict[str, Any]) -> int | None:
+    required = ("valuationScore", "triggerScore", "confirmationScore")
+    if not any(row.get(key) is not None for key in required):
+        return None
+
+    return sum(
+        [
+            _as_int(row.get("valuationScore")),
+            _as_int(row.get("triggerScore")),
+            _as_int(row.get("confirmationScore")),
+        ]
+    )
+
+
+def compute_total_score_v4_from_latest(latest: Dict[str, Any]) -> int | None:
+    required = ("valuationScore", "triggerScore", "confirmationScore")
+    if not any(latest.get(key) is not None for key in required):
+        return None
+
+    return sum(
+        [
+            _as_int(latest.get("valuationScore")),
+            _as_int(latest.get("triggerScore")),
+            _as_int(latest.get("confirmationScore")),
+        ]
+    )
+
+
 def validate_history_structure(history: List[Dict[str, Any]], errors: List[str]) -> None:
     if not history:
         errors.append("Current history is empty.")
@@ -250,6 +310,26 @@ def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str,
                 )
                 break
 
+        if "signalCountV4" in row:
+            count_v4_expected = compute_signal_count_v4_from_row(row)
+            count_v4_actual = row.get("signalCountV4")
+            if count_v4_actual is None or int(count_v4_actual) != count_v4_expected:
+                errors.append(
+                    f"Row {idx} signalCountV4 mismatch: expected {count_v4_expected}, got {count_v4_actual}."
+                )
+                break
+
+        if "totalScoreV4" in row:
+            total_v4_expected = compute_total_score_v4_from_row(row)
+            total_v4_actual = row.get("totalScoreV4")
+            if total_v4_expected is not None and (
+                total_v4_actual is None or int(total_v4_actual) != total_v4_expected
+            ):
+                errors.append(
+                    f"Row {idx} totalScoreV4 mismatch: expected {total_v4_expected}, got {total_v4_actual}."
+                )
+                break
+
     latest_expected = compute_signal_count_from_latest(latest)
     latest_actual = latest.get("signalCount")
     if latest_expected < 0:
@@ -270,6 +350,26 @@ def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str,
         ):
             errors.append(
                 f"Latest signalScoreV2 mismatch: expected {latest_score_expected}, got {latest_score_actual}."
+            )
+
+    if "signalCountV4" in latest:
+        latest_count_v4_expected = compute_signal_count_v4_from_latest(latest)
+        latest_count_v4_actual = latest.get("signalCountV4")
+        if latest_count_v4_expected < 0:
+            errors.append("Latest payload missing 'signalsV4' object.")
+        elif latest_count_v4_actual is None or int(latest_count_v4_actual) != latest_count_v4_expected:
+            errors.append(
+                f"Latest signalCountV4 mismatch: expected {latest_count_v4_expected}, got {latest_count_v4_actual}."
+            )
+
+    if "totalScoreV4" in latest:
+        latest_total_v4_expected = compute_total_score_v4_from_latest(latest)
+        latest_total_v4_actual = latest.get("totalScoreV4")
+        if latest_total_v4_expected is not None and (
+            latest_total_v4_actual is None or int(latest_total_v4_actual) != latest_total_v4_expected
+        ):
+            errors.append(
+                f"Latest totalScoreV4 mismatch: expected {latest_total_v4_expected}, got {latest_total_v4_actual}."
             )
 
 

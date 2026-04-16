@@ -1,12 +1,19 @@
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import pandas as pd
 
 from fetch_btc_indicators_history_files import (
+    _classify_score_band,
+    archive_existing_outputs,
+    build_signal_events_v4_json,
     build_latest_json,
     build_light_history_json,
     dataframe_to_history_json,
     enrich_for_frontend,
+    restore_outputs_from_archive,
+    write_json,
 )
 
 
@@ -46,6 +53,11 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(int(enriched.iloc[2]["signal_score_v2"]), 10)
         self.assertEqual(int(enriched.iloc[2]["score_sth_group"]), 2)
         self.assertTrue(bool(enriched.iloc[2]["signal_sth_group"]))
+        self.assertEqual(int(enriched.iloc[2]["signal_count_v4"]), 6)
+        self.assertEqual(int(enriched.iloc[2]["active_indicator_count_v4"]), 6)
+        self.assertEqual(int(enriched.iloc[2]["total_score_v4"]), 11)
+        self.assertEqual(str(enriched.iloc[2]["signal_band_v4"]), "extreme_bottom")
+        self.assertGreaterEqual(float(enriched.iloc[2]["signal_confidence"]), 0.8)
 
     def test_history_json_contains_expected_fields(self) -> None:
         enriched, _ = enrich_for_frontend(self.build_base_df())
@@ -62,6 +74,11 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertIn("api_data_date", last)
         self.assertEqual(last["api_data_date"]["sth_mvrv"], "2024-01-02")
         self.assertEqual(last["api_data_date"]["price_realized"], "2024-01-03")
+        self.assertEqual(last["signalCountV4"], 6)
+        self.assertEqual(last["activeIndicatorCountV4"], 6)
+        self.assertEqual(last["totalScoreV4"], 11)
+        self.assertTrue(last["signalLthMvrv"])
+        self.assertEqual(last["indicatorDates"]["lthMvrv"], "2024-01-03")
 
     def test_build_latest_json_uses_latest_row(self) -> None:
         enriched, thresholds = enrich_for_frontend(self.build_base_df())
@@ -83,6 +100,13 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(int(latest["scoreSthGroup"]), 2)
         self.assertEqual(latest["indicatorDates"]["sthMvrv"], "2024-01-02")
         self.assertEqual(latest["indicatorDates"]["priceRealized"], "2024-01-03")
+        self.assertEqual(latest["indicatorDates"]["lthMvrv"], "2024-01-03")
+        self.assertEqual(int(latest["signalCountV4"]), 6)
+        self.assertEqual(int(latest["activeIndicatorCountV4"]), 6)
+        self.assertEqual(int(latest["totalScoreV4"]), 11)
+        self.assertTrue(bool(latest["signalsV4"]["lthMvrv"]))
+        self.assertEqual(str(latest["scoringModelVersion"]), "v4_layered_core6")
+        self.assertEqual(str(latest["legacyScoringModelVersion"]), "v3_no_lookahead_replacement")
 
     def test_build_light_history_json_filters_old_rows(self) -> None:
         history = [
@@ -108,6 +132,11 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(int(latest["activeIndicatorCount"]), 5)
         self.assertEqual(int(latest["maxSignalScoreV2"]), 10)
         self.assertEqual(int(latest["scoreReserveRisk"]), 2)
+        self.assertTrue(bool(latest["reserveRiskSoftFallbackActive"]))
+        self.assertEqual(str(latest["reserveRiskSourceModeV4"]), "soft_fallback")
+        self.assertEqual(int(latest["scoreReserveRiskV4"]), 1)
+        self.assertEqual(int(latest["activeIndicatorCountV4"]), 6)
+        self.assertEqual(int(latest["maxTotalScoreV4"]), 11)
 
     def test_reserve_risk_stale_without_replacement_reduces_dimensions(self) -> None:
         base = self.build_base_df().copy()
@@ -125,6 +154,47 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(int(latest["activeIndicatorCount"]), 4)
         self.assertEqual(int(latest["maxSignalScoreV2"]), 8)
         self.assertEqual(int(latest["scoreReserveRisk"]), 0)
+        self.assertFalse(bool(latest["reserveRiskSoftFallbackActive"]))
+        self.assertEqual(str(latest["reserveRiskSourceModeV4"]), "inactive")
+        self.assertEqual(int(latest["activeIndicatorCountV4"]), 5)
+        self.assertEqual(int(latest["maxTotalScoreV4"]), 10)
+
+    def test_classify_score_band_handles_dynamic_gaps(self) -> None:
+        self.assertEqual(_classify_score_band(8, 10), "accumulate")
+        self.assertEqual(_classify_score_band(6, 8), "accumulate")
+        self.assertEqual(_classify_score_band(7, 8), "extreme_bottom")
+
+    def test_build_signal_events_v4_returns_confirmed_event_windows(self) -> None:
+        enriched, _ = enrich_for_frontend(self.build_base_df())
+        enriched.loc[:, "signal_confirmed_3d_v4"] = [False, False, True]
+        events = build_signal_events_v4_json(enriched)
+
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["startDate"], "2024-01-03")
+        self.assertEqual(events[0]["signalBandV4"], "extreme_bottom")
+        self.assertEqual(events[0]["maxTotalScoreV4"], 12)
+
+    def test_archive_and_restore_outputs(self) -> None:
+        with TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            output_paths = {
+                "latest": root / "btc_indicators_latest.json",
+                "manifest": root / "btc_indicators_manifest.json",
+            }
+            write_json(output_paths["latest"], {"date": "2024-01-01", "value": 1})
+            write_json(
+                output_paths["manifest"],
+                {"schemaVersion": "v3", "scoringModelVersion": "v3_no_lookahead_replacement"},
+            )
+
+            snapshot_dir = archive_existing_outputs(output_paths, root / "archive", "test")
+            self.assertIsNotNone(snapshot_dir)
+            self.assertTrue((snapshot_dir / "btc_indicators_latest.json").exists())
+
+            write_json(output_paths["latest"], {"date": "2024-01-02", "value": 2})
+            restored = restore_outputs_from_archive(snapshot_dir, output_paths)
+            self.assertIn("latest", restored)
+            self.assertIn("2024-01-01", Path(restored["latest"]).read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

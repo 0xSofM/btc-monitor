@@ -1,47 +1,115 @@
-﻿/**
- * Vercel Edge Function - BTC data proxy with backup price feeds.
- *
- * Primary source:
- *   - bitcoin-data.com
- *
- * Backup strategy:
- *   1. BTC spot price falls back to Coinbase, then CoinGecko.
- *   2. Slow on-chain indicators fall back to the latest static snapshot.
- *   3. The response keeps real per-indicator dates so the UI can show staleness.
+/**
+ * Vercel Edge Function - BTC runtime V4 proxy.
  */
 
 export const config = {
   runtime: 'edge',
 };
 
-const API_BASE_URL = 'https://bitcoin-data.com';
-const COINBASE_SPOT_URL = 'https://api.coinbase.com/v2/prices/BTC-USD/spot';
-const COINGECKO_SPOT_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd';
+// SECTION: constants
 const CACHE_DURATION = 300;
 const UPSTREAM_TIMEOUT_MS = 8000;
+const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
+const STATIC_HISTORY_LIGHT_PATH = '/btc_indicators_history_light.json';
+const COINBASE_SPOT_URL = 'https://api.coinbase.com/v2/prices/BTC-USD/spot';
+const COINGECKO_SPOT_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd';
+const RESERVE_RISK_DISABLE_LAG_DAYS = 30;
+const SCORE_CONFIRM_RATIO = 7 / 12;
+const SCHEMA_VERSION = 'v4';
+const SCORING_MODEL_VERSION = 'v4_layered_core6';
+const LEGACY_SCORING_MODEL_VERSION = 'v3_no_lookahead_replacement';
+const CORE_INDICATOR_SET = 'core6_bottom_v4_layered';
 
-const INDICATOR_ROUTE_MAP = {
-  '/btc-data/v1/mvrv-zscore/1': {
-    upstreamPath: '/v1/mvrv-zscore/1',
-    dataKey: 'mvrvZscore',
-    dateKey: 'mvrvZ',
+const BGEOMETRICS_SERIES = {
+  btcPrice: {
+    dataKey: 'btcPrice',
+    urls: ['https://charts.bgeometrics.com/files/moving_average_price.json'],
   },
-  '/btc-data/v1/lth-mvrv/1': {
-    upstreamPath: '/v1/lth-mvrv/1',
+  ma200w: {
+    dataKey: 'ma200w',
+    urls: ['https://charts.bgeometrics.com/files/200wma.json'],
+  },
+  realizedPrice: {
+    dataKey: 'realizedPrice',
+    urls: ['https://charts.bgeometrics.com/files/realized_price.json'],
+  },
+  reserveRisk: {
+    dataKey: 'reserveRisk',
+    urls: ['https://charts.bgeometrics.com/files/reserve_risk.json'],
+  },
+  lthMvrv: {
     dataKey: 'lthMvrv',
-    dateKey: 'lthMvrv',
+    urls: ['https://charts.bgeometrics.com/files/lth_mvrv.json'],
   },
-  '/btc-data/v1/puell-multiple/1': {
-    upstreamPath: '/v1/puell-multiple/1',
+  mvrvZscore: {
+    dataKey: 'mvrvZscore',
+    urls: ['https://charts.bgeometrics.com/files/mvrv_zscore_data.json'],
+  },
+  sthSopr: {
+    dataKey: 'sthSopr',
+    urls: ['https://charts.bgeometrics.com/files/sth_sopr.json'],
+  },
+  sthMvrv: {
+    dataKey: 'sthMvrv',
+    urls: ['https://charts.bgeometrics.com/files/sth_mvrv.json'],
+  },
+  puellMultiple: {
     dataKey: 'puellMultiple',
-    dateKey: 'puell',
-  },
-  '/btc-data/v1/nupl/1': {
-    upstreamPath: '/v1/nupl/1',
-    dataKey: 'nupl',
-    dateKey: 'nupl',
+    urls: [
+      'https://charts.bgeometrics.com/files/puell_multiple_data.json',
+      'https://charts.bgeometrics.com/files/puell_multiple_7dma.json',
+    ],
   },
 };
+
+const RESERVE_RISK_BACKUP_URLS = [
+  'https://bitcoin-data.com/v1/reserve-risk/1',
+  'https://r.jina.ai/http://bitcoin-data.com/v1/reserve-risk/1',
+];
+
+const INDICATOR_ROUTE_MAP = {
+  '/btc-data/v1/mvrv-zscore/1': { seriesKey: 'mvrvZscore', dataKey: 'mvrvZscore', dateKey: 'mvrvZscore' },
+  '/btc-data/v1/lth-mvrv/1': { seriesKey: 'lthMvrv', dataKey: 'lthMvrv', dateKey: 'lthMvrv' },
+  '/btc-data/v1/puell-multiple/1': { seriesKey: 'puellMultiple', dataKey: 'puellMultiple', dateKey: 'puell' },
+  '/btc-data/v1/reserve-risk/1': { seriesKey: 'reserveRisk', dataKey: 'reserveRisk', dateKey: 'reserveRisk' },
+  '/btc-data/v1/realized-price/1': { seriesKey: 'realizedPrice', dataKey: 'realizedPrice', dateKey: 'priceRealized' },
+  '/btc-data/v1/sth-sopr/1': { seriesKey: 'sthSopr', dataKey: 'sthSopr', dateKey: 'sthSopr' },
+  '/btc-data/v1/sth-mvrv/1': { seriesKey: 'sthMvrv', dataKey: 'sthMvrv', dateKey: 'sthMvrv' },
+  '/btc-data/v1/200wma/1': { seriesKey: 'ma200w', dataKey: 'ma200w', dateKey: 'priceMa200w' },
+};
+
+const DEFAULT_THRESHOLDS = {
+  priceMa200wRatio: { trigger: 1, deep: 0.85 },
+  priceRealizedRatio: { trigger: 1, deep: 0.9 },
+  reserveRisk: { trigger: 0.0016, deep: 0.0012 },
+  sthSopr: { trigger: 1, deep: 0.97 },
+  sthMvrv: { trigger: 1, deep: 0.85 },
+  puellMultiple: { trigger: 0.6, deep: 0.5 },
+  lthMvrv: { trigger: 1, deep: 0.9 },
+  mvrvZscore: { trigger: 0, deep: -0.5 },
+  reserveRiskV4Fallback: { source: 'mvrv_zscore_soft', maxScore: 1 },
+};
+
+const FRESHNESS_LIMITS = {
+  btcPrice: 2,
+  ma200w: 7,
+  realizedPrice: 7,
+  reserveRisk: RESERVE_RISK_DISABLE_LAG_DAYS,
+  lthMvrv: 7,
+  mvrvZscore: 7,
+  sthSopr: 7,
+  sthMvrv: 7,
+  puellMultiple: 7,
+};
+
+// SECTION: helpers
+function asRecord(value) {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  return value;
+}
 
 function toNumber(value, fallback = 0) {
   if (typeof value === 'number' && Number.isFinite(value)) {
@@ -54,6 +122,36 @@ function toNumber(value, fallback = 0) {
   }
 
   return fallback;
+}
+
+function toNumberOrNull(value) {
+  if (value === null || value === undefined || value === '') {
+    return null;
+  }
+
+  const parsed = toNumber(value, Number.NaN);
+  return Number.isNaN(parsed) ? null : parsed;
+}
+
+function asString(value) {
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    return trimmed || undefined;
+  }
+
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return String(value);
+  }
+
+  return undefined;
+}
+
+function round(value, digits = 4) {
+  if (!Number.isFinite(value)) {
+    return 0;
+  }
+
+  return Number(value.toFixed(digits));
 }
 
 function getTodayUtcDate() {
@@ -73,68 +171,6 @@ function withTimeout(init = {}, timeoutMs = UPSTREAM_TIMEOUT_MS) {
   };
 }
 
-function normalizeLatestSnapshot(snapshot) {
-  if (!snapshot || typeof snapshot !== 'object') {
-    return null;
-  }
-
-  const date = snapshot.date ?? snapshot.d;
-  if (!date) {
-    return null;
-  }
-
-  const indicatorDates = snapshot.indicatorDates ?? snapshot.api_data_date ?? snapshot.apiDataDate ?? {};
-
-  const btcPrice = toNumber(snapshot.btcPrice ?? snapshot.btc_price);
-  const priceMa200wRatio = toNumber(snapshot.priceMa200wRatio ?? snapshot.price_ma200w_ratio);
-  const mvrvZscore = toNumber(snapshot.mvrvZscore ?? snapshot.mvrv_zscore);
-  const lthMvrv = toNumber(snapshot.lthMvrv ?? snapshot.lth_mvrv);
-  const puellMultiple = toNumber(snapshot.puellMultiple ?? snapshot.puell_multiple);
-  const nupl = toNumber(snapshot.nupl);
-  const ma200w = snapshot.ma200w === undefined || snapshot.ma200w === null
-    ? undefined
-    : toNumber(snapshot.ma200w);
-
-  const signals = {
-    priceMa200w: typeof snapshot.signals?.priceMa200w === 'boolean'
-      ? snapshot.signals.priceMa200w
-      : (typeof snapshot.signal_price_ma === 'boolean' ? snapshot.signal_price_ma : priceMa200wRatio < 1),
-    mvrvZ: typeof snapshot.signals?.mvrvZ === 'boolean'
-      ? snapshot.signals.mvrvZ
-      : (typeof snapshot.signal_mvrv_z === 'boolean' ? snapshot.signal_mvrv_z : mvrvZscore < 0),
-    lthMvrv: typeof snapshot.signals?.lthMvrv === 'boolean'
-      ? snapshot.signals.lthMvrv
-      : (typeof snapshot.signal_lth_mvrv === 'boolean' ? snapshot.signal_lth_mvrv : lthMvrv < 1),
-    puell: typeof snapshot.signals?.puell === 'boolean'
-      ? snapshot.signals.puell
-      : (typeof snapshot.signal_puell === 'boolean' ? snapshot.signal_puell : puellMultiple < 0.5),
-    nupl: typeof snapshot.signals?.nupl === 'boolean'
-      ? snapshot.signals.nupl
-      : (typeof snapshot.signal_nupl === 'boolean' ? snapshot.signal_nupl : nupl < 0),
-  };
-
-  return {
-    date,
-    btcPrice,
-    priceMa200wRatio,
-    ma200w,
-    mvrvZscore,
-    lthMvrv,
-    puellMultiple,
-    nupl,
-    signalCount: snapshot.signalCount ?? snapshot.signal_count ?? Object.values(signals).filter(Boolean).length,
-    signals,
-    indicatorDates: {
-      priceMa200w: indicatorDates.priceMa200w ?? indicatorDates.price_ma200w ?? date,
-      mvrvZ: indicatorDates.mvrvZ ?? indicatorDates.mvrv_z ?? date,
-      lthMvrv: indicatorDates.lthMvrv ?? indicatorDates.lth_mvrv ?? date,
-      puell: indicatorDates.puell ?? date,
-      nupl: indicatorDates.nupl ?? date,
-    },
-    raw: null,
-  };
-}
-
 async function fetchJsonSafely(url, fallback, init = {}) {
   const { init: requestInit, done } = withTimeout(init);
 
@@ -151,22 +187,359 @@ async function fetchJsonSafely(url, fallback, init = {}) {
 
     return JSON.parse(text);
   } catch (error) {
-    console.warn('Upstream fetch failed:', url, error);
+    console.warn('Upstream JSON fetch failed:', url, error);
     return fallback;
   } finally {
     done();
   }
 }
 
-async function fetchStaticLatestFallback(request) {
+async function fetchTextSafely(url, fallback, init = {}) {
+  const { init: requestInit, done } = withTimeout(init);
+
   try {
-    const fallbackUrl = new URL('/btc_indicators_latest.json', request.url);
-    const payload = await fetchJsonSafely(fallbackUrl.toString(), null);
-    return normalizeLatestSnapshot(payload);
+    const response = await fetch(url, requestInit);
+    if (!response.ok) {
+      return fallback;
+    }
+
+    return await response.text();
   } catch (error) {
-    console.warn('Static latest fallback failed:', error);
+    console.warn('Upstream text fetch failed:', url, error);
+    return fallback;
+  } finally {
+    done();
+  }
+}
+
+function parseDateFromTimestamp(timestampRaw) {
+  const timestamp = Number(timestampRaw);
+  if (!Number.isFinite(timestamp)) {
     return null;
   }
+
+  const safeTimestamp = timestamp < 10 ** 11 ? timestamp * 1000 : timestamp;
+  const date = new Date(safeTimestamp);
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return date.toISOString().split('T')[0];
+}
+
+function buildPoint(date, value, source = null) {
+  const numericValue = toNumberOrNull(value);
+  if (!date || numericValue === null) {
+    return null;
+  }
+
+  return {
+    d: date,
+    value: numericValue,
+    source,
+  };
+}
+
+function pointToArray(point, dataKey) {
+  if (!point) {
+    return [];
+  }
+
+  return [
+    {
+      d: point.d,
+      [dataKey]: point.value,
+    },
+  ];
+}
+
+function compareDateStrings(left, right) {
+  if (!left && !right) {
+    return 0;
+  }
+
+  if (!left) {
+    return -1;
+  }
+
+  if (!right) {
+    return 1;
+  }
+
+  return left.localeCompare(right);
+}
+
+function pickNewerPoint(primary, backup) {
+  if (!primary) {
+    return backup;
+  }
+
+  if (!backup) {
+    return primary;
+  }
+
+  return compareDateStrings(backup.d, primary.d) >= 0 ? backup : primary;
+}
+
+function daysBetween(laterDate, earlierDate) {
+  if (!laterDate || !earlierDate) {
+    return null;
+  }
+
+  const later = Date.parse(`${laterDate}T00:00:00Z`);
+  const earlier = Date.parse(`${earlierDate}T00:00:00Z`);
+  if (Number.isNaN(later) || Number.isNaN(earlier)) {
+    return null;
+  }
+
+  return Math.round((later - earlier) / (1000 * 60 * 60 * 24));
+}
+
+function freshnessScore(lagDays, maxLagDays) {
+  if (lagDays === null || lagDays === undefined) {
+    return 0;
+  }
+
+  const safeMaxLag = Math.max(1, maxLagDays);
+  return Math.max(0, Math.min(1, 1 - (Math.max(0, lagDays) / safeMaxLag)));
+}
+
+function isFresh(lagDays, maxLagDays) {
+  if (lagDays === null || lagDays === undefined) {
+    return false;
+  }
+
+  return lagDays <= maxLagDays;
+}
+
+function scoreByLt(value, trigger, deep) {
+  const numericValue = toNumberOrNull(value);
+  if (numericValue === null) {
+    return 0;
+  }
+
+  if (numericValue < Math.min(trigger, deep)) {
+    return 2;
+  }
+
+  if (numericValue < trigger) {
+    return 1;
+  }
+
+  return 0;
+}
+
+function classifyScoreBand(score, maxScore) {
+  const safeMaxScore = Math.max(1, toNumber(maxScore, 0));
+  const normalizedScore = (toNumber(score, 0) / safeMaxScore) * 12;
+
+  if (normalizedScore < 4) return 'watch';
+  if (normalizedScore < 7) return 'focus';
+  if (normalizedScore < 10) return 'accumulate';
+  return 'extreme_bottom';
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function getThresholdConfig(staticLatest, key) {
+  const snapshotThresholds = asRecord(staticLatest?.thresholds);
+  const threshold = asRecord(snapshotThresholds?.[key]);
+  const fallback = DEFAULT_THRESHOLDS[key];
+
+  if (!threshold) {
+    return fallback;
+  }
+
+  return {
+    ...fallback,
+    ...threshold,
+  };
+}
+
+function buildSnapshotPoint(snapshot, valueKey, dateKey, fallbackDate = undefined, source = 'static_snapshot') {
+  const snapshotDate = asString(snapshot?.indicatorDates?.[dateKey]) ?? fallbackDate ?? asString(snapshot?.date);
+  return buildPoint(snapshotDate, snapshot?.[valueKey], source);
+}
+
+function extractJsonPayload(rawText) {
+  if (!rawText || typeof rawText !== 'string') {
+    return null;
+  }
+
+  const trimmed = rawText.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    const match = trimmed.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+    if (!match) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(match[1]);
+    } catch {
+      return null;
+    }
+  }
+}
+
+function parseReserveRiskBackupPayload(payload) {
+  let point = null;
+
+  if (payload && typeof payload === 'object' && !Array.isArray(payload) && 'd' in payload && 'reserveRisk' in payload) {
+    point = payload;
+  } else if (Array.isArray(payload) && payload.length > 0) {
+    const candidate = payload[payload.length - 1];
+    if (candidate && typeof candidate === 'object') {
+      point = candidate;
+    }
+  }
+
+  if (!point) {
+    return null;
+  }
+
+  const date = asString(point.d);
+  const value = toNumberOrNull(point.reserveRisk);
+  if (!date || value === null) {
+    return null;
+  }
+
+  return buildPoint(date, value, 'reserve_risk_backup');
+}
+
+function buildLatestRollingMin(historyRows, latestDate, field, newValue) {
+  if (!Array.isArray(historyRows) || historyRows.length === 0) {
+    return null;
+  }
+
+  const tail = historyRows
+    .slice(-4)
+    .map((row) => ({
+      d: asString(row?.d),
+      value: toNumberOrNull(row?.[field]),
+    }))
+    .filter((row) => row.d && row.value !== null);
+
+  const withoutSameDateTail = tail.length > 0 && tail[tail.length - 1].d === latestDate
+    ? tail.slice(0, -1)
+    : tail;
+
+  const values = withoutSameDateTail
+    .slice(-2)
+    .map((row) => row.value)
+    .filter((value) => value !== null);
+
+  if (newValue !== null && newValue !== undefined) {
+    values.push(newValue);
+  }
+
+  if (values.length < 3) {
+    return null;
+  }
+
+  return Math.min(...values.slice(-3));
+}
+
+function buildThresholdBundle(staticLatest) {
+  return {
+    priceMa200wRatio: getThresholdConfig(staticLatest, 'priceMa200wRatio'),
+    priceRealizedRatio: getThresholdConfig(staticLatest, 'priceRealizedRatio'),
+    reserveRisk: getThresholdConfig(staticLatest, 'reserveRisk'),
+    sthSopr: getThresholdConfig(staticLatest, 'sthSopr'),
+    sthMvrv: getThresholdConfig(staticLatest, 'sthMvrv'),
+    puellMultiple: getThresholdConfig(staticLatest, 'puellMultiple'),
+    lthMvrv: getThresholdConfig(staticLatest, 'lthMvrv'),
+    mvrvZscore: getThresholdConfig(staticLatest, 'mvrvZscore'),
+    reserveRiskV4Fallback: getThresholdConfig(staticLatest, 'reserveRiskV4Fallback'),
+  };
+}
+
+// SECTION: upstream fetchers
+async function fetchStaticLatestSnapshot(request) {
+  try {
+    const url = new URL(STATIC_LATEST_PATH, request.url);
+    const payload = await fetchJsonSafely(url.toString(), null);
+    return asRecord(payload);
+  } catch (error) {
+    console.warn('Static latest snapshot fetch failed:', error);
+    return null;
+  }
+}
+
+async function fetchStaticHistoryLight(request) {
+  try {
+    const url = new URL(STATIC_HISTORY_LIGHT_PATH, request.url);
+    const payload = await fetchJsonSafely(url.toString(), []);
+    return Array.isArray(payload) ? payload : [];
+  } catch (error) {
+    console.warn('Static history-light fetch failed:', error);
+    return [];
+  }
+}
+
+async function fetchLatestFilePoint(seriesKey) {
+  const config = BGEOMETRICS_SERIES[seriesKey];
+  if (!config) {
+    return null;
+  }
+
+  for (const url of config.urls) {
+    const payload = await fetchJsonSafely(url, [], {
+      headers: {
+        'User-Agent': 'btc-monitor',
+      },
+    });
+
+    if (!Array.isArray(payload)) {
+      continue;
+    }
+
+    for (let index = payload.length - 1; index >= 0; index -= 1) {
+      const row = payload[index];
+      if (!Array.isArray(row) || row.length < 2) {
+        continue;
+      }
+
+      const date = parseDateFromTimestamp(row[0]);
+      const value = toNumberOrNull(row[1]);
+      if (!date || value === null) {
+        continue;
+      }
+
+      return buildPoint(date, value, 'bgeometrics');
+    }
+  }
+
+  return null;
+}
+
+async function fetchReserveRiskBackupPoint() {
+  for (const url of RESERVE_RISK_BACKUP_URLS) {
+    const text = await fetchTextSafely(url, null, {
+      headers: {
+        'User-Agent': 'btc-monitor',
+      },
+    });
+
+    if (!text) {
+      continue;
+    }
+
+    const payload = extractJsonPayload(text);
+    const point = parseReserveRiskBackupPayload(payload);
+    if (point) {
+      return point;
+    }
+  }
+
+  return null;
 }
 
 async function fetchCoinbaseSpotPrice() {
@@ -181,11 +554,7 @@ async function fetchCoinbaseSpotPrice() {
     return null;
   }
 
-  return {
-    d: getTodayUtcDate(),
-    btcPrice: toNumber(amount),
-    source: 'coinbase',
-  };
+  return buildPoint(getTodayUtcDate(), amount, 'coinbase');
 }
 
 async function fetchCoinGeckoSpotPrice() {
@@ -204,133 +573,500 @@ async function fetchCoinGeckoSpotPrice() {
     return null;
   }
 
-  return {
-    d: getTodayUtcDate(),
-    btcPrice: toNumber(amount),
-    source: 'coingecko',
-  };
+  return buildPoint(getTodayUtcDate(), amount, 'coingecko');
 }
 
 async function fetchBackupSpotPrice() {
   const coinbase = await fetchCoinbaseSpotPrice();
-  if (coinbase?.btcPrice) {
+  if (coinbase) {
     return coinbase;
   }
 
-  const coingecko = await fetchCoinGeckoSpotPrice();
-  if (coingecko?.btcPrice) {
-    return coingecko;
-  }
-
-  return null;
+  return fetchCoinGeckoSpotPrice();
 }
 
-function buildIndicatorArray(staticLatest, dataKey, dateKey) {
-  if (!staticLatest) {
-    return [];
-  }
+async function fetchRuntimeInputs(request) {
+  const [
+    staticLatest,
+    staticHistory,
+    filePricePoint,
+    ma200wPoint,
+    realizedPricePoint,
+    reserveRiskPrimaryPoint,
+    reserveRiskBackupPoint,
+    lthMvrvPoint,
+    mvrvZscorePoint,
+    sthSoprPoint,
+    sthMvrvPoint,
+    puellPoint,
+  ] = await Promise.all([
+    fetchStaticLatestSnapshot(request),
+    fetchStaticHistoryLight(request),
+    fetchLatestFilePoint('btcPrice'),
+    fetchLatestFilePoint('ma200w'),
+    fetchLatestFilePoint('realizedPrice'),
+    fetchLatestFilePoint('reserveRisk'),
+    fetchReserveRiskBackupPoint(),
+    fetchLatestFilePoint('lthMvrv'),
+    fetchLatestFilePoint('mvrvZscore'),
+    fetchLatestFilePoint('sthSopr'),
+    fetchLatestFilePoint('sthMvrv'),
+    fetchLatestFilePoint('puellMultiple'),
+  ]);
 
-  const value = staticLatest[dataKey];
-  const day = staticLatest.indicatorDates?.[dateKey] ?? staticLatest.date;
-  if (value === undefined || value === null || !day) {
-    return [];
-  }
+  const backupSpotPrice = filePricePoint ? null : await fetchBackupSpotPrice();
+  const resolvedPricePoint = pickNewerPoint(filePricePoint, backupSpotPrice);
+  const resolvedReserveRiskPoint = pickNewerPoint(reserveRiskPrimaryPoint, reserveRiskBackupPoint);
 
-  return [
-    {
-      d: day,
-      [dataKey]: value,
+  return {
+    staticLatest,
+    staticHistory,
+    pricePoint: resolvedPricePoint,
+    seriesPoints: {
+      ma200w: ma200wPoint,
+      realizedPrice: realizedPricePoint,
+      reserveRisk: resolvedReserveRiskPoint,
+      reserveRiskPrimary: reserveRiskPrimaryPoint,
+      lthMvrv: lthMvrvPoint,
+      mvrvZscore: mvrvZscorePoint,
+      sthSopr: sthSoprPoint,
+      sthMvrv: sthMvrvPoint,
+      puellMultiple: puellPoint,
     },
-  ];
+  };
 }
 
-function buildPriceArrayFromFallback(pricePoint) {
-  if (!pricePoint?.btcPrice) {
-    return [];
-  }
+// SECTION: V4 payload builder
+function buildRuntimePayload({
+  staticLatest,
+  staticHistory,
+  pricePoint,
+  seriesPoints,
+}) {
+  const thresholds = buildThresholdBundle(staticLatest);
+  const snapshotDate = asString(staticLatest?.date) ?? getTodayUtcDate();
 
-  return [
-    {
-      d: pricePoint.d,
-      btcPrice: pricePoint.btcPrice,
-    },
-  ];
-}
+  const points = {
+    btcPrice: pricePoint ?? buildSnapshotPoint(staticLatest, 'btcPrice', 'priceMa200w', snapshotDate),
+    ma200w: seriesPoints.ma200w ?? buildSnapshotPoint(staticLatest, 'ma200w', 'priceMa200w', snapshotDate),
+    realizedPrice: seriesPoints.realizedPrice ?? buildSnapshotPoint(staticLatest, 'realizedPrice', 'priceRealized', snapshotDate),
+    reserveRisk: seriesPoints.reserveRisk ?? buildSnapshotPoint(staticLatest, 'reserveRisk', 'reserveRisk', snapshotDate),
+    lthMvrv: seriesPoints.lthMvrv ?? buildSnapshotPoint(staticLatest, 'lthMvrv', 'lthMvrv', snapshotDate),
+    mvrvZscore: seriesPoints.mvrvZscore ?? buildSnapshotPoint(staticLatest, 'mvrvZscore', 'mvrvZscore', snapshotDate),
+    sthSopr: seriesPoints.sthSopr ?? buildSnapshotPoint(staticLatest, 'sthSopr', 'sthSopr', snapshotDate),
+    sthMvrv: seriesPoints.sthMvrv ?? buildSnapshotPoint(staticLatest, 'sthMvrv', 'sthMvrv', snapshotDate),
+    puellMultiple: seriesPoints.puellMultiple ?? buildSnapshotPoint(staticLatest, 'puellMultiple', 'puell', snapshotDate),
+  };
 
-function buildLatestPayload({ pricePoint, mvrvPoint, lthPoint, puellPoint, nuplPoint, staticLatest }) {
-  if (!pricePoint && !staticLatest) {
+  if (!points.btcPrice && !staticLatest) {
     return null;
   }
 
-  const price = toNumber(pricePoint?.btcPrice ?? staticLatest?.btcPrice);
-  const ma200w = staticLatest?.ma200w && staticLatest.ma200w > 0
-    ? staticLatest.ma200w
-    : undefined;
+  const latestDate = points.btcPrice?.d ?? snapshotDate;
+  const btcPrice = points.btcPrice?.value ?? toNumber(staticLatest?.btcPrice);
+  const ma200w = points.ma200w?.value ?? toNumberOrNull(staticLatest?.ma200w);
+  const realizedPrice = points.realizedPrice?.value ?? toNumberOrNull(staticLatest?.realizedPrice);
+  const reserveRisk = points.reserveRisk?.value ?? toNumberOrNull(staticLatest?.reserveRisk);
+  const lthMvrv = points.lthMvrv?.value ?? toNumberOrNull(staticLatest?.lthMvrv);
+  const mvrvZscore = points.mvrvZscore?.value ?? toNumberOrNull(staticLatest?.mvrvZscore);
+  const sthSopr = points.sthSopr?.value ?? toNumberOrNull(staticLatest?.sthSopr);
+  const sthMvrv = points.sthMvrv?.value ?? toNumberOrNull(staticLatest?.sthMvrv);
+  const puellMultiple = points.puellMultiple?.value ?? toNumberOrNull(staticLatest?.puellMultiple);
+  const priceMa200wRatio = ma200w && ma200w > 0 ? btcPrice / ma200w : toNumber(staticLatest?.priceMa200wRatio);
+  const priceRealizedRatio = realizedPrice && realizedPrice > 0 ? btcPrice / realizedPrice : toNumber(staticLatest?.priceRealizedRatio);
 
-  const priceMa200wRatio = ma200w && ma200w > 0
-    ? price / ma200w
-    : toNumber(staticLatest?.priceMa200wRatio);
+  const btcPriceLagDays = daysBetween(latestDate, points.btcPrice?.d);
+  const ma200wLagDays = daysBetween(latestDate, points.ma200w?.d);
+  const realizedPriceLagDays = daysBetween(latestDate, points.realizedPrice?.d);
+  const reserveRiskLagDays = daysBetween(latestDate, points.reserveRisk?.d);
+  const lthMvrvLagDays = daysBetween(latestDate, points.lthMvrv?.d);
+  const mvrvZscoreLagDays = daysBetween(latestDate, points.mvrvZscore?.d);
+  const sthSoprLagDays = daysBetween(latestDate, points.sthSopr?.d);
+  const sthMvrvLagDays = daysBetween(latestDate, points.sthMvrv?.d);
+  const puellLagDays = daysBetween(latestDate, points.puellMultiple?.d);
 
-  const mvrvZscore = toNumber(mvrvPoint?.mvrvZscore ?? staticLatest?.mvrvZscore);
-  const lthMvrv = toNumber(lthPoint?.lthMvrv ?? staticLatest?.lthMvrv);
-  const puellMultiple = toNumber(puellPoint?.puellMultiple ?? staticLatest?.puellMultiple);
-  const nupl = toNumber(nuplPoint?.nupl ?? staticLatest?.nupl);
+  const btcPriceFreshnessScore = freshnessScore(btcPriceLagDays, FRESHNESS_LIMITS.btcPrice);
+  const ma200wFreshnessScore = freshnessScore(ma200wLagDays, FRESHNESS_LIMITS.ma200w);
+  const realizedPriceFreshnessScore = freshnessScore(realizedPriceLagDays, FRESHNESS_LIMITS.realizedPrice);
+  const reserveRiskFreshnessScore = freshnessScore(reserveRiskLagDays, FRESHNESS_LIMITS.reserveRisk);
+  const lthMvrvFreshnessScore = freshnessScore(lthMvrvLagDays, FRESHNESS_LIMITS.lthMvrv);
+  const mvrvZscoreFreshnessScore = freshnessScore(mvrvZscoreLagDays, FRESHNESS_LIMITS.mvrvZscore);
+  const sthSoprFreshnessScore = freshnessScore(sthSoprLagDays, FRESHNESS_LIMITS.sthSopr);
+  const sthMvrvFreshnessScore = freshnessScore(sthMvrvLagDays, FRESHNESS_LIMITS.sthMvrv);
+  const puellFreshnessScore = freshnessScore(puellLagDays, FRESHNESS_LIMITS.puellMultiple);
 
-  const signals = {
-    priceMa200w: priceMa200wRatio < 1,
-    mvrvZ: mvrvZscore < 0,
-    lthMvrv: lthMvrv < 1,
-    puell: puellMultiple < 0.5,
-    nupl: nupl < 0,
+  const ma200wIsFresh = isFresh(ma200wLagDays, FRESHNESS_LIMITS.ma200w);
+  const realizedPriceIsFresh = isFresh(realizedPriceLagDays, FRESHNESS_LIMITS.realizedPrice);
+  const reserveRiskIsFresh = isFresh(reserveRiskLagDays, FRESHNESS_LIMITS.reserveRisk);
+  const lthMvrvIsFresh = isFresh(lthMvrvLagDays, FRESHNESS_LIMITS.lthMvrv);
+  const mvrvZscoreIsFresh = isFresh(mvrvZscoreLagDays, FRESHNESS_LIMITS.mvrvZscore);
+  const sthSoprIsFresh = isFresh(sthSoprLagDays, FRESHNESS_LIMITS.sthSopr);
+  const sthMvrvIsFresh = isFresh(sthMvrvLagDays, FRESHNESS_LIMITS.sthMvrv);
+  const puellIsFresh = isFresh(puellLagDays, FRESHNESS_LIMITS.puellMultiple);
+
+  const scorePriceMa200w = scoreByLt(priceMa200wRatio, thresholds.priceMa200wRatio.trigger, thresholds.priceMa200wRatio.deep);
+  const scorePriceRealized = scoreByLt(priceRealizedRatio, thresholds.priceRealizedRatio.trigger, thresholds.priceRealizedRatio.deep);
+  const scoreReserveRiskPrimary = scoreByLt(reserveRisk, thresholds.reserveRisk.trigger, thresholds.reserveRisk.deep);
+  const scoreSthSopr = scoreByLt(sthSopr, thresholds.sthSopr.trigger, thresholds.sthSopr.deep);
+  const scoreSthMvrv = scoreByLt(sthMvrv, thresholds.sthMvrv.trigger, thresholds.sthMvrv.deep);
+  const scoreSthGroup = Math.max(scoreSthSopr, scoreSthMvrv);
+  const scorePuell = scoreByLt(puellMultiple, thresholds.puellMultiple.trigger, thresholds.puellMultiple.deep);
+  const scoreLthMvrv = scoreByLt(lthMvrv, thresholds.lthMvrv.trigger, thresholds.lthMvrv.deep);
+  const scoreMvrvZscore = scoreByLt(mvrvZscore, thresholds.mvrvZscore.trigger, thresholds.mvrvZscore.deep);
+
+  const reserveRiskPrimaryLagDays = daysBetween(latestDate, seriesPoints.reserveRiskPrimary?.d);
+  const reserveRiskActive = Boolean(
+    points.reserveRisk?.d
+      && reserveRiskPrimaryLagDays !== null
+      && reserveRiskPrimaryLagDays <= RESERVE_RISK_DISABLE_LAG_DAYS
+      && reserveRiskIsFresh
+  );
+  const replacementLagCandidates = [lthMvrvLagDays, mvrvZscoreLagDays].filter((value) => value !== null);
+  const reserveRiskReplacementLagDays = replacementLagCandidates.length > 0
+    ? Math.min(...replacementLagCandidates)
+    : null;
+  const reserveRiskReplacementActive = !reserveRiskActive
+    && reserveRiskReplacementLagDays !== null
+    && reserveRiskReplacementLagDays <= RESERVE_RISK_DISABLE_LAG_DAYS;
+  const reserveRiskReplacementSource = reserveRiskReplacementActive
+    ? (scoreLthMvrv >= scoreMvrvZscore ? 'lth_mvrv' : 'mvrv_zscore_data')
+    : null;
+  const reserveRiskSourceMode = reserveRiskActive
+    ? 'primary'
+    : (reserveRiskReplacementActive ? 'replacement' : 'inactive');
+  const reserveDimensionActive = reserveRiskSourceMode !== 'inactive';
+  const scoreReserveRiskReplacement = Math.max(scoreLthMvrv, scoreMvrvZscore);
+  const scoreReserveRisk = reserveRiskActive
+    ? scoreReserveRiskPrimary
+    : (reserveRiskReplacementActive ? scoreReserveRiskReplacement : 0);
+
+  const reserveRiskSoftFallbackActive = !reserveRiskActive && Boolean(points.mvrvZscore?.d && mvrvZscoreIsFresh);
+  const scoreReserveRiskV4 = reserveRiskActive
+    ? scoreReserveRiskPrimary
+    : (reserveRiskSoftFallbackActive ? Math.min(scoreMvrvZscore, 1) : 0);
+  const maxReserveRiskScoreV4 = reserveRiskActive ? 2 : (reserveRiskSoftFallbackActive ? 1 : 0);
+  const reserveRiskSourceModeV4 = reserveRiskActive
+    ? 'primary'
+    : (reserveRiskSoftFallbackActive ? 'soft_fallback' : 'inactive');
+  const reserveDimensionActiveV4 = reserveRiskSourceModeV4 !== 'inactive';
+  const reserveRiskFallbackLagDaysV4 = reserveRiskSoftFallbackActive ? mvrvZscoreLagDays : null;
+
+  const signalPriceMa200w = scorePriceMa200w > 0;
+  const signalPriceRealized = scorePriceRealized > 0;
+  const signalReserveRisk = scoreReserveRisk > 0;
+  const signalSthSopr = scoreSthSopr > 0;
+  const signalSthMvrv = scoreSthMvrv > 0;
+  const signalSthGroup = scoreSthGroup > 0;
+  const signalPuell = scorePuell > 0;
+  const signalReserveRiskV4 = scoreReserveRiskV4 > 0;
+  const signalLthMvrv = scoreLthMvrv > 0;
+  const signalSthSoprAux = scoreSthSopr > 0;
+
+  const inactiveIndicatorCount = reserveDimensionActive ? 0 : 1;
+  const activeIndicatorCount = 5 - inactiveIndicatorCount;
+  const signalCount = [
+    signalPriceMa200w,
+    signalPriceRealized,
+    signalReserveRisk,
+    signalSthGroup,
+    signalPuell,
+  ].filter(Boolean).length;
+  const signalScoreV2 = scorePriceMa200w + scorePriceRealized + scoreReserveRisk + scoreSthGroup + scorePuell;
+  const maxSignalScoreV2 = activeIndicatorCount * 2;
+
+  const valuationScore = scorePriceMa200w + scorePriceRealized + scoreReserveRiskV4 + scorePuell;
+  const maxValuationScore = 6 + maxReserveRiskScoreV4;
+  const triggerScore = scoreSthMvrv;
+  const maxTriggerScore = 2;
+  const confirmationScore = scoreLthMvrv;
+  const maxConfirmationScore = 2;
+  const auxiliaryScore = scoreSthSopr;
+  const maxAuxiliaryScore = 2;
+  const activeIndicatorCountV4 = 5 + (reserveDimensionActiveV4 ? 1 : 0);
+  const signalCountV4 = [
+    signalPriceMa200w,
+    signalPriceRealized,
+    signalReserveRiskV4,
+    signalSthMvrv,
+    signalLthMvrv,
+    signalPuell,
+  ].filter(Boolean).length;
+  const maxTotalScoreV4 = maxValuationScore + maxTriggerScore + maxConfirmationScore;
+  const totalScoreV4 = valuationScore + triggerScore + confirmationScore;
+
+  const signalScoreV2Min3d = buildLatestRollingMin(staticHistory, latestDate, 'signalScoreV2', signalScoreV2);
+  const totalScoreV4Min3d = buildLatestRollingMin(staticHistory, latestDate, 'totalScoreV4', totalScoreV4);
+  const signalConfirmed3d = signalScoreV2Min3d !== null && maxSignalScoreV2 > 0
+    ? (signalScoreV2Min3d / maxSignalScoreV2) >= SCORE_CONFIRM_RATIO
+    : false;
+  const signalConfirmed3dV4 = totalScoreV4Min3d !== null && maxTotalScoreV4 > 0
+    ? (totalScoreV4Min3d / maxTotalScoreV4) >= SCORE_CONFIRM_RATIO
+    : false;
+  const signalBandV2 = classifyScoreBand(signalScoreV2, maxSignalScoreV2);
+  const signalBandV4 = classifyScoreBand(totalScoreV4, maxTotalScoreV4);
+
+  const reserveEffectiveFreshness = reserveRiskActive
+    ? reserveRiskFreshnessScore
+    : (reserveRiskSoftFallbackActive ? mvrvZscoreFreshnessScore : 0);
+  const dataFreshnessScore = round(
+    (
+      btcPriceFreshnessScore
+      + realizedPriceFreshnessScore
+      + ma200wFreshnessScore
+      + sthMvrvFreshnessScore
+      + lthMvrvFreshnessScore
+      + puellFreshnessScore
+      + reserveEffectiveFreshness
+    ) / 7,
+    6,
+  );
+  const baseScoreRatio = maxTotalScoreV4 > 0 ? totalScoreV4 / maxTotalScoreV4 : 0;
+  const auxiliaryBonus = signalSthSoprAux ? 0.1 : 0;
+  const confirmationBonus = signalConfirmed3dV4 ? 0.1 : 0;
+  const fallbackPenalty = reserveRiskSoftFallbackActive ? 0.1 : (!reserveDimensionActiveV4 ? 0.2 : 0);
+  const signalConfidence = round(
+    clamp(
+      (0.5 * baseScoreRatio) + (0.3 * dataFreshnessScore) + auxiliaryBonus + confirmationBonus - fallbackPenalty,
+      0,
+      1,
+    ),
+    4,
+  );
+
+  const reserveRiskEffectiveDateLegacy = reserveRiskSourceMode === 'replacement'
+    ? (reserveRiskReplacementSource === 'mvrv_zscore_data'
+      ? (points.mvrvZscore?.d ?? latestDate)
+      : (points.lthMvrv?.d ?? latestDate))
+    : (points.reserveRisk?.d ?? latestDate);
+  const reserveRiskEffectiveDateV4 = reserveRiskSourceModeV4 === 'soft_fallback'
+    ? (points.mvrvZscore?.d ?? latestDate)
+    : (points.reserveRisk?.d ?? latestDate);
+  const indicatorLagDays = {
+    priceMa200w: ma200wLagDays,
+    priceRealized: realizedPriceLagDays,
+    reserveRisk: reserveRiskSourceModeV4 === 'primary' ? reserveRiskLagDays : reserveRiskFallbackLagDaysV4,
+    lthMvrv: lthMvrvLagDays,
+    mvrvZscore: mvrvZscoreLagDays,
+    sthSopr: sthSoprLagDays,
+    sthMvrv: sthMvrvLagDays,
+    puell: puellLagDays,
+  };
+  const indicatorDates = {
+    priceMa200w: points.btcPrice?.d ?? latestDate,
+    priceRealized: points.realizedPrice?.d ?? latestDate,
+    reserveRisk: reserveRiskEffectiveDateV4,
+    lthMvrv: points.lthMvrv?.d ?? latestDate,
+    mvrvZscore: points.mvrvZscore?.d ?? latestDate,
+    sthSopr: points.sthSopr?.d ?? latestDate,
+    sthMvrv: points.sthMvrv?.d ?? latestDate,
+    puell: points.puellMultiple?.d ?? latestDate,
   };
 
+  const staleIndicatorKeys = [];
+  if (!ma200wIsFresh) staleIndicatorKeys.push('priceMa200w');
+  if (!realizedPriceIsFresh) staleIndicatorKeys.push('priceRealized');
+  if (!reserveDimensionActiveV4) staleIndicatorKeys.push('reserveRisk');
+  if (!sthSoprIsFresh) staleIndicatorKeys.push('sthSopr');
+  if (!sthMvrvIsFresh) staleIndicatorKeys.push('sthMvrv');
+  if (!lthMvrvIsFresh) staleIndicatorKeys.push('lthMvrv');
+  if (!puellIsFresh) staleIndicatorKeys.push('puell');
+  if (!mvrvZscoreIsFresh) staleIndicatorKeys.push('mvrvZscore');
+
+  const staleIndicators = staleIndicatorKeys.map((key) => {
+    const freshnessLimitMap = {
+      priceMa200w: FRESHNESS_LIMITS.ma200w,
+      priceRealized: FRESHNESS_LIMITS.realizedPrice,
+      reserveRisk: RESERVE_RISK_DISABLE_LAG_DAYS,
+      lthMvrv: FRESHNESS_LIMITS.lthMvrv,
+      mvrvZscore: FRESHNESS_LIMITS.mvrvZscore,
+      sthSopr: FRESHNESS_LIMITS.sthSopr,
+      sthMvrv: FRESHNESS_LIMITS.sthMvrv,
+      puell: FRESHNESS_LIMITS.puellMultiple,
+    };
+
+    return {
+      key,
+      lagDays: indicatorLagDays[key] ?? null,
+      maxLagDays: freshnessLimitMap[key] ?? null,
+      sourceDate: indicatorDates[key] ?? null,
+    };
+  });
+
+  const inactiveIndicators = [];
+  if (reserveRiskSourceMode === 'inactive') {
+    inactiveIndicators.push({
+      key: 'reserveRisk',
+      reason: reserveRiskPrimaryLagDays !== null && reserveRiskPrimaryLagDays > RESERVE_RISK_DISABLE_LAG_DAYS
+        ? 'primary_source_stale'
+        : 'stale_source_lag',
+      sourceDate: points.reserveRisk?.d ?? null,
+      primarySourceDate: seriesPoints.reserveRiskPrimary?.d ?? null,
+      latestDate,
+      lagDays: reserveRiskLagDays,
+      primaryLagDays: reserveRiskPrimaryLagDays,
+      disableLagDays: RESERVE_RISK_DISABLE_LAG_DAYS,
+      replacementCandidates: ['lth_mvrv', 'mvrv_zscore_data'],
+    });
+  }
+  if (reserveRiskSourceModeV4 === 'inactive') {
+    inactiveIndicators.push({
+      key: 'reserveRiskV4',
+      reason: 'primary_source_stale_without_soft_fallback',
+      sourceDate: points.reserveRisk?.d ?? null,
+      latestDate,
+      primaryLagDays: reserveRiskPrimaryLagDays,
+      disableLagDays: RESERVE_RISK_DISABLE_LAG_DAYS,
+      softFallbackCandidate: 'mvrv_zscore_soft',
+    });
+  }
+
   return {
-    date: pricePoint?.d ?? staticLatest?.date ?? getTodayUtcDate(),
-    btcPrice: price,
+    date: latestDate,
+    btcPrice,
+    realizedPrice: realizedPrice ?? 0,
     priceMa200wRatio,
-    ma200w,
-    mvrvZscore,
+    priceRealizedRatio,
+    reserveRisk: reserveRisk ?? 0,
     lthMvrv,
-    puellMultiple,
-    nupl,
-    signalCount: Object.values(signals).filter(Boolean).length,
-    signals,
+    mvrvZscore,
+    sthSopr: sthSopr ?? 0,
+    sthMvrv: sthMvrv ?? 0,
+    ma200w,
+    puellMultiple: puellMultiple ?? 0,
+    signalCount,
+    activeIndicatorCount,
+    signalCountV4,
+    activeIndicatorCountV4,
+    signalScoreV2,
+    maxSignalScoreV2,
+    signalScoreV2Min3d,
+    signalConfirmed3d,
+    signalBandV2,
+    valuationScore,
+    maxValuationScore,
+    triggerScore,
+    maxTriggerScore,
+    confirmationScore,
+    maxConfirmationScore,
+    auxiliaryScore,
+    maxAuxiliaryScore,
+    totalScoreV4,
+    maxTotalScoreV4,
+    totalScoreV4Min3d,
+    signalConfirmed3dV4,
+    signalBandV4,
+    signalConfidence,
+    dataFreshnessScore,
+    fallbackMode: reserveRiskSoftFallbackActive
+      ? 'reserve_risk_soft_fallback'
+      : (!reserveDimensionActiveV4 ? 'reserve_risk_inactive' : 'none'),
+    scorePriceMa200w,
+    scorePriceRealized,
+    scoreReserveRisk,
+    scoreReserveRiskV4,
+    scoreSthSopr,
+    scoreSthMvrv,
+    scorePuell,
+    scoreReserveRiskPrimary,
+    scoreReserveRiskReplacement,
+    scoreLthMvrv,
+    scoreMvrvZscore,
+    scoreSthGroup,
+    signalSthGroup,
+    scoringModelVersion: asString(staticLatest?.scoringModelVersion) ?? SCORING_MODEL_VERSION,
+    legacyScoringModelVersion: asString(staticLatest?.legacyScoringModelVersion) ?? LEGACY_SCORING_MODEL_VERSION,
+    reserveRiskActive,
+    reserveRiskReplacementActive,
+    reserveRiskReplacementSource,
+    reserveRiskReplacementLagDays,
+    reserveRiskSourceMode,
+    reserveRiskSourceModeV4,
+    reserveRiskSoftFallbackActive,
+    reserveRiskFallbackLagDaysV4,
+    reserveRiskLagDays,
+    reserveRiskPrimaryLagDays,
+    inactiveIndicators,
+    staleIndicators,
+    indicatorLagDays,
+    signals: {
+      priceMa200w: signalPriceMa200w,
+      priceRealized: signalPriceRealized,
+      reserveRisk: signalReserveRisk,
+      sthSopr: signalSthSopr,
+      sthMvrv: signalSthMvrv,
+      sthGroup: signalSthGroup,
+      puell: signalPuell,
+    },
+    signalsV4: {
+      priceMa200w: signalPriceMa200w,
+      priceRealized: signalPriceRealized,
+      reserveRisk: signalReserveRiskV4,
+      sthMvrv: signalSthMvrv,
+      lthMvrv: signalLthMvrv,
+      puell: signalPuell,
+      sthSoprAux: signalSthSoprAux,
+    },
     indicatorDates: {
-      priceMa200w: pricePoint?.d ?? staticLatest?.indicatorDates?.priceMa200w ?? staticLatest?.date,
-      mvrvZ: mvrvPoint?.d ?? staticLatest?.indicatorDates?.mvrvZ ?? staticLatest?.date,
-      lthMvrv: lthPoint?.d ?? staticLatest?.indicatorDates?.lthMvrv ?? staticLatest?.date,
-      puell: puellPoint?.d ?? staticLatest?.indicatorDates?.puell ?? staticLatest?.date,
-      nupl: nuplPoint?.d ?? staticLatest?.indicatorDates?.nupl ?? staticLatest?.date,
+      ...indicatorDates,
+      reserveRiskLegacy: reserveRiskEffectiveDateLegacy,
+    },
+    coreIndicatorSet: asString(staticLatest?.coreIndicatorSet) ?? CORE_INDICATOR_SET,
+    schemaVersion: asString(staticLatest?.schemaVersion) ?? SCHEMA_VERSION,
+    thresholds: {
+      ...(asRecord(staticLatest?.thresholds) ?? {}),
+      ...thresholds,
     },
     raw: {
-      priceSource: pricePoint?.source ?? 'bitcoin-data',
-      primaryAvailable: {
-        price: Boolean(pricePoint && !pricePoint.source),
-        mvrvZ: Boolean(mvrvPoint),
-        lthMvrv: Boolean(lthPoint),
-        puell: Boolean(puellPoint),
-        nupl: Boolean(nuplPoint),
-      },
+      runtimeSource: 'bgeometrics_latest_v4',
+      priceSource: points.btcPrice?.source ?? null,
+      reserveRiskSource: points.reserveRisk?.source ?? null,
+      reserveRiskV4Source: reserveRiskSourceModeV4,
     },
+    lastUpdated: new Date().toISOString(),
   };
 }
 
+// SECTION: route handlers
 async function fetchIndicatorRoute(path, request) {
   const routeConfig = INDICATOR_ROUTE_MAP[path];
   if (!routeConfig) {
     return null;
   }
 
-  const primary = await fetchJsonSafely(`${API_BASE_URL}${routeConfig.upstreamPath}`, [], {
-    headers: { 'User-Agent': 'btc-monitor' },
-  });
+  const staticLatest = await fetchStaticLatestSnapshot(request);
+  let point = null;
 
-  if (Array.isArray(primary) && primary.length > 0) {
-    return primary;
+  if (routeConfig.seriesKey === 'reserveRisk') {
+    const [primary, backup] = await Promise.all([
+      fetchLatestFilePoint('reserveRisk'),
+      fetchReserveRiskBackupPoint(),
+    ]);
+    point = pickNewerPoint(primary, backup);
+  } else {
+    point = await fetchLatestFilePoint(routeConfig.seriesKey);
   }
 
-  const staticLatest = await fetchStaticLatestFallback(request);
-  return buildIndicatorArray(staticLatest, routeConfig.dataKey, routeConfig.dateKey);
+  if (!point) {
+    const snapshotKeyMap = {
+      mvrvZscore: 'mvrvZscore',
+      lthMvrv: 'lthMvrv',
+      puellMultiple: 'puellMultiple',
+      reserveRisk: 'reserveRisk',
+      realizedPrice: 'realizedPrice',
+      sthSopr: 'sthSopr',
+      sthMvrv: 'sthMvrv',
+      ma200w: 'ma200w',
+    };
+
+    point = buildSnapshotPoint(
+      staticLatest,
+      snapshotKeyMap[routeConfig.seriesKey],
+      routeConfig.dateKey,
+      asString(staticLatest?.date),
+    );
+  }
+
+  return pointToArray(point, routeConfig.dataKey);
 }
 
 function buildSuccessResponse(payload, headers, cacheState = 'MISS') {
@@ -348,7 +1084,6 @@ export default async function handler(request) {
   const url = new URL(request.url);
   const rewrittenPath = url.searchParams.get('path');
   const path = rewrittenPath || url.pathname.replace('/api', '');
-
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -364,50 +1099,22 @@ export default async function handler(request) {
   }
 
   try {
-    let data;
-
     if (path === '/btc-data/latest' || path === '/btc-data' || path === '/btc-data/') {
-      const [mvrvZ, lthMvrv, puell, nupl, btcPrice, staticLatest] = await Promise.all([
-        fetchJsonSafely(`${API_BASE_URL}/v1/mvrv-zscore/1`, [], { headers: { 'User-Agent': 'btc-monitor' } }),
-        fetchJsonSafely(`${API_BASE_URL}/v1/lth-mvrv/1`, [], { headers: { 'User-Agent': 'btc-monitor' } }),
-        fetchJsonSafely(`${API_BASE_URL}/v1/puell-multiple/1`, [], { headers: { 'User-Agent': 'btc-monitor' } }),
-        fetchJsonSafely(`${API_BASE_URL}/v1/nupl/1`, [], { headers: { 'User-Agent': 'btc-monitor' } }),
-        fetchJsonSafely(`${API_BASE_URL}/v1/btc-price/1`, [], { headers: { 'User-Agent': 'btc-monitor' } }),
-        fetchStaticLatestFallback(request),
-      ]);
+      const runtimeInputs = await fetchRuntimeInputs(request);
+      const payload = buildRuntimePayload(runtimeInputs);
+      if (payload) {
+        return buildSuccessResponse(payload, corsHeaders);
+      }
 
-      const backupPrice = !btcPrice[0]?.btcPrice ? await fetchBackupSpotPrice() : null;
-      const pricePoint = btcPrice[0] ?? backupPrice;
-      const mvrvPoint = mvrvZ[0] ?? buildIndicatorArray(staticLatest, 'mvrvZscore', 'mvrvZ')[0];
-      const lthPoint = lthMvrv[0] ?? buildIndicatorArray(staticLatest, 'lthMvrv', 'lthMvrv')[0];
-      const puellPoint = puell[0] ?? buildIndicatorArray(staticLatest, 'puellMultiple', 'puell')[0];
-      const nuplPoint = nupl[0] ?? buildIndicatorArray(staticLatest, 'nupl', 'nupl')[0];
-
-      data = buildLatestPayload({
-        pricePoint,
-        mvrvPoint,
-        lthPoint,
-        puellPoint,
-        nuplPoint,
-        staticLatest,
-      }) ?? staticLatest;
-
-      return buildSuccessResponse(data, corsHeaders);
+      if (runtimeInputs.staticLatest) {
+        return buildSuccessResponse(runtimeInputs.staticLatest, corsHeaders, 'STATIC');
+      }
     }
 
     if (path === '/btc-data/v1/btc-price/1') {
-      const primary = await fetchJsonSafely(`${API_BASE_URL}/v1/btc-price/1`, [], {
-        headers: { 'User-Agent': 'btc-monitor' },
-      });
-
-      if (Array.isArray(primary) && primary.length > 0) {
-        data = primary;
-      } else {
-        const backupPrice = await fetchBackupSpotPrice();
-        data = buildPriceArrayFromFallback(backupPrice);
-      }
-
-      return buildSuccessResponse(data, corsHeaders);
+      const runtimeInputs = await fetchRuntimeInputs(request);
+      const priceArray = pointToArray(runtimeInputs.pricePoint, 'btcPrice');
+      return buildSuccessResponse(priceArray, corsHeaders, runtimeInputs.pricePoint?.source ? 'LIVE' : 'FALLBACK');
     }
 
     const indicatorData = await fetchIndicatorRoute(path, request);
@@ -425,18 +1132,20 @@ export default async function handler(request) {
       );
     }
 
-    const targetUrl = `${API_BASE_URL}${path.replace('/btc-data', '')}`;
-    data = await fetchJsonSafely(
-      targetUrl,
-      { error: 'Failed to fetch upstream endpoint' },
-      { headers: { 'User-Agent': 'btc-monitor' } },
+    return new Response(
+      JSON.stringify({
+        error: 'Unknown btc-data endpoint',
+        path,
+      }),
+      {
+        status: 404,
+        headers: corsHeaders,
+      },
     );
-
-    return buildSuccessResponse(data, corsHeaders);
   } catch (error) {
     console.error('API Error:', error);
 
-    const fallbackData = await fetchStaticLatestFallback(request);
+    const fallbackData = await fetchStaticLatestSnapshot(request);
     if (fallbackData) {
       return buildSuccessResponse(fallbackData, corsHeaders, 'FALLBACK');
     }
