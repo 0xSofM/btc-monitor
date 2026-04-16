@@ -171,9 +171,9 @@ export function SignalOverview({
   const scoreProgress = Math.max(0, Math.min(100, (effectiveScore / Math.max(1, effectiveMaxScore)) * 100));
   const confidencePercent = signalConfidence === undefined ? null : Math.round(signalConfidence * 100);
   const fallbackLabel = fallbackMode === 'reserve_risk_soft_fallback'
-    ? '储备风险已切换为 MVRV Z-Score 软回退'
+    ? 'Reserve Risk 已切换为 MVRV Z-Score 软回退'
     : fallbackMode === 'reserve_risk_inactive'
-      ? '储备风险暂时不计入 V4 总分'
+      ? 'Reserve Risk 暂时不计入 V4 总分'
       : null;
 
   return (

@@ -104,11 +104,11 @@ function formatFallbackModeLabel(fallbackMode: string | undefined): string | nul
   }
 
   if (fallbackMode === 'reserve_risk_soft_fallback') {
-    return '储备风险软回退生效';
+    return 'Reserve Risk 软回退生效';
   }
 
   if (fallbackMode === 'reserve_risk_inactive') {
-    return '储备风险暂不计分';
+    return 'Reserve Risk 暂不计分';
   }
 
   return '主模型正常';
@@ -300,12 +300,12 @@ function App() {
   }, []);
 
   const indicatorDateLabels: Record<IndicatorDateKey, string> = {
-    priceMa200w: '价格 / 200周均线',
-    priceRealized: '价格 / 实现价格',
-    reserveRisk: '储备风险',
+    priceMa200w: 'Price / 200W-MA',
+    priceRealized: 'Price / Realized Price',
+    reserveRisk: 'Reserve Risk',
     lthMvrv: 'LTH-MVRV',
-    sthMvrv: '短期MVRV',
-    puell: 'Puell倍数',
+    sthMvrv: 'STH-MVRV',
+    puell: 'Puell Multiple',
   };
 
   const indicatorDateEntries = latestData?.indicatorDates
@@ -408,7 +408,7 @@ function App() {
   const indicators = latestData
     ? [
         {
-          name: '价格 / 200周均线',
+          name: 'Price / 200W-MA',
           description: '长周期趋势锚点',
           currentValue: latestData.priceMa200wRatio,
           targetValue: 1,
@@ -418,11 +418,11 @@ function App() {
           color: '#F7931A',
           dataDate: latestData.indicatorDates?.priceMa200w || latestData.date,
           detailValue: latestData.ma200w
-            ? `BTC $${latestData.btcPrice.toLocaleString()} / 200周均线 $${Math.round(latestData.ma200w).toLocaleString()}`
+            ? `BTC $${latestData.btcPrice.toLocaleString()} / 200W-MA $${Math.round(latestData.ma200w).toLocaleString()}`
             : `BTC $${latestData.btcPrice.toLocaleString()}`,
         },
         {
-          name: '价格 / 实现价格',
+          name: 'Price / Realized Price',
           description: '链上成本锚点',
           currentValue: latestData.priceRealizedRatio,
           targetValue: 1,
@@ -431,10 +431,10 @@ function App() {
           format: 'ratio' as const,
           color: '#0EA5E9',
           dataDate: latestData.indicatorDates?.priceRealized || latestData.date,
-          detailValue: latestData.realizedPrice ? `实现价格 $${Math.round(latestData.realizedPrice).toLocaleString()}` : undefined,
+          detailValue: latestData.realizedPrice ? `Realized Price $${Math.round(latestData.realizedPrice).toLocaleString()}` : undefined,
         },
         {
-          name: '储备风险',
+          name: 'Reserve Risk',
           description: '长期持有者风险回报区间',
           currentValue: latestData.reserveRisk,
           targetValue: latestData.thresholds?.reserveRisk?.trigger ?? 0.0016,
@@ -459,7 +459,7 @@ function App() {
           dataDate: latestData.indicatorDates?.lthMvrv || latestData.date,
         },
         {
-          name: '短期MVRV',
+          name: 'STH-MVRV',
           description: '短期群体压力深度',
           currentValue: latestData.sthMvrv,
           targetValue: latestData.thresholds?.sthMvrv?.trigger ?? 1,
@@ -470,7 +470,7 @@ function App() {
           dataDate: latestData.indicatorDates?.sthMvrv || latestData.date,
         },
         {
-          name: 'Puell倍数',
+          name: 'Puell Multiple',
           description: '矿工压力确认项',
           currentValue: latestData.puellMultiple,
           targetValue: latestData.thresholds?.puellMultiple?.trigger ?? 0.6,
@@ -726,7 +726,7 @@ function App() {
 
                   <Alert className="border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900/60">
                     <AlertTriangle className="h-4 w-4 text-slate-600 dark:text-slate-300" />
-                    <AlertTitle className="text-slate-800 dark:text-slate-200">辅助指标：短期 SOPR</AlertTitle>
+                    <AlertTitle className="text-slate-800 dark:text-slate-200">辅助指标：STH-SOPR</AlertTitle>
                     <AlertDescription className="text-slate-700 dark:text-slate-300">
                       当前值 {latestData.sthSopr.toFixed(4)}，触发阈值 {'< '}
                       {(latestData.thresholds?.sthSopr?.trigger ?? 1).toFixed(4)}，

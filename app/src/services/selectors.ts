@@ -365,13 +365,13 @@ export function getSignalEvents(data: IndicatorData[], minSignals = 4): SignalEv
       btcPrice: toNumericPrice(item.btcPrice),
       signalCount: item.signalCountV4 ?? item.signalCount ?? 0,
       triggeredIndicators: [
-        item.signalPriceMa200w || item.signalPriceMa ? '价格/200周均线' : '',
-        item.signalPriceRealized ? '价格/实现价格' : '',
-        item.signalReserveRiskV4 ?? item.signalReserveRisk ? '储备风险' : '',
-        item.signalSthMvrv ? '短期MVRV' : '',
+        item.signalPriceMa200w || item.signalPriceMa ? 'Price / 200W-MA' : '',
+        item.signalPriceRealized ? 'Price / Realized Price' : '',
+        item.signalReserveRiskV4 ?? item.signalReserveRisk ? 'Reserve Risk' : '',
+        item.signalSthMvrv ? 'STH-MVRV' : '',
         item.signalLthMvrv ? 'LTH-MVRV' : '',
-        item.signalPuell ? 'Puell倍数' : '',
-        item.signalSthSoprAux ?? item.signalSthSopr ? '短期SOPR(辅助)' : '',
+        item.signalPuell ? 'Puell Multiple' : '',
+        item.signalSthSoprAux ?? item.signalSthSopr ? 'STH-SOPR (Auxiliary)' : '',
       ].filter(Boolean),
     }));
 }
@@ -396,21 +396,21 @@ export function getDataFreshnessHours(date: string): number {
 
 export const INDICATOR_CONFIG = {
   priceMa200w: {
-    name: '价格 / 200周均线',
+    name: 'Price / 200W-MA',
     unit: '',
     targetValue: 1,
     color: '#F7931A',
     description: '现价相对 200 周均线的位置。',
   },
   priceRealized: {
-    name: '价格 / 实现价格',
+    name: 'Price / Realized Price',
     unit: '',
     targetValue: 1,
     color: '#0EA5E9',
     description: '现价相对链上实现价格的位置。',
   },
   reserveRisk: {
-    name: '储备风险',
+    name: 'Reserve Risk',
     unit: '',
     targetValue: 0.0016,
     color: '#10B981',
@@ -424,21 +424,21 @@ export const INDICATOR_CONFIG = {
     description: '长期持有者成本结构确认。',
   },
   sthSopr: {
-    name: '短期SOPR',
+    name: 'STH-SOPR',
     unit: '',
     targetValue: 1,
     color: '#EAB308',
     description: '短期持有者已实现盈亏比。',
   },
   sthMvrv: {
-    name: '短期MVRV',
+    name: 'STH-MVRV',
     unit: '',
     targetValue: 1,
     color: '#22C55E',
     description: '短期持有者未实现盈亏压力。',
   },
   puell: {
-    name: 'Puell倍数',
+    name: 'Puell Multiple',
     unit: '',
     targetValue: 0.6,
     color: '#F97316',

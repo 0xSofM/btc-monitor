@@ -14,7 +14,7 @@ type IndicatorItem = {
 const valuationIndicators: IndicatorItem[] = [
   {
     id: 'price-ma200w',
-    name: '价格 / 200周均线',
+    name: 'Price / 200W-MA',
     icon: TrendingDown,
     target: '< 1（深度 < 0.85）',
     description: '衡量现价相对 200 周均线的位置，是大周期趋势锚点之一。',
@@ -22,7 +22,7 @@ const valuationIndicators: IndicatorItem[] = [
   },
   {
     id: 'price-realized',
-    name: '价格 / 实现价格',
+    name: 'Price / Realized Price',
     icon: TrendingDown,
     target: '< 1（深度 < 0.90）',
     description: '比较现价与链上实现价格，反映市场是否跌破全网平均成本。',
@@ -30,7 +30,7 @@ const valuationIndicators: IndicatorItem[] = [
   },
   {
     id: 'reserve-risk',
-    name: '储备风险（Reserve Risk）',
+    name: 'Reserve Risk',
     icon: TrendingDown,
     target: '< p20（深度 < p10）',
     description: '衡量长期持有者信念与价格风险的相对关系。',
@@ -38,7 +38,7 @@ const valuationIndicators: IndicatorItem[] = [
   },
   {
     id: 'puell',
-    name: 'Puell倍数（Puell Multiple）',
+    name: 'Puell Multiple',
     icon: TrendingDown,
     target: '< 0.6（深度 < 0.5）',
     description: '比较矿工收入与历史常态水平，评估供给侧压力。',
@@ -49,7 +49,7 @@ const valuationIndicators: IndicatorItem[] = [
 const triggerIndicators: IndicatorItem[] = [
   {
     id: 'sth-mvrv',
-    name: '短期MVRV（STH-MVRV）',
+    name: 'STH-MVRV',
     icon: AlertTriangle,
     target: '< p27（深度 < p13.5）',
     description: '衡量短期持有者未实现盈亏压力，观察恐慌是否扩散到短期筹码。',
@@ -71,7 +71,7 @@ const confirmationIndicators: IndicatorItem[] = [
 const auxiliaryIndicators: IndicatorItem[] = [
   {
     id: 'sth-sopr',
-    name: '短期SOPR（辅助）',
+    name: 'STH-SOPR (Auxiliary)',
     icon: AlertTriangle,
     target: '< p27（深度 < p13.5）',
     description: '保留为辅助确认项，用于验证短期持有者是否持续在亏损兑现。',
@@ -79,7 +79,7 @@ const auxiliaryIndicators: IndicatorItem[] = [
   },
   {
     id: 'mvrv-zscore',
-    name: 'MVRV Z-Score（备用）',
+    name: 'MVRV Z-Score (Fallback)',
     icon: Info,
     target: '< 0（深度 < -0.5）',
     description: '当 Reserve Risk 数据过旧时，作为软回退参考项，仅提供有限分值。',

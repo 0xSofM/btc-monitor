@@ -36,13 +36,13 @@ function formatPrice(value: number): string {
 function getSignalBadges(item: IndicatorData): string[] {
   const signals: string[] = [];
 
-  if (item.signalPriceMa200w || item.signalPriceMa) signals.push('价格 / 200周均线');
-  if (item.signalPriceRealized) signals.push('价格 / 实现价格');
-  if (item.signalReserveRiskV4 ?? item.signalReserveRisk) signals.push('储备风险');
-  if (item.signalSthMvrv) signals.push('短期MVRV');
+  if (item.signalPriceMa200w || item.signalPriceMa) signals.push('Price / 200W-MA');
+  if (item.signalPriceRealized) signals.push('Price / Realized Price');
+  if (item.signalReserveRiskV4 ?? item.signalReserveRisk) signals.push('Reserve Risk');
+  if (item.signalSthMvrv) signals.push('STH-MVRV');
   if (item.signalLthMvrv) signals.push('LTH-MVRV');
-  if (item.signalPuell) signals.push('Puell倍数');
-  if (item.signalSthSoprAux ?? item.signalSthSopr) signals.push('短期SOPR(辅助)');
+  if (item.signalPuell) signals.push('Puell Multiple');
+  if (item.signalSthSoprAux ?? item.signalSthSopr) signals.push('STH-SOPR (Auxiliary)');
 
   return signals;
 }

@@ -144,7 +144,7 @@ function IndicatorTooltip({
       ))}
       {payload[0]?.payload?.btcPrice && (
         <p className="mt-1 text-muted-foreground">
-          BTC价格: ${Number(payload[0].payload.btcPrice).toLocaleString('en-US')}
+          BTC Price: ${Number(payload[0].payload.btcPrice).toLocaleString('en-US')}
         </p>
       )}
     </div>
@@ -344,7 +344,7 @@ export function IndicatorCharts({
             yAxisId="left"
             type="monotone"
             dataKey="price"
-            name="BTC价格"
+            name="BTC Price"
             stroke="#F7931A"
             strokeWidth={2}
             dot={false}
@@ -354,7 +354,7 @@ export function IndicatorCharts({
             yAxisId="right"
             type="monotone"
             dataKey="ma200"
-            name="200周均线"
+            name="200W-MA"
             stroke="#3B82F6"
             strokeWidth={2}
             strokeDasharray="6 4"
@@ -547,7 +547,7 @@ export function IndicatorCharts({
           {activeIndicator === 'priceMa200w' ? (
             <div className="flex items-center gap-1">
               <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #3B82F6' }} />
-              <span>200周均线</span>
+              <span>200W-MA</span>
             </div>
           ) : (
             <>

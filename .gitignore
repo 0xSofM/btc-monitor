@@ -9,5 +9,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .coverage
+.tmp/
+archive/
 btc_indicators_from_files.csv
 btc_indicators_from_files.xlsx
