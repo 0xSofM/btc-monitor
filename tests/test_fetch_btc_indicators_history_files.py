@@ -13,6 +13,7 @@ from fetch_btc_indicators_history_files import (
     build_light_history_json,
     dataframe_to_history_json,
     enrich_for_frontend,
+    merge_reserve_risk_history_sources,
     patch_reserve_risk_tail,
     restore_outputs_from_archive,
     write_json,
@@ -201,6 +202,56 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(str(patch_info["key"]), "fresher_source")
         self.assertEqual(patched.iloc[-1]["date"].strftime("%Y-%m-%d"), "2024-01-03")
         self.assertAlmostEqual(float(patched.iloc[-1]["reserve_risk"]), 0.0020)
+
+    def test_patch_reserve_risk_tail_skips_identical_same_day_value(self) -> None:
+        reserve_df = pd.DataFrame(
+            {
+                "date": pd.to_datetime(["2024-01-01", "2024-01-02"]),
+                "reserve_risk": [0.003, 0.002],
+            }
+        )
+        point_candidates = {
+            "bitcoin_data_latest": {
+                "key": "bitcoin_data_latest",
+                "displayName": "bitcoin-data Reserve Risk latest",
+                "mode": "point",
+                "priority": 1,
+                "available": True,
+                "selectedUrl": "https://bitcoin-data.com/v1/reserve-risk/1",
+                "date": pd.Timestamp("2024-01-02"),
+                "value": 0.002,
+            }
+        }
+
+        patched, patch_info = patch_reserve_risk_tail(
+            reserve_df, point_candidates=point_candidates
+        )
+
+        self.assertIsNone(patch_info)
+        self.assertEqual(len(patched), 2)
+        self.assertAlmostEqual(float(patched.iloc[-1]["reserve_risk"]), 0.002)
+
+    def test_merge_reserve_risk_history_sources_prefers_recent_non_null_values(self) -> None:
+        legacy_df = pd.DataFrame(
+            {
+                "date": pd.to_datetime(["2022-04-14", "2022-04-15", "2022-04-16"]),
+                "reserve_risk": [0.0025, 0.0024, 0.0023],
+            }
+        )
+        recent_df = pd.DataFrame(
+            {
+                "date": pd.to_datetime(["2022-04-16", "2022-04-17", "2022-04-18"]),
+                "reserve_risk": [0.0019, 0.0018, 0.0017],
+            }
+        )
+
+        merged = merge_reserve_risk_history_sources(legacy_df, recent_df)
+
+        self.assertEqual(
+            [value.strftime("%Y-%m-%d") for value in merged["date"]],
+            ["2022-04-14", "2022-04-15", "2022-04-16", "2022-04-17", "2022-04-18"],
+        )
+        self.assertAlmostEqual(float(merged.iloc[2]["reserve_risk"]), 0.0019)
 
     def test_reserve_risk_diagnostics_report_null_tail_and_shadow_status(self) -> None:
         reserve_df = pd.DataFrame(

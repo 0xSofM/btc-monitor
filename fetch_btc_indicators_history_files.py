@@ -57,10 +57,6 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
         "display_name": "Realized Price",
         "url": "https://charts.bgeometrics.com/files/realized_price.json",
     },
-    "reserve_risk": {
-        "display_name": "Reserve Risk",
-        "url": "https://charts.bgeometrics.com/files/reserve_risk.json",
-    },
     "lth_mvrv": {
         "display_name": "LTH-MVRV",
         "url": "https://charts.bgeometrics.com/files/lth_mvrv.json",
@@ -90,10 +86,18 @@ REQUEST_TIMEOUT = 45
 MAX_RETRIES = 4
 RETRY_BACKOFF_SEC = 2.0
 RESERVE_RISK_SOURCE_REGISTRY: Dict[str, Dict[str, object]] = {
-    "bgeometrics_primary": {
-        "display_name": "BGeometrics Reserve Risk",
+    "bitcoin_data_history": {
+        "display_name": "bitcoin-data Reserve Risk history",
         "mode": "series",
         "priority": 0,
+        "urls": [
+            "https://bitcoin-data.com/v1/reserve-risk",
+        ],
+    },
+    "bgeometrics_primary": {
+        "display_name": "BGeometrics Reserve Risk legacy bridge",
+        "mode": "series",
+        "priority": 1,
         "urls": [
             "https://charts.bgeometrics.com/files/reserve_risk.json",
         ],
@@ -101,7 +105,7 @@ RESERVE_RISK_SOURCE_REGISTRY: Dict[str, Dict[str, object]] = {
     "bitcoin_data_latest": {
         "display_name": "bitcoin-data Reserve Risk latest",
         "mode": "point",
-        "priority": 1,
+        "priority": 2,
         "urls": [
             "https://bitcoin-data.com/v1/reserve-risk/1",
             "https://r.jina.ai/http://bitcoin-data.com/v1/reserve-risk/1",
@@ -222,18 +226,21 @@ def _safe_iso_date(value: object) -> str | None:
     return None
 
 
-def fetch_json(url: str) -> List[List[object]]:
-    """Fetch a `[timestamp_ms, value]` list from URL with retry."""
+def fetch_json_payload(url: str) -> object:
+    """Fetch a JSON payload from URL with retry."""
     headers = {"User-Agent": "btc-monitor-history-fetcher/1.1"}
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
             response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
             response.raise_for_status()
-            payload = response.json()
-            if not isinstance(payload, list):
-                raise ValueError(f"Unexpected JSON type from {url}: {type(payload)}")
-            return payload
+            try:
+                return response.json()
+            except Exception:
+                payload = _extract_json_from_response_text(response.text)
+                if payload is None:
+                    raise
+                return payload
         except Exception:
             if attempt == MAX_RETRIES:
                 raise
@@ -241,6 +248,15 @@ def fetch_json(url: str) -> List[List[object]]:
             time.sleep(wait_sec)
 
     return []
+
+
+def fetch_json(url: str) -> List[List[object]]:
+    """Fetch a `[timestamp_ms, value]` list from URL with retry."""
+    payload = fetch_json_payload(url)
+    if not isinstance(payload, list):
+        raise ValueError(f"Unexpected JSON type from {url}: {type(payload)}")
+
+    return payload
 
 
 def parse_series(metric_key: str, raw_rows: Iterable[object]) -> pd.DataFrame:
@@ -275,6 +291,42 @@ def parse_series(metric_key: str, raw_rows: Iterable[object]) -> pd.DataFrame:
     df = pd.DataFrame(parsed)
     df["date"] = pd.to_datetime(df["date"])
     # Keep last row per date if duplicates exist.
+    return df.sort_values("date").groupby("date", as_index=False).last()
+
+
+def parse_reserve_risk_history_series(raw_rows: object) -> pd.DataFrame:
+    """Parse Reserve Risk history from either dict-list or chart-file array formats."""
+    if not isinstance(raw_rows, list):
+        return pd.DataFrame(columns=["date", "reserve_risk"])
+
+    if raw_rows and isinstance(raw_rows[0], list):
+        return parse_series("reserve_risk", raw_rows)
+
+    parsed: List[Dict[str, object]] = []
+    for row in raw_rows:
+        if not isinstance(row, dict):
+            continue
+
+        date_raw = _safe_iso_date(row.get("d"))
+        if not date_raw:
+            continue
+
+        try:
+            date_value = pd.to_datetime(date_raw)
+        except Exception:
+            continue
+
+        parsed.append(
+            {
+                "date": date_value,
+                "reserve_risk": _safe_float(row.get("reserveRisk")),
+            }
+        )
+
+    if not parsed:
+        return pd.DataFrame(columns=["date", "reserve_risk"])
+
+    df = pd.DataFrame(parsed)
     return df.sort_values("date").groupby("date", as_index=False).last()
 
 
@@ -354,8 +406,163 @@ def _reserve_risk_source_priority(source_key: str) -> int:
         return 999
 
 
+def _summarize_reserve_risk_series(
+    df: pd.DataFrame, source_key: str
+) -> Dict[str, object]:
+    config = RESERVE_RISK_SOURCE_REGISTRY.get(source_key, {})
+    summary: Dict[str, object] = {
+        "key": source_key,
+        "displayName": str(config.get("display_name", source_key)),
+        "mode": "series",
+        "priority": _reserve_risk_source_priority(source_key),
+        "latestObservedDate": None,
+        "latestObservedValue": None,
+        "latestNonNullDate": None,
+        "latestNonNullValue": None,
+        "trailingNullRows": 0,
+        "trailingNullDays": 0,
+        "healthStatus": "missing",
+    }
+
+    if df.empty or "date" not in df.columns or "reserve_risk" not in df.columns:
+        return summary
+
+    sorted_df = df.copy()
+    sorted_df["date"] = pd.to_datetime(sorted_df["date"])
+    sorted_df = sorted_df.sort_values("date").reset_index(drop=True)
+    latest_row = sorted_df.iloc[-1]
+    latest_date = pd.to_datetime(latest_row["date"])
+    latest_value = _safe_float(latest_row.get("reserve_risk"))
+    summary["latestObservedDate"] = _safe_iso_date(latest_date)
+    summary["latestObservedValue"] = latest_value
+
+    non_null = sorted_df.loc[sorted_df["reserve_risk"].notna()]
+    if non_null.empty:
+        summary["healthStatus"] = "no_non_null_values"
+        return summary
+
+    latest_non_null_row = non_null.iloc[-1]
+    latest_non_null_date = pd.to_datetime(latest_non_null_row["date"])
+    latest_non_null_value = _safe_float(latest_non_null_row.get("reserve_risk"))
+    summary["latestNonNullDate"] = _safe_iso_date(latest_non_null_date)
+    summary["latestNonNullValue"] = latest_non_null_value
+
+    trailing_null_rows = 0
+    if latest_value is None:
+        for value in reversed(sorted_df["reserve_risk"].tolist()):
+            if _safe_float(value) is None:
+                trailing_null_rows += 1
+            else:
+                break
+
+    trailing_null_days = (
+        int((latest_date - latest_non_null_date).days) if latest_value is None else 0
+    )
+    summary["trailingNullRows"] = trailing_null_rows
+    summary["trailingNullDays"] = trailing_null_days
+    summary["healthStatus"] = "null_tail" if latest_value is None else "healthy"
+    return summary
+
+
+def fetch_reserve_risk_series_sources() -> Dict[str, Dict[str, object]]:
+    candidates: Dict[str, Dict[str, object]] = {}
+
+    for source_key, config in RESERVE_RISK_SOURCE_REGISTRY.items():
+        if str(config.get("mode")) != "series":
+            continue
+
+        urls = [str(url) for url in config.get("urls", [])]
+        candidate: Dict[str, object] = {
+            "key": source_key,
+            "displayName": str(config.get("display_name", source_key)),
+            "mode": "series",
+            "priority": _reserve_risk_source_priority(source_key),
+            "available": False,
+            "selectedUrl": None,
+            "dataframe": pd.DataFrame(columns=["date", "reserve_risk"]),
+            "error": None,
+        }
+        errors: List[str] = []
+
+        for url in urls:
+            try:
+                payload = fetch_json_payload(url)
+                parsed_df = parse_reserve_risk_history_series(payload)
+                if parsed_df.empty:
+                    errors.append(f"{url} -> empty Reserve Risk history")
+                    continue
+
+                candidate["available"] = True
+                candidate["selectedUrl"] = url
+                candidate["dataframe"] = parsed_df
+                break
+            except Exception as exc:
+                errors.append(f"{url} -> {exc}")
+                continue
+
+        if not bool(candidate["available"]):
+            candidate["error"] = " | ".join(errors[-3:]) if errors else "no usable source"
+
+        candidates[source_key] = candidate
+
+    return candidates
+
+
+def merge_reserve_risk_history_sources(
+    legacy_df: pd.DataFrame, recent_df: pd.DataFrame
+) -> pd.DataFrame:
+    if legacy_df.empty and recent_df.empty:
+        return pd.DataFrame(columns=["date", "reserve_risk"])
+    if legacy_df.empty:
+        return recent_df.copy().sort_values("date").reset_index(drop=True)
+    if recent_df.empty:
+        return legacy_df.copy().sort_values("date").reset_index(drop=True)
+
+    merged = pd.concat(
+        [
+            legacy_df.assign(
+                _source_rank=0,
+                _non_null_rank=legacy_df["reserve_risk"].notna().astype(int),
+            ),
+            recent_df.assign(
+                _source_rank=1,
+                _non_null_rank=recent_df["reserve_risk"].notna().astype(int),
+            ),
+        ],
+        ignore_index=True,
+    )
+    merged["date"] = pd.to_datetime(merged["date"])
+    merged = merged.sort_values(
+        ["date", "_non_null_rank", "_source_rank"]
+    ).drop_duplicates(subset=["date"], keep="last")
+    return merged.drop(columns=["_source_rank", "_non_null_rank"]).reset_index(
+        drop=True
+    )
+
+
+def _build_reserve_risk_source_label(
+    primary_candidate: Dict[str, object] | None,
+    legacy_candidate: Dict[str, object] | None = None,
+    recent_df: pd.DataFrame | None = None,
+) -> str:
+    primary_url = (
+        str(primary_candidate.get("selectedUrl"))
+        if primary_candidate and primary_candidate.get("selectedUrl")
+        else "-"
+    )
+    if not legacy_candidate or recent_df is None or recent_df.empty:
+        return primary_url
+
+    legacy_url = (
+        str(legacy_candidate.get("selectedUrl"))
+        if legacy_candidate.get("selectedUrl")
+        else "-"
+    )
+    recent_start = _safe_iso_date(pd.to_datetime(recent_df["date"]).min()) or "recent"
+    return f"{primary_url} + legacy_bridge({legacy_url} < {recent_start})"
+
+
 def fetch_reserve_risk_point_sources() -> Dict[str, Dict[str, object]]:
-    headers = {"User-Agent": "btc-monitor-history-fetcher/1.1"}
     candidates: Dict[str, Dict[str, object]] = {}
 
     for source_key, config in RESERVE_RISK_SOURCE_REGISTRY.items():
@@ -378,16 +585,7 @@ def fetch_reserve_risk_point_sources() -> Dict[str, Dict[str, object]]:
 
         for url in urls:
             try:
-                response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
-                if response.status_code >= 400:
-                    errors.append(f"{url} -> HTTP {response.status_code}")
-                    continue
-
-                payload = _extract_json_from_response_text(response.text)
-                if payload is None:
-                    errors.append(f"{url} -> no JSON payload")
-                    continue
-
+                payload = fetch_json_payload(url)
                 parsed = _parse_reserve_risk_point(payload)
                 if parsed is None:
                     errors.append(f"{url} -> invalid Reserve Risk payload")
@@ -422,7 +620,7 @@ def select_best_reserve_risk_point_source(
         if isinstance(candidate_date, pd.Timestamp):
             normalized_date = candidate_date
         else:
-            normalized_date = pd.Timestamp.min.tz_localize(None)
+            normalized_date = pd.Timestamp("1900-01-01")
         return normalized_date, -int(candidate.get("priority", 999))
 
     return max(available, key=sort_key)
@@ -432,25 +630,15 @@ def build_reserve_risk_source_diagnostics(
     primary_df: pd.DataFrame,
     point_candidates: Dict[str, Dict[str, object]],
     applied_point_source: Dict[str, object] | None = None,
+    primary_source_key: str = "bgeometrics_primary",
+    supporting_series: Dict[str, pd.DataFrame] | None = None,
+    assembled_df: pd.DataFrame | None = None,
+    assembled_source_label: str | None = None,
 ) -> Dict[str, object]:
     diagnostics: Dict[str, object] = {
-        "primarySeries": {
-            "key": "bgeometrics_primary",
-            "displayName": str(
-                RESERVE_RISK_SOURCE_REGISTRY["bgeometrics_primary"].get(
-                    "display_name", "BGeometrics Reserve Risk"
-                )
-            ),
-            "mode": "series",
-            "priority": _reserve_risk_source_priority("bgeometrics_primary"),
-            "latestObservedDate": None,
-            "latestObservedValue": None,
-            "latestNonNullDate": None,
-            "latestNonNullValue": None,
-            "trailingNullRows": 0,
-            "trailingNullDays": 0,
-            "healthStatus": "missing",
-        },
+        "primarySeries": _summarize_reserve_risk_series(primary_df, primary_source_key),
+        "supportingSeries": [],
+        "assembledSeries": None,
         "pointSources": [],
         "selectedPointSourceKey": (
             str(applied_point_source.get("key")) if applied_point_source else None
@@ -464,40 +652,21 @@ def build_reserve_risk_source_diagnostics(
     if not sorted_primary.empty and "date" in sorted_primary.columns:
         sorted_primary["date"] = pd.to_datetime(sorted_primary["date"])
         sorted_primary = sorted_primary.sort_values("date").reset_index(drop=True)
-        latest_row = sorted_primary.iloc[-1]
-        latest_date = pd.to_datetime(latest_row["date"])
-        latest_value = _safe_float(latest_row.get("reserve_risk"))
-        primary_summary["latestObservedDate"] = _safe_iso_date(latest_date)
-        primary_summary["latestObservedValue"] = latest_value
 
-        non_null = sorted_primary.loc[sorted_primary["reserve_risk"].notna()]
-        if not non_null.empty:
-            latest_non_null_row = non_null.iloc[-1]
-            latest_non_null_date = pd.to_datetime(latest_non_null_row["date"])
-            latest_non_null_value = _safe_float(latest_non_null_row.get("reserve_risk"))
-            primary_summary["latestNonNullDate"] = _safe_iso_date(latest_non_null_date)
-            primary_summary["latestNonNullValue"] = latest_non_null_value
+    supporting_list: List[Dict[str, object]] = []
+    for source_key, df in (supporting_series or {}).items():
+        supporting_list.append(_summarize_reserve_risk_series(df, source_key))
+    diagnostics["supportingSeries"] = supporting_list
 
-            trailing_null_rows = 0
-            if latest_value is None:
-                for value in reversed(sorted_primary["reserve_risk"].tolist()):
-                    if _safe_float(value) is None:
-                        trailing_null_rows += 1
-                    else:
-                        break
-
-            trailing_null_days = (
-                int((latest_date - latest_non_null_date).days)
-                if latest_value is None
-                else 0
-            )
-            primary_summary["trailingNullRows"] = trailing_null_rows
-            primary_summary["trailingNullDays"] = trailing_null_days
-            primary_summary["healthStatus"] = (
-                "null_tail" if latest_value is None else "healthy"
-            )
-        else:
-            primary_summary["healthStatus"] = "no_non_null_values"
+    if assembled_df is not None:
+        assembled_summary = _summarize_reserve_risk_series(
+            assembled_df, source_key="assembled_bridge"
+        )
+        assembled_summary["key"] = "assembled_bridge"
+        assembled_summary["displayName"] = "Reserve Risk assembled history"
+        assembled_summary["mode"] = "assembled"
+        assembled_summary["sourceLabel"] = assembled_source_label
+        diagnostics["assembledSeries"] = assembled_summary
 
     point_source_list: List[Dict[str, object]] = []
     for candidate in sorted(
@@ -597,6 +766,67 @@ def _safe_int(value: object) -> int | None:
     return int(parsed)
 
 
+def build_reserve_risk_history_dataframe() -> Tuple[
+    pd.DataFrame,
+    str,
+    pd.Timestamp | None,
+    Dict[str, object],
+]:
+    series_candidates = fetch_reserve_risk_series_sources()
+    recent_candidate = series_candidates.get("bitcoin_data_history", {})
+    legacy_candidate = series_candidates.get("bgeometrics_primary", {})
+
+    recent_df = recent_candidate.get("dataframe")
+    if not isinstance(recent_df, pd.DataFrame):
+        recent_df = pd.DataFrame(columns=["date", "reserve_risk"])
+    legacy_df = legacy_candidate.get("dataframe")
+    if not isinstance(legacy_df, pd.DataFrame):
+        legacy_df = pd.DataFrame(columns=["date", "reserve_risk"])
+
+    use_recent_primary = bool(recent_candidate.get("available")) and not recent_df.empty
+    primary_df = recent_df if use_recent_primary else legacy_df
+    primary_source_key = (
+        "bitcoin_data_history" if use_recent_primary else "bgeometrics_primary"
+    )
+    assembled_df = (
+        merge_reserve_risk_history_sources(legacy_df, recent_df)
+        if use_recent_primary
+        else legacy_df.copy()
+    )
+    source_label = _build_reserve_risk_source_label(
+        primary_candidate=recent_candidate if use_recent_primary else legacy_candidate,
+        legacy_candidate=legacy_candidate if use_recent_primary else None,
+        recent_df=recent_df if use_recent_primary else None,
+    )
+
+    point_candidates = fetch_reserve_risk_point_sources()
+    patched_df, patch_info = patch_reserve_risk_tail(
+        assembled_df,
+        point_candidates=point_candidates,
+    )
+    if patch_info:
+        source_label = f"{source_label} + point_backup({patch_info['appliedLabel']})"
+
+    reserve_non_null = primary_df.loc[primary_df["reserve_risk"].notna(), "date"]
+    reserve_last_date = (
+        pd.to_datetime(reserve_non_null.max()) if not reserve_non_null.empty else None
+    )
+    diagnostics = build_reserve_risk_source_diagnostics(
+        primary_df=primary_df,
+        point_candidates=point_candidates,
+        applied_point_source=patch_info,
+        primary_source_key=primary_source_key,
+        supporting_series=(
+            {"bgeometrics_primary": legacy_df}
+            if use_recent_primary and not legacy_df.empty
+            else None
+        ),
+        assembled_df=patched_df,
+        assembled_source_label=source_label,
+    )
+    return patched_df, source_label, reserve_last_date, diagnostics
+
+
 def patch_reserve_risk_tail(
     df: pd.DataFrame,
     point_candidates: Dict[str, Dict[str, object]] | None = None,
@@ -623,6 +853,9 @@ def patch_reserve_risk_tail(
 
     same_day = patched["date"] == backup_date
     if same_day.any():
+        current_value = _safe_float(patched.loc[same_day, "reserve_risk"].iloc[-1])
+        if current_value is not None and abs(current_value - backup_value) < 1e-12:
+            return patched, None
         patched.loc[same_day, "reserve_risk"] = backup_value
     else:
         patched = pd.concat(
@@ -666,7 +899,7 @@ def build_base_dataframe(
     selected_sources: Dict[str, str] = {}
 
     print("=" * 72)
-    print("BTC Indicators History (BGeometrics chart files mode)")
+    print("BTC Indicators History (hybrid reserve source mode)")
     print("=" * 72)
 
     futures = {}
@@ -685,33 +918,13 @@ def build_base_dataframe(
             selected_sources[key] = selected_url
             print(f"  Rows: {len(df):,} | Source: {selected_url}")
 
-    reserve_primary_non_null = dfs["reserve_risk"].loc[
-        dfs["reserve_risk"]["reserve_risk"].notna(), "date"
-    ]
-    reserve_primary_last_date = (
-        pd.to_datetime(reserve_primary_non_null.max())
-        if not reserve_primary_non_null.empty
-        else None
+    print("Fetching Reserve Risk ...")
+    reserve_df, reserve_source_label, reserve_primary_last_date, reserve_risk_diagnostics = (
+        build_reserve_risk_history_dataframe()
     )
-    reserve_primary_raw_df = dfs["reserve_risk"].copy()
-    reserve_point_candidates = fetch_reserve_risk_point_sources()
-
-    reserve_patched_df, reserve_patch_info = patch_reserve_risk_tail(
-        reserve_primary_raw_df,
-        point_candidates=reserve_point_candidates,
-    )
-    if reserve_patch_info:
-        dfs["reserve_risk"] = reserve_patched_df
-        selected_sources["reserve_risk"] = (
-            f"{selected_sources['reserve_risk']} + point_backup({reserve_patch_info['appliedLabel']})"
-        )
-        print(f"Reserve Risk tail patched: {reserve_patch_info['appliedLabel']}")
-
-    reserve_risk_diagnostics = build_reserve_risk_source_diagnostics(
-        primary_df=reserve_primary_raw_df,
-        point_candidates=reserve_point_candidates,
-        applied_point_source=reserve_patch_info,
-    )
+    dfs["reserve_risk"] = reserve_df
+    selected_sources["reserve_risk"] = reserve_source_label
+    print(f"  Rows: {len(reserve_df):,} | Source: {reserve_source_label}")
 
     merged: pd.DataFrame | None = None
     for key in [
@@ -1982,6 +2195,7 @@ def print_summary(
         print(f"  - {key}: {sources.get(key, '-')}")
 
     reserve_primary = reserve_risk_diagnostics.get("primarySeries", {})
+    reserve_supporting = reserve_risk_diagnostics.get("supportingSeries", [])
     reserve_shadow = reserve_risk_diagnostics.get("shadowCompare", {})
     if reserve_primary:
         print()
@@ -1998,6 +2212,15 @@ def print_summary(
             "  - trailing null : "
             f"{reserve_primary.get('trailingNullDays', '-')}"
         )
+    if reserve_supporting:
+        for item in reserve_supporting:
+            if not isinstance(item, dict):
+                continue
+            print(
+                "  - bridge source : "
+                f"{item.get('key', '-')} last non-null @ "
+                f"{item.get('latestNonNullDate', '-')}"
+            )
     if reserve_shadow:
         print(
             "  - shadow source : "
@@ -2151,14 +2374,16 @@ def main() -> int:
             if isinstance(existing_history, list):
                 existing_by_date = {row.get("d"): row for row in existing_history}
                 new_by_date = {row.get("d"): row for row in history_json}
+                preserved_count = 0
                 # Keep existing rows whose dates are NOT in the new fetch
                 for date_key, row in existing_by_date.items():
                     if date_key not in new_by_date:
                         history_json.append(row)
+                        preserved_count += 1
                 # Sort by date to maintain ordering
                 history_json.sort(key=lambda r: r.get("d", ""))
                 print(
-                    f"History merged: {len(new_by_date)} new + {len(existing_by_date) - len(new_by_date)} preserved = {len(history_json)} total"
+                    f"History merged: {len(new_by_date)} new + {preserved_count} preserved = {len(history_json)} total"
                 )
         except Exception as exc:
             print(
