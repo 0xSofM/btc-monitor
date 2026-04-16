@@ -7,11 +7,13 @@ import pandas as pd
 from fetch_btc_indicators_history_files import (
     _classify_score_band,
     archive_existing_outputs,
+    build_reserve_risk_source_diagnostics,
     build_signal_events_v4_json,
     build_latest_json,
     build_light_history_json,
     dataframe_to_history_json,
     enrich_for_frontend,
+    patch_reserve_risk_tail,
     restore_outputs_from_archive,
     write_json,
 )
@@ -107,6 +109,7 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertTrue(bool(latest["signalsV4"]["lthMvrv"]))
         self.assertEqual(str(latest["scoringModelVersion"]), "v4_layered_core6")
         self.assertEqual(str(latest["legacyScoringModelVersion"]), "v3_no_lookahead_replacement")
+        self.assertIn("reserveRiskDiagnostics", latest)
 
     def test_build_light_history_json_filters_old_rows(self) -> None:
         history = [
@@ -158,6 +161,81 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(str(latest["reserveRiskSourceModeV4"]), "inactive")
         self.assertEqual(int(latest["activeIndicatorCountV4"]), 5)
         self.assertEqual(int(latest["maxTotalScoreV4"]), 10)
+
+    def test_patch_reserve_risk_tail_prefers_freshest_point_source(self) -> None:
+        reserve_df = pd.DataFrame(
+            {
+                "date": pd.to_datetime(["2024-01-01", "2024-01-02"]),
+                "reserve_risk": [0.003, None],
+            }
+        )
+        point_candidates = {
+            "older_source": {
+                "key": "older_source",
+                "displayName": "Older Source",
+                "mode": "point",
+                "priority": 1,
+                "available": True,
+                "selectedUrl": "https://example.com/older",
+                "date": pd.Timestamp("2024-01-02"),
+                "value": 0.0025,
+            },
+            "fresher_source": {
+                "key": "fresher_source",
+                "displayName": "Fresher Source",
+                "mode": "point",
+                "priority": 2,
+                "available": True,
+                "selectedUrl": "https://example.com/fresher",
+                "date": pd.Timestamp("2024-01-03"),
+                "value": 0.0020,
+            },
+        }
+
+        patched, patch_info = patch_reserve_risk_tail(
+            reserve_df, point_candidates=point_candidates
+        )
+
+        self.assertIsNotNone(patch_info)
+        assert patch_info is not None
+        self.assertEqual(str(patch_info["key"]), "fresher_source")
+        self.assertEqual(patched.iloc[-1]["date"].strftime("%Y-%m-%d"), "2024-01-03")
+        self.assertAlmostEqual(float(patched.iloc[-1]["reserve_risk"]), 0.0020)
+
+    def test_reserve_risk_diagnostics_report_null_tail_and_shadow_status(self) -> None:
+        reserve_df = pd.DataFrame(
+            {
+                "date": pd.to_datetime(["2024-01-01", "2024-01-02", "2024-01-03"]),
+                "reserve_risk": [0.003, None, None],
+            }
+        )
+        point_candidates = {
+            "bitcoin_data_latest": {
+                "key": "bitcoin_data_latest",
+                "displayName": "bitcoin-data Reserve Risk latest",
+                "mode": "point",
+                "priority": 1,
+                "available": True,
+                "selectedUrl": "https://bitcoin-data.com/v1/reserve-risk/1",
+                "date": pd.Timestamp("2024-01-03"),
+                "value": 0.0012,
+            }
+        }
+
+        diagnostics = build_reserve_risk_source_diagnostics(
+            primary_df=reserve_df,
+            point_candidates=point_candidates,
+            applied_point_source=point_candidates["bitcoin_data_latest"],
+        )
+
+        primary = diagnostics["primarySeries"]
+        shadow = diagnostics["shadowCompare"]
+        self.assertEqual(primary["healthStatus"], "null_tail")
+        self.assertEqual(primary["latestNonNullDate"], "2024-01-01")
+        self.assertEqual(int(primary["trailingNullDays"]), 2)
+        self.assertEqual(shadow["candidateKey"], "bitcoin_data_latest")
+        self.assertEqual(shadow["status"], "primary_same_day_missing")
+        self.assertFalse(bool(shadow["sameDayComparable"]))
 
     def test_classify_score_band_handles_dynamic_gaps(self) -> None:
         self.assertEqual(_classify_score_band(8, 10), "accumulate")

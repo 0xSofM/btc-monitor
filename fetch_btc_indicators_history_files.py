@@ -37,7 +37,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, Iterable, List, Tuple
+from typing import Any, Dict, Iterable, List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -89,10 +89,25 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
 REQUEST_TIMEOUT = 45
 MAX_RETRIES = 4
 RETRY_BACKOFF_SEC = 2.0
-RESERVE_RISK_BACKUP_URLS = [
-    "https://bitcoin-data.com/v1/reserve-risk/1",
-    "https://r.jina.ai/http://bitcoin-data.com/v1/reserve-risk/1",
-]
+RESERVE_RISK_SOURCE_REGISTRY: Dict[str, Dict[str, object]] = {
+    "bgeometrics_primary": {
+        "display_name": "BGeometrics Reserve Risk",
+        "mode": "series",
+        "priority": 0,
+        "urls": [
+            "https://charts.bgeometrics.com/files/reserve_risk.json",
+        ],
+    },
+    "bitcoin_data_latest": {
+        "display_name": "bitcoin-data Reserve Risk latest",
+        "mode": "point",
+        "priority": 1,
+        "urls": [
+            "https://bitcoin-data.com/v1/reserve-risk/1",
+            "https://r.jina.ai/http://bitcoin-data.com/v1/reserve-risk/1",
+        ],
+    },
+}
 
 
 SCORE_BANDS: List[Tuple[int, int, str]] = [
@@ -330,28 +345,249 @@ def _parse_reserve_risk_point(payload: object) -> Tuple[pd.Timestamp, float] | N
     return date_value, value_raw
 
 
-def fetch_reserve_risk_backup_point() -> Tuple[pd.Timestamp, float, str] | None:
+def _reserve_risk_source_priority(source_key: str) -> int:
+    config = RESERVE_RISK_SOURCE_REGISTRY.get(source_key, {})
+    raw_priority = config.get("priority", 999)
+    try:
+        return int(raw_priority)
+    except (TypeError, ValueError):
+        return 999
+
+
+def fetch_reserve_risk_point_sources() -> Dict[str, Dict[str, object]]:
     headers = {"User-Agent": "btc-monitor-history-fetcher/1.1"}
+    candidates: Dict[str, Dict[str, object]] = {}
 
-    for url in RESERVE_RISK_BACKUP_URLS:
-        try:
-            response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
-            if response.status_code >= 400:
-                continue
-
-            payload = _extract_json_from_response_text(response.text)
-            if payload is None:
-                continue
-
-            parsed = _parse_reserve_risk_point(payload)
-            if parsed is None:
-                continue
-
-            return parsed[0], parsed[1], url
-        except Exception:
+    for source_key, config in RESERVE_RISK_SOURCE_REGISTRY.items():
+        if str(config.get("mode")) != "point":
             continue
 
-    return None
+        urls = [str(url) for url in config.get("urls", [])]
+        candidate: Dict[str, object] = {
+            "key": source_key,
+            "displayName": str(config.get("display_name", source_key)),
+            "mode": "point",
+            "priority": _reserve_risk_source_priority(source_key),
+            "available": False,
+            "selectedUrl": None,
+            "date": None,
+            "value": None,
+            "error": None,
+        }
+        errors: List[str] = []
+
+        for url in urls:
+            try:
+                response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+                if response.status_code >= 400:
+                    errors.append(f"{url} -> HTTP {response.status_code}")
+                    continue
+
+                payload = _extract_json_from_response_text(response.text)
+                if payload is None:
+                    errors.append(f"{url} -> no JSON payload")
+                    continue
+
+                parsed = _parse_reserve_risk_point(payload)
+                if parsed is None:
+                    errors.append(f"{url} -> invalid Reserve Risk payload")
+                    continue
+
+                candidate["available"] = True
+                candidate["selectedUrl"] = url
+                candidate["date"] = parsed[0]
+                candidate["value"] = parsed[1]
+                break
+            except Exception as exc:
+                errors.append(f"{url} -> {exc}")
+                continue
+
+        if not bool(candidate["available"]):
+            candidate["error"] = " | ".join(errors[-3:]) if errors else "no usable source"
+
+        candidates[source_key] = candidate
+
+    return candidates
+
+
+def select_best_reserve_risk_point_source(
+    candidates: Dict[str, Dict[str, object]]
+) -> Dict[str, object] | None:
+    available = [candidate for candidate in candidates.values() if candidate.get("available")]
+    if not available:
+        return None
+
+    def sort_key(candidate: Dict[str, object]) -> Tuple[pd.Timestamp, int]:
+        candidate_date = candidate.get("date")
+        if isinstance(candidate_date, pd.Timestamp):
+            normalized_date = candidate_date
+        else:
+            normalized_date = pd.Timestamp.min.tz_localize(None)
+        return normalized_date, -int(candidate.get("priority", 999))
+
+    return max(available, key=sort_key)
+
+
+def build_reserve_risk_source_diagnostics(
+    primary_df: pd.DataFrame,
+    point_candidates: Dict[str, Dict[str, object]],
+    applied_point_source: Dict[str, object] | None = None,
+) -> Dict[str, object]:
+    diagnostics: Dict[str, object] = {
+        "primarySeries": {
+            "key": "bgeometrics_primary",
+            "displayName": str(
+                RESERVE_RISK_SOURCE_REGISTRY["bgeometrics_primary"].get(
+                    "display_name", "BGeometrics Reserve Risk"
+                )
+            ),
+            "mode": "series",
+            "priority": _reserve_risk_source_priority("bgeometrics_primary"),
+            "latestObservedDate": None,
+            "latestObservedValue": None,
+            "latestNonNullDate": None,
+            "latestNonNullValue": None,
+            "trailingNullRows": 0,
+            "trailingNullDays": 0,
+            "healthStatus": "missing",
+        },
+        "pointSources": [],
+        "selectedPointSourceKey": (
+            str(applied_point_source.get("key")) if applied_point_source else None
+        ),
+        "selectedPointSourceApplied": bool(applied_point_source),
+        "shadowCompare": None,
+    }
+
+    primary_summary = diagnostics["primarySeries"]
+    sorted_primary = primary_df.copy()
+    if not sorted_primary.empty and "date" in sorted_primary.columns:
+        sorted_primary["date"] = pd.to_datetime(sorted_primary["date"])
+        sorted_primary = sorted_primary.sort_values("date").reset_index(drop=True)
+        latest_row = sorted_primary.iloc[-1]
+        latest_date = pd.to_datetime(latest_row["date"])
+        latest_value = _safe_float(latest_row.get("reserve_risk"))
+        primary_summary["latestObservedDate"] = _safe_iso_date(latest_date)
+        primary_summary["latestObservedValue"] = latest_value
+
+        non_null = sorted_primary.loc[sorted_primary["reserve_risk"].notna()]
+        if not non_null.empty:
+            latest_non_null_row = non_null.iloc[-1]
+            latest_non_null_date = pd.to_datetime(latest_non_null_row["date"])
+            latest_non_null_value = _safe_float(latest_non_null_row.get("reserve_risk"))
+            primary_summary["latestNonNullDate"] = _safe_iso_date(latest_non_null_date)
+            primary_summary["latestNonNullValue"] = latest_non_null_value
+
+            trailing_null_rows = 0
+            if latest_value is None:
+                for value in reversed(sorted_primary["reserve_risk"].tolist()):
+                    if _safe_float(value) is None:
+                        trailing_null_rows += 1
+                    else:
+                        break
+
+            trailing_null_days = (
+                int((latest_date - latest_non_null_date).days)
+                if latest_value is None
+                else 0
+            )
+            primary_summary["trailingNullRows"] = trailing_null_rows
+            primary_summary["trailingNullDays"] = trailing_null_days
+            primary_summary["healthStatus"] = (
+                "null_tail" if latest_value is None else "healthy"
+            )
+        else:
+            primary_summary["healthStatus"] = "no_non_null_values"
+
+    point_source_list: List[Dict[str, object]] = []
+    for candidate in sorted(
+        point_candidates.values(),
+        key=lambda item: int(item.get("priority", 999)),
+    ):
+        point_source_list.append(
+            {
+                "key": candidate.get("key"),
+                "displayName": candidate.get("displayName"),
+                "mode": candidate.get("mode"),
+                "priority": candidate.get("priority"),
+                "available": bool(candidate.get("available")),
+                "selectedUrl": candidate.get("selectedUrl"),
+                "latestDate": _safe_iso_date(candidate.get("date")),
+                "latestValue": _safe_float(candidate.get("value")),
+                "error": candidate.get("error"),
+            }
+        )
+    diagnostics["pointSources"] = point_source_list
+
+    best_candidate = select_best_reserve_risk_point_source(point_candidates)
+    if best_candidate:
+        candidate_date = best_candidate.get("date")
+        candidate_value = _safe_float(best_candidate.get("value"))
+        primary_same_day_value = None
+        same_day_available = False
+        primary_latest_non_null_date = primary_summary.get("latestNonNullDate")
+        primary_latest_non_null_value = primary_summary.get("latestNonNullValue")
+
+        if isinstance(candidate_date, pd.Timestamp) and not primary_df.empty:
+            same_day_rows = primary_df.loc[
+                pd.to_datetime(primary_df["date"]) == candidate_date
+            ]
+            if not same_day_rows.empty:
+                same_day_available = True
+                primary_same_day_value = _safe_float(
+                    same_day_rows.iloc[-1].get("reserve_risk")
+                )
+
+        latest_date_gap_days = None
+        if (
+            isinstance(candidate_date, pd.Timestamp)
+            and isinstance(primary_summary.get("latestObservedDate"), str)
+            and primary_summary.get("latestObservedDate")
+        ):
+            latest_date_gap_days = int(
+                (
+                    candidate_date
+                    - pd.to_datetime(str(primary_summary.get("latestObservedDate")))
+                ).days
+            )
+
+        status = "candidate_only"
+        same_date_delta = None
+        same_date_ratio = None
+        if same_day_available and primary_same_day_value is not None and candidate_value is not None:
+            status = "same_day_comparable"
+            same_date_delta = candidate_value - primary_same_day_value
+            same_date_ratio = (
+                candidate_value / primary_same_day_value
+                if primary_same_day_value not in (None, 0)
+                else None
+            )
+        elif same_day_available:
+            status = "primary_same_day_missing"
+
+        diagnostics["shadowCompare"] = {
+            "candidateKey": best_candidate.get("key"),
+            "candidateDisplayName": best_candidate.get("displayName"),
+            "candidateLatestDate": _safe_iso_date(candidate_date),
+            "candidateLatestValue": candidate_value,
+            "primaryLatestObservedDate": primary_summary.get("latestObservedDate"),
+            "primaryLatestObservedValue": primary_summary.get("latestObservedValue"),
+            "primaryLatestNonNullDate": primary_latest_non_null_date,
+            "primaryLatestNonNullValue": primary_latest_non_null_value,
+            "sameDayComparable": bool(
+                same_day_available
+                and primary_same_day_value is not None
+                and candidate_value is not None
+            ),
+            "primarySameDayAvailable": same_day_available,
+            "primarySameDayValue": primary_same_day_value,
+            "sameDayDelta": same_date_delta,
+            "sameDayRatio": same_date_ratio,
+            "latestDateGapDays": latest_date_gap_days,
+            "status": status,
+        }
+
+    return diagnostics
 
 
 def _safe_int(value: object) -> int | None:
@@ -361,15 +597,26 @@ def _safe_int(value: object) -> int | None:
     return int(parsed)
 
 
-def patch_reserve_risk_tail(df: pd.DataFrame) -> Tuple[pd.DataFrame, str | None]:
+def patch_reserve_risk_tail(
+    df: pd.DataFrame,
+    point_candidates: Dict[str, Dict[str, object]] | None = None,
+) -> Tuple[pd.DataFrame, Dict[str, object] | None]:
     if df.empty or "date" not in df.columns or "reserve_risk" not in df.columns:
         return df, None
 
-    backup_point = fetch_reserve_risk_backup_point()
+    if point_candidates is None:
+        point_candidates = fetch_reserve_risk_point_sources()
+
+    backup_point = select_best_reserve_risk_point_source(point_candidates)
     if not backup_point:
         return df, None
 
-    backup_date, backup_value, backup_source = backup_point
+    backup_date = backup_point.get("date")
+    backup_value = _safe_float(backup_point.get("value"))
+    backup_source = str(backup_point.get("selectedUrl"))
+    if not isinstance(backup_date, pd.Timestamp) or backup_value is None:
+        return df, None
+
     patched = df.copy()
     patched["date"] = pd.to_datetime(patched["date"])
     patched = patched.sort_values("date").reset_index(drop=True)
@@ -396,17 +643,24 @@ def patch_reserve_risk_tail(df: pd.DataFrame) -> Tuple[pd.DataFrame, str | None]
             .reset_index(drop=True)
         )
 
-    applied_info = (
-        f"{backup_date.strftime('%Y-%m-%d')} -> {backup_value:.10f} "
-        f"(source: {backup_source})"
-    )
+    applied_info = {
+        "key": backup_point.get("key"),
+        "displayName": backup_point.get("displayName"),
+        "selectedUrl": backup_source,
+        "date": backup_date,
+        "value": backup_value,
+        "appliedLabel": (
+            f"{backup_date.strftime('%Y-%m-%d')} -> {backup_value:.10f} "
+            f"(source: {backup_source})"
+        ),
+    }
     return patched, applied_info
 
 
 def build_base_dataframe(
     start_date: str | None = None,
     end_date: str | None = None,
-) -> Tuple[pd.DataFrame, Dict[str, str], pd.Timestamp | None]:
+) -> Tuple[pd.DataFrame, Dict[str, str], pd.Timestamp | None, Dict[str, object]]:
     """Fetch all required data and build merged base DataFrame."""
     dfs: Dict[str, pd.DataFrame] = {}
     selected_sources: Dict[str, str] = {}
@@ -439,16 +693,25 @@ def build_base_dataframe(
         if not reserve_primary_non_null.empty
         else None
     )
+    reserve_primary_raw_df = dfs["reserve_risk"].copy()
+    reserve_point_candidates = fetch_reserve_risk_point_sources()
 
     reserve_patched_df, reserve_patch_info = patch_reserve_risk_tail(
-        dfs["reserve_risk"]
+        reserve_primary_raw_df,
+        point_candidates=reserve_point_candidates,
     )
     if reserve_patch_info:
         dfs["reserve_risk"] = reserve_patched_df
         selected_sources["reserve_risk"] = (
-            f"{selected_sources['reserve_risk']} + backup({reserve_patch_info})"
+            f"{selected_sources['reserve_risk']} + point_backup({reserve_patch_info['appliedLabel']})"
         )
-        print(f"Reserve Risk tail patched: {reserve_patch_info}")
+        print(f"Reserve Risk tail patched: {reserve_patch_info['appliedLabel']}")
+
+    reserve_risk_diagnostics = build_reserve_risk_source_diagnostics(
+        primary_df=reserve_primary_raw_df,
+        point_candidates=reserve_point_candidates,
+        applied_point_source=reserve_patch_info,
+    )
 
     merged: pd.DataFrame | None = None
     for key in [
@@ -477,7 +740,12 @@ def build_base_dataframe(
     if end_date:
         merged = merged[merged["date"] <= pd.to_datetime(end_date)]
 
-    return merged.reset_index(drop=True), selected_sources, reserve_primary_last_date
+    return (
+        merged.reset_index(drop=True),
+        selected_sources,
+        reserve_primary_last_date,
+        reserve_risk_diagnostics,
+    )
 
 
 def _score_by_lt(value: object, trigger: float, deep: float) -> int:
@@ -1187,6 +1455,7 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
 def build_latest_json(
     frontend_df: pd.DataFrame,
     thresholds: Dict[str, Dict[str, object]],
+    reserve_risk_diagnostics: Dict[str, object] | None = None,
 ) -> Dict[str, object]:
     """Build latest snapshot JSON from the last history row."""
     if frontend_df.empty:
@@ -1404,6 +1673,12 @@ def build_latest_json(
         "coreIndicatorSet": INDICATOR_SET,
         "schemaVersion": SCHEMA_VERSION,
         "thresholds": thresholds,
+        "reserveRiskDiagnostics": reserve_risk_diagnostics or {},
+        "reserveRiskShadowCompare": (
+            reserve_risk_diagnostics.get("shadowCompare")
+            if isinstance(reserve_risk_diagnostics, dict)
+            else None
+        ),
         "lastUpdated": datetime.now(timezone.utc).isoformat(),
     }
     return latest_payload
@@ -1437,11 +1712,22 @@ def build_manifest_json(
     history_rows: int,
     light_rows: int,
     thresholds: Dict[str, Dict[str, object]],
+    reserve_risk_diagnostics: Dict[str, object] | None = None,
     signal_events_rows: int = 0,
     archived_snapshot_path: str | None = None,
     archive_root: str | None = None,
 ) -> Dict[str, object]:
     """Build a small manifest for observability/debugging and cache-busting hints."""
+    reserve_risk_diagnostics = (
+        reserve_risk_diagnostics
+        if reserve_risk_diagnostics is not None
+        else latest_json.get("reserveRiskDiagnostics", {})
+    )
+    primary_series = (
+        reserve_risk_diagnostics.get("primarySeries", {})
+        if isinstance(reserve_risk_diagnostics, dict)
+        else {}
+    )
     return {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "latestDate": latest_json.get("date"),
@@ -1475,6 +1761,15 @@ def build_manifest_json(
         "reserveRiskSourceMode": latest_json.get("reserveRiskSourceMode", "primary"),
         "reserveRiskSourceModeV4": latest_json.get(
             "reserveRiskSourceModeV4", "primary"
+        ),
+        "reserveRiskHealthStatus": primary_series.get("healthStatus"),
+        "reserveRiskPrimaryLastNonNullDate": primary_series.get("latestNonNullDate"),
+        "reserveRiskPrimaryTrailingNullDays": primary_series.get("trailingNullDays"),
+        "reserveRiskDiagnostics": reserve_risk_diagnostics,
+        "reserveRiskShadowCompare": (
+            reserve_risk_diagnostics.get("shadowCompare")
+            if isinstance(reserve_risk_diagnostics, dict)
+            else None
         ),
         "inactiveIndicators": latest_json.get("inactiveIndicators", []),
         "archive": {
@@ -1649,6 +1944,7 @@ def save_tabular_outputs(
 def print_summary(
     tabular_df: pd.DataFrame,
     sources: Dict[str, str],
+    reserve_risk_diagnostics: Dict[str, object],
     history_path: Path,
     history_light_path: Path,
     latest_path: Path,
@@ -1684,6 +1980,30 @@ def print_summary(
         "puell_multiple",
     ]:
         print(f"  - {key}: {sources.get(key, '-')}")
+
+    reserve_primary = reserve_risk_diagnostics.get("primarySeries", {})
+    reserve_shadow = reserve_risk_diagnostics.get("shadowCompare", {})
+    if reserve_primary:
+        print()
+        print("Reserve Risk health:")
+        print(
+            "  - primary status: "
+            f"{reserve_primary.get('healthStatus', '-')}"
+        )
+        print(
+            "  - last non-null : "
+            f"{reserve_primary.get('latestNonNullDate', '-')}"
+        )
+        print(
+            "  - trailing null : "
+            f"{reserve_primary.get('trailingNullDays', '-')}"
+        )
+    if reserve_shadow:
+        print(
+            "  - shadow source : "
+            f"{reserve_shadow.get('candidateKey', '-')}"
+            f" @ {reserve_shadow.get('candidateLatestDate', '-')}"
+        )
 
     print()
     print("Frontend JSON files:")
@@ -1807,7 +2127,7 @@ def main() -> int:
             print(f"  - restored {key}: {path}")
         return 0
 
-    base_df, sources, reserve_primary_last_date = build_base_dataframe(
+    base_df, sources, reserve_primary_last_date, reserve_risk_diagnostics = build_base_dataframe(
         args.start_date, args.end_date
     )
     if base_df.empty:
@@ -1845,7 +2165,11 @@ def main() -> int:
                 f"WARNING: Could not merge with existing history ({exc}). Using fresh data only."
             )
 
-    latest_json = build_latest_json(frontend_df, thresholds=thresholds)
+    latest_json = build_latest_json(
+        frontend_df,
+        thresholds=thresholds,
+        reserve_risk_diagnostics=reserve_risk_diagnostics,
+    )
     history_light_json = build_light_history_json(
         history_json, years=max(1, args.history_light_years)
     )
@@ -1862,6 +2186,7 @@ def main() -> int:
         history_rows=len(history_json),
         light_rows=len(history_light_json),
         thresholds=thresholds,
+        reserve_risk_diagnostics=reserve_risk_diagnostics,
         signal_events_rows=len(signal_events_v4_json),
         archived_snapshot_path=str(archived_snapshot) if archived_snapshot else None,
         archive_root=args.archive_root,
@@ -1889,6 +2214,7 @@ def main() -> int:
     print_summary(
         tabular_df=tabular_df,
         sources=sources,
+        reserve_risk_diagnostics=reserve_risk_diagnostics,
         history_path=history_path,
         history_light_path=history_light_path,
         latest_path=latest_path,
