@@ -1,3 +1,15 @@
+export interface ThresholdValue {
+  trigger: number;
+  deep: number;
+  method?: string;
+  windowDays?: number;
+  minHistoryDays?: number;
+  triggerQuantile?: number;
+  deepQuantile?: number;
+}
+
+export type ThresholdMap = Record<string, ThresholdValue>;
+
 export interface IndicatorData {
   d: string;
   unixTs?: number;
@@ -58,6 +70,7 @@ export interface IndicatorData {
   staleIndicators?: Array<string | { key?: string; lagDays?: number; maxLagDays?: number; sourceDate?: string }>;
   coreIndicatorSet?: string;
   scoringModelVersion?: string;
+  thresholds?: ThresholdMap;
   indicatorDates?: {
     priceMa200w?: string;
     priceRealized?: string;
@@ -151,7 +164,7 @@ export interface LatestData {
     puell?: string;
   };
   staleIndicators?: Array<string | { key?: string; lagDays?: number; maxLagDays?: number; sourceDate?: string }>;
-  thresholds?: Record<string, { trigger: number; deep: number }>;
+  thresholds?: ThresholdMap;
   // Legacy V1 compatibility fields
   mvrvZscore?: number;
   lthMvrv?: number;
@@ -185,6 +198,8 @@ export type TimeRange = '1w' | '1m' | '6m' | '1y' | 'all';
 export interface ChartDataPoint {
   date: string;
   value: number | null;
+  triggerValue?: number | null;
+  deepValue?: number | null;
   btcPrice?: number;
   signal?: boolean;
 }

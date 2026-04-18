@@ -6,7 +6,6 @@ import {
   CartesianGrid,
   Line,
   LineChart,
-  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -29,6 +28,8 @@ type IndicatorType = 'priceMa200w' | 'priceRealized' | 'mvrvZscore' | 'lthMvrv' 
 type DetailSeriesPoint = {
   date: string;
   value: number | null;
+  triggerValue?: number | null;
+  deepValue?: number | null;
   signal: boolean;
   btcPrice?: number;
 };
@@ -58,13 +59,13 @@ const RANGE_DAYS: Record<(typeof TIME_RANGES)[number]['key'], number> = {
   '1w': 7,
 };
 
-const BUY_ZONE_CONFIG: Record<IndicatorType, { min: number; max: number; description: string }> = {
-  priceMa200w: { min: 0, max: 1, description: '< 1（深度 < 0.85）' },
-  priceRealized: { min: 0, max: 1, description: '< 1（深度 < 0.90）' },
-  mvrvZscore: { min: -1.5, max: 0, description: '< 0（深度 < -0.5）' },
-  lthMvrv: { min: 0, max: 1, description: '< 1（深度 < 0.90）' },
-  sthMvrv: { min: 0, max: 1, description: '< 1（深度 < 0.85）' },
-  puell: { min: 0, max: 0.6, description: '< 0.6（深度 < 0.5）' },
+const CHART_FLOOR_CONFIG: Record<IndicatorType, number> = {
+  priceMa200w: 0,
+  priceRealized: 0,
+  mvrvZscore: -1.5,
+  lthMvrv: 0,
+  sthMvrv: 0,
+  puell: 0,
 };
 
 type TooltipEntry = {
@@ -118,6 +119,39 @@ function findLatestObservedPoint(points: DetailSeriesPoint[]): DetailSeriesPoint
   }
 
   return null;
+}
+
+function findLatestThresholdPoint(points: DetailSeriesPoint[]): DetailSeriesPoint | null {
+  for (let index = points.length - 1; index >= 0; index -= 1) {
+    const point = points[index];
+    if (typeof point?.triggerValue === 'number' && Number.isFinite(point.triggerValue)) {
+      return point;
+    }
+  }
+
+  return null;
+}
+
+function buildThresholdDescription(indicator: IndicatorType, point: DetailSeriesPoint | null): string {
+  const triggerText = typeof point?.triggerValue === 'number' ? formatNumber(point.triggerValue) : '-';
+  const deepText = typeof point?.deepValue === 'number' ? formatNumber(point.deepValue) : '-';
+
+  switch (indicator) {
+    case 'priceMa200w':
+      return '固定阈值 < 1（深度 < 0.85）';
+    case 'priceRealized':
+      return '固定阈值 < 1（深度 < 0.90）';
+    case 'mvrvZscore':
+      return '固定阈值 < 0（深度 < -0.5）';
+    case 'lthMvrv':
+      return '固定阈值 < 1（深度 < 0.90）';
+    case 'sthMvrv':
+      return `滚动阈值 < ${triggerText}（深度 < ${deepText}，过去 1460 天 p27 / p13.5）`;
+    case 'puell':
+      return '固定阈值 < 0.6（深度 < 0.5）';
+    default:
+      return '阈值线';
+  }
 }
 
 function formatPriceAxis(value: number): string {
@@ -195,7 +229,12 @@ export function IndicatorCharts({
   }, [data]);
 
   const config = INDICATOR_CONFIG[activeIndicator];
-  const buyZone = BUY_ZONE_CONFIG[activeIndicator];
+  const detailThresholdPoint = activeIndicator === 'priceMa200w'
+    ? null
+    : findLatestThresholdPoint(detailSeries as DetailSeriesPoint[]);
+  const thresholdDescription = activeIndicator === 'priceMa200w'
+    ? '价格跌破 200W-MA 时通常进入长期底部观察区。'
+    : buildThresholdDescription(activeIndicator, detailThresholdPoint);
   const totalPoints = detailSeries.length;
 
   const resolvedEndIndex = totalPoints > 0
@@ -255,7 +294,7 @@ export function IndicatorCharts({
         const indicatorConfig = INDICATOR_CONFIG[indicatorKey];
         const points = miniSeriesMap[indicatorKey];
         const latest = points.length > 0 ? findLatestObservedPoint(points) : null;
-        const zone = BUY_ZONE_CONFIG[indicatorKey];
+        const latestThreshold = points.length > 0 ? findLatestThresholdPoint(points) : null;
         const isActive = activeIndicator === indicatorKey;
 
         return (
@@ -297,7 +336,18 @@ export function IndicatorCharts({
                       </linearGradient>
                     </defs>
                     {showThresholds && (
-                      <ReferenceLine y={zone.max} stroke={indicatorConfig.color} strokeDasharray="2 2" strokeOpacity={0.45} />
+                      <Line
+                        type="monotone"
+                        dataKey="triggerValue"
+                        name="触发阈值"
+                        stroke={indicatorConfig.color}
+                        strokeWidth={1.25}
+                        strokeDasharray="2 2"
+                        strokeOpacity={0.45}
+                        dot={false}
+                        connectNulls
+                        isAnimationActive={false}
+                      />
                     )}
                     <Area
                       type="monotone"
@@ -315,7 +365,9 @@ export function IndicatorCharts({
               )}
             </div>
 
-            <p className="mt-2 text-[11px] text-muted-foreground">触发区间：{zone.description}</p>
+            <p className="mt-2 text-[11px] text-muted-foreground">
+              触发区间：{buildThresholdDescription(indicatorKey, latestThreshold)}
+            </p>
           </button>
         );
       })}
@@ -400,13 +452,13 @@ export function IndicatorCharts({
 
     const visible = series.slice(resolvedStartIndex, resolvedEndIndex + 1);
     const values = visible
-      .map((row) => row.value)
+      .flatMap((row) => [row.value, row.triggerValue])
       .filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
     const dataMin = values.length ? Math.min(...values) : 0;
     const dataMax = values.length ? Math.max(...values) : 0;
     const padding = (dataMax - dataMin) * 0.12 || 0.5;
-    const yMin = Math.min(dataMin - padding, buyZone.min);
-    const yMax = Math.max(dataMax + padding, buyZone.max);
+    const yMin = Math.min(dataMin - padding, CHART_FLOOR_CONFIG[activeIndicator]);
+    const yMax = dataMax + padding;
 
     return (
       <ResponsiveContainer width="100%" height={420}>
@@ -416,7 +468,19 @@ export function IndicatorCharts({
           <YAxis tick={{ fontSize: 11 }} domain={[yMin, yMax]} tickFormatter={formatNumber} />
           <Tooltip content={<IndicatorTooltip />} />
 
-          {showThresholds && <ReferenceLine y={buyZone.max} stroke="#10B981" strokeDasharray="4 4" />}
+          {showThresholds && (
+            <Line
+              type="monotone"
+              dataKey="triggerValue"
+              name="触发阈值"
+              stroke="#10B981"
+              strokeWidth={1.5}
+              strokeDasharray="4 4"
+              dot={false}
+              connectNulls
+              isAnimationActive={false}
+            />
+          )}
 
           <Line
             type="monotone"
@@ -551,6 +615,12 @@ export function IndicatorCharts({
           </span>
           <span className="mx-2">|</span>
           <span>{config.description}</span>
+          {activeIndicator !== 'priceMa200w' && (
+            <>
+              <span className="mx-2">|</span>
+              <span>{thresholdDescription}</span>
+            </>
+          )}
         </div>
 
         {activeIndicator === 'priceMa200w' ? renderPriceChart() : renderIndicatorChart()}
@@ -571,7 +641,7 @@ export function IndicatorCharts({
               {showThresholds && (
                 <div className="flex items-center gap-1">
                   <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #10B981' }} />
-                  <span>触发阈值线（{buyZone.description}）</span>
+                  <span>触发阈值线（{thresholdDescription}）</span>
                 </div>
               )}
               <div className="flex items-center gap-1">

@@ -467,7 +467,7 @@ function App() {
         },
         {
           name: 'STH-MVRV',
-          description: '短期群体压力深度',
+          description: '短期群体压力深度（滚动分位阈值）',
           currentValue: latestData.sthMvrv,
           targetValue: latestData.thresholds?.sthMvrv?.trigger ?? 1,
           targetOperator: 'lt' as const,
@@ -475,6 +475,9 @@ function App() {
           format: 'ratio' as const,
           color: '#22C55E',
           dataDate: latestData.indicatorDates?.sthMvrv || latestData.date,
+          detailValue: latestData.thresholds?.sthMvrv
+            ? `滚动阈值：1460天 p27=${(latestData.thresholds.sthMvrv.trigger ?? 1).toFixed(4)}，深度 p13.5=${(latestData.thresholds.sthMvrv.deep ?? 0.85).toFixed(4)}`
+            : undefined,
         },
         {
           name: 'Puell Multiple',

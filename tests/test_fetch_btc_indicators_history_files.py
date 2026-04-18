@@ -45,6 +45,8 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(str(thresholds["sthSopr"]["method"]), "rolling_quantile_no_lookahead")
         self.assertAlmostEqual(float(enriched.iloc[1]["realized_price"]), 130.0)
         self.assertAlmostEqual(float(enriched.iloc[2]["sth_mvrv"]), 0.95)
+        self.assertAlmostEqual(float(enriched.iloc[2]["sth_mvrv_trigger"]), 1.0)
+        self.assertAlmostEqual(float(enriched.iloc[2]["sth_mvrv_deep"]), 0.85)
 
         # realized price on 2024-01-02 is forward-filled from 2024-01-01
         self.assertEqual(enriched.iloc[1]["realized_price_date"].strftime("%Y-%m-%d"), "2024-01-01")
@@ -77,6 +79,9 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertIn("api_data_date", last)
         self.assertEqual(last["api_data_date"]["sth_mvrv"], "2024-01-02")
         self.assertEqual(last["api_data_date"]["price_realized"], "2024-01-03")
+        self.assertIn("thresholds", last)
+        self.assertAlmostEqual(float(last["thresholds"]["sthMvrv"]["trigger"]), 1.0)
+        self.assertAlmostEqual(float(last["thresholds"]["sthMvrv"]["deep"]), 0.85)
         self.assertEqual(last["signalCountV4"], 6)
         self.assertEqual(last["activeIndicatorCountV4"], 6)
         self.assertEqual(last["totalScoreV4"], 11)

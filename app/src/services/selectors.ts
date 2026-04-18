@@ -22,6 +22,17 @@ const DEFAULT_THRESHOLDS = {
   puell: 0.6,
 };
 
+const DEFAULT_DEEP_THRESHOLDS = {
+  priceMa200w: 0.85,
+  priceRealized: 0.9,
+  reserveRisk: 0.0012,
+  mvrvZscore: -0.5,
+  lthMvrv: 0.9,
+  sthSopr: 0.97,
+  sthMvrv: 0.85,
+  puell: 0.5,
+};
+
 function toNumericPrice(value: number | string | undefined): number {
   return toFiniteNumber(value, 0);
 }
@@ -34,6 +45,26 @@ function getApiDataDateFromRow(row: IndicatorData): Record<string, unknown> | nu
   }
 
   return payload as Record<string, unknown>;
+}
+
+function getThresholdRange(
+  thresholds: LatestData['thresholds'] | IndicatorData['thresholds'],
+  key: string,
+  fallbackTrigger: number,
+  fallbackDeep: number,
+): { trigger: number; deep: number } {
+  const threshold = thresholds?.[key];
+
+  return {
+    trigger:
+      typeof threshold?.trigger === 'number' && Number.isFinite(threshold.trigger)
+        ? threshold.trigger
+        : fallbackTrigger,
+    deep:
+      typeof threshold?.deep === 'number' && Number.isFinite(threshold.deep)
+        ? threshold.deep
+        : fallbackDeep,
+  };
 }
 
 export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestData['indicatorDates']> {
@@ -171,29 +202,77 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   const sthMvrv = toFiniteNumber(latest.sthMvrv, 0);
   const puellMultiple = toFiniteNumber(latest.puellMultiple, 0);
   const lthMvrv = toFiniteNumber(latest.lthMvrv, 0);
+  const priceMa200wThreshold = getThresholdRange(
+    latest.thresholds,
+    'priceMa200wRatio',
+    DEFAULT_THRESHOLDS.priceMa200w,
+    DEFAULT_DEEP_THRESHOLDS.priceMa200w,
+  );
+  const priceRealizedThreshold = getThresholdRange(
+    latest.thresholds,
+    'priceRealizedRatio',
+    DEFAULT_THRESHOLDS.priceRealized,
+    DEFAULT_DEEP_THRESHOLDS.priceRealized,
+  );
+  const reserveRiskThreshold = getThresholdRange(
+    latest.thresholds,
+    'reserveRisk',
+    DEFAULT_THRESHOLDS.reserveRisk,
+    DEFAULT_DEEP_THRESHOLDS.reserveRisk,
+  );
+  const mvrvZscoreThreshold = getThresholdRange(
+    latest.thresholds,
+    'mvrvZscoreCore',
+    DEFAULT_THRESHOLDS.mvrvZscore,
+    DEFAULT_DEEP_THRESHOLDS.mvrvZscore,
+  );
+  const sthSoprThreshold = getThresholdRange(
+    latest.thresholds,
+    'sthSopr',
+    DEFAULT_THRESHOLDS.sthSopr,
+    DEFAULT_DEEP_THRESHOLDS.sthSopr,
+  );
+  const sthMvrvThreshold = getThresholdRange(
+    latest.thresholds,
+    'sthMvrv',
+    DEFAULT_THRESHOLDS.sthMvrv,
+    DEFAULT_DEEP_THRESHOLDS.sthMvrv,
+  );
+  const lthMvrvThreshold = getThresholdRange(
+    latest.thresholds,
+    'lthMvrv',
+    DEFAULT_THRESHOLDS.lthMvrv,
+    DEFAULT_DEEP_THRESHOLDS.lthMvrv,
+  );
+  const puellThreshold = getThresholdRange(
+    latest.thresholds,
+    'puellMultiple',
+    DEFAULT_THRESHOLDS.puell,
+    DEFAULT_DEEP_THRESHOLDS.puell,
+  );
   const signalMvrvZscoreCore = latest.signalMvrvZscoreCore
     ?? latest.signalReserveRiskV4
     ?? latest.signalMvrvZ
-    ?? (mvrvZscore < DEFAULT_THRESHOLDS.mvrvZscore);
+    ?? (mvrvZscore < mvrvZscoreThreshold.trigger);
 
   const signals = {
-    priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < DEFAULT_THRESHOLDS.priceMa200w,
-    priceRealized: latest.signalPriceRealized ?? priceRealizedRatio < DEFAULT_THRESHOLDS.priceRealized,
-    reserveRisk: latest.signalReserveRisk ?? reserveRisk < DEFAULT_THRESHOLDS.reserveRisk,
-    sthSopr: latest.signalSthSopr ?? sthSopr < DEFAULT_THRESHOLDS.sthSopr,
-    sthMvrv: latest.signalSthMvrv ?? sthMvrv < DEFAULT_THRESHOLDS.sthMvrv,
-    sthGroup: latest.signalSthGroup ?? ((latest.signalSthSopr ?? sthSopr < DEFAULT_THRESHOLDS.sthSopr) || (latest.signalSthMvrv ?? sthMvrv < DEFAULT_THRESHOLDS.sthMvrv)),
-    puell: latest.signalPuell ?? puellMultiple < DEFAULT_THRESHOLDS.puell,
+    priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < priceMa200wThreshold.trigger,
+    priceRealized: latest.signalPriceRealized ?? priceRealizedRatio < priceRealizedThreshold.trigger,
+    reserveRisk: latest.signalReserveRisk ?? reserveRisk < reserveRiskThreshold.trigger,
+    sthSopr: latest.signalSthSopr ?? sthSopr < sthSoprThreshold.trigger,
+    sthMvrv: latest.signalSthMvrv ?? sthMvrv < sthMvrvThreshold.trigger,
+    sthGroup: latest.signalSthGroup ?? ((latest.signalSthSopr ?? sthSopr < sthSoprThreshold.trigger) || (latest.signalSthMvrv ?? sthMvrv < sthMvrvThreshold.trigger)),
+    puell: latest.signalPuell ?? puellMultiple < puellThreshold.trigger,
   };
   const signalsV4 = {
-    priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < DEFAULT_THRESHOLDS.priceMa200w,
-    priceRealized: latest.signalPriceRealized ?? priceRealizedRatio < DEFAULT_THRESHOLDS.priceRealized,
+    priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < priceMa200wThreshold.trigger,
+    priceRealized: latest.signalPriceRealized ?? priceRealizedRatio < priceRealizedThreshold.trigger,
     reserveRisk: signalMvrvZscoreCore,
     mvrvZscore: signalMvrvZscoreCore,
-    sthMvrv: latest.signalSthMvrv ?? sthMvrv < DEFAULT_THRESHOLDS.sthMvrv,
-    lthMvrv: latest.signalLthMvrv ?? lthMvrv < DEFAULT_THRESHOLDS.lthMvrv,
-    puell: latest.signalPuell ?? puellMultiple < DEFAULT_THRESHOLDS.puell,
-    sthSoprAux: latest.signalSthSoprAux ?? latest.signalSthSopr ?? sthSopr < DEFAULT_THRESHOLDS.sthSopr,
+    sthMvrv: latest.signalSthMvrv ?? sthMvrv < sthMvrvThreshold.trigger,
+    lthMvrv: latest.signalLthMvrv ?? lthMvrv < lthMvrvThreshold.trigger,
+    puell: latest.signalPuell ?? puellMultiple < puellThreshold.trigger,
+    sthSoprAux: latest.signalSthSoprAux ?? latest.signalSthSopr ?? sthSopr < sthSoprThreshold.trigger,
   };
 
   const groupedSignalCount = [
@@ -259,6 +338,7 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     signalSthGroup: latest.signalSthGroup,
     signals,
     signalsV4,
+    thresholds: latest.thresholds,
     indicatorDates: findIndicatorDates(data),
   };
 }
@@ -293,56 +373,98 @@ export function getIndicatorChartData(
   return filteredData
     .map((item): ChartDataPoint | null => {
       let value: number | null = null;
+      let triggerValue: number | null = null;
+      let deepValue: number | null = null;
       let signal = false;
       let preserveGap = false;
 
       if (indicator === 'priceMa200w') {
         value = item.priceMa200wRatio ?? null;
+        triggerValue = DEFAULT_THRESHOLDS.priceMa200w;
+        deepValue = DEFAULT_DEEP_THRESHOLDS.priceMa200w;
         signal = item.signalPriceMa200w ?? item.signalPriceMa ?? false;
       }
 
       if (indicator === 'priceRealized') {
         value = item.priceRealizedRatio ?? null;
+        triggerValue = DEFAULT_THRESHOLDS.priceRealized;
+        deepValue = DEFAULT_DEEP_THRESHOLDS.priceRealized;
         signal = item.signalPriceRealized ?? false;
       }
 
       if (indicator === 'reserveRisk') {
+        const threshold = getThresholdRange(
+          item.thresholds,
+          'reserveRisk',
+          DEFAULT_THRESHOLDS.reserveRisk,
+          DEFAULT_DEEP_THRESHOLDS.reserveRisk,
+        );
         const observedDate = item.indicatorDates?.reserveRisk;
         const hasObservedDate = typeof observedDate === 'string' && observedDate.length > 0;
         value = hasObservedDate
           ? (observedDate === item.d ? (item.reserveRisk ?? null) : null)
           : (item.reserveRisk ?? null);
+        triggerValue = threshold.trigger;
+        deepValue = threshold.deep;
         signal = item.signalReserveRisk ?? item.signalReserveRiskV4 ?? false;
         preserveGap = true;
       }
 
       if (indicator === 'mvrvZscore') {
+        const threshold = getThresholdRange(
+          item.thresholds,
+          'mvrvZscoreCore',
+          DEFAULT_THRESHOLDS.mvrvZscore,
+          DEFAULT_DEEP_THRESHOLDS.mvrvZscore,
+        );
         const observedDate = item.indicatorDates?.mvrvZscore;
         const hasObservedDate = typeof observedDate === 'string' && observedDate.length > 0;
         value = hasObservedDate
           ? (observedDate === item.d ? (item.mvrvZscore ?? null) : null)
           : (item.mvrvZscore ?? null);
+        triggerValue = threshold.trigger;
+        deepValue = threshold.deep;
         signal = item.signalMvrvZscoreCore ?? item.signalReserveRiskV4 ?? item.signalMvrvZ ?? false;
         preserveGap = true;
       }
 
       if (indicator === 'lthMvrv') {
         value = item.lthMvrv ?? null;
+        triggerValue = DEFAULT_THRESHOLDS.lthMvrv;
+        deepValue = DEFAULT_DEEP_THRESHOLDS.lthMvrv;
         signal = item.signalLthMvrv ?? false;
       }
 
       if (indicator === 'sthSopr') {
+        const threshold = getThresholdRange(
+          item.thresholds,
+          'sthSopr',
+          DEFAULT_THRESHOLDS.sthSopr,
+          DEFAULT_DEEP_THRESHOLDS.sthSopr,
+        );
         value = item.sthSopr ?? null;
+        triggerValue = threshold.trigger;
+        deepValue = threshold.deep;
         signal = item.signalSthSopr ?? false;
       }
 
       if (indicator === 'sthMvrv') {
+        const threshold = getThresholdRange(
+          item.thresholds,
+          'sthMvrv',
+          DEFAULT_THRESHOLDS.sthMvrv,
+          DEFAULT_DEEP_THRESHOLDS.sthMvrv,
+        );
         value = item.sthMvrv ?? null;
+        triggerValue = threshold.trigger;
+        deepValue = threshold.deep;
         signal = item.signalSthMvrv ?? false;
       }
 
       if (indicator === 'puell') {
         value = item.puellMultiple ?? null;
+        triggerValue = DEFAULT_THRESHOLDS.puell;
+        deepValue = DEFAULT_DEEP_THRESHOLDS.puell;
         signal = item.signalPuell ?? false;
       }
 
@@ -354,6 +476,8 @@ export function getIndicatorChartData(
       return {
         date: item.d,
         value,
+        triggerValue,
+        deepValue,
         btcPrice,
         signal,
       };
@@ -462,14 +586,14 @@ export const INDICATOR_CONFIG = {
     unit: '',
     targetValue: 1,
     color: '#EAB308',
-    description: '短期持有者已实现盈亏比。',
+    description: '短期持有者已实现盈亏比，触发阈值使用滚动分位数。',
   },
   sthMvrv: {
     name: 'STH-MVRV',
     unit: '',
     targetValue: 1,
     color: '#22C55E',
-    description: '短期持有者未实现盈亏压力。',
+    description: '短期持有者未实现盈亏压力，触发阈值使用过去 1460 天滚动 p27。',
   },
   puell: {
     name: 'Puell Multiple',

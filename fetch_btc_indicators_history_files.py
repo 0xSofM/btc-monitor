@@ -1144,6 +1144,12 @@ def enrich_for_frontend(
         fallback_trigger=THRESHOLD_STATIC["sth_mvrv"]["trigger"],
         fallback_deep=THRESHOLD_STATIC["sth_mvrv"]["deep"],
     )
+    df["reserve_risk_trigger"] = reserve_trigger_series
+    df["reserve_risk_deep"] = reserve_deep_series
+    df["sth_sopr_trigger"] = sth_sopr_trigger_series
+    df["sth_sopr_deep"] = sth_sopr_deep_series
+    df["sth_mvrv_trigger"] = sth_mvrv_trigger_series
+    df["sth_mvrv_deep"] = sth_mvrv_deep_series
 
     df["score_price_ma200w"] = df["price_200w_ma_ratio"].apply(
         lambda v: _score_by_lt(
@@ -1614,6 +1620,20 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                     getattr(row, "reserve_risk_fallback_lag_days_v4")
                 ),
                 "staleIndicators": list(getattr(row, "stale_indicators")),
+                "thresholds": {
+                    "reserveRisk": {
+                        "trigger": _safe_float(getattr(row, "reserve_risk_trigger")),
+                        "deep": _safe_float(getattr(row, "reserve_risk_deep")),
+                    },
+                    "sthSopr": {
+                        "trigger": _safe_float(getattr(row, "sth_sopr_trigger")),
+                        "deep": _safe_float(getattr(row, "sth_sopr_deep")),
+                    },
+                    "sthMvrv": {
+                        "trigger": _safe_float(getattr(row, "sth_mvrv_trigger")),
+                        "deep": _safe_float(getattr(row, "sth_mvrv_deep")),
+                    },
+                },
                 "api_data_date": {
                     "price_ma200w": _safe_iso_date(getattr(row, "btc_price_date")),
                     "price_realized": _safe_iso_date(

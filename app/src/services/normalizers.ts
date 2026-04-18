@@ -1,4 +1,4 @@
-import type { IndicatorData, LatestData } from '@/types';
+import type { IndicatorData, LatestData, ThresholdMap, ThresholdValue } from '@/types';
 
 import type { ApiDatePayload } from './contracts';
 
@@ -121,6 +121,46 @@ function normalizeIndicatorDates(
   };
 }
 
+function normalizeThresholdValue(value: unknown): ThresholdValue | undefined {
+  const payload = asRecord(value);
+  if (!payload) {
+    return undefined;
+  }
+
+  const trigger = toNumberOrNull(payload.trigger);
+  const deep = toNumberOrNull(payload.deep);
+  if (trigger === null || deep === null) {
+    return undefined;
+  }
+
+  return {
+    trigger,
+    deep,
+    method: asString(payload.method),
+    windowDays: toNumberOrNull(payload.windowDays ?? payload.window_days) ?? undefined,
+    minHistoryDays: toNumberOrNull(payload.minHistoryDays ?? payload.min_history_days) ?? undefined,
+    triggerQuantile: toNumberOrNull(payload.triggerQuantile ?? payload.trigger_quantile) ?? undefined,
+    deepQuantile: toNumberOrNull(payload.deepQuantile ?? payload.deep_quantile) ?? undefined,
+  };
+}
+
+function normalizeThresholdMap(value: unknown): ThresholdMap | undefined {
+  const payload = asRecord(value);
+  if (!payload) {
+    return undefined;
+  }
+
+  const normalized = Object.entries(payload).reduce<Record<string, ThresholdValue>>((acc, [key, rawValue]) => {
+    const threshold = normalizeThresholdValue(rawValue);
+    if (threshold) {
+      acc[key] = threshold;
+    }
+    return acc;
+  }, {});
+
+  return Object.keys(normalized).length > 0 ? normalized : undefined;
+}
+
 export function normalizeIndicatorData(item: unknown): IndicatorData | null {
   const record = asRecord(item);
   if (!record) {
@@ -202,6 +242,7 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
       : undefined,
     coreIndicatorSet: asString(record.coreIndicatorSet ?? record.core_indicator_set),
     scoringModelVersion: asString(record.scoringModelVersion ?? record.scoring_model_version),
+    thresholds: normalizeThresholdMap(record.thresholds),
     indicatorDates,
     // Legacy V1 fields for backward compatibility
     mvrvZscore: toNumberOrNull(record.mvrvZscore ?? record.mvrv_zscore) ?? undefined,
@@ -346,7 +387,7 @@ export function normalizeLatestData(item: unknown): LatestData | null {
     staleIndicators: Array.isArray(record.staleIndicators ?? record.stale_indicators)
       ? ((record.staleIndicators ?? record.stale_indicators) as LatestData['staleIndicators'])
       : undefined,
-    thresholds: asRecord(record.thresholds) as Record<string, { trigger: number; deep: number }> | undefined,
+    thresholds: normalizeThresholdMap(record.thresholds),
     // Legacy fields
     mvrvZscore: toNumberOrNull(record.mvrvZscore ?? record.mvrv_zscore) ?? undefined,
     lthMvrv: toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? undefined,

@@ -39,6 +39,9 @@ describe('dataService helpers', () => {
         signalLthMvrv: true,
         signalReserveRiskV4: true,
         signalMvrvZscoreCore: true,
+        thresholds: {
+          sthMvrv: { trigger: 0.914, deep: 0.846 },
+        },
         api_data_date: {
           price_ma200w: '2026-03-28',
           price_realized: '2026-03-27',
@@ -64,6 +67,7 @@ describe('dataService helpers', () => {
     expect(latest?.indicatorDates?.lthMvrv).toBe('2026-03-27');
     expect(latest?.indicatorDates?.puell).toBe('2026-03-28');
     expect(latest?.signalsV4?.mvrvZscore).toBe(true);
+    expect(latest?.thresholds?.sthMvrv?.trigger).toBe(0.914);
   });
 
   it('getIndicatorChartData filters placeholder zero rows', () => {
@@ -114,6 +118,36 @@ describe('dataService helpers', () => {
       -0.21,
       null,
     ]);
+    expect(chartData.map((point) => point.triggerValue)).toEqual([0, 0, 0, 0]);
+  });
+
+  it('getIndicatorChartData carries rolling STH-MVRV thresholds alongside values', () => {
+    const history = [
+      {
+        d: '2026-04-14',
+        btcPrice: 83500,
+        sthMvrv: 0.95,
+        signalSthMvrv: false,
+        thresholds: {
+          sthMvrv: { trigger: 0.918, deep: 0.851 },
+        },
+      },
+      {
+        d: '2026-04-15',
+        btcPrice: 82800,
+        sthMvrv: 0.89,
+        signalSthMvrv: true,
+        thresholds: {
+          sthMvrv: { trigger: 0.914, deep: 0.846 },
+        },
+      },
+    ] as IndicatorData[];
+
+    const chartData = getIndicatorChartData(history, 'sthMvrv', 'all');
+    expect(chartData).toHaveLength(2);
+    expect(chartData.map((point) => point.triggerValue)).toEqual([0.918, 0.914]);
+    expect(chartData.map((point) => point.deepValue)).toEqual([0.851, 0.846]);
+    expect(chartData.map((point) => point.signal)).toEqual([false, true]);
   });
 
   it('getMA200ChartData derives ma200 from ratio when ma200w is missing', () => {
