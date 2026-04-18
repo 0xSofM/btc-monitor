@@ -2,14 +2,14 @@
   "date": "2026-04-18",
   "btcPrice": 77405.31,
   "realizedPrice": 53702.22,
-  "priceMa200wRatio": 1.2929941790660904,
+  "priceMa200wRatio": 1.2929614432714256,
   "priceRealizedRatio": 1.4413800770247487,
   "reserveRisk": 0.0006480769,
   "lthMvrv": 1.72,
   "mvrvZscore": 0.7214,
   "sthSopr": 1.008061987,
   "sthMvrv": 0.95,
-  "ma200w": 59865.1650975789,
+  "ma200w": 59866.6807914632,
   "puellMultiple": 0.7567142857,
   "signalCount": 0,
   "activeIndicatorCount": 5,
@@ -267,5 +267,5 @@
     "latestDateGapDays": 0,
     "status": "same_day_comparable"
   },
-  "lastUpdated": "2026-04-18T03:28:42.812718+00:00"
+  "lastUpdated": "2026-04-18T07:34:09.478805+00:00"
 }
