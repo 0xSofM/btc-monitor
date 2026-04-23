@@ -1,15 +1,15 @@
 {
   "date": "2026-04-23",
   "btcPrice": 78810.83,
-  "realizedPrice": 53702.86,
-  "priceMa200wRatio": 1.312650055714655,
-  "priceRealizedRatio": 1.4675350623784282,
+  "realizedPrice": 53696.75,
+  "priceMa200wRatio": 1.3126066813187385,
+  "priceRealizedRatio": 1.4677020490066903,
   "reserveRisk": 0.0006550704,
-  "lthMvrv": 1.7,
-  "mvrvZscore": 0.7456,
+  "lthMvrv": 1.74,
+  "mvrvZscore": 0.762,
   "sthSopr": 1.0080746002,
-  "sthMvrv": 0.95,
-  "ma200w": 60039.4824628964,
+  "sthMvrv": 0.97,
+  "ma200w": 60041.4664359479,
   "puellMultiple": 0.7748571429,
   "signalCount": 0,
   "activeIndicatorCount": 5,
@@ -33,8 +33,8 @@
   "totalScoreV4Min3d": 0.0,
   "signalConfirmed3dV4": false,
   "signalBandV4": "watch",
-  "signalConfidence": 0.2449,
-  "dataFreshnessScore": 0.8163265306122449,
+  "signalConfidence": 0.2694,
+  "dataFreshnessScore": 0.8979591836734695,
   "fallbackMode": "none",
   "scorePriceMa200w": 0,
   "scorePriceRealized": 0,
@@ -56,7 +56,7 @@
   "reserveRiskActive": true,
   "reserveRiskReplacementActive": false,
   "reserveRiskReplacementSource": null,
-  "reserveRiskReplacementLagDays": 2,
+  "reserveRiskReplacementLagDays": 1,
   "reserveRiskSourceMode": "primary",
   "reserveRiskSourceModeV4": "compat_mvrv_zscore",
   "reserveRiskSoftFallbackActive": false,
@@ -67,12 +67,12 @@
   "staleIndicators": [],
   "indicatorLagDays": {
     "priceMa200w": 0,
-    "priceRealized": 2,
+    "priceRealized": 1,
     "reserveRisk": 1,
-    "lthMvrv": 2,
-    "mvrvZscore": 2,
+    "lthMvrv": 1,
+    "mvrvZscore": 1,
     "sthSopr": 1,
-    "sthMvrv": 2,
+    "sthMvrv": 1,
     "puell": 1
   },
   "signals": {
@@ -96,12 +96,12 @@
   },
   "indicatorDates": {
     "priceMa200w": "2026-04-23",
-    "priceRealized": "2026-04-21",
+    "priceRealized": "2026-04-22",
     "reserveRisk": "2026-04-22",
-    "lthMvrv": "2026-04-21",
-    "mvrvZscore": "2026-04-21",
+    "lthMvrv": "2026-04-22",
+    "mvrvZscore": "2026-04-22",
     "sthSopr": "2026-04-22",
-    "sthMvrv": "2026-04-21",
+    "sthMvrv": "2026-04-22",
     "puell": "2026-04-22"
   },
   "coreIndicatorSet": "core6_bottom_v4_mvrv_substitute",
@@ -267,5 +267,5 @@
     "latestDateGapDays": 0,
     "status": "same_day_comparable"
   },
-  "lastUpdated": "2026-04-23T03:44:32.476211+00:00"
+  "lastUpdated": "2026-04-23T08:09:15.673650+00:00"
 }
