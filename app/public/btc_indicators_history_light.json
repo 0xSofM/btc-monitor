@@ -324128,17 +324128,17 @@
   {
     "d": "2026-04-29",
     "unixTs": 1777420800,
-    "btcPrice": 76295.531117183,
-    "ma200w": 60243.0377255905,
+    "btcPrice": 75795.0098530099,
+    "ma200w": 60282.539664651,
     "realizedPrice": 53604.3,
-    "priceMa200wRatio": 1.2664622170069222,
-    "priceRealizedRatio": 1.423309904563309,
+    "priceMa200wRatio": 1.257329407066359,
+    "priceRealizedRatio": 1.4139725703536825,
     "reserveRisk": 0.0006328355,
     "lthMvrv": 1.67,
     "mvrvZscore": 0.8072,
     "sthSopr": 1.001783272,
     "sthMvrv": 0.99,
-    "puellMultiple": 0.7678571429,
+    "puellMultiple": 0.763,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -324185,8 +324185,8 @@
     "totalScoreV4Min3d": 0.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "signalConfidence": 0.1929,
-    "dataFreshnessScore": 0.6428571428571429,
+    "signalConfidence": 0.2265,
+    "dataFreshnessScore": 0.7551020408163264,
     "fallbackMode": "none",
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -324214,24 +324214,24 @@
       }
     },
     "api_data_date": {
-      "price_ma200w": "2026-04-28",
+      "price_ma200w": "2026-04-29",
       "price_realized": "2026-04-26",
       "reserve_risk": "2026-04-29",
       "lth_mvrv": "2026-04-26",
       "mvrv_zscore": "2026-04-26",
       "sth_sopr": "2026-04-26",
       "sth_mvrv": "2026-04-26",
-      "puell": "2026-04-28"
+      "puell": "2026-04-29"
     },
     "indicatorDates": {
-      "priceMa200w": "2026-04-28",
+      "priceMa200w": "2026-04-29",
       "priceRealized": "2026-04-26",
       "reserveRisk": "2026-04-29",
       "lthMvrv": "2026-04-26",
       "mvrvZscore": "2026-04-26",
       "sthSopr": "2026-04-26",
       "sthMvrv": "2026-04-26",
-      "puell": "2026-04-28"
+      "puell": "2026-04-29"
     },
     "coreIndicatorSet": "core6_bottom_v4_mvrv_substitute",
     "scoringModelVersion": "v4_core6_mvrv_substitute"
