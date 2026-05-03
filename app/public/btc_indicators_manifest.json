@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-05-03T04:08:26.105655+00:00",
+  "generatedAt": "2026-05-03T08:15:33.511102+00:00",
   "latestDate": "2026-05-02",
-  "lastUpdated": "2026-05-03T04:08:25.987235+00:00",
+  "lastUpdated": "2026-05-03T08:15:33.424775+00:00",
   "historyRows": 5450,
   "historyLightRows": 2921,
   "signalEventsV4Rows": 13,
@@ -82,7 +82,7 @@
   "activeIndicatorCountV4": 6,
   "maxTotalScoreV4": 12,
   "signalBandV4": "watch",
-  "signalConfidence": 0.1194,
+  "signalConfidence": 0.1898,
   "reserveRiskSourceMode": "primary",
   "reserveRiskSourceModeV4": "compat_mvrv_zscore",
   "reserveRiskHealthStatus": "healthy",
@@ -184,7 +184,7 @@
   "inactiveIndicators": [],
   "archive": {
     "archiveRoot": "archive/releases",
-    "archivedSnapshotPath": "archive/releases/snapshot_20260503_040826",
-    "rollbackHint": "python fetch_btc_indicators_history_files.py --rollback-from archive/releases/snapshot_20260503_040826"
+    "archivedSnapshotPath": "archive/releases/snapshot_20260503_081533",
+    "rollbackHint": "python fetch_btc_indicators_history_files.py --rollback-from archive/releases/snapshot_20260503_081533"
   }
 }
