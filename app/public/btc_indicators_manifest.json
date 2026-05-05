@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-05-05T14:22:09.256636+00:00",
+  "generatedAt": "2026-05-05T19:51:04.053843+00:00",
   "latestDate": "2026-05-04",
-  "lastUpdated": "2026-05-05T14:22:09.134455+00:00",
+  "lastUpdated": "2026-05-05T19:51:03.948336+00:00",
   "historyRows": 5452,
   "historyLightRows": 2921,
   "signalEventsV4Rows": 13,
@@ -184,7 +184,7 @@
   "inactiveIndicators": [],
   "archive": {
     "archiveRoot": "archive/releases",
-    "archivedSnapshotPath": "archive/releases/snapshot_20260505_142209",
-    "rollbackHint": "python fetch_btc_indicators_history_files.py --rollback-from archive/releases/snapshot_20260505_142209"
+    "archivedSnapshotPath": "archive/releases/snapshot_20260505_195104",
+    "rollbackHint": "python fetch_btc_indicators_history_files.py --rollback-from archive/releases/snapshot_20260505_195104"
   }
 }
