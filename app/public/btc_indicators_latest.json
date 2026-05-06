@@ -1,16 +1,16 @@
 {
   "date": "2026-05-05",
-  "btcPrice": 79826.107817066,
-  "realizedPrice": 53720.29,
-  "priceMa200wRatio": 1.3196966304813267,
-  "priceRealizedRatio": 1.4859582444001327,
+  "btcPrice": 80936.7548252484,
+  "realizedPrice": 53738.59,
+  "priceMa200wRatio": 1.3371190230992365,
+  "priceRealizedRatio": 1.5061198074837543,
   "reserveRisk": 0.0006722139,
-  "lthMvrv": 1.69,
-  "mvrvZscore": 0.8362,
-  "sthSopr": 1.0074,
-  "sthMvrv": 1.01,
-  "ma200w": 60488.2258341081,
-  "puellMultiple": 0.7977142857,
+  "lthMvrv": 1.71,
+  "mvrvZscore": 0.8753,
+  "sthSopr": 1.0078,
+  "sthMvrv": 1.02,
+  "ma200w": 60530.7032710143,
+  "puellMultiple": 0.8138571429,
   "signalCount": 0,
   "activeIndicatorCount": 5,
   "signalCountV4": 0,
@@ -33,8 +33,8 @@
   "totalScoreV4Min3d": 0.0,
   "signalConfirmed3dV4": false,
   "signalBandV4": "watch",
-  "signalConfidence": 0.2418,
-  "dataFreshnessScore": 0.8061224489795921,
+  "signalConfidence": 0.3,
+  "dataFreshnessScore": 1.0,
   "fallbackMode": "none",
   "scorePriceMa200w": 0,
   "scorePriceRealized": 0,
@@ -56,7 +56,7 @@
   "reserveRiskActive": true,
   "reserveRiskReplacementActive": false,
   "reserveRiskReplacementSource": null,
-  "reserveRiskReplacementLagDays": 1,
+  "reserveRiskReplacementLagDays": 0,
   "reserveRiskSourceMode": "primary",
   "reserveRiskSourceModeV4": "compat_mvrv_zscore",
   "reserveRiskSoftFallbackActive": false,
@@ -66,14 +66,14 @@
   "inactiveIndicators": [],
   "staleIndicators": [],
   "indicatorLagDays": {
-    "priceMa200w": 1,
-    "priceRealized": 1,
+    "priceMa200w": 0,
+    "priceRealized": 0,
     "reserveRisk": 0,
-    "lthMvrv": 1,
-    "mvrvZscore": 1,
-    "sthSopr": 1,
-    "sthMvrv": 1,
-    "puell": 1
+    "lthMvrv": 0,
+    "mvrvZscore": 0,
+    "sthSopr": 0,
+    "sthMvrv": 0,
+    "puell": 0
   },
   "signals": {
     "priceMa200w": false,
@@ -95,14 +95,14 @@
     "sthSoprAux": false
   },
   "indicatorDates": {
-    "priceMa200w": "2026-05-04",
-    "priceRealized": "2026-05-04",
+    "priceMa200w": "2026-05-05",
+    "priceRealized": "2026-05-05",
     "reserveRisk": "2026-05-05",
-    "lthMvrv": "2026-05-04",
-    "mvrvZscore": "2026-05-04",
-    "sthSopr": "2026-05-04",
-    "sthMvrv": "2026-05-04",
-    "puell": "2026-05-04"
+    "lthMvrv": "2026-05-05",
+    "mvrvZscore": "2026-05-05",
+    "sthSopr": "2026-05-05",
+    "sthMvrv": "2026-05-05",
+    "puell": "2026-05-05"
   },
   "coreIndicatorSet": "core6_bottom_v4_mvrv_substitute",
   "schemaVersion": "v4",
@@ -194,12 +194,12 @@
         "displayName": "BGeometrics Reserve Risk legacy bridge",
         "mode": "series",
         "priority": 1,
-        "latestObservedDate": "2026-05-04",
+        "latestObservedDate": "2026-05-05",
         "latestObservedValue": null,
         "latestNonNullDate": "2025-12-28",
         "latestNonNullValue": 0.001786,
-        "trailingNullRows": 127,
-        "trailingNullDays": 127,
+        "trailingNullRows": 128,
+        "trailingNullDays": 128,
         "healthStatus": "null_tail"
       }
     ],
@@ -267,5 +267,5 @@
     "latestDateGapDays": 0,
     "status": "same_day_comparable"
   },
-  "lastUpdated": "2026-05-06T04:01:29.977927+00:00"
+  "lastUpdated": "2026-05-06T14:44:24.530475+00:00"
 }
