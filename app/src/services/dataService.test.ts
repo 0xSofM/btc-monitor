@@ -165,10 +165,11 @@ describe('dataService helpers', () => {
     expect(chartData[0].ma200).toBeCloseTo(50000, 6);
   });
 
-  it('getDataFreshnessHours calculates elapsed hours from date start', () => {
+  it('getDataFreshnessHours prefers exact timestamps and falls back to date start', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-03-29T12:00:00Z'));
 
+    expect(getDataFreshnessHours('2026-03-29T08:30:00Z')).toBe(3.5);
     expect(getDataFreshnessHours('2026-03-29')).toBe(12);
     expect(getDataFreshnessHours('2026-03-28')).toBe(36);
     expect(getDataFreshnessHours('')).toBe(0);

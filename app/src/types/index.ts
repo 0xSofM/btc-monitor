@@ -92,6 +92,7 @@ export interface IndicatorData {
 
 export interface LatestData {
   date: string;
+  lastUpdated?: string;
   btcPrice: number;
   priceMa200wRatio: number;
   priceRealizedRatio: number;

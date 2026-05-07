@@ -264,6 +264,7 @@ export function normalizeLatestData(item: unknown): LatestData | null {
   if (!date) {
     return null;
   }
+  const lastUpdated = asString(record.lastUpdated ?? record.last_updated);
 
   const incomingSignals = asRecord(record.signals);
   const incomingSignalsV4 = asRecord(record.signalsV4 ?? record.signals_v4);
@@ -339,6 +340,7 @@ export function normalizeLatestData(item: unknown): LatestData | null {
 
   return {
     date,
+    lastUpdated,
     btcPrice,
     priceMa200wRatio,
     priceRealizedRatio,

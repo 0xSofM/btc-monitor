@@ -335,7 +335,9 @@ function App() {
       }, '' as string)
     : undefined;
 
-  const latestDataAgeHours = latestData ? getDataFreshnessHours(latestData.date) : 0;
+  const latestDataAgeHours = latestData
+    ? getDataFreshnessHours(latestData.lastUpdated ?? latestData.date)
+    : 0;
   const signalScoreV2 = latestData?.signalScoreV2 ?? 0;
   const maxSignalScoreV2 = latestData?.maxSignalScoreV2 ?? 10;
   const totalScoreV4 = latestData?.totalScoreV4;

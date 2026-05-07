@@ -527,12 +527,15 @@ export function getSignalEvents(data: IndicatorData[], minSignals = 4): SignalEv
     }));
 }
 
-export function getDataFreshnessHours(date: string): number {
-  if (!date) {
+export function getDataFreshnessHours(value: string): number {
+  if (!value) {
     return 0;
   }
 
-  const timestamp = Date.parse(`${date}T00:00:00Z`);
+  const hasExplicitTime = value.includes('T');
+  const timestamp = hasExplicitTime
+    ? Date.parse(value)
+    : Date.parse(`${value}T00:00:00Z`);
   if (Number.isNaN(timestamp)) {
     return 0;
   }
