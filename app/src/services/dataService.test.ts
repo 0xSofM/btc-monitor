@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import type { IndicatorData } from '@/types';
 import {
+  getEffectiveDataDate,
   getDataFreshnessHours,
   getIndicatorChartData,
   getLatestFromHistory,
@@ -175,5 +176,30 @@ describe('dataService helpers', () => {
     expect(getDataFreshnessHours('')).toBe(0);
 
     vi.useRealTimers();
+  });
+
+  it('getEffectiveDataDate uses the oldest core indicator date when the snapshot is not aligned', () => {
+    expect(getEffectiveDataDate('2026-05-06', {
+      priceMa200w: '2026-05-05',
+      priceRealized: '2026-05-05',
+      reserveRisk: '2026-05-06',
+      lthMvrv: '2026-05-05',
+      mvrvZscore: '2026-05-05',
+      sthSopr: '2026-05-05',
+      sthMvrv: '2026-05-05',
+      puell: '2026-05-05',
+    })).toBe('2026-05-05');
+  });
+
+  it('getEffectiveDataDate falls back to the snapshot date when core indicators are aligned', () => {
+    expect(getEffectiveDataDate('2026-05-06', {
+      priceMa200w: '2026-05-06',
+      priceRealized: '2026-05-06',
+      mvrvZscore: '2026-05-06',
+      lthMvrv: '2026-05-06',
+      sthMvrv: '2026-05-06',
+      puell: '2026-05-06',
+    })).toBe('2026-05-06');
+    expect(getEffectiveDataDate('2026-05-06')).toBe('2026-05-06');
   });
 });

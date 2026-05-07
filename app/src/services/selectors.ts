@@ -33,6 +33,15 @@ const DEFAULT_DEEP_THRESHOLDS = {
   puell: 0.5,
 };
 
+const CORE_INDICATOR_DATE_KEYS = [
+  'priceMa200w',
+  'priceRealized',
+  'mvrvZscore',
+  'lthMvrv',
+  'sthMvrv',
+  'puell',
+] as const;
+
 function toNumericPrice(value: number | string | undefined): number {
   return toFiniteNumber(value, 0);
 }
@@ -525,6 +534,25 @@ export function getSignalEvents(data: IndicatorData[], minSignals = 4): SignalEv
         item.signalSthSoprAux ?? item.signalSthSopr ? 'STH-SOPR (Auxiliary)' : '',
       ].filter(Boolean),
     }));
+}
+
+export function getEffectiveDataDate(
+  latestDate: string,
+  indicatorDates?: LatestData['indicatorDates'],
+): string {
+  if (!latestDate) {
+    return '';
+  }
+
+  const candidates = CORE_INDICATOR_DATE_KEYS
+    .map((key) => indicatorDates?.[key])
+    .filter((value): value is string => typeof value === 'string' && value.length > 0);
+
+  if (candidates.length === 0) {
+    return latestDate;
+  }
+
+  return candidates.reduce((oldest, value) => (value < oldest ? value : oldest), candidates[0]);
 }
 
 export function getDataFreshnessHours(value: string): number {

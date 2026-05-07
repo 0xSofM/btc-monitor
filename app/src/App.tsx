@@ -28,6 +28,7 @@ import {
   fetchHistoricalData,
   fetchRuntimeLatestData,
   fetchStaticLatestData,
+  getEffectiveDataDate,
   getDataFreshnessHours,
   getLatestFromHistory,
 } from '@/services/dataService';
@@ -73,6 +74,25 @@ function sourceLabel(source: DataSource): string {
   if (source === 'api') return '实时 API';
   if (source === 'history') return '历史回退';
   return '静态快照';
+}
+
+function formatSnapshotTimestamp(value: string | undefined): string | null {
+  if (!value) {
+    return null;
+  }
+
+  const timestamp = Date.parse(value);
+  if (Number.isNaN(timestamp)) {
+    return value;
+  }
+
+  const iso = new Date(timestamp).toISOString();
+  return `${iso.slice(0, 16).replace('T', ' ')} UTC`;
+}
+
+function buildDataTimestampLabel(data: LatestData, source: DataSource): string {
+  const snapshotTimestamp = formatSnapshotTimestamp(data.lastUpdated);
+  return `${snapshotTimestamp ?? data.date} (${sourceLabel(source)})`;
 }
 
 function resolveScoreThresholds(maxScore: number) {
@@ -198,7 +218,7 @@ function App() {
   const applyLatestData = (data: LatestData, source: DataSource) => {
     setLatestData(data);
     setDataSource(source);
-    setDataTimestampLabel(`${data.date} (${sourceLabel(source)})`);
+    setDataTimestampLabel(buildDataTimestampLabel(data, source));
   };
 
   const ensureFullHistoryLoaded = useCallback(async () => {
@@ -327,16 +347,16 @@ function App() {
         .map(([key]) => indicatorDateLabels[key] ?? key)
     : [];
 
-  const oldestIndicatorDate = indicatorDateEntries.length > 0
-    ? indicatorDateEntries.reduce((oldest, [, value]) => {
-        if (!value) return oldest;
-        if (!oldest) return value;
-        return value < oldest ? value : oldest;
-      }, '' as string)
+  const effectiveDataDate = latestData
+    ? getEffectiveDataDate(latestData.date, latestData.indicatorDates)
+    : '';
+
+  const oldestIndicatorDate = latestData && effectiveDataDate < latestData.date
+    ? effectiveDataDate
     : undefined;
 
   const latestDataAgeHours = latestData
-    ? getDataFreshnessHours(latestData.lastUpdated ?? latestData.date)
+    ? getDataFreshnessHours(effectiveDataDate || latestData.date)
     : 0;
   const signalScoreV2 = latestData?.signalScoreV2 ?? 0;
   const maxSignalScoreV2 = latestData?.maxSignalScoreV2 ?? 10;

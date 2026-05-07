@@ -17,6 +17,7 @@ import {
   INDICATOR_CONFIG,
   TIME_RANGE_LABELS,
   enrichLatestDataWithHistory,
+  getEffectiveDataDate,
   getDataFreshnessHours,
   getIndicatorChartData,
   getLatestFromHistory,
@@ -391,6 +392,7 @@ export const saveLocalData = persistLocalData;
 export {
   INDICATOR_CONFIG,
   TIME_RANGE_LABELS,
+  getEffectiveDataDate,
   getDataFreshnessHours,
   getIndicatorChartData,
   getLatestFromHistory,

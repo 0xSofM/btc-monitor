@@ -195,7 +195,7 @@ export function SignalOverview({
               {freshnessBadge.label}
             </Badge>
             <Badge variant="outline" className="text-xs">
-              时间戳：{dataTimestampLabel}
+              快照更新：{dataTimestampLabel}
             </Badge>
           </div>
         </div>
@@ -260,10 +260,10 @@ export function SignalOverview({
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-1">
               <Clock3 className="h-4 w-4" />
-              最新记录：{latestDataDate}
+              快照记录：{latestDataDate}
             </span>
             {hasLaggingIndicators && oldestIndicatorDate && (
-              <span>最早指标更新时间：{oldestIndicatorDate}</span>
+              <span>核心指标日期：{oldestIndicatorDate}</span>
             )}
           </div>
 
@@ -273,7 +273,7 @@ export function SignalOverview({
             </p>
           ) : (
             <p className="mt-2 text-sm text-emerald-700 dark:text-emerald-300">
-              {totalIndicators} 个核心指标均已对齐到最新记录日期。
+              {totalIndicators} 个核心指标均已对齐到快照记录日期。
             </p>
           )}
 
