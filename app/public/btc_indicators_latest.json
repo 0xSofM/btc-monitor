@@ -1,10 +1,10 @@
 {
-  "date": "2026-05-06",
+  "date": "2026-05-07",
   "btcPrice": 81364.6201285798,
   "realizedPrice": 53761.16,
   "priceMa200wRatio": 1.3432318268390886,
   "priceRealizedRatio": 1.5134461408306628,
-  "reserveRisk": 0.0006752484,
+  "reserveRisk": 0.0006638149,
   "lthMvrv": 1.72,
   "mvrvZscore": 0.9117,
   "sthSopr": 1.0046,
@@ -33,8 +33,8 @@
   "totalScoreV4Min3d": 0.0,
   "signalConfirmed3dV4": false,
   "signalBandV4": "watch",
-  "signalConfidence": 0.3,
-  "dataFreshnessScore": 1.0,
+  "signalConfidence": 0.2418,
+  "dataFreshnessScore": 0.8061224489795921,
   "fallbackMode": "none",
   "scorePriceMa200w": 0,
   "scorePriceRealized": 0,
@@ -56,7 +56,7 @@
   "reserveRiskActive": true,
   "reserveRiskReplacementActive": false,
   "reserveRiskReplacementSource": null,
-  "reserveRiskReplacementLagDays": 0,
+  "reserveRiskReplacementLagDays": 1,
   "reserveRiskSourceMode": "primary",
   "reserveRiskSourceModeV4": "compat_mvrv_zscore",
   "reserveRiskSoftFallbackActive": false,
@@ -66,14 +66,14 @@
   "inactiveIndicators": [],
   "staleIndicators": [],
   "indicatorLagDays": {
-    "priceMa200w": 0,
-    "priceRealized": 0,
+    "priceMa200w": 1,
+    "priceRealized": 1,
     "reserveRisk": 0,
-    "lthMvrv": 0,
-    "mvrvZscore": 0,
-    "sthSopr": 0,
-    "sthMvrv": 0,
-    "puell": 0
+    "lthMvrv": 1,
+    "mvrvZscore": 1,
+    "sthSopr": 1,
+    "sthMvrv": 1,
+    "puell": 1
   },
   "signals": {
     "priceMa200w": false,
@@ -97,7 +97,7 @@
   "indicatorDates": {
     "priceMa200w": "2026-05-06",
     "priceRealized": "2026-05-06",
-    "reserveRisk": "2026-05-06",
+    "reserveRisk": "2026-05-07",
     "lthMvrv": "2026-05-06",
     "mvrvZscore": "2026-05-06",
     "sthSopr": "2026-05-06",
@@ -125,7 +125,7 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.993327276049,
+      "trigger": 0.9933523456150001,
       "deep": 0.9842074756365,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
@@ -134,7 +134,7 @@
       "deepQuantile": 0.135
     },
     "sthMvrv": {
-      "trigger": 0.91493,
+      "trigger": 0.915,
       "deep": 0.845965,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
@@ -180,10 +180,10 @@
       "displayName": "bitcoin-data Reserve Risk history",
       "mode": "series",
       "priority": 0,
-      "latestObservedDate": "2026-05-06",
-      "latestObservedValue": 0.0006752484,
-      "latestNonNullDate": "2026-05-06",
-      "latestNonNullValue": 0.0006752484,
+      "latestObservedDate": "2026-05-07",
+      "latestObservedValue": 0.0006638149,
+      "latestNonNullDate": "2026-05-07",
+      "latestNonNullValue": 0.0006638149,
       "trailingNullRows": 0,
       "trailingNullDays": 0,
       "healthStatus": "healthy"
@@ -208,14 +208,14 @@
       "displayName": "Reserve Risk assembled history",
       "mode": "assembled",
       "priority": 999,
-      "latestObservedDate": "2026-05-06",
-      "latestObservedValue": 0.0006752484,
-      "latestNonNullDate": "2026-05-06",
-      "latestNonNullValue": 0.0006752484,
+      "latestObservedDate": "2026-05-07",
+      "latestObservedValue": 0.0006638149,
+      "latestNonNullDate": "2026-05-07",
+      "latestNonNullValue": 0.0006638149,
       "trailingNullRows": 0,
       "trailingNullDays": 0,
       "healthStatus": "healthy",
-      "sourceLabel": "https://bitcoin-data.com/v1/reserve-risk + legacy_bridge(https://charts.bgeometrics.com/files/reserve_risk.json < 2022-05-07)"
+      "sourceLabel": "https://bitcoin-data.com/v1/reserve-risk + legacy_bridge(https://charts.bgeometrics.com/files/reserve_risk.json < 2022-05-08)"
     },
     "pointSources": [
       {
@@ -225,8 +225,8 @@
         "priority": 2,
         "available": true,
         "selectedUrl": "https://bitcoin-data.com/v1/reserve-risk/1",
-        "latestDate": "2026-05-06",
-        "latestValue": 0.0006752484,
+        "latestDate": "2026-05-07",
+        "latestValue": 0.0006638149,
         "error": null
       }
     ],
@@ -235,15 +235,15 @@
     "shadowCompare": {
       "candidateKey": "bitcoin_data_latest",
       "candidateDisplayName": "bitcoin-data Reserve Risk latest",
-      "candidateLatestDate": "2026-05-06",
-      "candidateLatestValue": 0.0006752484,
-      "primaryLatestObservedDate": "2026-05-06",
-      "primaryLatestObservedValue": 0.0006752484,
-      "primaryLatestNonNullDate": "2026-05-06",
-      "primaryLatestNonNullValue": 0.0006752484,
+      "candidateLatestDate": "2026-05-07",
+      "candidateLatestValue": 0.0006638149,
+      "primaryLatestObservedDate": "2026-05-07",
+      "primaryLatestObservedValue": 0.0006638149,
+      "primaryLatestNonNullDate": "2026-05-07",
+      "primaryLatestNonNullValue": 0.0006638149,
       "sameDayComparable": true,
       "primarySameDayAvailable": true,
-      "primarySameDayValue": 0.0006752484,
+      "primarySameDayValue": 0.0006638149,
       "sameDayDelta": 0.0,
       "sameDayRatio": 1.0,
       "latestDateGapDays": 0,
@@ -253,19 +253,19 @@
   "reserveRiskShadowCompare": {
     "candidateKey": "bitcoin_data_latest",
     "candidateDisplayName": "bitcoin-data Reserve Risk latest",
-    "candidateLatestDate": "2026-05-06",
-    "candidateLatestValue": 0.0006752484,
-    "primaryLatestObservedDate": "2026-05-06",
-    "primaryLatestObservedValue": 0.0006752484,
-    "primaryLatestNonNullDate": "2026-05-06",
-    "primaryLatestNonNullValue": 0.0006752484,
+    "candidateLatestDate": "2026-05-07",
+    "candidateLatestValue": 0.0006638149,
+    "primaryLatestObservedDate": "2026-05-07",
+    "primaryLatestObservedValue": 0.0006638149,
+    "primaryLatestNonNullDate": "2026-05-07",
+    "primaryLatestNonNullValue": 0.0006638149,
     "sameDayComparable": true,
     "primarySameDayAvailable": true,
-    "primarySameDayValue": 0.0006752484,
+    "primarySameDayValue": 0.0006638149,
     "sameDayDelta": 0.0,
     "sameDayRatio": 1.0,
     "latestDateGapDays": 0,
     "status": "same_day_comparable"
   },
-  "lastUpdated": "2026-05-07T19:52:20.005887+00:00"
+  "lastUpdated": "2026-05-08T03:51:14.820775+00:00"
 }
