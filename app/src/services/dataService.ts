@@ -53,7 +53,7 @@ const cache: CacheState = {
   manifestTimestamp: 0,
 };
 
-export function hasCore6Coverage(rows: IndicatorData[]): boolean {
+export function hasCore7Coverage(rows: IndicatorData[]): boolean {
   if (!rows.length) {
     return false;
   }
@@ -64,6 +64,7 @@ export function hasCore6Coverage(rows: IndicatorData[]): boolean {
     'priceRealizedRatio',
     'mvrvZscore',
     'lthMvrv',
+    'lthSopr',
     'sthMvrv',
     'puellMultiple',
   ];
@@ -164,7 +165,7 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
     if (mode === 'full') {
       console.warn(`[DataService] Full history source failed (${primaryPath}).`, primaryError);
       const localHistory = readLocalData();
-      if (localHistory.length > 0 && hasCore6Coverage(localHistory)) {
+      if (localHistory.length > 0 && hasCore7Coverage(localHistory)) {
         cache.historyFull = localHistory;
         return localHistory;
       }

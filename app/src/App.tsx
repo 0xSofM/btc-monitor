@@ -31,7 +31,7 @@ import {
   getEffectiveDataDate,
   getDataFreshnessHours,
   getLatestFromHistory,
-  hasCore6Coverage,
+  hasCore7Coverage,
 } from '@/services/dataService';
 
 import './App.css';
@@ -43,6 +43,8 @@ type IndicatorDateKey =
   | 'reserveRisk'
   | 'mvrvZscore'
   | 'lthMvrv'
+  | 'lthSopr'
+  | 'sthSopr'
   | 'sthMvrv'
   | 'puell';
 type AppTab = 'dashboard' | 'history' | 'guide';
@@ -209,7 +211,7 @@ function App() {
     setIsFullHistoryLoading(true);
     try {
       const fullHistory = await fetchFullHistoricalData();
-      if (fullHistory.length > 0 && hasCore6Coverage(fullHistory)) {
+      if (fullHistory.length > 0 && hasCore7Coverage(fullHistory)) {
         setHistoricalData(fullHistory);
         setIsFullHistoryLoaded(true);
       } else {
@@ -305,8 +307,11 @@ function App() {
   const indicatorDateLabels: Partial<Record<IndicatorDateKey, string>> = {
     priceMa200w: 'Price / 200W-MA',
     priceRealized: 'Price / Realized Price',
+    reserveRisk: 'Reserve Risk',
     mvrvZscore: 'MVRV Z-Score',
     lthMvrv: 'LTH-MVRV',
+    lthSopr: 'LTH-SOPR',
+    sthSopr: 'STH-SOPR',
     sthMvrv: 'STH-MVRV',
     puell: 'Puell Multiple',
   };
