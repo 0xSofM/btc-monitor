@@ -202,6 +202,8 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     signalSthMvrv: asBoolean(record.signalSthMvrv ?? record.signal_sth_mvrv),
     signalSthGroup: asBoolean(record.signalSthGroup ?? record.signal_sth_group),
     signalLthMvrv: asBoolean(record.signalLthMvrv ?? record.signal_lth_mvrv),
+    signalLthSopr: asBoolean(record.signalLthSopr ?? record.signal_lth_sopr),
+    signalSthSoprTrigger: asBoolean(record.signalSthSoprTrigger ?? record.signal_sth_sopr_trigger),
     signalSthSoprAux: asBoolean(record.signalSthSoprAux ?? record.signal_sth_sopr_aux),
     signalPuell: asBoolean(record.signalPuell ?? record.signal_puell),
     signalCount: toNumberOrNull(record.signalCount ?? record.signal_count) ?? undefined,
