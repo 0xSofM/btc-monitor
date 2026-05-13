@@ -171,16 +171,6 @@ export interface LatestData {
     sthMvrv?: string;
     puell?: string;
   };
-  indicatorDates?: {
-    priceMa200w?: string;
-    priceRealized?: string;
-    reserveRisk?: string;
-    lthMvrv?: string;
-    mvrvZscore?: string;
-    sthSopr?: string;
-    sthMvrv?: string;
-    puell?: string;
-  };
   staleIndicators?: Array<string | { key?: string; lagDays?: number; maxLagDays?: number; sourceDate?: string }>;
   thresholds?: ThresholdMap;
   // Legacy V1 compatibility fields

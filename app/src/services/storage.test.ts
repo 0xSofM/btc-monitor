@@ -102,7 +102,7 @@ function createLatest(date = '2026-04-16'): LatestData {
       sthMvrv: false,
       lthMvrv: false,
       puell: false,
-      sthSoprAux: false,
+      sthSoprTrigger: false,
     },
     indicatorDates: {
       priceMa200w: date,

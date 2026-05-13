@@ -743,7 +743,7 @@ function App() {
                       当前值 {latestData.sthSopr.toFixed(4)}，触发阈值 {'< '}
                       {(latestData.thresholds?.sthSopr?.trigger ?? 1).toFixed(4)}，
                       当前状态
-                      {latestData.signalsV4?.sthSoprAux ?? latestData.signals.sthSopr ? ' 已触发' : ' 观察中'}。
+                      {latestData.signalsV4?.sthSoprTrigger ?? latestData.signals.sthSopr ? ' 已触发' : ' 观察中'}。
                       该指标保留为辅助观察项，不计入 Core-6 V4 总分。
                       {fallbackModeLabel ? ` 当前回退状态：${fallbackModeLabel}。` : ''}
                     </AlertDescription>
