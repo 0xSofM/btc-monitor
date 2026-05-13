@@ -31,6 +31,7 @@ import {
   getEffectiveDataDate,
   getDataFreshnessHours,
   getLatestFromHistory,
+  hasCore6Coverage,
 } from '@/services/dataService';
 
 import './App.css';
@@ -135,27 +136,6 @@ function formatFallbackModeLabel(fallbackMode: string | undefined): string | nul
   }
 
   return '主模型正常';
-}
-
-function hasCore6Coverage(rows: IndicatorData[]): boolean {
-  if (!rows.length) {
-    return false;
-  }
-
-  const recent = rows.slice(-Math.min(rows.length, 365));
-  return [
-    'priceMa200wRatio',
-    'priceRealizedRatio',
-    'mvrvZscore',
-    'lthMvrv',
-    'sthMvrv',
-    'puellMultiple',
-  ].every((field) =>
-    recent.some((row) => {
-      const value = row[field as keyof IndicatorData];
-      return value !== null && value !== undefined;
-    }),
-  );
 }
 
 function App() {

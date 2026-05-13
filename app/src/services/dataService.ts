@@ -53,7 +53,7 @@ const cache: CacheState = {
   manifestTimestamp: 0,
 };
 
-function hasCore6Coverage(rows: IndicatorData[]): boolean {
+export function hasCore6Coverage(rows: IndicatorData[]): boolean {
   if (!rows.length) {
     return false;
   }

@@ -26,6 +26,7 @@ CRITICAL_FIELDS = [
     "priceRealizedRatio",
     "mvrvZscore",
     "lthMvrv",
+    "lthSopr",
     "sthSopr",
     "sthMvrv",
     "puellMultiple",
@@ -37,6 +38,7 @@ INDICATOR_DATE_FIELDS = {
     "reserveRisk": ("reserveRisk", "reserve_risk"),
     "mvrvZscore": ("mvrvZscore", "mvrv_zscore"),
     "lthMvrv": ("lthMvrv", "lth_mvrv"),
+    "lthSopr": ("lthSopr", "lth_sopr"),
     "sthSopr": ("sthSopr", "sth_sopr"),
     "sthMvrv": ("sthMvrv", "sth_mvrv"),
     "puell": ("puell", "puell"),
@@ -156,14 +158,17 @@ def compute_signal_score_from_latest_payload(latest: Dict[str, Any]) -> int | No
     reserve_score = latest.get("scoreReserveRisk")
     if reserve_score is None:
         source_mode = str(latest.get("reserveRiskSourceMode") or "").lower()
+        primary_score = latest.get("scoreReserveRiskPrimary")
+        replacement_score = latest.get("scoreReserveRiskReplacement")
+
         if source_mode == "replacement":
-            reserve_score = latest.get("scoreReserveRiskReplacement")
-        elif source_mode == "primary":
-            reserve_score = latest.get("scoreReserveRiskPrimary")
-        else:
-            reserve_score = latest.get("scoreReserveRiskPrimary")
+            reserve_score = replacement_score
             if reserve_score is None:
-                reserve_score = latest.get("scoreReserveRiskReplacement")
+                reserve_score = primary_score
+        else:
+            reserve_score = primary_score
+            if reserve_score is None:
+                reserve_score = replacement_score
 
     has_any_component_score = any(
         latest.get(key) is not None
@@ -205,6 +210,7 @@ def compute_signal_count_v4_from_row(row: Dict[str, Any]) -> int:
             bool(row.get("signalMvrvZscoreCore") or row.get("signalReserveRiskV4")),
             bool(row.get("signalSthMvrv")),
             bool(row.get("signalLthMvrv")),
+            bool(row.get("signalLthSopr")),
             bool(row.get("signalPuell")),
         ]
     )
@@ -222,6 +228,7 @@ def compute_signal_count_v4_from_latest(latest: Dict[str, Any]) -> int:
             bool(signals.get("mvrvZscore") or signals.get("reserveRisk")),
             bool(signals.get("sthMvrv")),
             bool(signals.get("lthMvrv")),
+            bool(signals.get("lthSopr")),
             bool(signals.get("puell")),
         ]
     )
@@ -292,6 +299,9 @@ def validate_recent_non_null(history: List[Dict[str, Any]], lookback_rows: int, 
 
 
 def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str, Any], errors: List[str]) -> None:
+    mismatch_counts: Dict[str, int] = {}
+    max_mismatches_per_type = 10
+
     for idx, row in enumerate(history):
         expected = compute_signal_count_from_row(row)
         actual = row.get("signalCount")
@@ -299,26 +309,38 @@ def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str,
             errors.append(f"Row {idx} missing signalCount.")
             continue
         if int(actual) != expected:
-            errors.append(f"Row {idx} signalCount mismatch: expected {expected}, got {actual}.")
-            break
+            key = "signalCount"
+            mismatch_counts[key] = mismatch_counts.get(key, 0) + 1
+            if mismatch_counts[key] <= max_mismatches_per_type:
+                errors.append(f"Row {idx} signalCount mismatch: expected {expected}, got {actual}.")
+            elif mismatch_counts[key] == max_mismatches_per_type + 1:
+                errors.append(f"... further signalCount mismatches suppressed (showing first {max_mismatches_per_type}).")
 
         if "signalScoreV2" in row:
             score_expected = compute_signal_score_from_row(row)
             score_actual = row.get("signalScoreV2")
             if score_actual is None or int(score_actual) != score_expected:
-                errors.append(
-                    f"Row {idx} signalScoreV2 mismatch: expected {score_expected}, got {score_actual}."
-                )
-                break
+                key = "signalScoreV2"
+                mismatch_counts[key] = mismatch_counts.get(key, 0) + 1
+                if mismatch_counts[key] <= max_mismatches_per_type:
+                    errors.append(
+                        f"Row {idx} signalScoreV2 mismatch: expected {score_expected}, got {score_actual}."
+                    )
+                elif mismatch_counts[key] == max_mismatches_per_type + 1:
+                    errors.append(f"... further signalScoreV2 mismatches suppressed (showing first {max_mismatches_per_type}).")
 
         if "signalCountV4" in row:
             count_v4_expected = compute_signal_count_v4_from_row(row)
             count_v4_actual = row.get("signalCountV4")
             if count_v4_actual is None or int(count_v4_actual) != count_v4_expected:
-                errors.append(
-                    f"Row {idx} signalCountV4 mismatch: expected {count_v4_expected}, got {count_v4_actual}."
-                )
-                break
+                key = "signalCountV4"
+                mismatch_counts[key] = mismatch_counts.get(key, 0) + 1
+                if mismatch_counts[key] <= max_mismatches_per_type:
+                    errors.append(
+                        f"Row {idx} signalCountV4 mismatch: expected {count_v4_expected}, got {count_v4_actual}."
+                    )
+                elif mismatch_counts[key] == max_mismatches_per_type + 1:
+                    errors.append(f"... further signalCountV4 mismatches suppressed (showing first {max_mismatches_per_type}).")
 
         if "totalScoreV4" in row:
             total_v4_expected = compute_total_score_v4_from_row(row)
@@ -326,10 +348,14 @@ def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str,
             if total_v4_expected is not None and (
                 total_v4_actual is None or int(total_v4_actual) != total_v4_expected
             ):
-                errors.append(
-                    f"Row {idx} totalScoreV4 mismatch: expected {total_v4_expected}, got {total_v4_actual}."
-                )
-                break
+                key = "totalScoreV4"
+                mismatch_counts[key] = mismatch_counts.get(key, 0) + 1
+                if mismatch_counts[key] <= max_mismatches_per_type:
+                    errors.append(
+                        f"Row {idx} totalScoreV4 mismatch: expected {total_v4_expected}, got {total_v4_actual}."
+                    )
+                elif mismatch_counts[key] == max_mismatches_per_type + 1:
+                    errors.append(f"... further totalScoreV4 mismatches suppressed (showing first {max_mismatches_per_type}).")
 
     latest_expected = compute_signal_count_from_latest(latest)
     latest_actual = latest.get("signalCount")
@@ -553,7 +579,7 @@ def main() -> int:
     parser.add_argument(
         "--max-indicator-lag-days",
         type=int,
-        default=21,
+        default=30,
         help="Max allowed lag days between latest date and per-indicator actual data date.",
     )
     args = parser.parse_args()

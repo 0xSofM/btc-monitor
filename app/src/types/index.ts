@@ -19,6 +19,7 @@ export interface IndicatorData {
   ma200w?: number;
   realizedPrice?: number;
   reserveRisk?: number;
+  lthSopr?: number;
   sthSopr?: number;
   sthMvrv?: number;
   puellMultiple?: number;
@@ -31,6 +32,8 @@ export interface IndicatorData {
   signalSthMvrv?: boolean;
   signalSthGroup?: boolean;
   signalLthMvrv?: boolean;
+  signalLthSopr?: boolean;
+  signalSthSoprTrigger?: boolean;
   signalSthSoprAux?: boolean;
   signalPuell?: boolean;
   signalCount?: number;
@@ -43,6 +46,7 @@ export interface IndicatorData {
   scoreReserveRisk?: number;
   scoreReserveRiskV4?: number;
   scoreMvrvZscoreCore?: number;
+  scoreLthSopr?: number;
   scoreSthSopr?: number;
   scoreSthMvrv?: number;
   scoreSthGroup?: number;
@@ -99,6 +103,7 @@ export interface LatestData {
   ma200w?: number;
   realizedPrice?: number;
   reserveRisk: number;
+  lthSopr?: number;
   sthSopr: number;
   sthMvrv: number;
   puellMultiple: number;
@@ -151,8 +156,20 @@ export interface LatestData {
     mvrvZscore?: boolean;
     sthMvrv: boolean;
     lthMvrv: boolean;
+    lthSopr?: boolean;
     puell: boolean;
-    sthSoprAux?: boolean;
+    sthSoprTrigger?: boolean;
+  };
+  indicatorDates?: {
+    priceMa200w?: string;
+    priceRealized?: string;
+    reserveRisk?: string;
+    lthMvrv?: string;
+    lthSopr?: string;
+    mvrvZscore?: string;
+    sthSopr?: string;
+    sthMvrv?: string;
+    puell?: string;
   };
   indicatorDates?: {
     priceMa200w?: string;
