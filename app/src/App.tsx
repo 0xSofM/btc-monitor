@@ -4,12 +4,15 @@ import {
   AlertTriangle,
   Bitcoin,
   BookOpen,
+  CheckCircle2,
   Clock3,
+  Database,
   History,
   LineChart,
   Loader2,
   Moon,
   RefreshCw,
+  ShieldCheck,
   Sun,
   TrendingUp,
 } from 'lucide-react';
@@ -143,6 +146,7 @@ function formatFallbackModeLabel(fallbackMode: string | undefined): string | nul
 function App() {
   const [latestData, setLatestData] = useState<LatestData | null>(null);
   const [historicalData, setHistoricalData] = useState<IndicatorData[]>([]);
+  const [staticAlertDismissed, setStaticAlertDismissed] = useState(false);
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const [manifestGeneratedAt, setManifestGeneratedAt] = useState<string | null>(null);
   const [isLightHistoryLoading, setIsLightHistoryLoading] = useState(false);
@@ -373,16 +377,19 @@ function App() {
         label: totalScoreV4 !== undefined ? 'V5总分' : 'V2评分',
         value: `${effectiveScore}/${effectiveMaxScore}`,
         note: effectiveSignalBand,
+        icon: TrendingUp,
       },
       {
         label: '核心触发',
         value: `${signalCountDisplay}/${activeIndicatorCount}`,
-        note: isSignalConfirmed ? '已满足3日确认' : '等待3日确认',
+        note: isSignalConfirmed ? '已确认3日' : '等待确认',
+        icon: isSignalConfirmed ? CheckCircle2 : AlertTriangle,
       },
       {
         label: '数据来源',
         value: sourceLabel(dataSource),
         note: `截至 ${latestData.date}`,
+        icon: Database,
       },
     ];
 
@@ -396,7 +403,8 @@ function App() {
       {
         label: '信号置信度',
         value: confidencePercent === null ? '-' : `${confidencePercent}%`,
-        note: fallbackModeLabel ?? (freshnessPercent === null ? '无额外说明' : `数据新鲜度 ${freshnessPercent}%`),
+        note: fallbackModeLabel ?? (freshnessPercent === null ? '' : `新鲜度 ${freshnessPercent}%`),
+        icon: ShieldCheck,
       },
       baseTiles[2],
     ];
@@ -610,15 +618,19 @@ function App() {
         <main className="app-container py-6">
           {latestData && (
             <section className="status-strip fade-up mb-6">
-              {statusTiles.map((tile) => (
-                <article key={tile.label} className="status-chip">
-                  <div>
-                    <p className="status-label">{tile.label}</p>
-                    <p className="status-value">{tile.value}</p>
-                  </div>
-                  <Badge variant="secondary">{tile.note}</Badge>
-                </article>
-              ))}
+              {statusTiles.map((tile) => {
+                const Icon = tile.icon;
+                return (
+                  <article key={tile.label} className="status-chip">
+                    <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    <div className="min-w-0 flex-1">
+                      <p className="status-label">{tile.label}</p>
+                      <p className="status-value">{tile.value}</p>
+                    </div>
+                    <Badge variant="secondary" className="shrink-0">{tile.note}</Badge>
+                  </article>
+                );
+              })}
             </section>
           )}
 
@@ -647,13 +659,20 @@ function App() {
                 </Alert>
               )}
 
-              {dataSource === 'static' && latestData && (
-                <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
+              {dataSource === 'static' && latestData && !staticAlertDismissed && (
+                <Alert className="relative border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
                   <AlertTriangle className="h-4 w-4 text-blue-600" />
                   <AlertTitle className="text-blue-800 dark:text-blue-200">静态快照模式</AlertTitle>
                   <AlertDescription className="text-blue-700 dark:text-blue-300">
                     当前优先展示可归档、可回滚的静态快照数据，这是 V5 发布链路的默认模式。
                   </AlertDescription>
+                  <button
+                    onClick={() => setStaticAlertDismissed(true)}
+                    className="absolute right-3 top-3 text-blue-500 hover:text-blue-700"
+                    aria-label="关闭"
+                  >
+                    ×
+                  </button>
                 </Alert>
               )}
 
@@ -702,6 +721,22 @@ function App() {
                     oldestIndicatorDate={oldestIndicatorDate}
                   />
 
+                  {marketAssessment && (
+                    <section className={`surface-card rounded-lg border p-4 ${marketAssessment.boxClass}`}>
+                      <div className="flex items-start gap-3">
+                        <TrendingUp className={`mt-0.5 h-6 w-6 ${marketAssessment.iconClass}`} />
+                        <div>
+                          <h3 className={`font-semibold ${marketAssessment.titleClass}`}>
+                            {marketAssessment.title}
+                          </h3>
+                          <p className={`mt-1 text-sm ${marketAssessment.textClass}`}>
+                            {marketAssessment.description}
+                          </p>
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
                   {laggingIndicators.length > 0 && (
                     <Alert className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950">
                       <Clock3 className="h-4 w-4 text-amber-600" />
@@ -711,6 +746,12 @@ function App() {
                       </AlertDescription>
                     </Alert>
                   )}
+
+                  <section className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+                    {indicators.map((indicator) => (
+                      <IndicatorCard key={indicator.name} {...indicator} />
+                    ))}
+                  </section>
 
                   {historicalData.length > 0 ? (
                     <Suspense fallback={<SectionLoader message="正在加载图表工作区..." />}>
@@ -744,41 +785,6 @@ function App() {
                         </div>
                       </AlertDescription>
                     </Alert>
-                  )}
-
-                  <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {indicators.map((indicator) => (
-                      <IndicatorCard key={indicator.name} {...indicator} />
-                    ))}
-                  </section>
-
-                  <Alert className="border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900/60">
-                    <AlertTriangle className="h-4 w-4 text-slate-600 dark:text-slate-300" />
-                    <AlertTitle className="text-slate-800 dark:text-slate-200">辅助指标：STH-SOPR</AlertTitle>
-                    <AlertDescription className="text-slate-700 dark:text-slate-300">
-                      当前值 {latestData.sthSopr.toFixed(4)}，触发阈值 {'< '}
-                      {(latestData.thresholds?.sthSopr?.trigger ?? 1).toFixed(4)}，
-                      当前状态
-                      {latestData.signalsV4?.sthSoprTrigger ?? latestData.signals.sthSopr ? ' 已触发' : ' 观察中'}。
-                      该指标已纳入触发层复合信号（与 STH-MVRV 取最大值），共同决定触发层得分。
-                      {fallbackModeLabel ? ` 当前回退状态：${fallbackModeLabel}。` : ''}
-                    </AlertDescription>
-                  </Alert>
-
-                  {marketAssessment && (
-                    <section className={`surface-card rounded-lg border p-4 ${marketAssessment.boxClass}`}>
-                      <div className="flex items-start gap-3">
-                        <TrendingUp className={`mt-0.5 h-6 w-6 ${marketAssessment.iconClass}`} />
-                        <div>
-                          <h3 className={`font-semibold ${marketAssessment.titleClass}`}>
-                            {marketAssessment.title}
-                          </h3>
-                          <p className={`mt-1 text-sm ${marketAssessment.textClass}`}>
-                            {marketAssessment.description}
-                          </p>
-                        </div>
-                      </div>
-                    </section>
                   )}
                 </>
               )}
