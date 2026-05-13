@@ -80,6 +80,7 @@ export interface IndicatorData {
     priceRealized?: string;
     reserveRisk?: string;
     lthMvrv?: string;
+    lthSopr?: string;
     mvrvZscore?: string;
     sthSopr?: string;
     sthMvrv?: string;

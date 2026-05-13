@@ -41,8 +41,9 @@ function getSignalBadges(item: IndicatorData): string[] {
   if (item.signalMvrvZscoreCore ?? item.signalReserveRiskV4 ?? item.signalMvrvZ) signals.push('MVRV Z-Score');
   if (item.signalSthMvrv) signals.push('STH-MVRV');
   if (item.signalLthMvrv) signals.push('LTH-MVRV');
+  if (item.signalLthSopr) signals.push('LTH-SOPR');
   if (item.signalPuell) signals.push('Puell Multiple');
-  if (item.signalSthSoprAux ?? item.signalSthSopr) signals.push('STH-SOPR (Auxiliary)');
+  if (item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr) signals.push('STH-SOPR (Trigger)');
 
   return signals;
 }
@@ -52,7 +53,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const maxSignalCount = useMemo(
-    () => data.reduce((max, row) => Math.max(max, row.activeIndicatorCountV4 ?? row.activeIndicatorCount ?? 0, row.signalCountV4 ?? row.signalCount ?? 0), 6),
+    () => data.reduce((max, row) => Math.max(max, row.activeIndicatorCountV4 ?? row.activeIndicatorCount ?? 0, row.signalCountV4 ?? row.signalCount ?? 0), 7),
     [data],
   );
   const strongSignalThreshold = Math.max(1, maxSignalCount - 1);

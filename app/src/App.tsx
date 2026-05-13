@@ -341,9 +341,9 @@ function App() {
   const signalScoreV2 = latestData?.signalScoreV2 ?? 0;
   const maxSignalScoreV2 = latestData?.maxSignalScoreV2 ?? 10;
   const totalScoreV4 = latestData?.totalScoreV4;
-  const maxTotalScoreV4 = latestData?.maxTotalScoreV4 ?? 12;
+  const maxTotalScoreV4 = latestData?.maxTotalScoreV4 ?? 14;
   const signalCountDisplay = latestData?.signalCountV4 ?? latestData?.signalCount ?? 0;
-  const activeIndicatorCount = latestData?.activeIndicatorCountV4 ?? latestData?.activeIndicatorCount ?? 6;
+  const activeIndicatorCount = latestData?.activeIndicatorCountV4 ?? latestData?.activeIndicatorCount ?? 7;
   const effectiveScore = totalScoreV4 ?? signalScoreV2;
   const effectiveMaxScore = totalScoreV4 !== undefined ? maxTotalScoreV4 : maxSignalScoreV2;
   const effectiveSignalBand = formatSignalBand(
@@ -454,7 +454,7 @@ function App() {
           dataDate: latestData.indicatorDates?.mvrvZscore || latestData.date,
           detailValue: latestData.indicatorDates?.reserveRisk
             ? `Reserve Risk 仅作观测：${latestData.reserveRisk.toFixed(6)}（${latestData.indicatorDates.reserveRisk}）`
-            : 'Reserve Risk 仅作观测，不参与当前 Core-6 计分。',
+            : 'Reserve Risk 仅作观测，不参与当前 Core-7 计分。',
         },
         {
           name: 'LTH-MVRV',
@@ -568,7 +568,7 @@ function App() {
                 <div>
                   <h1 className="text-xl font-bold tracking-tight">BTC 大周期底部监测 V5</h1>
                   <p className="text-sm text-muted-foreground">
-                    Core-6 分层模型：估值层 + 触发层 + 确认层，并保留旧版字段用于对照、归档与回滚
+                    Core-7 分层模型：估值层 + 触发层（复合）+ 确认层（双指标），并保留旧版字段用于对照、归档与回滚
                   </p>
                 </div>
               </div>
@@ -755,7 +755,7 @@ function App() {
                       {(latestData.thresholds?.sthSopr?.trigger ?? 1).toFixed(4)}，
                       当前状态
                       {latestData.signalsV4?.sthSoprTrigger ?? latestData.signals.sthSopr ? ' 已触发' : ' 观察中'}。
-                      该指标保留为辅助观察项，不计入 Core-7 V5 总分。
+                      该指标已纳入触发层复合信号（与 STH-MVRV 取最大值），共同决定触发层得分。
                       {fallbackModeLabel ? ` 当前回退状态：${fallbackModeLabel}。` : ''}
                     </AlertDescription>
                   </Alert>

@@ -87,6 +87,7 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
       priceRealized: undefined,
       reserveRisk: undefined,
       lthMvrv: undefined,
+      lthSopr: undefined,
       mvrvZscore: undefined,
       sthSopr: undefined,
       sthMvrv: undefined,
@@ -101,6 +102,7 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
       priceRealized: fromPayload.priceRealized,
       reserveRisk: fromPayload.reserveRisk,
       lthMvrv: fromPayload.lthMvrv,
+      lthSopr: fromPayload.lthSopr,
       mvrvZscore: fromPayload.mvrvZscore,
       sthSopr: fromPayload.sthSopr,
       sthMvrv: fromPayload.sthMvrv,
@@ -130,6 +132,12 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
           : typeof fromApiDataDate.lth_mvrv === 'string'
             ? fromApiDataDate.lth_mvrv
             : undefined,
+      lthSopr:
+        typeof fromApiDataDate.lthSopr === 'string'
+          ? fromApiDataDate.lthSopr
+          : typeof fromApiDataDate.lth_sopr === 'string'
+            ? fromApiDataDate.lth_sopr
+            : undefined,
       mvrvZscore:
         typeof fromApiDataDate.mvrvZscore === 'string'
           ? fromApiDataDate.mvrvZscore
@@ -157,6 +165,7 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
     priceRealized: undefined,
     reserveRisk: undefined,
     lthMvrv: undefined,
+    lthSopr: undefined,
     mvrvZscore: undefined,
     sthSopr: undefined,
     sthMvrv: undefined,
@@ -176,6 +185,10 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
 
     if (!dates.lthMvrv && hasUsableValue(row.lthMvrv)) {
       dates.lthMvrv = row.d;
+    }
+
+    if (!dates.lthSopr && hasUsableValue(row.lthSopr)) {
+      dates.lthSopr = row.d;
     }
 
     if (!dates.mvrvZscore && hasUsableValue(row.mvrvZscore)) {

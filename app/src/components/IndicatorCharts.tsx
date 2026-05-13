@@ -23,7 +23,7 @@ interface IndicatorChartsProps {
   onRequestFullHistory?: () => void | Promise<void>;
 }
 
-type IndicatorType = 'priceMa200w' | 'priceRealized' | 'mvrvZscore' | 'lthMvrv' | 'sthMvrv' | 'puell';
+type IndicatorType = 'priceMa200w' | 'priceRealized' | 'mvrvZscore' | 'lthMvrv' | 'lthSopr' | 'sthMvrv' | 'puell';
 
 type DetailSeriesPoint = {
   date: string;
@@ -41,7 +41,7 @@ type MaSeriesPoint = {
   signal: boolean;
 };
 
-const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'priceRealized', 'mvrvZscore', 'lthMvrv', 'sthMvrv', 'puell'];
+const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'priceRealized', 'mvrvZscore', 'lthMvrv', 'lthSopr', 'sthMvrv', 'puell'];
 
 const TIME_RANGES = [
   { key: 'all', label: '全部' },
@@ -64,6 +64,7 @@ const CHART_FLOOR_CONFIG: Record<IndicatorType, number> = {
   priceRealized: 0,
   mvrvZscore: -1.5,
   lthMvrv: 0,
+  lthSopr: 0.95,
   sthMvrv: 0,
   puell: 0,
 };
@@ -223,6 +224,7 @@ export function IndicatorCharts({
       priceRealized: getIndicatorChartData(data, 'priceRealized', '1y') as DetailSeriesPoint[],
       mvrvZscore: getIndicatorChartData(data, 'mvrvZscore', '1y') as DetailSeriesPoint[],
       lthMvrv: getIndicatorChartData(data, 'lthMvrv', '1y') as DetailSeriesPoint[],
+      lthSopr: getIndicatorChartData(data, 'lthSopr', '1y') as DetailSeriesPoint[],
       sthMvrv: getIndicatorChartData(data, 'sthMvrv', '1y') as DetailSeriesPoint[],
       puell: getIndicatorChartData(data, 'puell', '1y') as DetailSeriesPoint[],
     };
@@ -525,7 +527,7 @@ export function IndicatorCharts({
       <CardHeader>
         <div className="space-y-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle className="text-lg font-semibold">Core-6 历史图表</CardTitle>
+            <CardTitle className="text-lg font-semibold">Core-7 历史图表</CardTitle>
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span
                 className={`rounded-full px-2.5 py-1 ${

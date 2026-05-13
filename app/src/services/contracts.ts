@@ -6,6 +6,7 @@ export type IndicatorKey =
   | 'mvrvZscore'
   | 'reserveRisk'
   | 'lthMvrv'
+  | 'lthSopr'
   | 'sthSopr'
   | 'sthMvrv'
   | 'puell';
@@ -19,6 +20,8 @@ export type ApiDatePayload = {
   reserve_risk?: string;
   lthMvrv?: string;
   lth_mvrv?: string;
+  lthSopr?: string;
+  lth_sopr?: string;
   mvrvZscore?: string;
   mvrv_zscore?: string;
   sthSopr?: string;

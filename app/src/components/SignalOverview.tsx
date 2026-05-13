@@ -149,7 +149,7 @@ export function SignalOverview({
   triggerScore = 0,
   maxTriggerScore = 2,
   confirmationScore = 0,
-  maxConfirmationScore = 2,
+  maxConfirmationScore = 4,
   signalConfidence,
   fallbackMode,
   signalConfirmed3d = false,
