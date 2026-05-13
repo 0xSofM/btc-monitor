@@ -488,6 +488,13 @@ export function getIndicatorChartData(
         signal = item.signalSthMvrv ?? false;
       }
 
+      if (indicator === 'lthSopr') {
+        value = item.lthSopr ?? null;
+        triggerValue = DEFAULT_THRESHOLDS.lthSopr;
+        deepValue = DEFAULT_DEEP_THRESHOLDS.lthSopr;
+        signal = item.signalLthSopr ?? false;
+      }
+
       if (indicator === 'puell') {
         value = item.puellMultiple ?? null;
         triggerValue = DEFAULT_THRESHOLDS.puell;

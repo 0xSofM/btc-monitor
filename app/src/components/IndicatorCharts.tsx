@@ -146,6 +146,8 @@ function buildThresholdDescription(indicator: IndicatorType, point: DetailSeries
       return '固定阈值 < 0（深度 < -0.5）';
     case 'lthMvrv':
       return '固定阈值 < 1（深度 < 0.90）';
+    case 'lthSopr':
+      return '固定阈值 < 1（深度 < 0.98）';
     case 'sthMvrv':
       return `滚动阈值 < ${triggerText}（深度 < ${deepText}，过去 1460 天 p27 / p13.5）`;
     case 'puell':
