@@ -123,7 +123,7 @@ export function IndicatorExplanation() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <BookOpen className="h-5 w-5" />
-          Core-6 V4 指标说明
+          Core-7 V5 指标说明
         </CardTitle>
       </CardHeader>
 
@@ -137,7 +137,7 @@ export function IndicatorExplanation() {
           <div className="flex items-start gap-3">
             <Info className="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-300" />
             <div>
-              <h3 className="font-semibold text-blue-800 dark:text-blue-200">V4 评分框架</h3>
+              <h3 className="font-semibold text-blue-800 dark:text-blue-200">V5 评分框架</h3>
               <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
                 V4 不再把 6 个指标平铺加总，而是拆成“估值层 + 触发层 + 确认层”。
                 当前版本已将 MVRV Z-Score 正式提升为 Core-6 估值层主指标，Reserve Risk 降级为观测与诊断项。

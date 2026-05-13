@@ -171,7 +171,7 @@ export function SignalOverview({
   const scoreProgress = Math.max(0, Math.min(100, (effectiveScore / Math.max(1, effectiveMaxScore)) * 100));
   const confidencePercent = signalConfidence === undefined ? null : Math.round(signalConfidence * 100);
   const fallbackLabel = fallbackMode === 'mvrv_zscore_inactive'
-    ? 'MVRV Z-Score 暂时不计入 V4 总分'
+    ? 'MVRV Z-Score 暂时不计入 V5 总分'
     : null;
 
   return (
@@ -181,7 +181,7 @@ export function SignalOverview({
           <div>
             <CardTitle className="text-lg font-semibold">信号总览</CardTitle>
             <p className="mt-1 text-sm text-muted-foreground">
-              基于 Core-6 V4 分层模型，分别追踪估值、触发与确认三层状态。
+              基于 Core-7 V5 分层模型，分别追踪估值、触发与确认三层状态。
             </p>
           </div>
 
@@ -221,7 +221,7 @@ export function SignalOverview({
               <span className="ml-1 text-sm font-normal text-muted-foreground">/ {totalIndicators}</span>
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              {totalScoreV4 !== undefined ? `V4 总分：${effectiveScore}/${effectiveMaxScore}` : `V2 加权评分：${signalScoreV2}/${maxSignalScoreV2}`}
+              {totalScoreV4 !== undefined ? `V5 总分：${effectiveScore}/${effectiveMaxScore}` : `V2 加权评分：${signalScoreV2}/${maxSignalScoreV2}`}
             </p>
           </article>
 
@@ -291,7 +291,7 @@ export function SignalOverview({
 
         <section>
           <div className="mb-2 flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">{totalScoreV4 !== undefined ? 'V4 评分强度' : 'V2 评分强度'}</span>
+            <span className="text-muted-foreground">{totalScoreV4 !== undefined ? 'V5 评分强度' : 'V2 评分强度'}</span>
             <span className="font-semibold">{scoreProgress.toFixed(0)}%</span>
           </div>
           <Progress value={scoreProgress} className="h-2.5" />

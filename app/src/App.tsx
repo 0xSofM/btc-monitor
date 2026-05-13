@@ -235,7 +235,7 @@ function App() {
 
           const score = runtimeData.totalScoreV4 ?? runtimeData.signalScoreV2 ?? 0;
           const maxScore = runtimeData.maxTotalScoreV4 ?? runtimeData.maxSignalScoreV2 ?? 10;
-          toast.success(`V4 运行时已刷新：${score}/${maxScore}`, {
+          toast.success(`V5 运行时已刷新：${score}/${maxScore}`, {
             description: `BTC 价格：$${runtimeData.btcPrice.toLocaleString()}`,
             duration: 6000,
           });
@@ -253,7 +253,7 @@ function App() {
         if (mode === 'manual') {
           const score = staticData.totalScoreV4 ?? staticData.signalScoreV2 ?? 0;
           const maxScore = staticData.maxTotalScoreV4 ?? staticData.maxSignalScoreV2 ?? 10;
-          const scoreLabel = staticData.totalScoreV4 !== undefined ? '运行时不可用，已回退到 V4 快照' : '运行时不可用，已回退到静态快照';
+          const scoreLabel = staticData.totalScoreV4 !== undefined ? '运行时不可用，已回退到 V5 快照' : '运行时不可用，已回退到静态快照';
           toast.info(`${scoreLabel}：${score}/${maxScore}`, {
             description: `BTC 价格：$${staticData.btcPrice.toLocaleString()}`,
             duration: 6000,
@@ -365,7 +365,7 @@ function App() {
     if (!latestData) return [];
     const baseTiles = [
       {
-        label: totalScoreV4 !== undefined ? 'V4总分' : 'V2评分',
+        label: totalScoreV4 !== undefined ? 'V5总分' : 'V2评分',
         value: `${effectiveScore}/${effectiveMaxScore}`,
         note: effectiveSignalBand,
       },
@@ -458,7 +458,7 @@ function App() {
         },
         {
           name: 'LTH-MVRV',
-          description: '长期持有者成本结构确认',
+          description: '长期持有者未实现盈亏，确认层',
           currentValue: latestData.lthMvrv ?? 0,
           targetValue: latestData.thresholds?.lthMvrv?.trigger ?? 1,
           targetOperator: 'lt' as const,
@@ -466,6 +466,17 @@ function App() {
           format: 'ratio' as const,
           color: '#8B5CF6',
           dataDate: latestData.indicatorDates?.lthMvrv || latestData.date,
+        },
+        {
+          name: 'LTH-SOPR',
+          description: '长期持有者已实现盈亏，确认层',
+          currentValue: latestData.lthSopr ?? 0,
+          targetValue: latestData.thresholds?.lthSopr?.trigger ?? 1,
+          targetOperator: 'lt' as const,
+          triggered: latestData.signalsV4?.lthSopr ?? false,
+          format: 'ratio' as const,
+          color: '#A855F7',
+          dataDate: latestData.indicatorDates?.lthSopr || latestData.date,
         },
         {
           name: 'STH-MVRV',
@@ -504,7 +515,7 @@ function App() {
           textClass: 'text-green-700 dark:text-green-300',
           title: '极端底部区',
           description: totalScoreV4 !== undefined
-            ? `当前 V4 总分 ${effectiveScore}/${effectiveMaxScore}，估值、触发、确认三层已形成共振，可在风控前提下执行高优先级分批建仓。`
+            ? `当前 V5 总分 ${effectiveScore}/${effectiveMaxScore}，估值、触发、确认三层已形成共振，可在风控前提下执行高优先级分批建仓。`
             : `当前评分 ${effectiveScore}/${effectiveMaxScore}，市场处于深度价值区间，可在风控前提下执行分批入场。`,
         }
       : effectiveScore >= scoreThresholds.accumulate
@@ -515,7 +526,7 @@ function App() {
           textClass: 'text-emerald-700 dark:text-emerald-300',
           title: '分批配置区',
           description: totalScoreV4 !== undefined
-            ? `当前 V4 总分 ${effectiveScore}/${effectiveMaxScore}，至少两层信号正在协同改善，适合按计划分批配置。`
+            ? `当前 V5 总分 ${effectiveScore}/${effectiveMaxScore}，至少两层信号正在协同改善，适合按计划分批配置。`
             : `当前评分 ${effectiveScore}/${effectiveMaxScore}，信号较强，适合按计划分批配置。`,
         }
       : effectiveScore >= scoreThresholds.focus
@@ -526,7 +537,7 @@ function App() {
           textClass: 'text-amber-700 dark:text-amber-300',
           title: '重点关注区',
           description: totalScoreV4 !== undefined
-            ? `当前 V4 总分 ${effectiveScore}/${effectiveMaxScore}，估值或触发层已有改善，但确认层尚未跟上，适合重点跟踪。`
+            ? `当前 V5 总分 ${effectiveScore}/${effectiveMaxScore}，估值或触发层已有改善，但确认层尚未跟上，适合重点跟踪。`
             : `当前评分 ${effectiveScore}/${effectiveMaxScore}，状态改善中，但尚未进入高确定性区间。`,
         }
       : {
@@ -536,7 +547,7 @@ function App() {
           textClass: 'text-slate-700 dark:text-slate-300',
           title: '观察区',
           description: totalScoreV4 !== undefined
-            ? `当前 V4 总分 ${effectiveScore}/${effectiveMaxScore}，底部共振尚未形成，继续等待估值与确认层同步改善。`
+            ? `当前 V5 总分 ${effectiveScore}/${effectiveMaxScore}，底部共振尚未形成，继续等待估值与确认层同步改善。`
             : `当前评分 ${effectiveScore}/${effectiveMaxScore}，暂未出现强大周期底部信号。`,
         }
     : null;
@@ -555,7 +566,7 @@ function App() {
                   <Bitcoin className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold tracking-tight">BTC 大周期底部监测 V4</h1>
+                  <h1 className="text-xl font-bold tracking-tight">BTC 大周期底部监测 V5</h1>
                   <p className="text-sm text-muted-foreground">
                     Core-6 分层模型：估值层 + 触发层 + 确认层，并保留旧版字段用于对照、归档与回滚
                   </p>
@@ -636,7 +647,7 @@ function App() {
                   <AlertTriangle className="h-4 w-4 text-blue-600" />
                   <AlertTitle className="text-blue-800 dark:text-blue-200">静态快照模式</AlertTitle>
                   <AlertDescription className="text-blue-700 dark:text-blue-300">
-                    当前优先展示可归档、可回滚的静态快照数据，这是 V4 发布链路的默认模式。
+                    当前优先展示可归档、可回滚的静态快照数据，这是 V5 发布链路的默认模式。
                   </AlertDescription>
                 </Alert>
               )}
@@ -744,7 +755,7 @@ function App() {
                       {(latestData.thresholds?.sthSopr?.trigger ?? 1).toFixed(4)}，
                       当前状态
                       {latestData.signalsV4?.sthSoprTrigger ?? latestData.signals.sthSopr ? ' 已触发' : ' 观察中'}。
-                      该指标保留为辅助观察项，不计入 Core-6 V4 总分。
+                      该指标保留为辅助观察项，不计入 Core-7 V5 总分。
                       {fallbackModeLabel ? ` 当前回退状态：${fallbackModeLabel}。` : ''}
                     </AlertDescription>
                   </Alert>
@@ -804,7 +815,7 @@ function App() {
 
         <footer className="footer-line mt-12">
           <div className="app-container flex flex-col items-center justify-between gap-3 py-6 text-sm text-muted-foreground md:flex-row">
-            <p>数据来源：BGeometrics 文件端点 | 模型：Core-6 V4（分层计分 + MVRV 替换 + 3日确认）</p>
+            <p>数据来源：BGeometrics 文件端点 | 模型：Core-7 V5（双确认层 + 复合触发 + 3日确认）</p>
             <p>
               数据时间：{dataTimestampLabel}
               {manifestGeneratedAt ? ` | 清单生成时间：${manifestGeneratedAt}` : ''}

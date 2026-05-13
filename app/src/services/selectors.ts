@@ -283,8 +283,9 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     mvrvZscore: signalMvrvZscoreCore,
     sthMvrv: latest.signalSthMvrv ?? sthMvrv < sthMvrvThreshold.trigger,
     lthMvrv: latest.signalLthMvrv ?? lthMvrv < lthMvrvThreshold.trigger,
+    lthSopr: latest.signalLthSopr ?? ((latest.lthSopr ?? 0) < 1),
     puell: latest.signalPuell ?? puellMultiple < puellThreshold.trigger,
-    sthSoprAux: latest.signalSthSoprAux ?? latest.signalSthSopr ?? sthSopr < sthSoprThreshold.trigger,
+    sthSoprTrigger: latest.signalSthSoprTrigger ?? latest.signalSthSoprAux ?? latest.signalSthSopr ?? sthSopr < sthSoprThreshold.trigger,
   };
 
   const groupedSignalCount = [
@@ -302,9 +303,10 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     signalsV4.mvrvZscore,
     signalsV4.sthMvrv,
     signalsV4.lthMvrv,
+    signalsV4.lthSopr,
     signalsV4.puell,
   ].filter(Boolean).length;
-  const activeIndicatorCountV4 = latest.activeIndicatorCountV4 ?? (hasUsableValue(latest.mvrvZscore) ? 6 : 5);
+  const activeIndicatorCountV4 = latest.activeIndicatorCountV4 ?? (hasUsableValue(latest.mvrvZscore) ? 7 : 6);
 
   return {
     date: latest.d,

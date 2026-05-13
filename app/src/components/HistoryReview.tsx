@@ -133,7 +133,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Calendar className="h-5 w-5" />
-          历史复盘（Core-6 V4）
+          历史复盘（Core-7 V5）
         </CardTitle>
       </CardHeader>
 
@@ -232,7 +232,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
                   <TableHead>日期</TableHead>
                   <TableHead>BTC价格</TableHead>
                   <TableHead>触发数</TableHead>
-                  <TableHead>V4评分</TableHead>
+                  <TableHead>V5评分</TableHead>
                   <TableHead>触发指标</TableHead>
                 </TableRow>
               </TableHeader>

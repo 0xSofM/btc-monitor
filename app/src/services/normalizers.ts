@@ -321,8 +321,13 @@ export function normalizeLatestData(item: unknown): LatestData | null {
         lthMvrv: asBoolean(incomingSignalsV4.lthMvrv ?? record.signalLthMvrv ?? record.signal_lth_mvrv)
           ?? ((toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? 0) < 1),
         puell: asBoolean(incomingSignalsV4.puell ?? record.signalPuell ?? record.signal_puell) ?? signals.puell,
-        sthSoprAux: asBoolean(incomingSignalsV4.sthSoprAux ?? record.signalSthSoprAux ?? record.signal_sth_sopr_aux)
-          ?? signals.sthSopr,
+        lthSopr: asBoolean(incomingSignalsV4.lthSopr ?? record.signalLthSopr ?? record.signal_lth_sopr)
+          ?? ((toNumberOrNull(record.lthSopr ?? record.lth_sopr) ?? 0) < 1),
+        sthSoprTrigger: asBoolean(
+          incomingSignalsV4.sthSoprTrigger ?? incomingSignalsV4.sthSoprAux
+          ?? record.signalSthSoprTrigger ?? record.signal_sth_sopr_trigger
+          ?? record.signalSthSoprAux ?? record.signal_sth_sopr_aux,
+        ) ?? signals.sthSopr,
       }
     : undefined;
 
