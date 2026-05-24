@@ -25,7 +25,6 @@ interface SignalOverviewProps {
   dataTimestampLabel: string;
   dataSource: 'api' | 'static' | 'history';
   latestDataDate: string;
-  latestDataAgeHours: number;
   priceFreshnessHours: number;
   onchainFreshnessHours: number;
   laggingIndicators: string[];
@@ -159,7 +158,6 @@ export function SignalOverview({
   dataTimestampLabel,
   dataSource,
   latestDataDate,
-  latestDataAgeHours,
   priceFreshnessHours,
   onchainFreshnessHours,
   laggingIndicators,

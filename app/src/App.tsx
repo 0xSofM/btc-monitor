@@ -32,7 +32,6 @@ import {
   fetchRuntimeLatestData,
   fetchStaticLatestData,
   getEffectiveDataDate,
-  getDataFreshnessHours,
   getPriceFreshnessHours,
   getOnchainFreshnessHours,
   getLatestFromHistory,
@@ -346,9 +345,6 @@ function App() {
     ? effectiveDataDate
     : undefined;
 
-  const latestDataAgeHours = latestData
-    ? getDataFreshnessHours(effectiveDataDate || latestData.date)
-    : 0;
   const priceFreshnessHours = latestData
     ? getPriceFreshnessHours(latestData.indicatorDates)
     : 0;
@@ -724,7 +720,6 @@ function App() {
                     dataTimestampLabel={dataTimestampLabel}
                     dataSource={dataSource}
                     latestDataDate={latestData.date}
-                    latestDataAgeHours={latestDataAgeHours}
                     priceFreshnessHours={priceFreshnessHours}
                     onchainFreshnessHours={onchainFreshnessHours}
                     laggingIndicators={laggingIndicators}

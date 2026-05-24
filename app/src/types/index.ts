@@ -76,6 +76,7 @@ export interface IndicatorData {
   scoringModelVersion?: string;
   thresholds?: ThresholdMap;
   indicatorDates?: {
+    btcPrice?: string;
     priceMa200w?: string;
     priceRealized?: string;
     reserveRisk?: string;
@@ -162,6 +163,7 @@ export interface LatestData {
     sthSoprTrigger?: boolean;
   };
   indicatorDates?: {
+    btcPrice?: string;
     priceMa200w?: string;
     priceRealized?: string;
     reserveRisk?: string;
