@@ -15,6 +15,7 @@ import requests
 
 from .config import (
     INDICATOR_FRESHNESS_MAX_LAG_DAYS,
+    LIVE_BTC_PRICE_SOURCES,
     MAX_RETRIES,
     REQUEST_TIMEOUT,
     RESERVE_RISK_SOURCE_REGISTRY,
@@ -224,6 +225,78 @@ def fetch_metric(
             last_error = exc
 
     raise RuntimeError(f"Failed to fetch {metric_key}: {last_error}")
+
+
+# ---- Live BTC price (multi-source, near real-time) --------------------------
+
+
+def _parse_blockchain_stats_price(payload: object) -> float | None:
+    """Extract BTC price from blockchain.info/stats JSON."""
+    if not isinstance(payload, dict):
+        return None
+    return _safe_float(payload.get("market_price_usd"))
+
+
+def _parse_coinbase_spot_price(payload: object) -> float | None:
+    """Extract BTC price from Coinbase spot price JSON."""
+    if not isinstance(payload, dict):
+        return None
+    data = payload.get("data")
+    if not isinstance(data, dict):
+        return None
+    return _safe_float(data.get("amount"))
+
+
+def _parse_coingecko_simple_price(payload: object) -> float | None:
+    """Extract BTC price from CoinGecko simple/price JSON."""
+    if not isinstance(payload, dict):
+        return None
+    btc = payload.get("bitcoin")
+    if not isinstance(btc, dict):
+        return None
+    return _safe_float(btc.get("usd"))
+
+
+_LIVE_PRICE_PARSERS = {
+    "blockchain_stats": _parse_blockchain_stats_price,
+    "coinbase_spot": _parse_coinbase_spot_price,
+    "coingecko_simple": _parse_coingecko_simple_price,
+}
+
+
+def fetch_live_btc_price() -> Tuple[float, str] | None:
+    """Try multiple free real-time BTC price sources; return (price, source_name)."""
+    for source in LIVE_BTC_PRICE_SOURCES:
+        name = str(source.get("name", ""))
+        url = str(source.get("url", ""))
+        parser_key = str(source.get("parser", ""))
+        parser = _LIVE_PRICE_PARSERS.get(parser_key)
+        if not parser:
+            continue
+
+        try:
+            payload = fetch_json_payload(url)
+            price = parser(payload)
+            if price is not None and price > 0:
+                return price, name
+        except Exception:
+            continue
+
+    return None
+
+
+def compute_ma200w_from_price(price_df: pd.DataFrame) -> pd.DataFrame:
+    """Compute 200-week moving average (1400-day SMA) from BTC price history.
+
+    This eliminates dependency on BGeometrics 200W-MA chart file updates.
+    The 200W-MA is a simple 200-week * 7-day = 1400-day SMA.
+    """
+    if price_df.empty or "btc_price" not in price_df.columns:
+        return pd.DataFrame(columns=["date", "ma200w"])
+
+    df = price_df.sort_values("date").copy()
+    df["ma200w"] = df["btc_price"].rolling(window=1400, min_periods=365).mean()
+    return df[["date", "ma200w"]].dropna(subset=["ma200w"])
 
 
 # ---- Reserve Risk multi-source --------------------------------------------
@@ -717,24 +790,63 @@ def build_base_dataframe(
     selected_sources: Dict[str, str] = {}
 
     print("=" * 72)
-    print("BTC Indicators History (hybrid reserve source mode)")
+    print("BTC Indicators History (multi-source with live price)")
     print("=" * 72)
 
+    # Fetch all indicators except ma200w (we self-compute it from btc_price)
+    fetch_keys = [k for k in SERIES_CONFIG if k != "ma200w"]
     futures = {}
-    max_workers = min(6, len(SERIES_CONFIG))
+    max_workers = min(6, len(fetch_keys))
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        for key, cfg in SERIES_CONFIG.items():
+        for key in fetch_keys:
+            cfg = SERIES_CONFIG[key]
             display_name = str(cfg.get("display_name", key))
             print(f"Queue fetch: {display_name} ...")
             futures[key] = executor.submit(fetch_metric, key, cfg)
 
-        for key, cfg in SERIES_CONFIG.items():
+        for key in fetch_keys:
+            cfg = SERIES_CONFIG[key]
             display_name = str(cfg.get("display_name", key))
             print(f"Fetching {display_name} ...")
             df, selected_url = futures[key].result()
             dfs[key] = df
             selected_sources[key] = selected_url
             print(f"  Rows: {len(df):,} | Source: {selected_url}")
+
+    # Self-compute 200W-MA from BTC price history
+    if "btc_price" in dfs and not dfs["btc_price"].empty:
+        print("Computing 200W-MA from BTC price history ...")
+        ma200w_df = compute_ma200w_from_price(dfs["btc_price"])
+        dfs["ma200w"] = ma200w_df
+        selected_sources["ma200w"] = "self_computed_from_btc_price"
+        print(f"  Rows: {len(ma200w_df):,} | Source: self-computed (1400-day SMA)")
+
+    # Patch latest BTC price with live real-time source
+    live_price = fetch_live_btc_price()
+    if live_price is not None and "btc_price" in dfs and not dfs["btc_price"].empty:
+        live_value, live_source = live_price
+        btc_df = dfs["btc_price"]
+        today = pd.Timestamp.now(tz="utc").date()
+        latest_row = btc_df.iloc[-1]
+        latest_date = latest_row["date"]
+        if hasattr(latest_date, "date"):
+            latest_date = latest_date.date()
+        latest_price = latest_row["btc_price"]
+
+        if latest_price and abs(live_value - latest_price) / latest_price < 0.10:
+            if pd.to_datetime(latest_date).date() < today:
+                new_row = pd.DataFrame(
+                    [{"date": pd.to_datetime(today), "btc_price": live_value}]
+                )
+                btc_df = pd.concat([btc_df, new_row], ignore_index=True)
+                dfs["btc_price"] = btc_df.sort_values("date").reset_index(drop=True)
+                selected_sources["btc_price"] = (
+                    f"{selected_sources.get('btc_price', '?')} + live ({live_source})"
+                )
+                print(
+                    f"  Patched BTC price with live source ({live_source}): "
+                    f"${live_value:,.2f} for {today}"
+                )
 
     print("Fetching Reserve Risk ...")
     reserve_df, reserve_source_label, reserve_primary_last_date, reserve_risk_diagnostics = (

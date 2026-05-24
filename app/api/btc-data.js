@@ -11,14 +11,31 @@ const CACHE_DURATION = 300;
 const UPSTREAM_TIMEOUT_MS = 8000;
 const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
 const STATIC_HISTORY_LIGHT_PATH = '/btc_indicators_history_light.json';
+const BLOCKCHAIN_INFO_STATS_URL = 'https://api.blockchain.info/stats';
+
+async function fetchBlockchainInfoSpotPrice() {
+  const payload = await fetchJsonSafely(BLOCKCHAIN_INFO_STATS_URL, null, {
+    headers: {
+      'User-Agent': 'btc-monitor',
+    },
+  });
+
+  const price = payload?.market_price_usd;
+  if (price === undefined || price === null) {
+    return null;
+  }
+
+  return buildPoint(getTodayUtcDate(), price, 'blockchain_info');
+}
+
 const COINBASE_SPOT_URL = 'https://api.coinbase.com/v2/prices/BTC-USD/spot';
 const COINGECKO_SPOT_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd';
 const RESERVE_RISK_DISABLE_LAG_DAYS = 30;
 const SCORE_CONFIRM_RATIO = 7 / 12;
-const SCHEMA_VERSION = 'v4';
-const SCORING_MODEL_VERSION = 'v4_core6_mvrv_substitute';
+const SCHEMA_VERSION = 'v5';
+const SCORING_MODEL_VERSION = 'v5_core7_dual_confirm';
 const LEGACY_SCORING_MODEL_VERSION = 'v3_no_lookahead_replacement';
-const CORE_INDICATOR_SET = 'core6_bottom_v4_mvrv_substitute';
+const CORE_INDICATOR_SET = 'core7_bottom_v5_dual_confirm';
 
 const BGEOMETRICS_SERIES = {
   btcPrice: {
@@ -40,6 +57,10 @@ const BGEOMETRICS_SERIES = {
   lthMvrv: {
     dataKey: 'lthMvrv',
     urls: ['https://charts.bgeometrics.com/files/lth_mvrv.json'],
+  },
+  lthSopr: {
+    dataKey: 'lthSopr',
+    urls: ['https://charts.bgeometrics.com/files/lth_sopr.json'],
   },
   mvrvZscore: {
     dataKey: 'mvrvZscore',
@@ -86,6 +107,7 @@ const DEFAULT_THRESHOLDS = {
   sthMvrv: { trigger: 1, deep: 0.85 },
   puellMultiple: { trigger: 0.6, deep: 0.5 },
   lthMvrv: { trigger: 1, deep: 0.9 },
+  lthSopr: { trigger: 1, deep: 0.98 },
   mvrvZscore: { trigger: 0, deep: -0.5 },
   mvrvZscoreCore: { trigger: 0, deep: -0.5, role: 'valuation_core_v4' },
   reserveRiskV4Compatibility: { aliasOf: 'mvrvZscoreCore', deprecated: true },
@@ -97,6 +119,7 @@ const FRESHNESS_LIMITS = {
   realizedPrice: 7,
   reserveRisk: RESERVE_RISK_DISABLE_LAG_DAYS,
   lthMvrv: 7,
+  lthSopr: 7,
   mvrvZscore: 7,
   sthSopr: 7,
   sthMvrv: 7,
@@ -457,6 +480,7 @@ function buildThresholdBundle(staticLatest) {
     sthMvrv: getThresholdConfig(staticLatest, 'sthMvrv'),
     puellMultiple: getThresholdConfig(staticLatest, 'puellMultiple'),
     lthMvrv: getThresholdConfig(staticLatest, 'lthMvrv'),
+    lthSopr: getThresholdConfig(staticLatest, 'lthSopr'),
     mvrvZscore: getThresholdConfig(staticLatest, 'mvrvZscore'),
     mvrvZscoreCore: getThresholdConfig(staticLatest, 'mvrvZscoreCore'),
     reserveRiskV4Compatibility: getThresholdConfig(staticLatest, 'reserveRiskV4Compatibility'),
@@ -579,6 +603,11 @@ async function fetchCoinGeckoSpotPrice() {
 }
 
 async function fetchBackupSpotPrice() {
+  const blockchainInfo = await fetchBlockchainInfoSpotPrice();
+  if (blockchainInfo) {
+    return blockchainInfo;
+  }
+
   const coinbase = await fetchCoinbaseSpotPrice();
   if (coinbase) {
     return coinbase;
@@ -597,6 +626,7 @@ async function fetchRuntimeInputs(request) {
     reserveRiskPrimaryPoint,
     reserveRiskBackupPoint,
     lthMvrvPoint,
+    lthSoprPoint,
     mvrvZscorePoint,
     sthSoprPoint,
     sthMvrvPoint,
@@ -610,6 +640,7 @@ async function fetchRuntimeInputs(request) {
     fetchLatestFilePoint('reserveRisk'),
     fetchReserveRiskBackupPoint(),
     fetchLatestFilePoint('lthMvrv'),
+    fetchLatestFilePoint('lthSopr'),
     fetchLatestFilePoint('mvrvZscore'),
     fetchLatestFilePoint('sthSopr'),
     fetchLatestFilePoint('sthMvrv'),
@@ -630,6 +661,7 @@ async function fetchRuntimeInputs(request) {
       reserveRisk: resolvedReserveRiskPoint,
       reserveRiskPrimary: reserveRiskPrimaryPoint,
       lthMvrv: lthMvrvPoint,
+      lthSopr: lthSoprPoint,
       mvrvZscore: mvrvZscorePoint,
       sthSopr: sthSoprPoint,
       sthMvrv: sthMvrvPoint,
@@ -654,6 +686,7 @@ function buildRuntimePayload({
     realizedPrice: seriesPoints.realizedPrice ?? buildSnapshotPoint(staticLatest, 'realizedPrice', 'priceRealized', snapshotDate),
     reserveRisk: seriesPoints.reserveRisk ?? buildSnapshotPoint(staticLatest, 'reserveRisk', 'reserveRisk', snapshotDate),
     lthMvrv: seriesPoints.lthMvrv ?? buildSnapshotPoint(staticLatest, 'lthMvrv', 'lthMvrv', snapshotDate),
+    lthSopr: seriesPoints.lthSopr ?? buildSnapshotPoint(staticLatest, 'lthSopr', 'lthSopr', snapshotDate),
     mvrvZscore: seriesPoints.mvrvZscore ?? buildSnapshotPoint(staticLatest, 'mvrvZscore', 'mvrvZscore', snapshotDate),
     sthSopr: seriesPoints.sthSopr ?? buildSnapshotPoint(staticLatest, 'sthSopr', 'sthSopr', snapshotDate),
     sthMvrv: seriesPoints.sthMvrv ?? buildSnapshotPoint(staticLatest, 'sthMvrv', 'sthMvrv', snapshotDate),
@@ -670,6 +703,7 @@ function buildRuntimePayload({
   const realizedPrice = points.realizedPrice?.value ?? toNumberOrNull(staticLatest?.realizedPrice);
   const reserveRisk = points.reserveRisk?.value ?? toNumberOrNull(staticLatest?.reserveRisk);
   const lthMvrv = points.lthMvrv?.value ?? toNumberOrNull(staticLatest?.lthMvrv);
+  const lthSopr = points.lthSopr?.value ?? toNumberOrNull(staticLatest?.lthSopr);
   const mvrvZscore = points.mvrvZscore?.value ?? toNumberOrNull(staticLatest?.mvrvZscore);
   const sthSopr = points.sthSopr?.value ?? toNumberOrNull(staticLatest?.sthSopr);
   const sthMvrv = points.sthMvrv?.value ?? toNumberOrNull(staticLatest?.sthMvrv);
@@ -682,6 +716,7 @@ function buildRuntimePayload({
   const realizedPriceLagDays = daysBetween(latestDate, points.realizedPrice?.d);
   const reserveRiskLagDays = daysBetween(latestDate, points.reserveRisk?.d);
   const lthMvrvLagDays = daysBetween(latestDate, points.lthMvrv?.d);
+  const lthSoprLagDays = daysBetween(latestDate, points.lthSopr?.d);
   const mvrvZscoreLagDays = daysBetween(latestDate, points.mvrvZscore?.d);
   const sthSoprLagDays = daysBetween(latestDate, points.sthSopr?.d);
   const sthMvrvLagDays = daysBetween(latestDate, points.sthMvrv?.d);
@@ -692,6 +727,7 @@ function buildRuntimePayload({
   const realizedPriceFreshnessScore = freshnessScore(realizedPriceLagDays, FRESHNESS_LIMITS.realizedPrice);
   const reserveRiskFreshnessScore = freshnessScore(reserveRiskLagDays, FRESHNESS_LIMITS.reserveRisk);
   const lthMvrvFreshnessScore = freshnessScore(lthMvrvLagDays, FRESHNESS_LIMITS.lthMvrv);
+  const lthSoprFreshnessScore = freshnessScore(lthSoprLagDays, FRESHNESS_LIMITS.lthSopr);
   const mvrvZscoreFreshnessScore = freshnessScore(mvrvZscoreLagDays, FRESHNESS_LIMITS.mvrvZscore);
   const sthSoprFreshnessScore = freshnessScore(sthSoprLagDays, FRESHNESS_LIMITS.sthSopr);
   const sthMvrvFreshnessScore = freshnessScore(sthMvrvLagDays, FRESHNESS_LIMITS.sthMvrv);
@@ -701,6 +737,7 @@ function buildRuntimePayload({
   const realizedPriceIsFresh = isFresh(realizedPriceLagDays, FRESHNESS_LIMITS.realizedPrice);
   const reserveRiskIsFresh = isFresh(reserveRiskLagDays, FRESHNESS_LIMITS.reserveRisk);
   const lthMvrvIsFresh = isFresh(lthMvrvLagDays, FRESHNESS_LIMITS.lthMvrv);
+  const lthSoprIsFresh = isFresh(lthSoprLagDays, FRESHNESS_LIMITS.lthSopr);
   const mvrvZscoreIsFresh = isFresh(mvrvZscoreLagDays, FRESHNESS_LIMITS.mvrvZscore);
   const sthSoprIsFresh = isFresh(sthSoprLagDays, FRESHNESS_LIMITS.sthSopr);
   const sthMvrvIsFresh = isFresh(sthMvrvLagDays, FRESHNESS_LIMITS.sthMvrv);
@@ -714,6 +751,7 @@ function buildRuntimePayload({
   const scoreSthGroup = Math.max(scoreSthSopr, scoreSthMvrv);
   const scorePuell = scoreByLt(puellMultiple, thresholds.puellMultiple.trigger, thresholds.puellMultiple.deep);
   const scoreLthMvrv = scoreByLt(lthMvrv, thresholds.lthMvrv.trigger, thresholds.lthMvrv.deep);
+  const scoreLthSopr = scoreByLt(lthSopr, thresholds.lthSopr.trigger, thresholds.lthSopr.deep);
   const scoreMvrvZscore = scoreByLt(mvrvZscore, thresholds.mvrvZscore.trigger, thresholds.mvrvZscore.deep);
   const mvrvZscoreCoreActive = Boolean(points.mvrvZscore?.d && mvrvZscoreIsFresh);
   const scoreMvrvZscoreCore = mvrvZscoreCoreActive ? scoreMvrvZscore : 0;
@@ -760,6 +798,7 @@ function buildRuntimePayload({
   const signalMvrvZscoreCore = scoreMvrvZscoreCore > 0;
   const signalReserveRiskV4 = signalMvrvZscoreCore;
   const signalLthMvrv = scoreLthMvrv > 0;
+  const signalLthSopr = scoreLthSopr > 0;
   const signalSthSoprAux = scoreSthSopr > 0;
 
   const inactiveIndicatorCount = reserveDimensionActive ? 0 : 1;
@@ -776,10 +815,10 @@ function buildRuntimePayload({
 
   const valuationScore = scorePriceMa200w + scorePriceRealized + scoreMvrvZscoreCore + scorePuell;
   const maxValuationScore = 6 + maxReserveRiskScoreV4;
-  const triggerScore = scoreSthMvrv;
+  const triggerScore = Math.max(scoreSthMvrv, scoreSthSopr);
   const maxTriggerScore = 2;
-  const confirmationScore = scoreLthMvrv;
-  const maxConfirmationScore = 2;
+  const confirmationScore = scoreLthMvrv + scoreLthSopr;
+  const maxConfirmationScore = 4;
   const auxiliaryScore = scoreSthSopr;
   const maxAuxiliaryScore = 2;
   const activeIndicatorCountV4 = 5 + (mvrvZscoreCoreActive ? 1 : 0);
@@ -789,6 +828,7 @@ function buildRuntimePayload({
     signalReserveRiskV4,
     signalSthMvrv,
     signalLthMvrv,
+    signalLthSopr,
     signalPuell,
   ].filter(Boolean).length;
   const maxTotalScoreV4 = maxValuationScore + maxTriggerScore + maxConfirmationScore;
@@ -813,9 +853,10 @@ function buildRuntimePayload({
       + ma200wFreshnessScore
       + sthMvrvFreshnessScore
       + lthMvrvFreshnessScore
+      + lthSoprFreshnessScore
       + puellFreshnessScore
       + reserveEffectiveFreshness
-    ) / 7,
+    ) / 8,
     6,
   );
   const baseScoreRatio = maxTotalScoreV4 > 0 ? totalScoreV4 / maxTotalScoreV4 : 0;
@@ -841,6 +882,7 @@ function buildRuntimePayload({
     priceRealized: realizedPriceLagDays,
     reserveRisk: reserveRiskLagDays,
     lthMvrv: lthMvrvLagDays,
+    lthSopr: lthSoprLagDays,
     mvrvZscore: mvrvZscoreLagDays,
     sthSopr: sthSoprLagDays,
     sthMvrv: sthMvrvLagDays,
@@ -851,6 +893,7 @@ function buildRuntimePayload({
     priceRealized: points.realizedPrice?.d ?? latestDate,
     reserveRisk: points.reserveRisk?.d ?? latestDate,
     lthMvrv: points.lthMvrv?.d ?? latestDate,
+    lthSopr: points.lthSopr?.d ?? latestDate,
     mvrvZscore: points.mvrvZscore?.d ?? latestDate,
     sthSopr: points.sthSopr?.d ?? latestDate,
     sthMvrv: points.sthMvrv?.d ?? latestDate,
@@ -864,6 +907,7 @@ function buildRuntimePayload({
   if (!sthSoprIsFresh) staleIndicatorKeys.push('sthSopr');
   if (!sthMvrvIsFresh) staleIndicatorKeys.push('sthMvrv');
   if (!lthMvrvIsFresh) staleIndicatorKeys.push('lthMvrv');
+  if (!lthSoprIsFresh) staleIndicatorKeys.push('lthSopr');
   if (!puellIsFresh) staleIndicatorKeys.push('puell');
   if (!mvrvZscoreCoreActive) staleIndicatorKeys.push('mvrvZscore');
 
@@ -873,6 +917,7 @@ function buildRuntimePayload({
       priceRealized: FRESHNESS_LIMITS.realizedPrice,
       reserveRisk: RESERVE_RISK_DISABLE_LAG_DAYS,
       lthMvrv: FRESHNESS_LIMITS.lthMvrv,
+      lthSopr: FRESHNESS_LIMITS.lthSopr,
       mvrvZscore: FRESHNESS_LIMITS.mvrvZscore,
       sthSopr: FRESHNESS_LIMITS.sthSopr,
       sthMvrv: FRESHNESS_LIMITS.sthMvrv,
@@ -922,6 +967,7 @@ function buildRuntimePayload({
     priceRealizedRatio,
     reserveRisk: reserveRisk ?? 0,
     lthMvrv,
+    lthSopr,
     mvrvZscore,
     sthSopr: sthSopr ?? 0,
     sthMvrv: sthMvrv ?? 0,
@@ -962,11 +1008,13 @@ function buildRuntimePayload({
     scoreReserveRiskPrimary,
     scoreReserveRiskReplacement,
     scoreLthMvrv,
+    scoreLthSopr,
     scoreMvrvZscore,
     scoreMvrvZscoreCore,
     scoreSthGroup,
     signalSthGroup,
     signalMvrvZscoreCore,
+    signalLthSopr,
     scoringModelVersion: asString(staticLatest?.scoringModelVersion) ?? SCORING_MODEL_VERSION,
     legacyScoringModelVersion: asString(staticLatest?.legacyScoringModelVersion) ?? LEGACY_SCORING_MODEL_VERSION,
     reserveRiskActive,
@@ -998,8 +1046,9 @@ function buildRuntimePayload({
       mvrvZscore: signalMvrvZscoreCore,
       sthMvrv: signalSthMvrv,
       lthMvrv: signalLthMvrv,
+      lthSopr: signalLthSopr,
       puell: signalPuell,
-      sthSoprAux: signalSthSoprAux,
+      sthSoprTrigger: signalSthSoprAux,
     },
     indicatorDates: {
       ...indicatorDates,

@@ -41,6 +41,7 @@ const CORE_INDICATOR_DATE_KEYS = [
   'mvrvZscore',
   'lthMvrv',
   'lthSopr',
+  'sthSopr',
   'sthMvrv',
   'puell',
 ] as const;

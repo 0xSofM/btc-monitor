@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-05-13T09:18:03.179811+00:00",
-  "latestDate": "2026-05-12",
-  "lastUpdated": "2026-05-13T09:18:03.120664+00:00",
-  "historyRows": 5460,
+  "generatedAt": "2026-05-24T05:13:18.377432+00:00",
+  "latestDate": "2026-05-24",
+  "lastUpdated": "2026-05-24T05:13:18.313689+00:00",
+  "historyRows": 5472,
   "historyLightRows": 2921,
-  "signalEventsV4Rows": 18,
+  "signalEventsV4Rows": 19,
   "schemaVersion": "v5",
   "indicatorSet": "core7_bottom_v5_dual_confirm",
   "scoringModelVersion": "v5_core7_dual_confirm",
@@ -21,8 +21,8 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.99355475215,
-      "deep": 0.984632969289,
+      "trigger": 0.993758691903,
+      "deep": 0.985320715792,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -30,8 +30,8 @@
       "deepQuantile": 0.135
     },
     "sthMvrv": {
-      "trigger": 0.916,
-      "deep": 0.849895,
+      "trigger": 0.91993,
+      "deep": 0.856,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,

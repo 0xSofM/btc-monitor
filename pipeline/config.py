@@ -6,14 +6,23 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
     "btc_price": {
         "display_name": "BTC Price",
         "url": "https://charts.bgeometrics.com/files/moving_average_price.json",
+        "live_urls": [
+            "https://api.blockchain.info/stats",
+            "https://api.coinbase.com/v2/prices/BTC-USD/spot",
+            "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd",
+        ],
     },
     "ma200w": {
         "display_name": "200-Week MA",
         "url": "https://charts.bgeometrics.com/files/200wma.json",
+        "compute_from": "btc_price",
     },
     "realized_price": {
         "display_name": "Realized Price",
         "url": "https://charts.bgeometrics.com/files/realized_price.json",
+        "fallback_urls": [
+            "https://charts.bgeometrics.com/files/realized_price_mvrv.json",
+        ],
     },
     "lth_mvrv": {
         "display_name": "LTH-MVRV",
@@ -22,6 +31,9 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
     "mvrv_zscore": {
         "display_name": "MVRV Z-Score",
         "url": "https://charts.bgeometrics.com/files/mvrv_zscore_data.json",
+        "fallback_urls": [
+            "https://charts.bgeometrics.com/files/mvrv_zscore.json",
+        ],
     },
     "sth_sopr": {
         "display_name": "STH-SOPR",
@@ -43,6 +55,25 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
         ],
     },
 }
+
+# Real-time BTC price sources, tried in order. Each entry maps to a parser.
+LIVE_BTC_PRICE_SOURCES: List[Dict[str, object]] = [
+    {
+        "name": "blockchain_info_stats",
+        "url": "https://api.blockchain.info/stats",
+        "parser": "blockchain_stats",
+    },
+    {
+        "name": "coinbase_spot",
+        "url": "https://api.coinbase.com/v2/prices/BTC-USD/spot",
+        "parser": "coinbase_spot",
+    },
+    {
+        "name": "coingecko_simple",
+        "url": "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd",
+        "parser": "coingecko_simple",
+    },
+]
 
 REQUEST_TIMEOUT = 45
 MAX_RETRIES = 4

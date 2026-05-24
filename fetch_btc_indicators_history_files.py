@@ -408,6 +408,8 @@ def build_latest_json(
         "priceMa200wRatio": _safe_float(last.get("price_200w_ma_ratio")),
         "priceRealizedRatio": _safe_float(last.get("price_realized_ratio")),
         "reserveRisk": _safe_float(last.get("reserve_risk")),
+        "mvrvZscore": _safe_float(last.get("mvrv_zscore")),
+        "lthMvrv": _safe_float(last.get("lth_mvrv")),
         "sthSopr": _safe_float(last.get("sth_sopr")),
         "lthSopr": _safe_float(last.get("lth_sopr")),
         "sthMvrv": _safe_float(last.get("sth_mvrv")),
@@ -459,6 +461,7 @@ def build_latest_json(
         "scoreMvrvZscoreCore": int(
             last.get("score_mvrv_zscore_core") or 0
         ),
+        "scoreLthMvrv": int(last.get("score_lth_mvrv") or 0),
         "scoreLthSopr": int(last.get("score_lth_sopr") or 0),
         "scoreSthSopr": int(last.get("score_sth_sopr") or 0),
         "scoreSthMvrv": int(last.get("score_sth_mvrv") or 0),

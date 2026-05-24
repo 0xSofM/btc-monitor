@@ -65,6 +65,7 @@ export function hasCore7Coverage(rows: IndicatorData[]): boolean {
     'mvrvZscore',
     'lthMvrv',
     'lthSopr',
+    'sthSopr',
     'sthMvrv',
     'puellMultiple',
   ];
