@@ -33,6 +33,8 @@ import {
   fetchStaticLatestData,
   getEffectiveDataDate,
   getDataFreshnessHours,
+  getPriceFreshnessHours,
+  getOnchainFreshnessHours,
   getLatestFromHistory,
   hasCore7Coverage,
 } from '@/services/dataService';
@@ -346,6 +348,12 @@ function App() {
 
   const latestDataAgeHours = latestData
     ? getDataFreshnessHours(effectiveDataDate || latestData.date)
+    : 0;
+  const priceFreshnessHours = latestData
+    ? getPriceFreshnessHours(latestData.indicatorDates)
+    : 0;
+  const onchainFreshnessHours = latestData
+    ? getOnchainFreshnessHours(latestData.date, latestData.indicatorDates)
     : 0;
   const signalScoreV2 = latestData?.signalScoreV2 ?? 0;
   const maxSignalScoreV2 = latestData?.maxSignalScoreV2 ?? 10;
@@ -717,6 +725,8 @@ function App() {
                     dataSource={dataSource}
                     latestDataDate={latestData.date}
                     latestDataAgeHours={latestDataAgeHours}
+                    priceFreshnessHours={priceFreshnessHours}
+                    onchainFreshnessHours={onchainFreshnessHours}
                     laggingIndicators={laggingIndicators}
                     oldestIndicatorDate={oldestIndicatorDate}
                   />
@@ -738,11 +748,12 @@ function App() {
                   )}
 
                   {laggingIndicators.length > 0 && (
-                    <Alert className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950">
-                      <Clock3 className="h-4 w-4 text-amber-600" />
-                      <AlertTitle className="text-amber-800 dark:text-amber-200">检测到指标延迟</AlertTitle>
-                      <AlertDescription className="text-amber-700 dark:text-amber-300">
-                        最新记录日期为 {latestData.date}。存在延迟的指标：{laggingIndicators.join('、')}（最早更新时间 {oldestIndicatorDate}）。
+                    <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
+                      <Clock3 className="h-4 w-4 text-blue-600" />
+                      <AlertTitle className="text-blue-800 dark:text-blue-200">链上数据说明</AlertTitle>
+                      <AlertDescription className="text-blue-700 dark:text-blue-300">
+                        BTC 价格为实时获取（blockchain.info）；链上指标通过 BGeometrics 免费数据源更新，通常有 1-3 天延迟，属正常现象。
+                        {oldestIndicatorDate && <>最早链上指标更新于 {oldestIndicatorDate}。</>}
                       </AlertDescription>
                     </Alert>
                   )}

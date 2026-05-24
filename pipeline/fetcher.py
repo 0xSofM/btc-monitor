@@ -813,15 +813,8 @@ def build_base_dataframe(
             selected_sources[key] = selected_url
             print(f"  Rows: {len(df):,} | Source: {selected_url}")
 
-    # Self-compute 200W-MA from BTC price history
-    if "btc_price" in dfs and not dfs["btc_price"].empty:
-        print("Computing 200W-MA from BTC price history ...")
-        ma200w_df = compute_ma200w_from_price(dfs["btc_price"])
-        dfs["ma200w"] = ma200w_df
-        selected_sources["ma200w"] = "self_computed_from_btc_price"
-        print(f"  Rows: {len(ma200w_df):,} | Source: self-computed (1400-day SMA)")
-
-    # Patch latest BTC price with live real-time source
+    # Patch latest BTC price with live real-time source FIRST,
+    # so MA200W computation includes the freshest price data.
     live_price = fetch_live_btc_price()
     if live_price is not None and "btc_price" in dfs and not dfs["btc_price"].empty:
         live_value, live_source = live_price
@@ -847,6 +840,14 @@ def build_base_dataframe(
                     f"  Patched BTC price with live source ({live_source}): "
                     f"${live_value:,.2f} for {today}"
                 )
+
+    # Self-compute 200W-MA from (possibly live-patched) BTC price history
+    if "btc_price" in dfs and not dfs["btc_price"].empty:
+        print("Computing 200W-MA from BTC price history ...")
+        ma200w_df = compute_ma200w_from_price(dfs["btc_price"])
+        dfs["ma200w"] = ma200w_df
+        selected_sources["ma200w"] = "self_computed_from_btc_price"
+        print(f"  Rows: {len(ma200w_df):,} | Source: self-computed (1400-day SMA)")
 
     print("Fetching Reserve Risk ...")
     reserve_df, reserve_source_label, reserve_primary_last_date, reserve_risk_diagnostics = (

@@ -26,6 +26,8 @@ interface SignalOverviewProps {
   dataSource: 'api' | 'static' | 'history';
   latestDataDate: string;
   latestDataAgeHours: number;
+  priceFreshnessHours: number;
+  onchainFreshnessHours: number;
   laggingIndicators: string[];
   oldestIndicatorDate?: string;
 }
@@ -158,6 +160,8 @@ export function SignalOverview({
   dataSource,
   latestDataDate,
   latestDataAgeHours,
+  priceFreshnessHours,
+  onchainFreshnessHours,
   laggingIndicators,
   oldestIndicatorDate,
 }: SignalOverviewProps) {
@@ -166,7 +170,8 @@ export function SignalOverview({
   const thresholds = resolveScoreThresholds(effectiveMaxScore);
   const status = getSignalStatus(effectiveScore, signalCount, effectiveMaxScore);
   const sourceBadge = getSourceBadge(dataSource);
-  const freshnessBadge = getFreshnessBadge(latestDataAgeHours);
+  const priceFreshnessBadge = getFreshnessBadge(priceFreshnessHours);
+  const onchainFreshnessBadge = getFreshnessBadge(onchainFreshnessHours);
   const hasLaggingIndicators = laggingIndicators.length > 0;
   const scoreProgress = Math.max(0, Math.min(100, (effectiveScore / Math.max(1, effectiveMaxScore)) * 100));
   const confidencePercent = signalConfidence === undefined ? null : Math.round(signalConfidence * 100);
@@ -190,9 +195,13 @@ export function SignalOverview({
               <Database className="mr-1 h-3 w-3" />
               {sourceBadge.label}
             </Badge>
-            <Badge variant="outline" className={freshnessBadge.className}>
+            <Badge variant="outline" className={priceFreshnessBadge.className}>
               <Clock3 className="mr-1 h-3 w-3" />
-              {freshnessBadge.label}
+              价格：{priceFreshnessBadge.label}
+            </Badge>
+            <Badge variant="outline" className={onchainFreshnessBadge.className}>
+              <Clock3 className="mr-1 h-3 w-3" />
+              链上：{onchainFreshnessBadge.label}
             </Badge>
             <Badge variant="outline" className="text-xs">
               快照更新：{dataTimestampLabel}

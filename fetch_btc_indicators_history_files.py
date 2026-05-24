@@ -405,6 +405,8 @@ def build_latest_json(
     latest_payload: Dict[str, object] = {
         "date": _safe_iso_date(last.get("date")) or "",
         "btcPrice": _safe_float(last.get("btc_price")),
+        "ma200w": _safe_float(last.get("ma200w")),
+        "realizedPrice": _safe_float(last.get("realized_price")),
         "priceMa200wRatio": _safe_float(last.get("price_200w_ma_ratio")),
         "priceRealizedRatio": _safe_float(last.get("price_realized_ratio")),
         "reserveRisk": _safe_float(last.get("reserve_risk")),
