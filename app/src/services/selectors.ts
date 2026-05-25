@@ -602,9 +602,8 @@ export function getDataFreshnessHours(value: string): number {
   return Number((diffMs / (1000 * 60 * 60)).toFixed(1));
 }
 
-/** On-chain indicator keys — exclude btcPrice (which is near-real-time). */
+/** On-chain indicator keys — exclude btcPrice and priceMa200w (price-based). */
 const ONCHAIN_INDICATOR_DATE_KEYS = [
-  'priceMa200w',
   'priceRealized',
   'mvrvZscore',
   'lthMvrv',
