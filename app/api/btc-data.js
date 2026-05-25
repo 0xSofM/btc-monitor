@@ -884,6 +884,7 @@ function buildRuntimePayload({
       : (points.lthMvrv?.d ?? latestDate))
     : (points.reserveRisk?.d ?? latestDate);
   const indicatorLagDays = {
+    btcPrice: 0,
     priceMa200w: ma200wLagDays,
     priceRealized: realizedPriceLagDays,
     reserveRisk: reserveRiskLagDays,
@@ -895,6 +896,7 @@ function buildRuntimePayload({
     puell: puellLagDays,
   };
   const indicatorDates = {
+    btcPrice: getTodayUtcDate(),
     priceMa200w: points.btcPrice?.d ?? latestDate,
     priceRealized: points.realizedPrice?.d ?? latestDate,
     reserveRisk: points.reserveRisk?.d ?? latestDate,
