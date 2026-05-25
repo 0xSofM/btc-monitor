@@ -235,19 +235,21 @@ function App() {
     setError(null);
 
     try {
-      if (mode === 'manual') {
-        const runtimeData = await fetchRuntimeLatestData();
-        if (runtimeData) {
-          applyLatestData(runtimeData, 'api');
+      // Always try runtime first (Edge Function fetches live BGeometrics data).
+      // Falls back to static JSON silently on failure.
+      const runtimeData = await fetchRuntimeLatestData();
+      if (runtimeData) {
+        applyLatestData(runtimeData, 'api');
 
+        if (mode === 'manual') {
           const score = runtimeData.totalScoreV4 ?? runtimeData.signalScoreV2 ?? 0;
           const maxScore = runtimeData.maxTotalScoreV4 ?? runtimeData.maxSignalScoreV2 ?? 10;
           toast.success(`V5 运行时已刷新：${score}/${maxScore}`, {
             description: `BTC 价格：$${runtimeData.btcPrice.toLocaleString()}`,
             duration: 6000,
           });
-          return;
         }
+        return;
       }
 
       const staticData = await fetchStaticLatestData({
@@ -258,10 +260,7 @@ function App() {
         applyLatestData(staticData, 'static');
 
         if (mode === 'manual') {
-          const score = staticData.totalScoreV4 ?? staticData.signalScoreV2 ?? 0;
-          const maxScore = staticData.maxTotalScoreV4 ?? staticData.maxSignalScoreV2 ?? 10;
-          const scoreLabel = staticData.totalScoreV4 !== undefined ? '运行时不可用，已回退到 V5 快照' : '运行时不可用，已回退到静态快照';
-          toast.info(`${scoreLabel}：${score}/${maxScore}`, {
+          toast.info('运行时不可用，已回退到 V5 静态快照', {
             description: `BTC 价格：$${staticData.btcPrice.toLocaleString()}`,
             duration: 6000,
           });
