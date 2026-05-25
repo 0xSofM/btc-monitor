@@ -113,7 +113,7 @@ function normalizeIndicatorDates(
   const payload = normalizeApiDatePayload(value);
 
   return {
-    btcPrice: payload?.btcPrice ?? fallbackDate,
+    btcPrice: payload?.btcPrice,
     priceMa200w: payload?.priceMa200w ?? payload?.price_ma200w ?? fallbackDate,
     priceRealized: payload?.priceRealized ?? payload?.price_realized ?? fallbackDate,
     reserveRisk: payload?.reserveRisk ?? payload?.reserve_risk ?? fallbackDate,
