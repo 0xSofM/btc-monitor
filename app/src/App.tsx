@@ -357,7 +357,10 @@ function App() {
   const totalScoreV4 = latestData?.totalScoreV4;
   const maxTotalScoreV4 = latestData?.maxTotalScoreV4 ?? 14;
   const signalCountDisplay = latestData?.signalCountV4 ?? latestData?.signalCount ?? 0;
+  // Core-7 model always evaluates 7 indicators. activeIndicatorCountV4 can be
+  // 6 when MVRV Z-Score is inactive, but signalCountV4 still counts all 7.
   const activeIndicatorCount = latestData?.activeIndicatorCountV4 ?? latestData?.activeIndicatorCount ?? 7;
+  const totalCoreIndicators = 7;
   const effectiveScore = totalScoreV4 ?? signalScoreV2;
   const effectiveMaxScore = totalScoreV4 !== undefined ? maxTotalScoreV4 : maxSignalScoreV2;
   const effectiveSignalBand = formatSignalBand(
@@ -386,7 +389,7 @@ function App() {
       },
       {
         label: '核心触发',
-        value: `${signalCountDisplay}/${activeIndicatorCount}`,
+        value: `${signalCountDisplay}/${totalCoreIndicators}`,
         note: isSignalConfirmed ? '已确认3日' : '等待确认',
         icon: isSignalConfirmed ? CheckCircle2 : AlertTriangle,
       },
@@ -703,7 +706,7 @@ function App() {
                   <SignalOverview
                     btcPrice={latestData.btcPrice}
                     signalCount={signalCountDisplay}
-                    totalIndicators={activeIndicatorCount}
+                    totalIndicators={totalCoreIndicators}
                     signalScoreV2={latestData.signalScoreV2}
                     maxSignalScoreV2={maxSignalScoreV2}
                     totalScoreV4={latestData.totalScoreV4}
