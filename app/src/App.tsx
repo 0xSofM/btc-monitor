@@ -35,7 +35,7 @@ import {
   getPriceFreshnessHours,
   getOnchainFreshnessHours,
   getLatestFromHistory,
-  hasCore7Coverage,
+  hasCore8Coverage,
 } from '@/services/dataService';
 
 import './App.css';
@@ -216,7 +216,7 @@ function App() {
     setIsFullHistoryLoading(true);
     try {
       const fullHistory = await fetchFullHistoricalData();
-      if (fullHistory.length > 0 && hasCore7Coverage(fullHistory)) {
+      if (fullHistory.length > 0 && hasCore8Coverage(fullHistory)) {
         setHistoricalData(fullHistory);
         setIsFullHistoryLoaded(true);
       } else {

@@ -423,6 +423,7 @@ def enrich_for_frontend(
     df["signal_lth_mvrv"] = df["score_lth_mvrv"] > 0
     df["signal_lth_sopr"] = df["score_lth_sopr"] > 0
     df["signal_sth_sopr_trigger"] = df["score_sth_sopr"] > 0
+    df["signal_sth_sopr_aux"] = df["score_sth_sopr"] > 0
     df["valuation_score"] = (
         df["score_price_ma200w"]
         + df["score_price_realized"]

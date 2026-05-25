@@ -55,7 +55,7 @@ const cache: CacheState = {
   manifestTimestamp: 0,
 };
 
-export function hasCore7Coverage(rows: IndicatorData[]): boolean {
+export function hasCore8Coverage(rows: IndicatorData[]): boolean {
   if (!rows.length) {
     return false;
   }
@@ -168,7 +168,7 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
     if (mode === 'full') {
       console.warn(`[DataService] Full history source failed (${primaryPath}).`, primaryError);
       const localHistory = readLocalData();
-      if (localHistory.length > 0 && hasCore7Coverage(localHistory)) {
+      if (localHistory.length > 0 && hasCore8Coverage(localHistory)) {
         cache.historyFull = localHistory;
         return localHistory;
       }

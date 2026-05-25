@@ -50,16 +50,6 @@ function toNumericPrice(value: number | string | undefined): number {
   return toFiniteNumber(value, 0);
 }
 
-function getApiDataDateFromRow(row: IndicatorData): Record<string, unknown> | null {
-  const record = row as unknown as Record<string, unknown>;
-  const payload = record.api_data_date ?? record.apiDataDate;
-  if (!payload || typeof payload !== 'object') {
-    return null;
-  }
-
-  return payload as Record<string, unknown>;
-}
-
 function getThresholdRange(
   thresholds: LatestData['thresholds'] | IndicatorData['thresholds'],
   key: string,
@@ -96,71 +86,7 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
     };
   }
 
-  const fromPayload = latest.indicatorDates;
-  if (fromPayload) {
-    return {
-      priceMa200w: fromPayload.priceMa200w ?? latest.d,
-      priceRealized: fromPayload.priceRealized,
-      reserveRisk: fromPayload.reserveRisk,
-      lthMvrv: fromPayload.lthMvrv,
-      lthSopr: fromPayload.lthSopr,
-      mvrvZscore: fromPayload.mvrvZscore,
-      sthSopr: fromPayload.sthSopr,
-      sthMvrv: fromPayload.sthMvrv,
-      puell: fromPayload.puell,
-    };
-  }
-
-  const fromApiDataDate = getApiDataDateFromRow(latest);
-  if (fromApiDataDate) {
-    return {
-      priceMa200w: String(fromApiDataDate.priceMa200w ?? fromApiDataDate.price_ma200w ?? latest.d),
-      priceRealized:
-        typeof fromApiDataDate.priceRealized === 'string'
-          ? fromApiDataDate.priceRealized
-          : typeof fromApiDataDate.price_realized === 'string'
-            ? fromApiDataDate.price_realized
-            : undefined,
-      reserveRisk:
-        typeof fromApiDataDate.reserveRisk === 'string'
-          ? fromApiDataDate.reserveRisk
-          : typeof fromApiDataDate.reserve_risk === 'string'
-            ? fromApiDataDate.reserve_risk
-            : undefined,
-      lthMvrv:
-        typeof fromApiDataDate.lthMvrv === 'string'
-          ? fromApiDataDate.lthMvrv
-          : typeof fromApiDataDate.lth_mvrv === 'string'
-            ? fromApiDataDate.lth_mvrv
-            : undefined,
-      lthSopr:
-        typeof fromApiDataDate.lthSopr === 'string'
-          ? fromApiDataDate.lthSopr
-          : typeof fromApiDataDate.lth_sopr === 'string'
-            ? fromApiDataDate.lth_sopr
-            : undefined,
-      mvrvZscore:
-        typeof fromApiDataDate.mvrvZscore === 'string'
-          ? fromApiDataDate.mvrvZscore
-          : typeof fromApiDataDate.mvrv_zscore === 'string'
-            ? fromApiDataDate.mvrv_zscore
-            : undefined,
-      sthSopr:
-        typeof fromApiDataDate.sthSopr === 'string'
-          ? fromApiDataDate.sthSopr
-          : typeof fromApiDataDate.sth_sopr === 'string'
-            ? fromApiDataDate.sth_sopr
-            : undefined,
-      sthMvrv:
-        typeof fromApiDataDate.sthMvrv === 'string'
-          ? fromApiDataDate.sthMvrv
-          : typeof fromApiDataDate.sth_mvrv === 'string'
-            ? fromApiDataDate.sth_mvrv
-            : undefined,
-      puell: typeof fromApiDataDate.puell === 'string' ? fromApiDataDate.puell : undefined,
-    };
-  }
-
+  // Start with backward scan to find dates from data presence.
   const dates: NonNullable<LatestData['indicatorDates']> = {
     priceMa200w: latest.d,
     priceRealized: undefined,
@@ -209,6 +135,21 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
     }
   }
 
+  // Overlay explicit indicatorDates from payload — they take priority
+  // over backward-scan dates.
+  const fromPayload = latest.indicatorDates;
+  if (fromPayload) {
+    if (fromPayload.priceMa200w) dates.priceMa200w = fromPayload.priceMa200w;
+    if (fromPayload.priceRealized) dates.priceRealized = fromPayload.priceRealized;
+    if (fromPayload.reserveRisk) dates.reserveRisk = fromPayload.reserveRisk;
+    if (fromPayload.lthMvrv) dates.lthMvrv = fromPayload.lthMvrv;
+    if (fromPayload.lthSopr) dates.lthSopr = fromPayload.lthSopr;
+    if (fromPayload.mvrvZscore) dates.mvrvZscore = fromPayload.mvrvZscore;
+    if (fromPayload.sthSopr) dates.sthSopr = fromPayload.sthSopr;
+    if (fromPayload.sthMvrv) dates.sthMvrv = fromPayload.sthMvrv;
+    if (fromPayload.puell) dates.puell = fromPayload.puell;
+  }
+
   return dates;
 }
 
@@ -228,6 +169,7 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   const sthMvrv = toFiniteNumber(latest.sthMvrv, 0);
   const puellMultiple = toFiniteNumber(latest.puellMultiple, 0);
   const lthMvrv = toFiniteNumber(latest.lthMvrv, 0);
+  const lthSoprValue = toFiniteNumber(latest.lthSopr, 0);
   const priceMa200wThreshold = getThresholdRange(
     latest.thresholds,
     'priceMa200wRatio',
@@ -332,6 +274,7 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     reserveRisk,
     mvrvZscore,
     lthMvrv,
+    lthSopr: lthSoprValue,
     sthSopr,
     sthMvrv,
     puellMultiple,

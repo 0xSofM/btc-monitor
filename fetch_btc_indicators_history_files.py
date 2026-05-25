@@ -143,7 +143,7 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "signalLthMvrv": bool(getattr(row, "signal_lth_mvrv")),
                 "signalLthSopr": bool(getattr(row, "signal_lth_sopr")),
                 "signalSthSoprTrigger": bool(getattr(row, "signal_sth_sopr_trigger")),
-                "signalSthSoprAux": bool(getattr(row, "signal_sth_sopr_trigger")),
+                "signalSthSoprAux": bool(getattr(row, "signal_sth_sopr_aux")),
                 "signalPuell": bool(getattr(row, "signal_puell")),
                 "signalCount": int(getattr(row, "signal_count")),
                 "activeIndicatorCount": int(getattr(row, "active_indicator_count")),
@@ -402,8 +402,16 @@ def build_latest_json(
         if date_val:
             indicator_dates[label] = date_val
 
+    latest_date_value = _safe_iso_date(last.get("date")) or ""
+    if latest_date_value:
+        ts = datetime.strptime(latest_date_value, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        unix_ts = int(ts.timestamp())
+    else:
+        unix_ts = None
+
     latest_payload: Dict[str, object] = {
-        "date": _safe_iso_date(last.get("date")) or "",
+        "date": latest_date_value,
+        "unixTs": unix_ts,
         "btcPrice": _safe_float(last.get("btc_price")),
         "ma200w": _safe_float(last.get("ma200w")),
         "realizedPrice": _safe_float(last.get("realized_price")),
@@ -460,6 +468,7 @@ def build_latest_json(
             last.get("score_reserve_risk_replacement") or 0
         ),
         "scoreReserveRiskV4": int(last.get("score_reserve_risk_v4") or 0),
+        "scoreMvrvZscore": int(last.get("score_mvrv_zscore") or 0),
         "scoreMvrvZscoreCore": int(
             last.get("score_mvrv_zscore_core") or 0
         ),
@@ -490,7 +499,7 @@ def build_latest_json(
             last.get("signal_sth_sopr_trigger") or False
         ),
         "signalSthSoprAux": bool(
-            last.get("signal_sth_sopr_trigger") or False
+            last.get("signal_sth_sopr_aux") or False
         ),
         "reserveRiskActive": bool(last.get("reserve_risk_active") or False),
         "reserveRiskDimensionsActive": bool(

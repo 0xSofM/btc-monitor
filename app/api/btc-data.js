@@ -826,7 +826,7 @@ function buildRuntimePayload({
   const maxConfirmationScore = 4;
   const auxiliaryScore = scoreSthSopr;
   const maxAuxiliaryScore = 2;
-  const activeIndicatorCountV4 = 5 + (mvrvZscoreCoreActive ? 1 : 0);
+  const activeIndicatorCountV4 = 6 + (mvrvZscoreCoreActive ? 1 : 0);
   const signalCountV4 = [
     signalPriceMa200w,
     signalPriceRealized,
@@ -865,12 +865,13 @@ function buildRuntimePayload({
     6,
   );
   const baseScoreRatio = maxTotalScoreV4 > 0 ? totalScoreV4 / maxTotalScoreV4 : 0;
-  const auxiliaryBonus = signalSthSoprAux ? 0.1 : 0;
+  const auxiliaryBonus = signalSthSoprAux ? 0.05 : 0;
   const confirmationBonus = signalConfirmed3dV4 ? 0.1 : 0;
+  const lthSoprBonus = signalLthSopr ? 0.05 : 0;
   const fallbackPenalty = mvrvZscoreCoreActive ? 0 : 0.2;
   const signalConfidence = round(
     clamp(
-      (0.5 * baseScoreRatio) + (0.3 * dataFreshnessScore) + auxiliaryBonus + confirmationBonus - fallbackPenalty,
+      (0.5 * baseScoreRatio) + (0.3 * dataFreshnessScore) + auxiliaryBonus + confirmationBonus + lthSoprBonus - fallbackPenalty,
       0,
       1,
     ),

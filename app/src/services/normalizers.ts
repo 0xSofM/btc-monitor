@@ -85,6 +85,7 @@ function normalizeApiDatePayload(value: unknown): ApiDatePayload | undefined {
   }
 
   return {
+    btcPrice: asString(payload.btcPrice),
     priceMa200w: asString(payload.priceMa200w),
     price_ma200w: asString(payload.price_ma200w),
     priceRealized: asString(payload.priceRealized),
@@ -93,6 +94,8 @@ function normalizeApiDatePayload(value: unknown): ApiDatePayload | undefined {
     reserve_risk: asString(payload.reserve_risk),
     lthMvrv: asString(payload.lthMvrv),
     lth_mvrv: asString(payload.lth_mvrv),
+    lthSopr: asString(payload.lthSopr),
+    lth_sopr: asString(payload.lth_sopr),
     mvrvZscore: asString(payload.mvrvZscore),
     mvrv_zscore: asString(payload.mvrv_zscore),
     sthSopr: asString(payload.sthSopr),
@@ -110,10 +113,12 @@ function normalizeIndicatorDates(
   const payload = normalizeApiDatePayload(value);
 
   return {
+    btcPrice: payload?.btcPrice ?? fallbackDate,
     priceMa200w: payload?.priceMa200w ?? payload?.price_ma200w ?? fallbackDate,
     priceRealized: payload?.priceRealized ?? payload?.price_realized ?? fallbackDate,
     reserveRisk: payload?.reserveRisk ?? payload?.reserve_risk ?? fallbackDate,
     lthMvrv: payload?.lthMvrv ?? payload?.lth_mvrv ?? fallbackDate,
+    lthSopr: payload?.lthSopr ?? payload?.lth_sopr ?? fallbackDate,
     mvrvZscore: payload?.mvrvZscore ?? payload?.mvrv_zscore ?? fallbackDate,
     sthSopr: payload?.sthSopr ?? payload?.sth_sopr ?? fallbackDate,
     sthMvrv: payload?.sthMvrv ?? payload?.sth_mvrv ?? fallbackDate,

@@ -827,7 +827,17 @@ def build_base_dataframe(
         latest_price = latest_row["btc_price"]
 
         if latest_price and abs(live_value - latest_price) / latest_price < 0.10:
-            if pd.to_datetime(latest_date).date() < today:
+            if pd.to_datetime(latest_date).date() == today:
+                # Update existing today row with fresher live price
+                btc_df.loc[btc_df["date"].dt.date == today, "btc_price"] = live_value
+                selected_sources["btc_price"] = (
+                    f"{selected_sources.get('btc_price', '?')} + live ({live_source}, updated)"
+                )
+                print(
+                    f"  Updated BTC price with live source ({live_source}): "
+                    f"${live_value:,.2f} for {today}"
+                )
+            elif pd.to_datetime(latest_date).date() < today:
                 new_row = pd.DataFrame(
                     [{"date": pd.to_datetime(today), "btc_price": live_value}]
                 )

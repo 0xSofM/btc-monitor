@@ -12,6 +12,7 @@ export type IndicatorKey =
   | 'puell';
 
 export type ApiDatePayload = {
+  btcPrice?: string;
   priceMa200w?: string;
   price_ma200w?: string;
   priceRealized?: string;
