@@ -7,8 +7,13 @@ export const config = {
 };
 
 // SECTION: constants
-const CACHE_DURATION = 300;
+const CACHE_DURATION = 900;
 const UPSTREAM_TIMEOUT_MS = 8000;
+
+// In-memory cache — Vercel Edge Functions run per-region, cold-start clears.
+// Prevents redundant BGeometrics downloads within the cache window.
+const memoryCache = new Map();
+const MEMORY_CACHE_TTL_MS = 600_000; // 10 min
 const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
 const STATIC_HISTORY_LIGHT_PATH = '/btc_indicators_history_light.json';
 const BLOCKCHAIN_INFO_STATS_URL = 'https://api.blockchain.info/stats';
@@ -1144,9 +1149,17 @@ export default async function handler(request) {
 
   try {
     if (path === '/btc-data/latest' || path === '/btc-data' || path === '/btc-data/') {
+      // Serve from memory cache if fresh — avoids redundant BGeometrics downloads
+      const cacheKey = 'latest';
+      const cached = memoryCache.get(cacheKey);
+      if (cached && (Date.now() - cached.ts) < MEMORY_CACHE_TTL_MS) {
+        return buildSuccessResponse(cached.payload, corsHeaders, 'HIT');
+      }
+
       const runtimeInputs = await fetchRuntimeInputs(request);
       const payload = buildRuntimePayload(runtimeInputs);
       if (payload) {
+        memoryCache.set(cacheKey, { ts: Date.now(), payload });
         return buildSuccessResponse(payload, corsHeaders);
       }
 

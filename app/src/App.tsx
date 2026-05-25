@@ -300,9 +300,11 @@ function App() {
   useEffect(() => {
     void fetchLatestData('auto');
 
+    // Refresh every 15 min — BGeometrics on-chain data updates ~daily,
+    // so 5 min is wasteful and risks rate-limiting a free service.
     const interval = setInterval(() => {
       void fetchLatestData('auto');
-    }, 5 * 60 * 1000);
+    }, 15 * 60 * 1000);
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
