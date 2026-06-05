@@ -39,7 +39,7 @@ describe('dataService helpers', () => {
         sthMvrv: 0.92,
         puellMultiple: 0.45,
         signalCountV4: 6,
-        signalCountV6: 7,
+        signalCountV6: 6,
         totalScoreV4: 9,
         totalScoreV6: 9,
         maxTotalScoreV4: 12,
@@ -64,6 +64,7 @@ describe('dataService helpers', () => {
         thresholds: {
           sthMvrv: { trigger: 0.914, deep: 0.846 },
           nuplCore: { trigger: 0.15, deep: 0 },
+          valuationBlendV6: { method: 'max(mvrvZscoreCore,nuplCore)', displayRole: 'combined_frontend_indicator' },
         },
         api_data_date: {
           price_ma200w: '2026-03-28',
@@ -84,7 +85,7 @@ describe('dataService helpers', () => {
     expect(latest?.date).toBe('2026-03-28');
     expect(latest?.signalCount).toBe(5);
     expect(latest?.signalCountV4).toBe(6);
-    expect(latest?.signalCountV6).toBe(7);
+    expect(latest?.signalCountV6).toBe(6);
     expect(latest?.totalScoreV4).toBe(9);
     expect(latest?.totalScoreV6).toBe(9);
     expect(latest?.nupl).toBe(0.12);
@@ -98,6 +99,7 @@ describe('dataService helpers', () => {
     expect(latest?.signalsV6?.nupl).toBe(true);
     expect(latest?.valuationBlendScoreV6).toBe(2);
     expect(latest?.thresholds?.sthMvrv?.trigger).toBe(0.914);
+    expect(latest?.thresholds?.valuationBlendV6?.displayRole).toBe('combined_frontend_indicator');
   });
 
   it('getIndicatorChartData filters placeholder zero rows', () => {
@@ -195,6 +197,75 @@ describe('dataService helpers', () => {
     expect(chartData[0].ma200).toBeCloseTo(50000, 6);
   });
 
+  it('getIndicatorChartData builds the valuation blend display score', () => {
+    const history = [
+      {
+        d: '2026-04-14',
+        btcPrice: 83500,
+        scoreMvrvZscoreCore: 0,
+        scoreNuplCore: 1,
+        valuationBlendScoreV6: 1,
+        signalsV6: { valuationBlend: true },
+      },
+      {
+        d: '2026-04-15',
+        btcPrice: 82800,
+        scoreMvrvZscoreCore: 2,
+        scoreNuplCore: 1,
+        valuationBlendScoreV6: 2,
+        signalsV6: { valuationBlend: true },
+      },
+    ] as IndicatorData[];
+
+    const chartData = getIndicatorChartData(history, 'valuationBlend', 'all');
+    expect(chartData).toHaveLength(2);
+    expect(chartData.map((point) => point.value)).toEqual([1, 2]);
+    expect(chartData.map((point) => point.triggerValue)).toEqual([0.5, 0.5]);
+    expect(chartData.map((point) => point.deepValue)).toEqual([1.5, 1.5]);
+    expect(chartData.map((point) => point.signal)).toEqual([true, true]);
+  });
+
+  it('getIndicatorChartData uses smoothed SOPR values and dynamic thresholds', () => {
+    const history = [
+      {
+        d: '2026-04-14',
+        btcPrice: 83500,
+        sthSopr: 0.99,
+        sthSoprMa3: 1.01,
+        lthSopr: 0.94,
+        lthSoprMa3: 0.92,
+        thresholds: {
+          sthSopr: { trigger: 1.002, deep: 0.981 },
+          lthSopr: { trigger: 0.91, deep: 0.82 },
+        },
+        signalsV6: { sthSoprTrigger: false, lthSopr: false },
+      },
+      {
+        d: '2026-04-15',
+        btcPrice: 82800,
+        sthSopr: 0.96,
+        sthSoprMa3: 0.985,
+        lthSopr: 0.8,
+        lthSoprMa3: 0.86,
+        thresholds: {
+          sthSopr: { trigger: 0.998, deep: 0.979 },
+          lthSopr: { trigger: 0.9, deep: 0.8 },
+        },
+        signalsV6: { sthSoprTrigger: true, lthSopr: true },
+      },
+    ] as IndicatorData[];
+
+    const sthSoprChart = getIndicatorChartData(history, 'sthSopr', 'all');
+    expect(sthSoprChart.map((point) => point.value)).toEqual([1.01, 0.985]);
+    expect(sthSoprChart.map((point) => point.triggerValue)).toEqual([1.002, 0.998]);
+    expect(sthSoprChart.map((point) => point.signal)).toEqual([false, true]);
+
+    const lthSoprChart = getIndicatorChartData(history, 'lthSopr', 'all');
+    expect(lthSoprChart.map((point) => point.value)).toEqual([0.92, 0.86]);
+    expect(lthSoprChart.map((point) => point.deepValue)).toEqual([0.82, 0.8]);
+    expect(lthSoprChart.map((point) => point.signal)).toEqual([false, true]);
+  });
+
   it('getIndicatorChartData keeps NUPL stale carry-forward days as chart gaps', () => {
     const history = [
       {
@@ -269,7 +340,9 @@ describe('dataService helpers', () => {
       nupl: 0.18,
       lthMvrv: 1.4,
       lthSopr: 1.01,
+      lthSoprMa3: 1.012,
       sthSopr: 1.002,
+      sthSoprMa3: 0.996,
       sthMvrv: 0.91,
       puellMultiple: 0.72,
       signalCount: 1,
@@ -317,6 +390,8 @@ describe('dataService helpers', () => {
       },
       thresholds: {
         sthMvrv: { trigger: 0.914, deep: 0.846 },
+        sthSopr: { trigger: 1.001, deep: 0.98 },
+        lthSopr: { trigger: 0.9, deep: 0.75 },
         nuplCore: { trigger: 0.15, deep: 0 },
       },
       indicatorDates: {
@@ -352,6 +427,16 @@ describe('dataService helpers', () => {
       signal: true,
       triggerValue: 0.15,
     });
+    expect(getIndicatorChartData(appended, 'sthSopr', 'all').at(-1)).toMatchObject({
+      date: '2026-04-16',
+      value: 0.996,
+      triggerValue: 1.001,
+    });
+    expect(getIndicatorChartData(appended, 'lthSopr', 'all').at(-1)).toMatchObject({
+      date: '2026-04-16',
+      value: 1.012,
+      triggerValue: 0.9,
+    });
 
     const replaced = mergeLatestIntoHistory(appended, {
       ...latest,
@@ -379,7 +464,7 @@ describe('dataService helpers', () => {
     vi.useRealTimers();
   });
 
-  it('getEffectiveDataDate uses the oldest core indicator date when the snapshot is not aligned', () => {
+  it('getEffectiveDataDate uses the oldest core display indicator date when the snapshot is not aligned', () => {
     expect(getEffectiveDataDate('2026-05-06', {
       priceMa200w: '2026-05-05',
       priceRealized: '2026-05-05',
@@ -390,7 +475,7 @@ describe('dataService helpers', () => {
       sthSopr: '2026-05-05',
       sthMvrv: '2026-05-05',
       puell: '2026-05-05',
-    })).toBe('2026-05-04');
+    })).toBe('2026-05-05');
   });
 
   it('getEffectiveDataDate falls back to the snapshot date when core indicators are aligned', () => {

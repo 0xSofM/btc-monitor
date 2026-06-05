@@ -1,6 +1,7 @@
 export type IndicatorKey =
   | 'priceMa200w'
   | 'priceRealized'
+  | 'valuationBlend'
   | 'mvrvZscore'
   | 'nupl'
   | 'reserveRisk'

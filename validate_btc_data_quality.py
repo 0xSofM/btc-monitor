@@ -268,13 +268,18 @@ def compute_total_score_v4_from_latest(latest: Dict[str, Any]) -> int | None:
 def compute_signal_count_v6_from_row(row: Dict[str, Any]) -> int:
     signals_v6 = row.get("signalsV6")
     if isinstance(signals_v6, dict):
+        valuation_blend = (
+            signals_v6.get("valuationBlend")
+            if "valuationBlend" in signals_v6
+            else (signals_v6.get("mvrvZscore") or signals_v6.get("nupl"))
+        )
         return sum(
             [
                 bool(signals_v6.get("priceMa200w")),
                 bool(signals_v6.get("priceRealized")),
-                bool(signals_v6.get("mvrvZscore")),
-                bool(signals_v6.get("nupl")),
+                bool(valuation_blend),
                 bool(signals_v6.get("sthMvrv")),
+                bool(signals_v6.get("sthSoprTrigger")),
                 bool(signals_v6.get("lthMvrv")),
                 bool(signals_v6.get("lthSopr")),
                 bool(signals_v6.get("puell")),
@@ -285,9 +290,9 @@ def compute_signal_count_v6_from_row(row: Dict[str, Any]) -> int:
         [
             bool(row.get("signalPriceMa200w") or row.get("signalPriceMa")),
             bool(row.get("signalPriceRealized")),
-            bool(row.get("signalMvrvZscoreCore") or row.get("signalReserveRiskV4")),
-            bool(row.get("signalNuplCore") or row.get("signalNupl")),
+            bool(row.get("signalValuationBlendV6") or row.get("signalMvrvZscoreCore") or row.get("signalNuplCore") or row.get("signalNupl")),
             bool(row.get("signalSthMvrv")),
+            bool(row.get("signalSthSoprTrigger") or row.get("signalSthSoprAux") or row.get("signalSthSopr")),
             bool(row.get("signalLthMvrv")),
             bool(row.get("signalLthSopr")),
             bool(row.get("signalPuell")),
@@ -300,13 +305,18 @@ def compute_signal_count_v6_from_latest(latest: Dict[str, Any]) -> int:
     if not isinstance(signals, dict):
         return -1
 
+    valuation_blend = (
+        signals.get("valuationBlend")
+        if "valuationBlend" in signals
+        else (signals.get("mvrvZscore") or signals.get("nupl"))
+    )
     return sum(
         [
             bool(signals.get("priceMa200w")),
             bool(signals.get("priceRealized")),
-            bool(signals.get("mvrvZscore")),
-            bool(signals.get("nupl")),
+            bool(valuation_blend),
             bool(signals.get("sthMvrv")),
+            bool(signals.get("sthSoprTrigger")),
             bool(signals.get("lthMvrv")),
             bool(signals.get("lthSopr")),
             bool(signals.get("puell")),

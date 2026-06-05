@@ -29,20 +29,12 @@ const valuationIndicators: IndicatorItem[] = [
     rationale: '价格低于实现价格常对应低估区，是大周期底部的重要估值锚。',
   },
   {
-    id: 'mvrv-zscore',
-    name: 'MVRV Z-Score',
+    id: 'valuation-blend',
+    name: '估值融合（MVRV Z + NUPL）',
     icon: TrendingDown,
-    target: '< 0（深度 < -0.5）',
-    description: '用标准差方式衡量 BTC 估值冷热，是 V6 估值融合槽位的一侧。',
-    rationale: '当 MVRV Z-Score 回到 0 以下时，通常说明市场已经明显降温；V6 中它与 NUPL 共享估值槽位，取有效核心分数较高者。',
-  },
-  {
-    id: 'nupl',
-    name: 'NUPL',
-    icon: TrendingDown,
-    target: '< 0.15（深度 < 0）',
-    description: '衡量市场净未实现盈亏，补充 MVRV Z-Score 对估值低位的识别。',
-    rationale: 'NUPL 能从持币者整体盈亏状态补强估值判断；V6 中它与 MVRV Z-Score 共享同一个估值计分槽位，不额外抬高总分上限。',
+    target: 'MVRV Z < 0 或 NUPL < 0.15',
+    description: '把 MVRV Z-Score 与 NUPL 合并为一个估值展示项，并取两者核心分较高者计入 V6。',
+    rationale: '两者都刻画市场估值和持币者盈亏状态，合并后能减少重复计数，同时保留 NUPL 对底部区间的补强能力。',
   },
   {
     id: 'puell',
@@ -63,6 +55,14 @@ const triggerIndicators: IndicatorItem[] = [
     description: '衡量短期持有者未实现盈亏压力，观察恐慌是否扩散到短期筹码。',
     rationale: '它更适合回答“底部区域是否开始进入可执行窗口”。',
   },
+  {
+    id: 'sth-sopr',
+    name: 'STH-SOPR',
+    icon: AlertTriangle,
+    target: '3日均值 < p27（深度 < p13.5）',
+    description: '衡量短期持有者是否在亏损兑现，阈值使用滚动分位数并以 3 日均值降噪。',
+    rationale: '它与 STH-MVRV 组成复合触发信号，V6 触发层取两者分数最大值，避免短期噪声重复抬分。',
+  },
 ];
 
 const confirmationIndicators: IndicatorItem[] = [
@@ -78,21 +78,13 @@ const confirmationIndicators: IndicatorItem[] = [
     id: 'lth-sopr',
     name: 'LTH-SOPR',
     icon: ShieldCheck,
-    target: '< 1（深度 < 0.98）',
-    description: '衡量长期持有者已实现盈亏，SOPR < 1 意味着 LTH 群体整体亏损卖出。',
-    rationale: 'LTH-SOPR < 1 是历史上最可靠的周期底部确认信号之一，与 LTH-MVRV 互补。',
+    target: '3日均值 < p20（深度 < p10）',
+    description: '衡量长期持有者已实现盈亏，使用滚动 p20/p10 与 3 日均值降低误触发。',
+    rationale: '它与 LTH-MVRV 互补，用来确认长期持有者也进入较深的亏损兑现状态。',
   },
 ];
 
 const auxiliaryIndicators: IndicatorItem[] = [
-  {
-    id: 'sth-sopr',
-    name: 'STH-SOPR (Auxiliary)',
-    icon: AlertTriangle,
-    target: '< p27（深度 < p13.5）',
-    description: '保留为辅助确认项，用于验证短期持有者是否持续在亏损兑现。',
-    rationale: 'V6 中与 STH-MVRV 组成复合触发信号（取最大值），不再单独占据计分位。',
-  },
   {
     id: 'reserve-risk',
     name: 'Reserve Risk (Observation)',

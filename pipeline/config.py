@@ -130,9 +130,9 @@ SCORING_INDICATOR_COUNT_V4 = 7
 SCORE_CONFIRM_RATIO = 7 / 12
 DEFAULT_RESERVE_RISK_DISABLE_LAG_DAYS = 30
 LEGACY_SCORING_MODEL_VERSION = "v3_no_lookahead_replacement"
-SCORING_MODEL_VERSION = "v6_core8_nupl_valuation_blend"
+SCORING_MODEL_VERSION = "v6_core8_display_blend_sopr_refined"
 SCHEMA_VERSION = "v6"
-INDICATOR_SET = "core8_bottom_v6_nupl_valuation_blend"
+INDICATOR_SET = "core8_bottom_v6_display_blend_sopr_refined"
 ARCHIVE_ROOT_DEFAULT = "archive/releases"
 SIGNAL_EVENTS_V4_JSON_PATH_DEFAULT = "app/public/btc_signal_events_v4.json"
 ROLLBACK_METADATA_FILE = "release_metadata.json"
@@ -143,6 +143,9 @@ RESERVE_RISK_TRIGGER_QUANTILE = 0.20
 RESERVE_RISK_DEEP_QUANTILE = 0.10
 STH_TRIGGER_QUANTILE = 0.27
 STH_DEEP_QUANTILE = 0.135
+LTH_SOPR_TRIGGER_QUANTILE = 0.20
+LTH_SOPR_DEEP_QUANTILE = 0.10
+SOPR_SMOOTHING_DAYS = 3
 
 INDICATOR_FRESHNESS_MAX_LAG_DAYS: Dict[str, int] = {
     "btc_price": 2,
@@ -165,7 +168,7 @@ THRESHOLD_STATIC: Dict[str, Dict[str, float]] = {
     "sth_mvrv": {"trigger": 1.0, "deep": 0.85},
     "puell_multiple": {"trigger": 0.6, "deep": 0.5},
     "lth_mvrv": {"trigger": 1.0, "deep": 0.9},
-    "lth_sopr": {"trigger": 1.0, "deep": 0.98},
+    "lth_sopr": {"trigger": 0.90, "deep": 0.75},
     "mvrv_zscore": {"trigger": 0.0, "deep": -0.5},
     "nupl": {"trigger": 0.15, "deep": 0.0},
 }

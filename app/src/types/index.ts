@@ -1,11 +1,19 @@
 export interface ThresholdValue {
-  trigger: number;
-  deep: number;
+  trigger?: number;
+  deep?: number;
   method?: string;
   windowDays?: number;
   minHistoryDays?: number;
   triggerQuantile?: number;
   deepQuantile?: number;
+  smoothingDays?: number;
+  valueField?: string;
+  role?: string;
+  displayRole?: string;
+  fallback?: {
+    trigger?: number;
+    deep?: number;
+  };
 }
 
 export type ThresholdMap = Record<string, ThresholdValue>;
@@ -20,7 +28,9 @@ export interface IndicatorData {
   realizedPrice?: number;
   reserveRisk?: number;
   lthSopr?: number;
+  lthSoprMa3?: number;
   sthSopr?: number;
+  sthSoprMa3?: number;
   sthMvrv?: number;
   puellMultiple?: number;
   nupl?: number;
@@ -97,6 +107,7 @@ export interface IndicatorData {
   fallbackMode?: string;
   fallbackModeV6?: string;
   staleIndicators?: Array<string | { key?: string; lagDays?: number; maxLagDays?: number; sourceDate?: string }>;
+  indicatorSet?: string;
   coreIndicatorSet?: string;
   scoringModelVersion?: string;
   thresholds?: ThresholdMap;
@@ -143,7 +154,9 @@ export interface LatestData {
   reserveRisk: number;
   nupl?: number;
   lthSopr?: number;
+  lthSoprMa3?: number;
   sthSopr: number;
+  sthSoprMa3?: number;
   sthMvrv: number;
   puellMultiple: number;
   signalCount: number;
@@ -210,6 +223,7 @@ export interface LatestData {
   scoringModelVersion?: string;
   legacyScoringModelVersion?: string;
   schemaVersion?: string;
+  indicatorSet?: string;
   coreIndicatorSet?: string;
   signals: {
     priceMa200w: boolean;
@@ -276,6 +290,7 @@ export interface IndicatorConfig {
   color: string;
   dataDate?: string;
   detailValue?: string;
+  targetLabel?: string;
 }
 
 export interface SignalEvent {

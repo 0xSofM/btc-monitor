@@ -3,7 +3,7 @@ import type { IndicatorData, LatestData } from '@/types';
 import { normalizeIndicatorData, normalizeLatestData } from './normalizers';
 import { enrichLatestDataWithHistory, getLatestFromHistory } from './selectors';
 
-const DATA_VERSION = 'v1.4.0';
+const DATA_VERSION = 'v1.5.0';
 const HISTORY_KEY = 'btc_indicators_history';
 const LATEST_KEY = 'btc_indicators_latest';
 
@@ -19,7 +19,9 @@ const HISTORY_STORAGE_FIELDS: Array<keyof IndicatorData> = [
   'nupl',
   'lthMvrv',
   'lthSopr',
+  'lthSoprMa3',
   'sthSopr',
+  'sthSoprMa3',
   'sthMvrv',
   'puellMultiple',
   'signalPriceMa200w',
@@ -95,6 +97,7 @@ const HISTORY_STORAGE_FIELDS: Array<keyof IndicatorData> = [
   'fallbackMode',
   'fallbackModeV6',
   'staleIndicators',
+  'indicatorSet',
   'coreIndicatorSet',
   'scoringModelVersion',
   'thresholds',

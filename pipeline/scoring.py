@@ -11,11 +11,14 @@ import pandas as pd
 from .config import (
     INDICATOR_FRESHNESS_MAX_LAG_DAYS,
     LEGACY_SCORING_INDICATOR_COUNT,
+    LTH_SOPR_DEEP_QUANTILE,
+    LTH_SOPR_TRIGGER_QUANTILE,
     RESERVE_RISK_DEEP_QUANTILE,
     RESERVE_RISK_TRIGGER_QUANTILE,
     ROLLING_THRESHOLD_MIN_HISTORY_DAYS,
     ROLLING_THRESHOLD_WINDOW_DAYS,
     SCORE_CONFIRM_RATIO,
+    SOPR_SMOOTHING_DAYS,
     STH_DEEP_QUANTILE,
     STH_TRIGGER_QUANTILE,
     THRESHOLD_STATIC,
@@ -188,6 +191,17 @@ def enrich_for_frontend(
     df["price_realized_ratio"] = df["btc_price"] / df["realized_price"].replace(
         0, pd.NA
     )
+    sopr_window = max(1, int(SOPR_SMOOTHING_DAYS))
+    df["sth_sopr_ma3"] = (
+        pd.to_numeric(df["sth_sopr"], errors="coerce")
+        .rolling(window=sopr_window, min_periods=1)
+        .mean()
+    )
+    df["lth_sopr_ma3"] = (
+        pd.to_numeric(df["lth_sopr"], errors="coerce")
+        .rolling(window=sopr_window, min_periods=1)
+        .mean()
+    )
 
     reserve_trigger_series, reserve_deep_series = _build_rolling_lt_thresholds(
         values=df["reserve_risk"],
@@ -197,7 +211,7 @@ def enrich_for_frontend(
         fallback_deep=0.0012,
     )
     sth_sopr_trigger_series, sth_sopr_deep_series = _build_rolling_lt_thresholds(
-        values=df["sth_sopr"],
+        values=df["sth_sopr_ma3"],
         trigger_quantile=STH_TRIGGER_QUANTILE,
         deep_quantile=STH_DEEP_QUANTILE,
         fallback_trigger=THRESHOLD_STATIC["sth_sopr"]["trigger"],
@@ -210,12 +224,21 @@ def enrich_for_frontend(
         fallback_trigger=THRESHOLD_STATIC["sth_mvrv"]["trigger"],
         fallback_deep=THRESHOLD_STATIC["sth_mvrv"]["deep"],
     )
+    lth_sopr_trigger_series, lth_sopr_deep_series = _build_rolling_lt_thresholds(
+        values=df["lth_sopr_ma3"],
+        trigger_quantile=LTH_SOPR_TRIGGER_QUANTILE,
+        deep_quantile=LTH_SOPR_DEEP_QUANTILE,
+        fallback_trigger=THRESHOLD_STATIC["lth_sopr"]["trigger"],
+        fallback_deep=THRESHOLD_STATIC["lth_sopr"]["deep"],
+    )
     df["reserve_risk_trigger"] = reserve_trigger_series
     df["reserve_risk_deep"] = reserve_deep_series
     df["sth_sopr_trigger"] = sth_sopr_trigger_series
     df["sth_sopr_deep"] = sth_sopr_deep_series
     df["sth_mvrv_trigger"] = sth_mvrv_trigger_series
     df["sth_mvrv_deep"] = sth_mvrv_deep_series
+    df["lth_sopr_trigger"] = lth_sopr_trigger_series
+    df["lth_sopr_deep"] = lth_sopr_deep_series
 
     df["score_price_ma200w"] = df["price_200w_ma_ratio"].apply(
         lambda v: _score_by_lt(
@@ -237,7 +260,7 @@ def enrich_for_frontend(
         deep_series=reserve_deep_series,
     )
     df["score_sth_sopr"] = _score_by_lt_series(
-        values=df["sth_sopr"],
+        values=df["sth_sopr_ma3"],
         trigger_series=sth_sopr_trigger_series,
         deep_series=sth_sopr_deep_series,
     )
@@ -261,12 +284,10 @@ def enrich_for_frontend(
             THRESHOLD_STATIC["lth_mvrv"]["deep"],
         )
     )
-    df["score_lth_sopr"] = df["lth_sopr"].apply(
-        lambda v: _score_by_lt(
-            v,
-            THRESHOLD_STATIC["lth_sopr"]["trigger"],
-            THRESHOLD_STATIC["lth_sopr"]["deep"],
-        )
+    df["score_lth_sopr"] = _score_by_lt_series(
+        values=df["lth_sopr_ma3"],
+        trigger_series=lth_sopr_trigger_series,
+        deep_series=lth_sopr_deep_series,
     )
     df["score_mvrv_zscore"] = df["mvrv_zscore"].apply(
         lambda v: _score_by_lt(
@@ -381,6 +402,8 @@ def enrich_for_frontend(
             "minHistoryDays": ROLLING_THRESHOLD_MIN_HISTORY_DAYS,
             "triggerQuantile": STH_TRIGGER_QUANTILE,
             "deepQuantile": STH_DEEP_QUANTILE,
+            "smoothingDays": SOPR_SMOOTHING_DAYS,
+            "valueField": "sth_sopr_ma3",
         },
         "sthMvrv": {
             "trigger": float(sth_mvrv_trigger_series.iloc[-1]),
@@ -393,7 +416,18 @@ def enrich_for_frontend(
         },
         "puellMultiple": THRESHOLD_STATIC["puell_multiple"],
         "lthMvrv": THRESHOLD_STATIC["lth_mvrv"],
-        "lthSopr": THRESHOLD_STATIC["lth_sopr"],
+        "lthSopr": {
+            "trigger": float(lth_sopr_trigger_series.iloc[-1]),
+            "deep": float(lth_sopr_deep_series.iloc[-1]),
+            "method": "rolling_quantile_no_lookahead",
+            "windowDays": ROLLING_THRESHOLD_WINDOW_DAYS,
+            "minHistoryDays": ROLLING_THRESHOLD_MIN_HISTORY_DAYS,
+            "triggerQuantile": LTH_SOPR_TRIGGER_QUANTILE,
+            "deepQuantile": LTH_SOPR_DEEP_QUANTILE,
+            "smoothingDays": SOPR_SMOOTHING_DAYS,
+            "valueField": "lth_sopr_ma3",
+            "fallback": THRESHOLD_STATIC["lth_sopr"],
+        },
         "mvrvZscore": THRESHOLD_STATIC["mvrv_zscore"],
         "mvrvZscoreCore": {
             **THRESHOLD_STATIC["mvrv_zscore"],
@@ -407,6 +441,7 @@ def enrich_for_frontend(
         "valuationBlendV6": {
             "method": "max(mvrvZscoreCore,nuplCore)",
             "role": "shared_valuation_slot_v6",
+            "displayRole": "combined_frontend_indicator",
         },
         "reserveRiskReplacementLegacy": {
             "lthMvrv": THRESHOLD_STATIC["lth_mvrv"],
@@ -519,9 +554,7 @@ def enrich_for_frontend(
         + df["valuation_blend_score_v6"]
         + df["score_puell"]
     ).astype(int)
-    df["max_valuation_score_v6"] = (
-        6 + (df["valuation_blend_active_v6"].astype(int) * 2)
-    ).astype(int)
+    df["max_valuation_score_v6"] = 8
     df["trigger_score_v6"] = df[["score_sth_mvrv", "score_sth_sopr"]].max(
         axis=1
     ).astype(int)
@@ -530,19 +563,15 @@ def enrich_for_frontend(
         df["score_lth_mvrv"] + df["score_lth_sopr"]
     ).astype(int)
     df["max_confirmation_score_v6"] = 4
-    df["active_indicator_count_v6"] = (
-        6
-        + df["mvrv_zscore_core_active"].astype(int)
-        + df["nupl_core_active"].astype(int)
-    ).astype(int)
+    df["active_indicator_count_v6"] = 8
     df["signal_count_v6"] = (
         df[
             [
                 "signal_price_ma200w",
                 "signal_price_realized",
-                "signal_mvrv_zscore_core",
-                "signal_nupl_core",
+                "signal_valuation_blend_v6",
                 "signal_sth_mvrv",
+                "signal_sth_sopr_trigger",
                 "signal_lth_mvrv",
                 "signal_lth_sopr",
                 "signal_puell",
@@ -579,6 +608,19 @@ def enrich_for_frontend(
     nupl_core_freshness = df["nupl_freshness_score"].where(
         df["nupl_core_active"], 0.0
     ).fillna(0.0)
+    valuation_blend_freshness = pd.concat(
+        [mvrv_core_freshness, nupl_core_freshness], axis=1
+    ).max(axis=1)
+    price_ma200w_freshness = pd.concat(
+        [df["btc_price_freshness_score"], df["ma200w_freshness_score"]], axis=1
+    ).min(axis=1)
+    price_realized_freshness = pd.concat(
+        [
+            df["btc_price_freshness_score"],
+            df["realized_price_freshness_score"],
+        ],
+        axis=1,
+    ).min(axis=1)
     df["data_freshness_score"] = (
         df[
             [
@@ -594,20 +636,15 @@ def enrich_for_frontend(
         + mvrv_core_freshness
     ) / 8
     df["data_freshness_score_v6"] = (
-        df[
-            [
-                "btc_price_freshness_score",
-                "realized_price_freshness_score",
-                "ma200w_freshness_score",
-                "sth_mvrv_freshness_score",
-                "lth_mvrv_freshness_score",
-                "lth_sopr_freshness_score",
-                "puell_multiple_freshness_score",
-            ]
-        ].sum(axis=1)
-        + mvrv_core_freshness
-        + nupl_core_freshness
-    ) / 9
+        price_ma200w_freshness
+        + price_realized_freshness
+        + valuation_blend_freshness
+        + df["sth_mvrv_freshness_score"]
+        + df["sth_sopr_freshness_score"]
+        + df["lth_mvrv_freshness_score"]
+        + df["lth_sopr_freshness_score"]
+        + df["puell_multiple_freshness_score"]
+    ) / 8
     base_score_ratio = (
         df["total_score_v4"] / df["max_total_score_v4"].replace(0, pd.NA)
     ).fillna(0)

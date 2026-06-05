@@ -37,10 +37,11 @@ const COINBASE_SPOT_URL = 'https://api.coinbase.com/v2/prices/BTC-USD/spot';
 const COINGECKO_SPOT_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd';
 const RESERVE_RISK_DISABLE_LAG_DAYS = 30;
 const SCORE_CONFIRM_RATIO = 7 / 12;
+const SOPR_SMOOTHING_DAYS = 3;
 const SCHEMA_VERSION = 'v6';
-const SCORING_MODEL_VERSION = 'v6_core8_nupl_valuation_blend';
+const SCORING_MODEL_VERSION = 'v6_core8_display_blend_sopr_refined';
 const LEGACY_SCORING_MODEL_VERSION = 'v3_no_lookahead_replacement';
-const CORE_INDICATOR_SET = 'core8_bottom_v6_nupl_valuation_blend';
+const CORE_INDICATOR_SET = 'core8_bottom_v6_display_blend_sopr_refined';
 
 const BGEOMETRICS_SERIES = {
   btcPrice: {
@@ -106,6 +107,7 @@ const INDICATOR_ROUTE_MAP = {
   '/btc-data/v1/mvrv-zscore/1': { seriesKey: 'mvrvZscore', dataKey: 'mvrvZscore', dateKey: 'mvrvZscore' },
   '/btc-data/v1/nupl/1': { seriesKey: 'nupl', dataKey: 'nupl', dateKey: 'nupl' },
   '/btc-data/v1/lth-mvrv/1': { seriesKey: 'lthMvrv', dataKey: 'lthMvrv', dateKey: 'lthMvrv' },
+  '/btc-data/v1/lth-sopr/1': { seriesKey: 'lthSopr', dataKey: 'lthSopr', dateKey: 'lthSopr' },
   '/btc-data/v1/puell-multiple/1': { seriesKey: 'puellMultiple', dataKey: 'puellMultiple', dateKey: 'puell' },
   '/btc-data/v1/reserve-risk/1': { seriesKey: 'reserveRisk', dataKey: 'reserveRisk', dateKey: 'reserveRisk' },
   '/btc-data/v1/realized-price/1': { seriesKey: 'realizedPrice', dataKey: 'realizedPrice', dateKey: 'priceRealized' },
@@ -122,11 +124,16 @@ const DEFAULT_THRESHOLDS = {
   sthMvrv: { trigger: 1, deep: 0.85 },
   puellMultiple: { trigger: 0.6, deep: 0.5 },
   lthMvrv: { trigger: 1, deep: 0.9 },
-  lthSopr: { trigger: 1, deep: 0.98 },
+  lthSopr: { trigger: 0.9, deep: 0.75 },
   mvrvZscore: { trigger: 0, deep: -0.5 },
   mvrvZscoreCore: { trigger: 0, deep: -0.5, role: 'valuation_core_v4' },
   nupl: { trigger: 0.15, deep: 0 },
   nuplCore: { trigger: 0.15, deep: 0, role: 'valuation_core_v6' },
+  valuationBlendV6: {
+    method: 'max(mvrvZscoreCore,nuplCore)',
+    role: 'shared_valuation_slot_v6',
+    displayRole: 'combined_frontend_indicator',
+  },
   reserveRiskV4Compatibility: { aliasOf: 'mvrvZscoreCore', deprecated: true },
 };
 
@@ -528,6 +535,43 @@ function buildLatestRollingMin(historyRows, latestDate, field, newValue) {
   return Math.min(...values.slice(-3));
 }
 
+function buildLatestMovingAverage(historyRows, latestDate, field, newValue, windowSize = SOPR_SMOOTHING_DAYS) {
+  if (!Array.isArray(historyRows) || windowSize <= 0) {
+    return newValue === null || newValue === undefined ? null : round(newValue, 6);
+  }
+
+  const tail = historyRows
+    .slice(-(windowSize + 2))
+    .map((row) => ({
+      d: asString(row?.d),
+      value: toNumberOrNull(row?.[field]),
+    }))
+    .filter((row) => row.d && row.value !== null);
+
+  const withoutSameDateTail = tail.length > 0 && tail[tail.length - 1].d === latestDate
+    ? tail.slice(0, -1)
+    : tail;
+
+  const values = withoutSameDateTail
+    .slice(-(windowSize - 1))
+    .map((row) => row.value)
+    .filter((value) => value !== null);
+
+  if (newValue !== null && newValue !== undefined) {
+    values.push(newValue);
+  }
+
+  if (values.length === 0) {
+    return null;
+  }
+
+  const smoothedValues = values.slice(-windowSize);
+  return round(
+    smoothedValues.reduce((total, value) => total + value, 0) / smoothedValues.length,
+    6,
+  );
+}
+
 function buildThresholdBundle(staticLatest) {
   return {
     priceMa200wRatio: getThresholdConfig(staticLatest, 'priceMa200wRatio'),
@@ -542,6 +586,7 @@ function buildThresholdBundle(staticLatest) {
     mvrvZscoreCore: getThresholdConfig(staticLatest, 'mvrvZscoreCore'),
     nupl: getThresholdConfig(staticLatest, 'nupl'),
     nuplCore: getThresholdConfig(staticLatest, 'nuplCore'),
+    valuationBlendV6: getThresholdConfig(staticLatest, 'valuationBlendV6'),
     reserveRiskV4Compatibility: getThresholdConfig(staticLatest, 'reserveRiskV4Compatibility'),
   };
 }
@@ -811,6 +856,10 @@ function buildRuntimePayload({
   const sthSopr = points.sthSopr?.value ?? toNumberOrNull(staticLatest?.sthSopr);
   const sthMvrv = points.sthMvrv?.value ?? toNumberOrNull(staticLatest?.sthMvrv);
   const puellMultiple = points.puellMultiple?.value ?? toNumberOrNull(staticLatest?.puellMultiple);
+  const sthSoprMa3 = buildLatestMovingAverage(staticHistory, latestDate, 'sthSopr', sthSopr);
+  const lthSoprMa3 = buildLatestMovingAverage(staticHistory, latestDate, 'lthSopr', lthSopr);
+  const sthSoprSignalValue = sthSoprMa3 ?? sthSopr;
+  const lthSoprSignalValue = lthSoprMa3 ?? lthSopr;
   const priceMa200wRatio = ma200w && ma200w > 0 ? btcPrice / ma200w : toNumber(staticLatest?.priceMa200wRatio);
   const priceRealizedRatio = realizedPrice && realizedPrice > 0 ? btcPrice / realizedPrice : toNumber(staticLatest?.priceRealizedRatio);
 
@@ -852,12 +901,12 @@ function buildRuntimePayload({
   const scorePriceMa200w = scoreByLt(priceMa200wRatio, thresholds.priceMa200wRatio.trigger, thresholds.priceMa200wRatio.deep);
   const scorePriceRealized = scoreByLt(priceRealizedRatio, thresholds.priceRealizedRatio.trigger, thresholds.priceRealizedRatio.deep);
   const scoreReserveRiskPrimary = scoreByLt(reserveRisk, thresholds.reserveRisk.trigger, thresholds.reserveRisk.deep);
-  const scoreSthSopr = scoreByLt(sthSopr, thresholds.sthSopr.trigger, thresholds.sthSopr.deep);
+  const scoreSthSopr = scoreByLt(sthSoprSignalValue, thresholds.sthSopr.trigger, thresholds.sthSopr.deep);
   const scoreSthMvrv = scoreByLt(sthMvrv, thresholds.sthMvrv.trigger, thresholds.sthMvrv.deep);
   const scoreSthGroup = Math.max(scoreSthSopr, scoreSthMvrv);
   const scorePuell = scoreByLt(puellMultiple, thresholds.puellMultiple.trigger, thresholds.puellMultiple.deep);
   const scoreLthMvrv = scoreByLt(lthMvrv, thresholds.lthMvrv.trigger, thresholds.lthMvrv.deep);
-  const scoreLthSopr = scoreByLt(lthSopr, thresholds.lthSopr.trigger, thresholds.lthSopr.deep);
+  const scoreLthSopr = scoreByLt(lthSoprSignalValue, thresholds.lthSopr.trigger, thresholds.lthSopr.deep);
   const scoreMvrvZscore = scoreByLt(mvrvZscore, thresholds.mvrvZscore.trigger, thresholds.mvrvZscore.deep);
   const scoreNupl = scoreByLt(nupl, thresholds.nupl.trigger, thresholds.nupl.deep);
   const mvrvZscoreCoreActive = Boolean(points.mvrvZscore?.d && mvrvZscoreIsFresh);
@@ -949,18 +998,18 @@ function buildRuntimePayload({
   const totalScoreV4 = valuationScore + triggerScore + confirmationScore;
 
   const valuationScoreV6 = scorePriceMa200w + scorePriceRealized + valuationBlendScoreV6 + scorePuell;
-  const maxValuationScoreV6 = 6 + (valuationBlendActiveV6 ? 2 : 0);
+  const maxValuationScoreV6 = 8;
   const triggerScoreV6 = Math.max(scoreSthMvrv, scoreSthSopr);
   const maxTriggerScoreV6 = 2;
   const confirmationScoreV6 = scoreLthMvrv + scoreLthSopr;
   const maxConfirmationScoreV6 = 4;
-  const activeIndicatorCountV6 = 6 + (mvrvZscoreCoreActive ? 1 : 0) + (nuplCoreActive ? 1 : 0);
+  const activeIndicatorCountV6 = 8;
   const signalCountV6 = [
     signalPriceMa200w,
     signalPriceRealized,
-    signalMvrvZscoreCore,
-    signalNuplCore,
+    signalValuationBlendV6,
     signalSthMvrv,
+    signalSthSoprAux,
     signalLthMvrv,
     signalLthSopr,
     signalPuell,
@@ -986,6 +1035,9 @@ function buildRuntimePayload({
 
   const reserveEffectiveFreshness = mvrvZscoreCoreActive ? mvrvZscoreFreshnessScore : 0;
   const nuplEffectiveFreshness = nuplCoreActive ? nuplFreshnessScore : 0;
+  const priceMa200wFreshnessScoreV6 = Math.min(btcPriceFreshnessScore, ma200wFreshnessScore);
+  const priceRealizedFreshnessScoreV6 = Math.min(btcPriceFreshnessScore, realizedPriceFreshnessScore);
+  const valuationBlendFreshnessScoreV6 = Math.max(reserveEffectiveFreshness, nuplEffectiveFreshness);
   const dataFreshnessScore = round(
     (
       btcPriceFreshnessScore
@@ -1001,16 +1053,15 @@ function buildRuntimePayload({
   );
   const dataFreshnessScoreV6 = round(
     (
-      btcPriceFreshnessScore
-      + realizedPriceFreshnessScore
-      + ma200wFreshnessScore
+      priceMa200wFreshnessScoreV6
+      + priceRealizedFreshnessScoreV6
+      + valuationBlendFreshnessScoreV6
       + sthMvrvFreshnessScore
       + lthMvrvFreshnessScore
       + lthSoprFreshnessScore
+      + sthSoprFreshnessScore
       + puellFreshnessScore
-      + reserveEffectiveFreshness
-      + nuplEffectiveFreshness
-    ) / 9,
+    ) / 8,
     6,
   );
   const baseScoreRatio = maxTotalScoreV4 > 0 ? totalScoreV4 / maxTotalScoreV4 : 0;
@@ -1153,8 +1204,10 @@ function buildRuntimePayload({
     mvrvZscore,
     nupl,
     sthSopr: sthSopr ?? 0,
+    sthSoprMa3,
     sthMvrv: sthMvrv ?? 0,
     ma200w,
+    lthSoprMa3,
     puellMultiple: puellMultiple ?? 0,
     signalCount,
     activeIndicatorCount,
@@ -1220,6 +1273,8 @@ function buildRuntimePayload({
     signalNuplCore,
     signalValuationBlendV6,
     signalLthSopr,
+    signalSthSoprTrigger: signalSthSoprAux,
+    signalSthSoprAux,
     scoringModelVersion: asString(staticLatest?.scoringModelVersion) ?? SCORING_MODEL_VERSION,
     legacyScoringModelVersion: asString(staticLatest?.legacyScoringModelVersion) ?? LEGACY_SCORING_MODEL_VERSION,
     reserveRiskActive,
@@ -1271,7 +1326,8 @@ function buildRuntimePayload({
       ...indicatorDates,
       reserveRiskLegacy: reserveRiskEffectiveDateLegacy,
     },
-    coreIndicatorSet: asString(staticLatest?.coreIndicatorSet) ?? CORE_INDICATOR_SET,
+    indicatorSet: asString(staticLatest?.indicatorSet ?? staticLatest?.coreIndicatorSet) ?? CORE_INDICATOR_SET,
+    coreIndicatorSet: asString(staticLatest?.coreIndicatorSet ?? staticLatest?.indicatorSet) ?? CORE_INDICATOR_SET,
     schemaVersion: asString(staticLatest?.schemaVersion) ?? SCHEMA_VERSION,
     thresholds: {
       ...(asRecord(staticLatest?.thresholds) ?? {}),

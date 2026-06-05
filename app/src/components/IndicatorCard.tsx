@@ -14,6 +14,7 @@ interface IndicatorCardProps {
   color: string;
   dataDate?: string;
   detailValue?: string;
+  targetLabel?: string;
 }
 
 function formatDate(dateStr?: string) {
@@ -41,6 +42,7 @@ export function IndicatorCard({
   color,
   dataDate,
   detailValue,
+  targetLabel,
 }: IndicatorCardProps) {
   const formatValue = (val: number) => {
     if (!Number.isFinite(val)) {
@@ -65,7 +67,7 @@ export function IndicatorCard({
     return val.toFixed(4);
   };
 
-  const targetText = `${targetOperator === 'lt' ? '<' : '>'} ${formatValue(targetValue)}`;
+  const targetText = targetLabel ?? `${targetOperator === 'lt' ? '<' : '>'} ${formatValue(targetValue)}`;
 
   return (
     <Card className={`surface-card relative overflow-hidden transition-all duration-300 ${triggered ? 'ring-1 ring-emerald-500/60' : ''}`}>

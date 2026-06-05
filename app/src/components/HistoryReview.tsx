@@ -38,13 +38,12 @@ function getSignalBadges(item: IndicatorData): string[] {
 
   if (item.signalPriceMa200w || item.signalPriceMa) signals.push('Price / 200W-MA');
   if (item.signalPriceRealized) signals.push('Price / Realized Price');
-  if (item.signalsV6?.mvrvZscore ?? item.signalMvrvZscoreCore ?? item.signalReserveRiskV4 ?? item.signalMvrvZ) signals.push('MVRV Z-Score');
-  if (item.signalsV6?.nupl ?? item.signalNuplCore ?? item.signalNupl) signals.push('NUPL');
+  if (item.signalsV6?.valuationBlend ?? item.signalValuationBlendV6 ?? item.signalMvrvZscoreCore ?? item.signalNuplCore) signals.push('估值融合');
+  if (item.signalsV6?.puell ?? item.signalPuell) signals.push('Puell Multiple');
   if (item.signalsV6?.sthMvrv ?? item.signalSthMvrv) signals.push('STH-MVRV');
+  if (item.signalsV6?.sthSoprTrigger ?? item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr) signals.push('STH-SOPR');
   if (item.signalsV6?.lthMvrv ?? item.signalLthMvrv) signals.push('LTH-MVRV');
   if (item.signalsV6?.lthSopr ?? item.signalLthSopr) signals.push('LTH-SOPR');
-  if (item.signalsV6?.puell ?? item.signalPuell) signals.push('Puell Multiple');
-  if (item.signalsV6?.sthSoprTrigger ?? item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr) signals.push('STH-SOPR (Trigger)');
 
   return signals;
 }

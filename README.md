@@ -6,8 +6,7 @@ A BTC indicator dashboard with a static-data pipeline designed for reliable depl
 
 - `BTC Price / 200W-MA` (computed)
 - `BTC Price / Realized Price` (computed)
-- `MVRV Z-Score`
-- `NUPL`
+- `Valuation Blend (MVRV Z-Score + NUPL)`
 - `Puell Multiple`
 - `STH-MVRV`
 - `STH-SOPR`
@@ -22,9 +21,13 @@ V6 scoring:
 
 - layered score: `valuationScoreV6 + triggerScoreV6 + confirmationScoreV6`
 - per-indicator score: `0 / 1 / 2`
-- valuation layer: `Price / 200W-MA`, `Price / Realized Price`, `max(MVRV Z-Score core, NUPL core)`, and `Puell Multiple`
+- display indicators: 8 frontend cards/charts; MVRV Z-Score and NUPL share one valuation blend slot
+- valuation layer: `Price / 200W-MA`, `Price / Realized Price`, `max(MVRV Z-Score core, NUPL core)`, and `Puell Multiple` (max 8)
 - trigger layer: `max(STH-MVRV, STH-SOPR)`
 - confirmation layer: `LTH-MVRV + LTH-SOPR`
+- SOPR smoothing: STH-SOPR and LTH-SOPR scores use 3-day moving averages; raw values remain available for diagnostics
+- dynamic thresholds: STH-SOPR uses rolling p27/p13.5, LTH-SOPR uses rolling p20/p10
+- signal count: `signalCountV6` counts the 8 frontend display indicators, while the trigger layer score still uses `max(STH-MVRV, STH-SOPR)`
 - total score: `totalScoreV6` with max score in `maxTotalScoreV6` (normally 14)
 - no-lookahead thresholds: rolling quantile thresholds are computed only from past data where used
 - confidence fields: `signalConfidenceV6`, `dataFreshnessScoreV6`, `fallbackModeV6`, `staleIndicators`

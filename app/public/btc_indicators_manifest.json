@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-06-05T06:21:11.224068+00:00",
+  "generatedAt": "2026-06-05T07:36:51.931270+00:00",
   "latestDate": "2026-06-05",
-  "lastUpdated": "2026-06-05T06:21:11.173147+00:00",
-  "historyRows": 5635,
-  "signalEventsV4Rows": 19,
+  "lastUpdated": "2026-06-05T07:36:51.866529+00:00",
+  "historyRows": 5484,
+  "signalEventsV4Rows": 18,
   "schemaVersion": "v6",
-  "indicatorSet": "core8_bottom_v6_nupl_valuation_blend",
-  "scoringModelVersion": "v6_core8_nupl_valuation_blend",
+  "indicatorSet": "core8_bottom_v6_display_blend_sopr_refined",
+  "scoringModelVersion": "v6_core8_display_blend_sopr_refined",
   "legacyScoringModelVersion": "v3_no_lookahead_replacement",
   "thresholdVersion": "v4_dynamic",
   "activeIndicatorCountV6": 8,
   "maxTotalScoreV6": 14,
-  "totalScoreV6": 4,
+  "totalScoreV6": 3,
   "dynamicThresholds": {
     "reserveRisk": {
       "trigger": 0.00058803342,
@@ -23,13 +23,15 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.993938470555,
-      "deep": 0.9857624670185,
+      "trigger": 0.9943785932769996,
+      "deep": 0.9870266382328334,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
       "triggerQuantile": 0.27,
-      "deepQuantile": 0.135
+      "deepQuantile": 0.135,
+      "smoothingDays": 3,
+      "valueField": "sth_sopr_ma3"
     },
     "sthMvrv": {
       "trigger": 0.92,
@@ -39,6 +41,21 @@
       "minHistoryDays": 365,
       "triggerQuantile": 0.27,
       "deepQuantile": 0.135
+    },
+    "lthSopr": {
+      "trigger": 0.8525935660933527,
+      "deep": 0.6281384441766861,
+      "method": "rolling_quantile_no_lookahead",
+      "windowDays": 1460,
+      "minHistoryDays": 365,
+      "triggerQuantile": 0.2,
+      "deepQuantile": 0.1,
+      "smoothingDays": 3,
+      "valueField": "lth_sopr_ma3",
+      "fallback": {
+        "trigger": 0.9,
+        "deep": 0.75
+      }
     }
   },
   "reserveRiskHealth": {

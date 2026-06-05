@@ -21,7 +21,7 @@ interface IndicatorChartsProps {
   isHistoryLoading?: boolean;
 }
 
-type IndicatorType = 'priceMa200w' | 'priceRealized' | 'mvrvZscore' | 'nupl' | 'lthMvrv' | 'lthSopr' | 'sthMvrv' | 'puell';
+type IndicatorType = 'priceMa200w' | 'priceRealized' | 'valuationBlend' | 'puell' | 'sthMvrv' | 'sthSopr' | 'lthMvrv' | 'lthSopr';
 
 type DetailSeriesPoint = {
   date: string;
@@ -39,7 +39,7 @@ type MaSeriesPoint = {
   signal: boolean;
 };
 
-const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'priceRealized', 'mvrvZscore', 'nupl', 'lthMvrv', 'lthSopr', 'sthMvrv', 'puell'];
+const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'priceRealized', 'valuationBlend', 'puell', 'sthMvrv', 'sthSopr', 'lthMvrv', 'lthSopr'];
 
 const TIME_RANGES = [
   { key: 'all', label: '全部' },
@@ -60,12 +60,12 @@ const RANGE_DAYS: Record<(typeof TIME_RANGES)[number]['key'], number> = {
 const CHART_FLOOR_CONFIG: Record<IndicatorType, number> = {
   priceMa200w: 0,
   priceRealized: 0,
-  mvrvZscore: -1.5,
-  nupl: -0.2,
-  lthMvrv: 0,
-  lthSopr: 0.95,
-  sthMvrv: 0,
+  valuationBlend: 0,
   puell: 0,
+  sthMvrv: 0,
+  sthSopr: 0.9,
+  lthMvrv: 0,
+  lthSopr: 0.75,
 };
 
 type TooltipEntry = {
@@ -141,18 +141,18 @@ function buildThresholdDescription(indicator: IndicatorType, point: DetailSeries
       return '固定阈值 < 1（深度 < 0.85）';
     case 'priceRealized':
       return '固定阈值 < 1（深度 < 0.90）';
-    case 'mvrvZscore':
-      return '固定阈值 < 0（深度 < -0.5）';
-    case 'nupl':
-      return '固定阈值 < 0.15（深度 < 0）';
+    case 'valuationBlend':
+      return '融合分 > 0 触发（深度 = 2，MVRV Z-Score 与 NUPL 取较高核心分）';
+    case 'puell':
+      return '固定阈值 < 0.6（深度 < 0.5）';
+    case 'sthMvrv':
+      return `滚动阈值 < ${triggerText}（深度 < ${deepText}，过去 1460 天 p27 / p13.5）`;
+    case 'sthSopr':
+      return `3 日均值滚动阈值 < ${triggerText}（深度 < ${deepText}，过去 1460 天 p27 / p13.5）`;
     case 'lthMvrv':
       return '固定阈值 < 1（深度 < 0.90）';
     case 'lthSopr':
-      return '固定阈值 < 1（深度 < 0.98）';
-    case 'sthMvrv':
-      return `滚动阈值 < ${triggerText}（深度 < ${deepText}，过去 1460 天 p27 / p13.5）`;
-    case 'puell':
-      return '固定阈值 < 0.6（深度 < 0.5）';
+      return `3 日均值滚动阈值 < ${triggerText}（深度 < ${deepText}，过去 1460 天 p20 / p10）`;
     default:
       return '阈值线';
   }
@@ -223,12 +223,12 @@ export function IndicatorCharts({
     return {
       priceMa200w: getIndicatorChartData(data, 'priceMa200w', '1y') as DetailSeriesPoint[],
       priceRealized: getIndicatorChartData(data, 'priceRealized', '1y') as DetailSeriesPoint[],
-      mvrvZscore: getIndicatorChartData(data, 'mvrvZscore', '1y') as DetailSeriesPoint[],
-      nupl: getIndicatorChartData(data, 'nupl', '1y') as DetailSeriesPoint[],
+      valuationBlend: getIndicatorChartData(data, 'valuationBlend', '1y') as DetailSeriesPoint[],
+      puell: getIndicatorChartData(data, 'puell', '1y') as DetailSeriesPoint[],
+      sthMvrv: getIndicatorChartData(data, 'sthMvrv', '1y') as DetailSeriesPoint[],
+      sthSopr: getIndicatorChartData(data, 'sthSopr', '1y') as DetailSeriesPoint[],
       lthMvrv: getIndicatorChartData(data, 'lthMvrv', '1y') as DetailSeriesPoint[],
       lthSopr: getIndicatorChartData(data, 'lthSopr', '1y') as DetailSeriesPoint[],
-      sthMvrv: getIndicatorChartData(data, 'sthMvrv', '1y') as DetailSeriesPoint[],
-      puell: getIndicatorChartData(data, 'puell', '1y') as DetailSeriesPoint[],
     };
   }, [data]);
 

@@ -136,19 +136,36 @@ function normalizeThresholdValue(value: unknown): ThresholdValue | undefined {
 
   const trigger = toNumberOrNull(payload.trigger);
   const deep = toNumberOrNull(payload.deep);
-  if (trigger === null || deep === null) {
-    return undefined;
-  }
-
-  return {
-    trigger,
-    deep,
+  const fallbackPayload = asRecord(payload.fallback);
+  const fallback = fallbackPayload
+    ? {
+        trigger: toNumberOrNull(fallbackPayload.trigger) ?? undefined,
+        deep: toNumberOrNull(fallbackPayload.deep) ?? undefined,
+      }
+    : undefined;
+  const normalized = {
+    trigger: trigger ?? undefined,
+    deep: deep ?? undefined,
     method: asString(payload.method),
     windowDays: toNumberOrNull(payload.windowDays ?? payload.window_days) ?? undefined,
     minHistoryDays: toNumberOrNull(payload.minHistoryDays ?? payload.min_history_days) ?? undefined,
     triggerQuantile: toNumberOrNull(payload.triggerQuantile ?? payload.trigger_quantile) ?? undefined,
     deepQuantile: toNumberOrNull(payload.deepQuantile ?? payload.deep_quantile) ?? undefined,
+    smoothingDays: toNumberOrNull(payload.smoothingDays ?? payload.smoothing_days) ?? undefined,
+    valueField: asString(payload.valueField ?? payload.value_field),
+    role: asString(payload.role),
+    displayRole: asString(payload.displayRole ?? payload.display_role),
+    fallback:
+      fallback && (fallback.trigger !== undefined || fallback.deep !== undefined)
+        ? fallback
+        : undefined,
   };
+
+  if (Object.values(normalized).every((entry) => entry === undefined)) {
+    return undefined;
+  }
+
+  return normalized;
 }
 
 function normalizeThresholdMap(value: unknown): ThresholdMap | undefined {
@@ -201,9 +218,11 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     reserveRisk: toNumberOrNull(record.reserveRisk ?? record.reserve_risk) ?? undefined,
     nupl: toNumberOrNull(record.nupl) ?? undefined,
     sthSopr: toNumberOrNull(record.sthSopr ?? record.sth_sopr) ?? undefined,
+    sthSoprMa3: toNumberOrNull(record.sthSoprMa3 ?? record.sth_sopr_ma3) ?? undefined,
     sthMvrv: toNumberOrNull(record.sthMvrv ?? record.sth_mvrv) ?? undefined,
     puellMultiple: toNumberOrNull(record.puellMultiple ?? record.puell_multiple) ?? undefined,
-	    lthSopr: toNumberOrNull(record.lthSopr ?? record.lth_sopr) ?? undefined,
+    lthSopr: toNumberOrNull(record.lthSopr ?? record.lth_sopr) ?? undefined,
+    lthSoprMa3: toNumberOrNull(record.lthSoprMa3 ?? record.lth_sopr_ma3) ?? undefined,
     signalPriceMa200w: asBoolean(record.signalPriceMa200w ?? record.signal_price_ma200w ?? record.signalPriceMa ?? record.signal_price_ma),
     signalPriceRealized: asBoolean(record.signalPriceRealized ?? record.signal_price_realized),
     signalReserveRisk: asBoolean(record.signalReserveRisk ?? record.signal_reserve_risk),
@@ -279,7 +298,8 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     staleIndicators: Array.isArray(record.staleIndicators ?? record.stale_indicators)
       ? ((record.staleIndicators ?? record.stale_indicators) as IndicatorData['staleIndicators'])
       : undefined,
-    coreIndicatorSet: asString(record.coreIndicatorSet ?? record.core_indicator_set),
+    indicatorSet: asString(record.indicatorSet ?? record.indicator_set ?? record.coreIndicatorSet ?? record.core_indicator_set),
+    coreIndicatorSet: asString(record.coreIndicatorSet ?? record.core_indicator_set ?? record.indicatorSet ?? record.indicator_set),
     scoringModelVersion: asString(record.scoringModelVersion ?? record.scoring_model_version),
     thresholds: normalizeThresholdMap(record.thresholds),
     indicatorDates,
@@ -319,10 +339,14 @@ export function normalizeLatestData(item: unknown): LatestData | null {
   const mvrvZscore = toNumberOrNull(record.mvrvZscore ?? record.mvrv_zscore) ?? 0;
   const nupl = toNumberOrNull(record.nupl) ?? undefined;
   const sthSopr = toNumberOrNull(record.sthSopr ?? record.sth_sopr) ?? 0;
+  const sthSoprMa3 = toNumberOrNull(record.sthSoprMa3 ?? record.sth_sopr_ma3) ?? undefined;
+  const sthSoprSignalValue = sthSoprMa3 ?? sthSopr;
   const sthMvrv = toNumberOrNull(record.sthMvrv ?? record.sth_mvrv) ?? 0;
   const puellMultiple = toNumberOrNull(record.puellMultiple ?? record.puell_multiple) ?? 0;
   const ma200w = toNumberOrNull(record.ma200w) ?? undefined;
   const realizedPrice = toNumberOrNull(record.realizedPrice ?? record.realized_price) ?? undefined;
+  const lthSoprMa3 = toNumberOrNull(record.lthSoprMa3 ?? record.lth_sopr_ma3) ?? undefined;
+  const lthSoprSignalValue = lthSoprMa3 ?? (toNumberOrNull(record.lthSopr ?? record.lth_sopr) ?? 0);
 
   const signals = {
     priceMa200w: asBoolean(incomingSignals?.priceMa200w ?? record.signalPriceMa200w ?? record.signal_price_ma200w ?? record.signalPriceMa ?? record.signal_price_ma)
@@ -332,11 +356,11 @@ export function normalizeLatestData(item: unknown): LatestData | null {
     reserveRisk: asBoolean(incomingSignals?.reserveRisk ?? record.signalReserveRisk ?? record.signal_reserve_risk)
       ?? (reserveRisk < 0.0016),
     sthSopr: asBoolean(incomingSignals?.sthSopr ?? record.signalSthSopr ?? record.signal_sth_sopr)
-      ?? (sthSopr < 1),
+      ?? (sthSoprSignalValue < 1),
     sthMvrv: asBoolean(incomingSignals?.sthMvrv ?? record.signalSthMvrv ?? record.signal_sth_mvrv)
       ?? (sthMvrv < 1),
     sthGroup: asBoolean(incomingSignals?.sthGroup ?? record.signalSthGroup ?? record.signal_sth_group)
-      ?? (sthSopr < 1 || sthMvrv < 1),
+      ?? (sthSoprSignalValue < 1 || sthMvrv < 1),
     puell: asBoolean(incomingSignals?.puell ?? record.signalPuell ?? record.signal_puell)
       ?? (puellMultiple < 0.6),
   };
@@ -365,7 +389,7 @@ export function normalizeLatestData(item: unknown): LatestData | null {
           ?? ((toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? 0) < 1),
         puell: asBoolean(incomingSignalsV4.puell ?? record.signalPuell ?? record.signal_puell) ?? signals.puell,
         lthSopr: asBoolean(incomingSignalsV4.lthSopr ?? record.signalLthSopr ?? record.signal_lth_sopr)
-          ?? ((toNumberOrNull(record.lthSopr ?? record.lth_sopr) ?? 0) < 1),
+          ?? (lthSoprSignalValue < 0.9),
         sthSoprTrigger: asBoolean(
           incomingSignalsV4.sthSoprTrigger ?? incomingSignalsV4.sthSoprAux
           ?? record.signalSthSoprTrigger ?? record.signal_sth_sopr_trigger
@@ -395,12 +419,12 @@ export function normalizeLatestData(item: unknown): LatestData | null {
           incomingSignalsV6.valuationBlend
           ?? record.signalValuationBlendV6
           ?? record.signal_valuation_blend_v6,
-        ),
+        ) ?? ((mvrvZscore < 0) || ((nupl ?? 1) < 0.15)),
         sthMvrv: asBoolean(incomingSignalsV6.sthMvrv ?? record.signalSthMvrv ?? record.signal_sth_mvrv) ?? signals.sthMvrv,
         lthMvrv: asBoolean(incomingSignalsV6.lthMvrv ?? record.signalLthMvrv ?? record.signal_lth_mvrv)
           ?? ((toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? 0) < 1),
         lthSopr: asBoolean(incomingSignalsV6.lthSopr ?? record.signalLthSopr ?? record.signal_lth_sopr)
-          ?? ((toNumberOrNull(record.lthSopr ?? record.lth_sopr) ?? 0) < 1),
+          ?? (lthSoprSignalValue < 0.9),
         puell: asBoolean(incomingSignalsV6.puell ?? record.signalPuell ?? record.signal_puell) ?? signals.puell,
         sthSoprTrigger: asBoolean(
           incomingSignalsV6.sthSoprTrigger
@@ -435,8 +459,10 @@ export function normalizeLatestData(item: unknown): LatestData | null {
     reserveRisk,
     nupl,
     sthSopr,
+    sthSoprMa3,
     sthMvrv,
     lthSopr: toNumberOrNull(record.lthSopr ?? record.lth_sopr) ?? undefined,
+    lthSoprMa3,
     puellMultiple,
     signalCount,
     activeIndicatorCount: toNumberOrNull(record.activeIndicatorCount ?? record.active_indicator_count) ?? undefined,
@@ -501,7 +527,8 @@ export function normalizeLatestData(item: unknown): LatestData | null {
     signalSthGroup: asBoolean(record.signalSthGroup ?? record.signal_sth_group),
     scoringModelVersion: asString(record.scoringModelVersion ?? record.scoring_model_version),
     legacyScoringModelVersion: asString(record.legacyScoringModelVersion ?? record.legacy_scoring_model_version),
-    coreIndicatorSet: asString(record.coreIndicatorSet ?? record.core_indicator_set),
+    indicatorSet: asString(record.indicatorSet ?? record.indicator_set ?? record.coreIndicatorSet ?? record.core_indicator_set),
+    coreIndicatorSet: asString(record.coreIndicatorSet ?? record.core_indicator_set ?? record.indicatorSet ?? record.indicator_set),
     schemaVersion: asString(record.schemaVersion ?? record.schema_version),
     signals,
     signalsV4,

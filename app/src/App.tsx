@@ -43,6 +43,7 @@ type DataSource = 'api' | 'static' | 'history';
 type IndicatorDateKey =
   | 'priceMa200w'
   | 'priceRealized'
+  | 'valuationBlend'
   | 'reserveRisk'
   | 'mvrvZscore'
   | 'nupl'
@@ -297,9 +298,7 @@ function App() {
   const indicatorDateLabels: Partial<Record<IndicatorDateKey, string>> = {
     priceMa200w: 'Price / 200W-MA',
     priceRealized: 'Price / Realized Price',
-    reserveRisk: 'Reserve Risk',
-    mvrvZscore: 'MVRV Z-Score',
-    nupl: 'NUPL',
+    valuationBlend: '估值融合',
     lthMvrv: 'LTH-MVRV',
     lthSopr: 'LTH-SOPR',
     sthSopr: 'STH-SOPR',
@@ -307,14 +306,25 @@ function App() {
     puell: 'Puell Multiple',
   };
 
-  const indicatorDateEntries = latestData?.indicatorDates
-    ? (Object.entries(latestData.indicatorDates) as Array<[IndicatorDateKey, string | undefined]>)
-        .reduce<Array<[IndicatorDateKey, string]>>((entries, [key, value]) => {
-          if (value && indicatorDateLabels[key]) {
-            entries.push([key, value]);
-          }
-          return entries;
-        }, [])
+  const valuationBlendDate = latestData?.indicatorDates
+    ? [latestData.indicatorDates.mvrvZscore, latestData.indicatorDates.nupl]
+        .filter((value): value is string => Boolean(value))
+        .sort()
+        .at(-1)
+    : undefined;
+
+  const indicatorDateEntries = latestData
+    ? ([
+        ['priceMa200w', latestData.indicatorDates?.priceMa200w],
+        ['priceRealized', latestData.indicatorDates?.priceRealized],
+        ['valuationBlend', valuationBlendDate],
+        ['puell', latestData.indicatorDates?.puell],
+        ['sthMvrv', latestData.indicatorDates?.sthMvrv],
+        ['sthSopr', latestData.indicatorDates?.sthSopr],
+        ['lthMvrv', latestData.indicatorDates?.lthMvrv],
+        ['lthSopr', latestData.indicatorDates?.lthSopr],
+      ] as Array<[IndicatorDateKey, string | undefined]>)
+        .filter((entry): entry is [IndicatorDateKey, string] => Boolean(entry[1]))
     : [];
 
   const laggingIndicators = latestData
@@ -452,62 +462,35 @@ function App() {
           detailValue: latestData.realizedPrice ? `Realized Price $${Math.round(latestData.realizedPrice).toLocaleString()}` : undefined,
         },
         {
-          name: 'MVRV Z-Score',
-          description: '估值温度主刻度',
-          currentValue: latestData.mvrvZscore ?? 0,
-          targetValue: latestData.thresholds?.mvrvZscoreCore?.trigger ?? latestData.thresholds?.mvrvZscore?.trigger ?? 0,
-          targetOperator: 'lt' as const,
-          triggered: latestData.signalsV6?.mvrvZscore
-            ?? latestData.signalsV4?.mvrvZscore
+          name: '估值融合',
+          description: 'MVRV Z-Score + NUPL 共享估值槽位',
+          currentValue: latestData.valuationBlendScoreV6 ?? Math.max(latestData.scoreMvrvZscoreCore ?? 0, latestData.scoreNuplCore ?? 0),
+          targetValue: 0,
+          targetOperator: 'gt' as const,
+          targetLabel: '融合分 > 0',
+          triggered: latestData.signalsV6?.valuationBlend
+            ?? latestData.signalValuationBlendV6
             ?? latestData.signalMvrvZscoreCore
-            ?? latestData.signalMvrvZ
-            ?? latestData.signalsV4?.reserveRisk
-            ?? false,
-          format: 'number' as const,
-          color: '#10B981',
-          dataDate: latestData.indicatorDates?.mvrvZscore || latestData.date,
-          detailValue: latestData.indicatorDates?.reserveRisk
-            ? `Reserve Risk 仅作观测：${latestData.reserveRisk.toFixed(6)}（${latestData.indicatorDates.reserveRisk}）`
-            : '与 NUPL 共享 V6 估值槽位，Reserve Risk 仅作观测。',
-        },
-        {
-          name: 'NUPL',
-          description: '净未实现盈亏，估值融合槽位',
-          currentValue: latestData.nupl ?? 0,
-          targetValue: latestData.thresholds?.nuplCore?.trigger ?? latestData.thresholds?.nupl?.trigger ?? 0.15,
-          targetOperator: 'lt' as const,
-          triggered: latestData.signalsV6?.nupl
             ?? latestData.signalNuplCore
-            ?? latestData.signalNupl
             ?? false,
           format: 'number' as const,
           color: '#14B8A6',
-          dataDate: latestData.indicatorDates?.nupl || latestData.date,
-          detailValue: latestData.valuationBlendScoreV6 === undefined
-            ? '与 MVRV Z-Score 共享 V6 估值槽位。'
-            : `与 MVRV Z-Score 共享估值槽位，当前融合分 ${latestData.valuationBlendScoreV6}/2。`,
+          dataDate: [latestData.indicatorDates?.mvrvZscore, latestData.indicatorDates?.nupl]
+            .filter((value): value is string => Boolean(value))
+            .sort()
+            .at(-1) || latestData.date,
+          detailValue: `MVRV Z ${latestData.mvrvZscore?.toFixed(3) ?? '-'} / NUPL ${latestData.nupl?.toFixed(4) ?? '-'}，融合分 ${latestData.valuationBlendScoreV6 ?? Math.max(latestData.scoreMvrvZscoreCore ?? 0, latestData.scoreNuplCore ?? 0)}/2`,
         },
         {
-          name: 'LTH-MVRV',
-          description: '长期持有者未实现盈亏，确认层',
-          currentValue: latestData.lthMvrv ?? 0,
-          targetValue: latestData.thresholds?.lthMvrv?.trigger ?? 1,
+          name: 'Puell Multiple',
+          description: '矿工收入压力，估值层',
+          currentValue: latestData.puellMultiple,
+          targetValue: latestData.thresholds?.puellMultiple?.trigger ?? 0.6,
           targetOperator: 'lt' as const,
-          triggered: latestData.signalsV6?.lthMvrv ?? latestData.signalsV4?.lthMvrv ?? false,
+          triggered: latestData.signalsV6?.puell ?? latestData.signalsV4?.puell ?? latestData.signals.puell,
           format: 'ratio' as const,
-          color: '#8B5CF6',
-          dataDate: latestData.indicatorDates?.lthMvrv || latestData.date,
-        },
-        {
-          name: 'LTH-SOPR',
-          description: '长期持有者已实现盈亏，确认层',
-          currentValue: latestData.lthSopr ?? 0,
-          targetValue: latestData.thresholds?.lthSopr?.trigger ?? 1,
-          targetOperator: 'lt' as const,
-          triggered: latestData.signalsV6?.lthSopr ?? latestData.signalsV4?.lthSopr ?? false,
-          format: 'ratio' as const,
-          color: '#A855F7',
-          dataDate: latestData.indicatorDates?.lthSopr || latestData.date,
+          color: '#F97316',
+          dataDate: latestData.indicatorDates?.puell || latestData.date,
         },
         {
           name: 'STH-MVRV',
@@ -524,15 +507,45 @@ function App() {
             : undefined,
         },
         {
-          name: 'Puell Multiple',
-          description: '矿工压力确认项',
-          currentValue: latestData.puellMultiple,
-          targetValue: latestData.thresholds?.puellMultiple?.trigger ?? 0.6,
+          name: 'STH-SOPR',
+          description: '短期持有者已实现盈亏，触发层',
+          currentValue: latestData.sthSoprMa3 ?? latestData.sthSopr,
+          targetValue: latestData.thresholds?.sthSopr?.trigger ?? 1,
           targetOperator: 'lt' as const,
-          triggered: latestData.signalsV6?.puell ?? latestData.signalsV4?.puell ?? latestData.signals.puell,
+          triggered: latestData.signalsV6?.sthSoprTrigger
+            ?? latestData.signalsV4?.sthSoprTrigger
+            ?? latestData.signals.sthSopr,
           format: 'ratio' as const,
-          color: '#F97316',
-          dataDate: latestData.indicatorDates?.puell || latestData.date,
+          color: '#EAB308',
+          dataDate: latestData.indicatorDates?.sthSopr || latestData.date,
+          detailValue: latestData.thresholds?.sthSopr
+            ? `3日均值，原始值 ${(latestData.sthSopr ?? 0).toFixed(4)}；滚动阈值 p27=${(latestData.thresholds.sthSopr.trigger ?? 1).toFixed(4)}，深度 p13.5=${(latestData.thresholds.sthSopr.deep ?? 0.97).toFixed(4)}`
+            : `3日均值，原始值 ${(latestData.sthSopr ?? 0).toFixed(4)}`,
+        },
+        {
+          name: 'LTH-MVRV',
+          description: '长期持有者未实现盈亏，确认层',
+          currentValue: latestData.lthMvrv ?? 0,
+          targetValue: latestData.thresholds?.lthMvrv?.trigger ?? 1,
+          targetOperator: 'lt' as const,
+          triggered: latestData.signalsV6?.lthMvrv ?? latestData.signalsV4?.lthMvrv ?? false,
+          format: 'ratio' as const,
+          color: '#8B5CF6',
+          dataDate: latestData.indicatorDates?.lthMvrv || latestData.date,
+        },
+        {
+          name: 'LTH-SOPR',
+          description: '长期持有者已实现盈亏，确认层',
+          currentValue: latestData.lthSoprMa3 ?? latestData.lthSopr ?? 0,
+          targetValue: latestData.thresholds?.lthSopr?.trigger ?? 0.9,
+          targetOperator: 'lt' as const,
+          triggered: latestData.signalsV6?.lthSopr ?? latestData.signalsV4?.lthSopr ?? false,
+          format: 'ratio' as const,
+          color: '#A855F7',
+          dataDate: latestData.indicatorDates?.lthSopr || latestData.date,
+          detailValue: latestData.thresholds?.lthSopr
+            ? `3日均值，原始值 ${(latestData.lthSopr ?? 0).toFixed(4)}；滚动阈值 p20=${(latestData.thresholds.lthSopr.trigger ?? 0.9).toFixed(4)}，深度 p10=${(latestData.thresholds.lthSopr.deep ?? 0.75).toFixed(4)}`
+            : `3日均值，原始值 ${(latestData.lthSopr ?? 0).toFixed(4)}`,
         },
       ]
     : [];

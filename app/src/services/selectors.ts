@@ -18,7 +18,7 @@ const DEFAULT_THRESHOLDS = {
   mvrvZscore: 0,
   nupl: 0.15,
   lthMvrv: 1,
-  lthSopr: 1,
+  lthSopr: 0.9,
   sthSopr: 1,
   sthMvrv: 1,
   puell: 0.6,
@@ -31,7 +31,7 @@ const DEFAULT_DEEP_THRESHOLDS = {
   mvrvZscore: -0.5,
   nupl: 0,
   lthMvrv: 0.9,
-  lthSopr: 0.98,
+  lthSopr: 0.75,
   sthSopr: 0.97,
   sthMvrv: 0.85,
   puell: 0.5,
@@ -40,8 +40,6 @@ const DEFAULT_DEEP_THRESHOLDS = {
 const CORE_INDICATOR_DATE_KEYS = [
   'priceMa200w',
   'priceRealized',
-  'mvrvZscore',
-  'nupl',
   'lthMvrv',
   'lthSopr',
   'sthSopr',
@@ -86,6 +84,25 @@ function readRawIndicatorDates(row: IndicatorData): LatestData['indicatorDates']
 
 function toNumericPrice(value: number | string | undefined): number {
   return toFiniteNumber(value, 0);
+}
+
+function getValuationBlendDate(indicatorDates?: LatestData['indicatorDates']): string | undefined {
+  const candidates = [indicatorDates?.mvrvZscore, indicatorDates?.nupl]
+    .filter((value): value is string => typeof value === 'string' && value.length > 0);
+
+  if (candidates.length === 0) {
+    return undefined;
+  }
+
+  return candidates.reduce((newest, value) => (value > newest ? value : newest), candidates[0]);
+}
+
+function getCoreDisplayDates(indicatorDates?: LatestData['indicatorDates']): string[] {
+  const valuationBlendDate = getValuationBlendDate(indicatorDates);
+  return [
+    valuationBlendDate,
+    ...CORE_INDICATOR_DATE_KEYS.map((key) => indicatorDates?.[key]),
+  ].filter((value): value is string => typeof value === 'string' && value.length > 0);
 }
 
 function getThresholdRange(
@@ -212,11 +229,17 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   const reserveRisk = toFiniteNumber(latest.reserveRisk, 0);
   const mvrvZscore = toFiniteNumber(latest.mvrvZscore, 0);
   const nupl = toFiniteNumber(latest.nupl, 0);
-  const sthSopr = toFiniteNumber(latest.sthSopr, 0);
+  const sthSoprRaw = toFiniteNumber(latest.sthSopr, 0);
+  const sthSoprMa3 = latest.sthSoprMa3;
+  const sthSopr = sthSoprRaw;
+  const sthSoprSignalValue = toFiniteNumber(sthSoprMa3 ?? latest.sthSopr, 0);
   const sthMvrv = toFiniteNumber(latest.sthMvrv, 0);
   const puellMultiple = toFiniteNumber(latest.puellMultiple, 0);
   const lthMvrv = toFiniteNumber(latest.lthMvrv, 0);
-  const lthSoprValue = toFiniteNumber(latest.lthSopr, 0);
+  const lthSoprRaw = toFiniteNumber(latest.lthSopr, 0);
+  const lthSoprMa3 = latest.lthSoprMa3;
+  const lthSoprValue = lthSoprRaw;
+  const lthSoprSignalValue = toFiniteNumber(lthSoprMa3 ?? latest.lthSopr, 0);
   const priceMa200wThreshold = getThresholdRange(
     latest.thresholds,
     'priceMa200wRatio',
@@ -265,6 +288,12 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     DEFAULT_THRESHOLDS.lthMvrv,
     DEFAULT_DEEP_THRESHOLDS.lthMvrv,
   );
+  const lthSoprThreshold = getThresholdRange(
+    latest.thresholds,
+    'lthSopr',
+    DEFAULT_THRESHOLDS.lthSopr,
+    DEFAULT_DEEP_THRESHOLDS.lthSopr,
+  );
   const puellThreshold = getThresholdRange(
     latest.thresholds,
     'puellMultiple',
@@ -286,9 +315,9 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < priceMa200wThreshold.trigger,
     priceRealized: latest.signalPriceRealized ?? priceRealizedRatio < priceRealizedThreshold.trigger,
     reserveRisk: latest.signalReserveRisk ?? reserveRisk < reserveRiskThreshold.trigger,
-    sthSopr: latest.signalSthSopr ?? sthSopr < sthSoprThreshold.trigger,
+    sthSopr: latest.signalSthSopr ?? sthSoprSignalValue < sthSoprThreshold.trigger,
     sthMvrv: latest.signalSthMvrv ?? sthMvrv < sthMvrvThreshold.trigger,
-    sthGroup: latest.signalSthGroup ?? ((latest.signalSthSopr ?? sthSopr < sthSoprThreshold.trigger) || (latest.signalSthMvrv ?? sthMvrv < sthMvrvThreshold.trigger)),
+    sthGroup: latest.signalSthGroup ?? ((latest.signalSthSopr ?? (sthSoprSignalValue < sthSoprThreshold.trigger)) || (latest.signalSthMvrv ?? (sthMvrv < sthMvrvThreshold.trigger))),
     puell: latest.signalPuell ?? puellMultiple < puellThreshold.trigger,
   };
   const signalsV4 = {
@@ -298,9 +327,9 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     mvrvZscore: signalMvrvZscoreCore,
     sthMvrv: latest.signalSthMvrv ?? sthMvrv < sthMvrvThreshold.trigger,
     lthMvrv: latest.signalLthMvrv ?? lthMvrv < lthMvrvThreshold.trigger,
-    lthSopr: latest.signalLthSopr ?? ((latest.lthSopr ?? 0) < 1),
+    lthSopr: latest.signalLthSopr ?? (lthSoprSignalValue < lthSoprThreshold.trigger),
     puell: latest.signalPuell ?? puellMultiple < puellThreshold.trigger,
-    sthSoprTrigger: latest.signalSthSoprTrigger ?? latest.signalSthSoprAux ?? latest.signalSthSopr ?? sthSopr < sthSoprThreshold.trigger,
+    sthSoprTrigger: latest.signalSthSoprTrigger ?? latest.signalSthSoprAux ?? latest.signalSthSopr ?? (sthSoprSignalValue < sthSoprThreshold.trigger),
   };
   const signalsV6 = {
     priceMa200w: latest.signalsV6?.priceMa200w ?? signalsV4.priceMa200w,
@@ -337,15 +366,14 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   const groupedSignalCountV6 = [
     signalsV6.priceMa200w,
     signalsV6.priceRealized,
-    signalsV6.mvrvZscore,
-    signalsV6.nupl,
+    signalsV6.valuationBlend,
     signalsV6.sthMvrv,
+    signalsV6.sthSoprTrigger,
     signalsV6.lthMvrv,
     signalsV6.lthSopr,
     signalsV6.puell,
   ].filter(Boolean).length;
-  const activeIndicatorCountV6 = latest.activeIndicatorCountV6
-    ?? (6 + (hasUsableValue(latest.mvrvZscore) ? 1 : 0) + (hasUsableValue(latest.nupl) ? 1 : 0));
+  const activeIndicatorCountV6 = latest.activeIndicatorCountV6 ?? 8;
 
   return {
     date: latest.d,
@@ -359,7 +387,9 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     nupl,
     lthMvrv,
     lthSopr: lthSoprValue,
+    lthSoprMa3,
     sthSopr,
+    sthSoprMa3,
     sthMvrv,
     puellMultiple,
     signalCount: latest.signalCount ?? groupedSignalCount,
@@ -452,7 +482,9 @@ export function latestDataToHistoryRow(
     nupl: latest.nupl ?? existingRow?.nupl,
     lthMvrv: latest.lthMvrv ?? existingRow?.lthMvrv,
     lthSopr: latest.lthSopr ?? existingRow?.lthSopr,
+    lthSoprMa3: latest.lthSoprMa3 ?? existingRow?.lthSoprMa3,
     sthSopr: latest.sthSopr,
+    sthSoprMa3: latest.sthSoprMa3 ?? existingRow?.sthSoprMa3,
     sthMvrv: latest.sthMvrv,
     puellMultiple: latest.puellMultiple,
     signalPriceMa200w: signalsV4?.priceMa200w ?? latest.signals.priceMa200w,
@@ -623,6 +655,18 @@ export function getIndicatorChartData(
         preserveGap = true;
       }
 
+      if (indicator === 'valuationBlend') {
+        const mvrvScore = toFiniteNumber(item.scoreMvrvZscoreCore, 0);
+        const nuplScore = toFiniteNumber(item.scoreNuplCore, 0);
+        const blendScore = item.valuationBlendScoreV6 ?? Math.max(mvrvScore, nuplScore);
+        value = blendScore;
+        triggerValue = 0.5;
+        deepValue = 1.5;
+        signal = item.signalsV6?.valuationBlend
+          ?? item.signalValuationBlendV6
+          ?? (blendScore > 0);
+      }
+
       if (indicator === 'mvrvZscore') {
         const threshold = getThresholdRange(
           item.thresholds,
@@ -673,10 +717,14 @@ export function getIndicatorChartData(
           DEFAULT_THRESHOLDS.sthSopr,
           DEFAULT_DEEP_THRESHOLDS.sthSopr,
         );
-        value = item.sthSopr ?? null;
+        value = item.sthSoprMa3 ?? item.sthSopr ?? null;
         triggerValue = threshold.trigger;
         deepValue = threshold.deep;
-        signal = item.signalSthSopr ?? false;
+        signal = item.signalsV6?.sthSoprTrigger
+          ?? item.signalSthSoprTrigger
+          ?? item.signalSthSoprAux
+          ?? item.signalSthSopr
+          ?? false;
       }
 
       if (indicator === 'sthMvrv') {
@@ -693,10 +741,16 @@ export function getIndicatorChartData(
       }
 
       if (indicator === 'lthSopr') {
-        value = item.lthSopr ?? null;
-        triggerValue = DEFAULT_THRESHOLDS.lthSopr;
-        deepValue = DEFAULT_DEEP_THRESHOLDS.lthSopr;
-        signal = item.signalLthSopr ?? false;
+        const threshold = getThresholdRange(
+          item.thresholds,
+          'lthSopr',
+          DEFAULT_THRESHOLDS.lthSopr,
+          DEFAULT_DEEP_THRESHOLDS.lthSopr,
+        );
+        value = item.lthSoprMa3 ?? item.lthSopr ?? null;
+        triggerValue = threshold.trigger;
+        deepValue = threshold.deep;
+        signal = item.signalsV6?.lthSopr ?? item.signalLthSopr ?? false;
       }
 
       if (indicator === 'puell') {
@@ -756,13 +810,14 @@ export function getSignalEvents(data: IndicatorData[], minSignals = 4): SignalEv
       triggeredIndicators: [
         item.signalPriceMa200w || item.signalPriceMa ? 'Price / 200W-MA' : '',
         item.signalPriceRealized ? 'Price / Realized Price' : '',
-        item.signalMvrvZscoreCore ?? item.signalReserveRiskV4 ?? item.signalMvrvZ ? 'MVRV Z-Score' : '',
-        item.signalNuplCore ?? item.signalNupl ? 'NUPL' : '',
+        (item.signalsV6?.valuationBlend ?? item.signalValuationBlendV6 ?? item.signalMvrvZscoreCore ?? item.signalNuplCore)
+          ? '估值融合(MVRV Z/NUPL)'
+          : '',
         item.signalSthMvrv ? 'STH-MVRV' : '',
+        (item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr) ? 'STH-SOPR' : '',
         item.signalLthMvrv ? 'LTH-MVRV' : '',
         item.signalLthSopr ? 'LTH-SOPR' : '',
         item.signalPuell ? 'Puell Multiple' : '',
-        item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr ? 'STH-SOPR (Trigger)' : '',
       ].filter(Boolean),
     }));
 }
@@ -775,9 +830,7 @@ export function getEffectiveDataDate(
     return '';
   }
 
-  const candidates = CORE_INDICATOR_DATE_KEYS
-    .map((key) => indicatorDates?.[key])
-    .filter((value): value is string => typeof value === 'string' && value.length > 0);
+  const candidates = getCoreDisplayDates(indicatorDates);
 
   if (candidates.length === 0) {
     return latestDate;
@@ -810,8 +863,6 @@ export function getDataFreshnessHours(value: string): number {
 /** On-chain indicator keys — exclude btcPrice and priceMa200w (price-based). */
 const ONCHAIN_INDICATOR_DATE_KEYS = [
   'priceRealized',
-  'mvrvZscore',
-  'nupl',
   'lthMvrv',
   'lthSopr',
   'sthSopr',
@@ -836,9 +887,10 @@ export function getOnchainFreshnessHours(
     return 0;
   }
 
-  const candidates = ONCHAIN_INDICATOR_DATE_KEYS
-    .map((key) => indicatorDates[key])
-    .filter((value): value is string => typeof value === 'string' && value.length > 0);
+  const candidates = [
+    getValuationBlendDate(indicatorDates),
+    ...ONCHAIN_INDICATOR_DATE_KEYS.map((key) => indicatorDates[key]),
+  ].filter((value): value is string => typeof value === 'string' && value.length > 0);
 
   if (candidates.length === 0) {
     return getDataFreshnessHours(latestDate);
@@ -865,6 +917,13 @@ export const INDICATOR_CONFIG = {
     targetValue: 1,
     color: '#0EA5E9',
     description: '现价相对链上实现价格的位置。',
+  },
+  valuationBlend: {
+    name: '估值融合',
+    unit: '',
+    targetValue: 1,
+    color: '#14B8A6',
+    description: 'MVRV Z-Score 与 NUPL 共享估值槽位，取两者核心分较高者。',
   },
   mvrvZscore: {
     name: 'MVRV Z-Score',
@@ -897,16 +956,16 @@ export const INDICATOR_CONFIG = {
   lthSopr: {
     name: 'LTH-SOPR',
     unit: '',
-    targetValue: 1,
+    targetValue: 0.9,
     color: '#A855F7',
-    description: '长期持有者已实现盈亏比，确认层（SOPR < 1 为底部信号）。',
+    description: '长期持有者已实现盈亏比，确认层，使用 3 日均值和滚动 p20/p10 阈值。',
   },
   sthSopr: {
     name: 'STH-SOPR',
     unit: '',
     targetValue: 1,
     color: '#EAB308',
-    description: '短期持有者已实现盈亏比，触发阈值使用滚动分位数。',
+    description: '短期持有者已实现盈亏比，触发层，使用 3 日均值和滚动分位数。',
   },
   sthMvrv: {
     name: 'STH-MVRV',
