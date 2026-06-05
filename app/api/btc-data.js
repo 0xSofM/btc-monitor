@@ -1,5 +1,5 @@
 /**
- * Vercel Edge Function - BTC runtime V4 proxy.
+ * Vercel Edge Function - BTC runtime V6 proxy.
  */
 
 export const config = {
@@ -37,10 +37,10 @@ const COINBASE_SPOT_URL = 'https://api.coinbase.com/v2/prices/BTC-USD/spot';
 const COINGECKO_SPOT_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd';
 const RESERVE_RISK_DISABLE_LAG_DAYS = 30;
 const SCORE_CONFIRM_RATIO = 7 / 12;
-const SCHEMA_VERSION = 'v5';
-const SCORING_MODEL_VERSION = 'v5_core7_dual_confirm';
+const SCHEMA_VERSION = 'v6';
+const SCORING_MODEL_VERSION = 'v6_core8_nupl_valuation_blend';
 const LEGACY_SCORING_MODEL_VERSION = 'v3_no_lookahead_replacement';
-const CORE_INDICATOR_SET = 'core7_bottom_v5_dual_confirm';
+const CORE_INDICATOR_SET = 'core8_bottom_v6_nupl_valuation_blend';
 
 const BGEOMETRICS_SERIES = {
   btcPrice: {
@@ -71,6 +71,10 @@ const BGEOMETRICS_SERIES = {
     dataKey: 'mvrvZscore',
     urls: ['https://charts.bgeometrics.com/files/mvrv_zscore_data.json'],
   },
+  nupl: {
+    dataKey: 'nupl',
+    urls: ['https://charts.bgeometrics.com/files/nupl_data.json'],
+  },
   sthSopr: {
     dataKey: 'sthSopr',
     urls: ['https://charts.bgeometrics.com/files/sth_sopr.json'],
@@ -93,8 +97,14 @@ const RESERVE_RISK_BACKUP_URLS = [
   'https://r.jina.ai/http://bitcoin-data.com/v1/reserve-risk/1',
 ];
 
+const NUPL_BACKUP_URLS = [
+  'https://bitcoin-data.com/v1/nupl/1',
+  'https://r.jina.ai/http://bitcoin-data.com/v1/nupl/1',
+];
+
 const INDICATOR_ROUTE_MAP = {
   '/btc-data/v1/mvrv-zscore/1': { seriesKey: 'mvrvZscore', dataKey: 'mvrvZscore', dateKey: 'mvrvZscore' },
+  '/btc-data/v1/nupl/1': { seriesKey: 'nupl', dataKey: 'nupl', dateKey: 'nupl' },
   '/btc-data/v1/lth-mvrv/1': { seriesKey: 'lthMvrv', dataKey: 'lthMvrv', dateKey: 'lthMvrv' },
   '/btc-data/v1/puell-multiple/1': { seriesKey: 'puellMultiple', dataKey: 'puellMultiple', dateKey: 'puell' },
   '/btc-data/v1/reserve-risk/1': { seriesKey: 'reserveRisk', dataKey: 'reserveRisk', dateKey: 'reserveRisk' },
@@ -115,6 +125,8 @@ const DEFAULT_THRESHOLDS = {
   lthSopr: { trigger: 1, deep: 0.98 },
   mvrvZscore: { trigger: 0, deep: -0.5 },
   mvrvZscoreCore: { trigger: 0, deep: -0.5, role: 'valuation_core_v4' },
+  nupl: { trigger: 0.25, deep: 0 },
+  nuplCore: { trigger: 0.25, deep: 0, role: 'valuation_core_v6' },
   reserveRiskV4Compatibility: { aliasOf: 'mvrvZscoreCore', deprecated: true },
 };
 
@@ -126,6 +138,7 @@ const FRESHNESS_LIMITS = {
   lthMvrv: 7,
   lthSopr: 7,
   mvrvZscore: 7,
+  nupl: 7,
   sthSopr: 7,
   sthMvrv: 7,
   puellMultiple: 7,
@@ -457,6 +470,31 @@ function parseReserveRiskBackupPayload(payload) {
   return buildPoint(date, value, 'reserve_risk_backup');
 }
 
+function parseNuplBackupPayload(payload) {
+  let point = null;
+
+  if (payload && typeof payload === 'object' && !Array.isArray(payload) && 'd' in payload && 'nupl' in payload) {
+    point = payload;
+  } else if (Array.isArray(payload) && payload.length > 0) {
+    const candidate = payload[payload.length - 1];
+    if (candidate && typeof candidate === 'object') {
+      point = candidate;
+    }
+  }
+
+  if (!point) {
+    return null;
+  }
+
+  const date = asString(point.d);
+  const value = toNumberOrNull(point.nupl);
+  if (!date || value === null) {
+    return null;
+  }
+
+  return buildPoint(date, value, 'nupl_backup');
+}
+
 function buildLatestRollingMin(historyRows, latestDate, field, newValue) {
   if (!Array.isArray(historyRows) || historyRows.length === 0) {
     return null;
@@ -502,6 +540,8 @@ function buildThresholdBundle(staticLatest) {
     lthSopr: getThresholdConfig(staticLatest, 'lthSopr'),
     mvrvZscore: getThresholdConfig(staticLatest, 'mvrvZscore'),
     mvrvZscoreCore: getThresholdConfig(staticLatest, 'mvrvZscoreCore'),
+    nupl: getThresholdConfig(staticLatest, 'nupl'),
+    nuplCore: getThresholdConfig(staticLatest, 'nuplCore'),
     reserveRiskV4Compatibility: getThresholdConfig(staticLatest, 'reserveRiskV4Compatibility'),
   };
 }
@@ -587,6 +627,28 @@ async function fetchReserveRiskBackupPoint() {
   return null;
 }
 
+async function fetchNuplBackupPoint() {
+  for (const url of NUPL_BACKUP_URLS) {
+    const text = await fetchTextSafely(url, null, {
+      headers: {
+        'User-Agent': 'btc-monitor',
+      },
+    });
+
+    if (!text) {
+      continue;
+    }
+
+    const payload = extractJsonPayload(text);
+    const point = parseNuplBackupPayload(payload);
+    if (point) {
+      return point;
+    }
+  }
+
+  return null;
+}
+
 async function fetchCoinbaseSpotPrice() {
   const payload = await fetchJsonSafely(COINBASE_SPOT_URL, null, {
     headers: {
@@ -647,6 +709,8 @@ async function fetchRuntimeInputs(request) {
     lthMvrvPoint,
     lthSoprPoint,
     mvrvZscorePoint,
+    nuplFilePoint,
+    nuplBackupPoint,
     sthSoprPoint,
     sthMvrvPoint,
     puellPoint,
@@ -661,6 +725,8 @@ async function fetchRuntimeInputs(request) {
     fetchLatestFilePoint('lthMvrv'),
     fetchLatestFilePoint('lthSopr'),
     fetchLatestFilePoint('mvrvZscore'),
+    fetchLatestFilePoint('nupl'),
+    fetchNuplBackupPoint(),
     fetchLatestFilePoint('sthSopr'),
     fetchLatestFilePoint('sthMvrv'),
     fetchLatestFilePoint('puellMultiple'),
@@ -669,6 +735,7 @@ async function fetchRuntimeInputs(request) {
   const backupSpotPrice = await fetchBackupSpotPrice();
   const resolvedPricePoint = pickNewerPoint(filePricePoint, backupSpotPrice);
   const resolvedReserveRiskPoint = pickNewerPoint(reserveRiskPrimaryPoint, reserveRiskBackupPoint);
+  const resolvedNuplPoint = pickNewerPoint(nuplFilePoint, nuplBackupPoint);
 
   return {
     staticLatest,
@@ -682,6 +749,7 @@ async function fetchRuntimeInputs(request) {
       lthMvrv: lthMvrvPoint,
       lthSopr: lthSoprPoint,
       mvrvZscore: mvrvZscorePoint,
+      nupl: resolvedNuplPoint,
       sthSopr: sthSoprPoint,
       sthMvrv: sthMvrvPoint,
       puellMultiple: puellPoint,
@@ -707,6 +775,7 @@ function buildRuntimePayload({
     lthMvrv: buildSnapshotPoint(staticLatest, 'lthMvrv', 'lthMvrv', snapshotDate),
     lthSopr: buildSnapshotPoint(staticLatest, 'lthSopr', 'lthSopr', snapshotDate),
     mvrvZscore: buildSnapshotPoint(staticLatest, 'mvrvZscore', 'mvrvZscore', snapshotDate),
+    nupl: buildSnapshotPoint(staticLatest, 'nupl', 'nupl', snapshotDate),
     sthSopr: buildSnapshotPoint(staticLatest, 'sthSopr', 'sthSopr', snapshotDate),
     sthMvrv: buildSnapshotPoint(staticLatest, 'sthMvrv', 'sthMvrv', snapshotDate),
     puellMultiple: buildSnapshotPoint(staticLatest, 'puellMultiple', 'puell', snapshotDate),
@@ -720,6 +789,7 @@ function buildRuntimePayload({
     lthMvrv: pickFreshestPoint(seriesPoints.lthMvrv, snapshotPoints.lthMvrv),
     lthSopr: pickFreshestPoint(seriesPoints.lthSopr, snapshotPoints.lthSopr),
     mvrvZscore: pickFreshestPoint(seriesPoints.mvrvZscore, snapshotPoints.mvrvZscore),
+    nupl: pickFreshestPoint(seriesPoints.nupl, snapshotPoints.nupl),
     sthSopr: pickFreshestPoint(seriesPoints.sthSopr, snapshotPoints.sthSopr),
     sthMvrv: pickFreshestPoint(seriesPoints.sthMvrv, snapshotPoints.sthMvrv),
     puellMultiple: pickFreshestPoint(seriesPoints.puellMultiple, snapshotPoints.puellMultiple),
@@ -737,6 +807,7 @@ function buildRuntimePayload({
   const lthMvrv = points.lthMvrv?.value ?? toNumberOrNull(staticLatest?.lthMvrv);
   const lthSopr = points.lthSopr?.value ?? toNumberOrNull(staticLatest?.lthSopr);
   const mvrvZscore = points.mvrvZscore?.value ?? toNumberOrNull(staticLatest?.mvrvZscore);
+  const nupl = points.nupl?.value ?? toNumberOrNull(staticLatest?.nupl);
   const sthSopr = points.sthSopr?.value ?? toNumberOrNull(staticLatest?.sthSopr);
   const sthMvrv = points.sthMvrv?.value ?? toNumberOrNull(staticLatest?.sthMvrv);
   const puellMultiple = points.puellMultiple?.value ?? toNumberOrNull(staticLatest?.puellMultiple);
@@ -750,6 +821,7 @@ function buildRuntimePayload({
   const lthMvrvLagDays = daysBetween(latestDate, points.lthMvrv?.d);
   const lthSoprLagDays = daysBetween(latestDate, points.lthSopr?.d);
   const mvrvZscoreLagDays = daysBetween(latestDate, points.mvrvZscore?.d);
+  const nuplLagDays = daysBetween(latestDate, points.nupl?.d);
   const sthSoprLagDays = daysBetween(latestDate, points.sthSopr?.d);
   const sthMvrvLagDays = daysBetween(latestDate, points.sthMvrv?.d);
   const puellLagDays = daysBetween(latestDate, points.puellMultiple?.d);
@@ -761,6 +833,7 @@ function buildRuntimePayload({
   const lthMvrvFreshnessScore = freshnessScore(lthMvrvLagDays, FRESHNESS_LIMITS.lthMvrv);
   const lthSoprFreshnessScore = freshnessScore(lthSoprLagDays, FRESHNESS_LIMITS.lthSopr);
   const mvrvZscoreFreshnessScore = freshnessScore(mvrvZscoreLagDays, FRESHNESS_LIMITS.mvrvZscore);
+  const nuplFreshnessScore = freshnessScore(nuplLagDays, FRESHNESS_LIMITS.nupl);
   const sthSoprFreshnessScore = freshnessScore(sthSoprLagDays, FRESHNESS_LIMITS.sthSopr);
   const sthMvrvFreshnessScore = freshnessScore(sthMvrvLagDays, FRESHNESS_LIMITS.sthMvrv);
   const puellFreshnessScore = freshnessScore(puellLagDays, FRESHNESS_LIMITS.puellMultiple);
@@ -771,6 +844,7 @@ function buildRuntimePayload({
   const lthMvrvIsFresh = isFresh(lthMvrvLagDays, FRESHNESS_LIMITS.lthMvrv);
   const lthSoprIsFresh = isFresh(lthSoprLagDays, FRESHNESS_LIMITS.lthSopr);
   const mvrvZscoreIsFresh = isFresh(mvrvZscoreLagDays, FRESHNESS_LIMITS.mvrvZscore);
+  const nuplIsFresh = isFresh(nuplLagDays, FRESHNESS_LIMITS.nupl);
   const sthSoprIsFresh = isFresh(sthSoprLagDays, FRESHNESS_LIMITS.sthSopr);
   const sthMvrvIsFresh = isFresh(sthMvrvLagDays, FRESHNESS_LIMITS.sthMvrv);
   const puellIsFresh = isFresh(puellLagDays, FRESHNESS_LIMITS.puellMultiple);
@@ -785,8 +859,13 @@ function buildRuntimePayload({
   const scoreLthMvrv = scoreByLt(lthMvrv, thresholds.lthMvrv.trigger, thresholds.lthMvrv.deep);
   const scoreLthSopr = scoreByLt(lthSopr, thresholds.lthSopr.trigger, thresholds.lthSopr.deep);
   const scoreMvrvZscore = scoreByLt(mvrvZscore, thresholds.mvrvZscore.trigger, thresholds.mvrvZscore.deep);
+  const scoreNupl = scoreByLt(nupl, thresholds.nupl.trigger, thresholds.nupl.deep);
   const mvrvZscoreCoreActive = Boolean(points.mvrvZscore?.d && mvrvZscoreIsFresh);
   const scoreMvrvZscoreCore = mvrvZscoreCoreActive ? scoreMvrvZscore : 0;
+  const nuplCoreActive = Boolean(points.nupl?.d && nuplIsFresh);
+  const scoreNuplCore = nuplCoreActive ? scoreNupl : 0;
+  const valuationBlendActiveV6 = mvrvZscoreCoreActive || nuplCoreActive;
+  const valuationBlendScoreV6 = Math.max(scoreMvrvZscoreCore, scoreNuplCore);
 
   const reserveRiskPrimaryLagDays = reserveRiskLagDays;
   const reserveRiskActive = Boolean(
@@ -828,6 +907,9 @@ function buildRuntimePayload({
   const signalSthGroup = scoreSthGroup > 0;
   const signalPuell = scorePuell > 0;
   const signalMvrvZscoreCore = scoreMvrvZscoreCore > 0;
+  const signalNupl = scoreNupl > 0;
+  const signalNuplCore = scoreNuplCore > 0;
+  const signalValuationBlendV6 = valuationBlendScoreV6 > 0;
   const signalReserveRiskV4 = signalMvrvZscoreCore;
   const signalLthMvrv = scoreLthMvrv > 0;
   const signalLthSopr = scoreLthSopr > 0;
@@ -866,18 +948,44 @@ function buildRuntimePayload({
   const maxTotalScoreV4 = maxValuationScore + maxTriggerScore + maxConfirmationScore;
   const totalScoreV4 = valuationScore + triggerScore + confirmationScore;
 
+  const valuationScoreV6 = scorePriceMa200w + scorePriceRealized + valuationBlendScoreV6 + scorePuell;
+  const maxValuationScoreV6 = 6 + (valuationBlendActiveV6 ? 2 : 0);
+  const triggerScoreV6 = Math.max(scoreSthMvrv, scoreSthSopr);
+  const maxTriggerScoreV6 = 2;
+  const confirmationScoreV6 = scoreLthMvrv + scoreLthSopr;
+  const maxConfirmationScoreV6 = 4;
+  const activeIndicatorCountV6 = 6 + (mvrvZscoreCoreActive ? 1 : 0) + (nuplCoreActive ? 1 : 0);
+  const signalCountV6 = [
+    signalPriceMa200w,
+    signalPriceRealized,
+    signalMvrvZscoreCore,
+    signalNuplCore,
+    signalSthMvrv,
+    signalLthMvrv,
+    signalLthSopr,
+    signalPuell,
+  ].filter(Boolean).length;
+  const maxTotalScoreV6 = maxValuationScoreV6 + maxTriggerScoreV6 + maxConfirmationScoreV6;
+  const totalScoreV6 = valuationScoreV6 + triggerScoreV6 + confirmationScoreV6;
+
   const signalScoreV2Min3d = buildLatestRollingMin(staticHistory, latestDate, 'signalScoreV2', signalScoreV2);
   const totalScoreV4Min3d = buildLatestRollingMin(staticHistory, latestDate, 'totalScoreV4', totalScoreV4);
+  const totalScoreV6Min3d = buildLatestRollingMin(staticHistory, latestDate, 'totalScoreV6', totalScoreV6);
   const signalConfirmed3d = signalScoreV2Min3d !== null && maxSignalScoreV2 > 0
     ? (signalScoreV2Min3d / maxSignalScoreV2) >= SCORE_CONFIRM_RATIO
     : false;
   const signalConfirmed3dV4 = totalScoreV4Min3d !== null && maxTotalScoreV4 > 0
     ? (totalScoreV4Min3d / maxTotalScoreV4) >= SCORE_CONFIRM_RATIO
     : false;
+  const signalConfirmed3dV6 = totalScoreV6Min3d !== null && maxTotalScoreV6 > 0
+    ? (totalScoreV6Min3d / maxTotalScoreV6) >= SCORE_CONFIRM_RATIO
+    : false;
   const signalBandV2 = classifyScoreBand(signalScoreV2, maxSignalScoreV2);
   const signalBandV4 = classifyScoreBand(totalScoreV4, maxTotalScoreV4);
+  const signalBandV6 = classifyScoreBand(totalScoreV6, maxTotalScoreV6);
 
   const reserveEffectiveFreshness = mvrvZscoreCoreActive ? mvrvZscoreFreshnessScore : 0;
+  const nuplEffectiveFreshness = nuplCoreActive ? nuplFreshnessScore : 0;
   const dataFreshnessScore = round(
     (
       btcPriceFreshnessScore
@@ -891,14 +999,39 @@ function buildRuntimePayload({
     ) / 8,
     6,
   );
+  const dataFreshnessScoreV6 = round(
+    (
+      btcPriceFreshnessScore
+      + realizedPriceFreshnessScore
+      + ma200wFreshnessScore
+      + sthMvrvFreshnessScore
+      + lthMvrvFreshnessScore
+      + lthSoprFreshnessScore
+      + puellFreshnessScore
+      + reserveEffectiveFreshness
+      + nuplEffectiveFreshness
+    ) / 9,
+    6,
+  );
   const baseScoreRatio = maxTotalScoreV4 > 0 ? totalScoreV4 / maxTotalScoreV4 : 0;
+  const baseScoreRatioV6 = maxTotalScoreV6 > 0 ? totalScoreV6 / maxTotalScoreV6 : 0;
   const auxiliaryBonus = signalSthSoprAux ? 0.05 : 0;
   const confirmationBonus = signalConfirmed3dV4 ? 0.1 : 0;
+  const confirmationBonusV6 = signalConfirmed3dV6 ? 0.1 : 0;
   const lthSoprBonus = signalLthSopr ? 0.05 : 0;
   const fallbackPenalty = mvrvZscoreCoreActive ? 0 : 0.2;
+  const fallbackPenaltyV6 = valuationBlendActiveV6 ? 0 : 0.2;
   const signalConfidence = round(
     clamp(
       (0.5 * baseScoreRatio) + (0.3 * dataFreshnessScore) + auxiliaryBonus + confirmationBonus + lthSoprBonus - fallbackPenalty,
+      0,
+      1,
+    ),
+    4,
+  );
+  const signalConfidenceV6 = round(
+    clamp(
+      (0.5 * baseScoreRatioV6) + (0.3 * dataFreshnessScoreV6) + auxiliaryBonus + confirmationBonusV6 + lthSoprBonus - fallbackPenaltyV6,
       0,
       1,
     ),
@@ -918,6 +1051,7 @@ function buildRuntimePayload({
     lthMvrv: lthMvrvLagDays,
     lthSopr: lthSoprLagDays,
     mvrvZscore: mvrvZscoreLagDays,
+    nupl: nuplLagDays,
     sthSopr: sthSoprLagDays,
     sthMvrv: sthMvrvLagDays,
     puell: puellLagDays,
@@ -930,6 +1064,7 @@ function buildRuntimePayload({
     lthMvrv: points.lthMvrv?.d ?? latestDate,
     lthSopr: points.lthSopr?.d ?? latestDate,
     mvrvZscore: points.mvrvZscore?.d ?? latestDate,
+    nupl: points.nupl?.d ?? latestDate,
     sthSopr: points.sthSopr?.d ?? latestDate,
     sthMvrv: points.sthMvrv?.d ?? latestDate,
     puell: points.puellMultiple?.d ?? latestDate,
@@ -945,6 +1080,7 @@ function buildRuntimePayload({
   if (!lthSoprIsFresh) staleIndicatorKeys.push('lthSopr');
   if (!puellIsFresh) staleIndicatorKeys.push('puell');
   if (!mvrvZscoreCoreActive) staleIndicatorKeys.push('mvrvZscore');
+  if (!nuplCoreActive) staleIndicatorKeys.push('nupl');
 
   const staleIndicators = staleIndicatorKeys.map((key) => {
     const freshnessLimitMap = {
@@ -954,6 +1090,7 @@ function buildRuntimePayload({
       lthMvrv: FRESHNESS_LIMITS.lthMvrv,
       lthSopr: FRESHNESS_LIMITS.lthSopr,
       mvrvZscore: FRESHNESS_LIMITS.mvrvZscore,
+      nupl: FRESHNESS_LIMITS.nupl,
       sthSopr: FRESHNESS_LIMITS.sthSopr,
       sthMvrv: FRESHNESS_LIMITS.sthMvrv,
       puell: FRESHNESS_LIMITS.puellMultiple,
@@ -993,6 +1130,16 @@ function buildRuntimePayload({
       disableLagDays: FRESHNESS_LIMITS.mvrvZscore,
     });
   }
+  if (!nuplCoreActive) {
+    inactiveIndicators.push({
+      key: 'nupl',
+      reason: 'core_indicator_stale',
+      sourceDate: points.nupl?.d ?? null,
+      latestDate,
+      lagDays: nuplLagDays,
+      disableLagDays: FRESHNESS_LIMITS.nupl,
+    });
+  }
 
   return {
     date: latestDate,
@@ -1004,6 +1151,7 @@ function buildRuntimePayload({
     lthMvrv,
     lthSopr,
     mvrvZscore,
+    nupl,
     sthSopr: sthSopr ?? 0,
     sthMvrv: sthMvrv ?? 0,
     ma200w,
@@ -1012,6 +1160,8 @@ function buildRuntimePayload({
     activeIndicatorCount,
     signalCountV4,
     activeIndicatorCountV4,
+    signalCountV6,
+    activeIndicatorCountV6,
     signalScoreV2,
     maxSignalScoreV2,
     signalScoreV2Min3d,
@@ -1030,9 +1180,23 @@ function buildRuntimePayload({
     totalScoreV4Min3d,
     signalConfirmed3dV4,
     signalBandV4,
+    valuationScoreV6,
+    maxValuationScoreV6,
+    triggerScoreV6,
+    maxTriggerScoreV6,
+    confirmationScoreV6,
+    maxConfirmationScoreV6,
+    totalScoreV6,
+    maxTotalScoreV6,
+    totalScoreV6Min3d,
+    signalConfirmed3dV6,
+    signalBandV6,
     signalConfidence,
+    signalConfidenceV6,
     dataFreshnessScore,
+    dataFreshnessScoreV6,
     fallbackMode: mvrvZscoreCoreActive ? 'none' : 'mvrv_zscore_inactive',
+    fallbackModeV6: valuationBlendActiveV6 ? 'none' : 'valuation_blend_inactive',
     scorePriceMa200w,
     scorePriceRealized,
     scoreReserveRisk,
@@ -1046,9 +1210,15 @@ function buildRuntimePayload({
     scoreLthSopr,
     scoreMvrvZscore,
     scoreMvrvZscoreCore,
+    scoreNupl,
+    scoreNuplCore,
+    valuationBlendScoreV6,
     scoreSthGroup,
     signalSthGroup,
     signalMvrvZscoreCore,
+    signalNupl,
+    signalNuplCore,
+    signalValuationBlendV6,
     signalLthSopr,
     scoringModelVersion: asString(staticLatest?.scoringModelVersion) ?? SCORING_MODEL_VERSION,
     legacyScoringModelVersion: asString(staticLatest?.legacyScoringModelVersion) ?? LEGACY_SCORING_MODEL_VERSION,
@@ -1085,6 +1255,18 @@ function buildRuntimePayload({
       puell: signalPuell,
       sthSoprTrigger: signalSthSoprAux,
     },
+    signalsV6: {
+      priceMa200w: signalPriceMa200w,
+      priceRealized: signalPriceRealized,
+      mvrvZscore: signalMvrvZscoreCore,
+      nupl: signalNuplCore,
+      valuationBlend: signalValuationBlendV6,
+      sthMvrv: signalSthMvrv,
+      sthSoprTrigger: signalSthSoprAux,
+      lthMvrv: signalLthMvrv,
+      lthSopr: signalLthSopr,
+      puell: signalPuell,
+    },
     indicatorDates: {
       ...indicatorDates,
       reserveRiskLegacy: reserveRiskEffectiveDateLegacy,
@@ -1096,10 +1278,11 @@ function buildRuntimePayload({
       ...thresholds,
     },
     raw: {
-      runtimeSource: 'bgeometrics_latest_v4',
+      runtimeSource: 'bgeometrics_latest_v6',
       priceSource: points.btcPrice?.source ?? null,
       reserveRiskSource: points.reserveRisk?.source ?? null,
       reserveRiskV4Source: reserveRiskSourceModeV4,
+      nuplSource: points.nupl?.source ?? null,
     },
     lastUpdated: new Date().toISOString(),
   };
@@ -1121,12 +1304,19 @@ async function fetchIndicatorRoute(path, request) {
       fetchReserveRiskBackupPoint(),
     ]);
     point = pickNewerPoint(primary, backup);
+  } else if (routeConfig.seriesKey === 'nupl') {
+    const [primary, backup] = await Promise.all([
+      fetchLatestFilePoint('nupl'),
+      fetchNuplBackupPoint(),
+    ]);
+    point = pickNewerPoint(primary, backup);
   } else {
     point = await fetchLatestFilePoint(routeConfig.seriesKey);
   }
 
   const snapshotKeyMap = {
     mvrvZscore: 'mvrvZscore',
+    nupl: 'nupl',
     lthMvrv: 'lthMvrv',
     puellMultiple: 'puellMultiple',
     reserveRisk: 'reserveRisk',

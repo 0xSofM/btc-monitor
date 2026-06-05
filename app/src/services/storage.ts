@@ -3,7 +3,7 @@ import type { IndicatorData, LatestData } from '@/types';
 import { normalizeIndicatorData, normalizeLatestData } from './normalizers';
 import { enrichLatestDataWithHistory, getLatestFromHistory } from './selectors';
 
-const DATA_VERSION = 'v1.2.0';
+const DATA_VERSION = 'v1.3.0';
 const HISTORY_KEY = 'btc_indicators_history';
 const LATEST_KEY = 'btc_indicators_latest';
 
@@ -16,6 +16,7 @@ const HISTORY_STORAGE_FIELDS: Array<keyof IndicatorData> = [
   'realizedPrice',
   'reserveRisk',
   'mvrvZscore',
+  'nupl',
   'lthMvrv',
   'lthSopr',
   'sthSopr',
@@ -27,6 +28,9 @@ const HISTORY_STORAGE_FIELDS: Array<keyof IndicatorData> = [
   'signalReserveRisk',
   'signalReserveRiskV4',
   'signalMvrvZscoreCore',
+  'signalNupl',
+  'signalNuplCore',
+  'signalValuationBlendV6',
   'signalSthSopr',
   'signalSthMvrv',
   'signalSthGroup',
@@ -37,8 +41,10 @@ const HISTORY_STORAGE_FIELDS: Array<keyof IndicatorData> = [
   'signalPuell',
   'signalCount',
   'signalCountV4',
+  'signalCountV6',
   'activeIndicatorCount',
   'activeIndicatorCountV4',
+  'activeIndicatorCountV6',
   'maxSignalScoreV2',
   'scorePriceMa200w',
   'scorePriceRealized',
@@ -46,6 +52,9 @@ const HISTORY_STORAGE_FIELDS: Array<keyof IndicatorData> = [
   'scoreReserveRiskV4',
   'scoreMvrvZscore',
   'scoreMvrvZscoreCore',
+  'scoreNupl',
+  'scoreNuplCore',
+  'valuationBlendScoreV6',
   'scoreLthMvrv',
   'scoreLthSopr',
   'scoreSthSopr',
@@ -67,8 +76,30 @@ const HISTORY_STORAGE_FIELDS: Array<keyof IndicatorData> = [
   'maxTotalScoreV4',
   'totalScoreV4Min3d',
   'signalConfirmed3dV4',
+  'signalBandV4',
+  'valuationScoreV6',
+  'maxValuationScoreV6',
+  'triggerScoreV6',
+  'maxTriggerScoreV6',
+  'confirmationScoreV6',
+  'maxConfirmationScoreV6',
+  'totalScoreV6',
+  'maxTotalScoreV6',
+  'totalScoreV6Min3d',
+  'signalConfirmed3dV6',
+  'signalBandV6',
   'signalConfidence',
+  'signalConfidenceV6',
   'dataFreshnessScore',
+  'dataFreshnessScoreV6',
+  'fallbackMode',
+  'fallbackModeV6',
+  'staleIndicators',
+  'coreIndicatorSet',
+  'scoringModelVersion',
+  'thresholds',
+  'indicatorDates',
+  'signalsV6',
 ];
 
 const storageWarnings = {

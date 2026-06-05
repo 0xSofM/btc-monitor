@@ -16,6 +16,7 @@ const DEFAULT_THRESHOLDS = {
   priceRealized: 1,
   reserveRisk: 0.0016,
   mvrvZscore: 0,
+  nupl: 0.25,
   lthMvrv: 1,
   lthSopr: 1,
   sthSopr: 1,
@@ -28,6 +29,7 @@ const DEFAULT_DEEP_THRESHOLDS = {
   priceRealized: 0.9,
   reserveRisk: 0.0012,
   mvrvZscore: -0.5,
+  nupl: 0,
   lthMvrv: 0.9,
   lthSopr: 0.98,
   sthSopr: 0.97,
@@ -39,6 +41,7 @@ const CORE_INDICATOR_DATE_KEYS = [
   'priceMa200w',
   'priceRealized',
   'mvrvZscore',
+  'nupl',
   'lthMvrv',
   'lthSopr',
   'sthSopr',
@@ -71,6 +74,7 @@ function readRawIndicatorDates(row: IndicatorData): LatestData['indicatorDates']
     lthMvrv: asNonEmptyString(dates.lthMvrv ?? dates.lth_mvrv),
     lthSopr: asNonEmptyString(dates.lthSopr ?? dates.lth_sopr),
     mvrvZscore: asNonEmptyString(dates.mvrvZscore ?? dates.mvrv_zscore),
+    nupl: asNonEmptyString(dates.nupl),
     sthSopr: asNonEmptyString(dates.sthSopr ?? dates.sth_sopr),
     sthMvrv: asNonEmptyString(dates.sthMvrv ?? dates.sth_mvrv),
     puell: asNonEmptyString(dates.puell),
@@ -111,6 +115,7 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
       lthMvrv: undefined,
       lthSopr: undefined,
       mvrvZscore: undefined,
+      nupl: undefined,
       sthSopr: undefined,
       sthMvrv: undefined,
       puell: undefined,
@@ -125,6 +130,7 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
     lthMvrv: undefined,
     lthSopr: undefined,
     mvrvZscore: undefined,
+    nupl: undefined,
     sthSopr: undefined,
     sthMvrv: undefined,
     puell: undefined,
@@ -153,6 +159,10 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
       dates.mvrvZscore = row.d;
     }
 
+    if (!dates.nupl && hasUsableValue(row.nupl)) {
+      dates.nupl = row.d;
+    }
+
     if (!dates.sthSopr && hasUsableValue(row.sthSopr)) {
       dates.sthSopr = row.d;
     }
@@ -177,6 +187,7 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
     if (fromPayload.lthMvrv) dates.lthMvrv = fromPayload.lthMvrv;
     if (fromPayload.lthSopr) dates.lthSopr = fromPayload.lthSopr;
     if (fromPayload.mvrvZscore) dates.mvrvZscore = fromPayload.mvrvZscore;
+    if (fromPayload.nupl) dates.nupl = fromPayload.nupl;
     if (fromPayload.sthSopr) dates.sthSopr = fromPayload.sthSopr;
     if (fromPayload.sthMvrv) dates.sthMvrv = fromPayload.sthMvrv;
     if (fromPayload.puell) dates.puell = fromPayload.puell;
@@ -197,6 +208,7 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   const priceRealizedRatio = toFiniteNumber(latest.priceRealizedRatio, 0);
   const reserveRisk = toFiniteNumber(latest.reserveRisk, 0);
   const mvrvZscore = toFiniteNumber(latest.mvrvZscore, 0);
+  const nupl = toFiniteNumber(latest.nupl, 0);
   const sthSopr = toFiniteNumber(latest.sthSopr, 0);
   const sthMvrv = toFiniteNumber(latest.sthMvrv, 0);
   const puellMultiple = toFiniteNumber(latest.puellMultiple, 0);
@@ -226,6 +238,12 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     DEFAULT_THRESHOLDS.mvrvZscore,
     DEFAULT_DEEP_THRESHOLDS.mvrvZscore,
   );
+  const nuplThreshold = getThresholdRange(
+    latest.thresholds,
+    'nuplCore',
+    DEFAULT_THRESHOLDS.nupl,
+    DEFAULT_DEEP_THRESHOLDS.nupl,
+  );
   const sthSoprThreshold = getThresholdRange(
     latest.thresholds,
     'sthSopr',
@@ -254,6 +272,12 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     ?? latest.signalReserveRiskV4
     ?? latest.signalMvrvZ
     ?? (mvrvZscore < mvrvZscoreThreshold.trigger);
+  const signalNuplCore = latest.signalNuplCore
+    ?? latest.signalNupl
+    ?? (nupl < nuplThreshold.trigger);
+  const signalValuationBlendV6 = latest.signalValuationBlendV6
+    ?? latest.signalsV6?.valuationBlend
+    ?? (signalMvrvZscoreCore || signalNuplCore);
 
   const signals = {
     priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < priceMa200wThreshold.trigger,
@@ -275,6 +299,18 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     puell: latest.signalPuell ?? puellMultiple < puellThreshold.trigger,
     sthSoprTrigger: latest.signalSthSoprTrigger ?? latest.signalSthSoprAux ?? latest.signalSthSopr ?? sthSopr < sthSoprThreshold.trigger,
   };
+  const signalsV6 = {
+    priceMa200w: latest.signalsV6?.priceMa200w ?? signalsV4.priceMa200w,
+    priceRealized: latest.signalsV6?.priceRealized ?? signalsV4.priceRealized,
+    mvrvZscore: latest.signalsV6?.mvrvZscore ?? signalMvrvZscoreCore,
+    nupl: latest.signalsV6?.nupl ?? signalNuplCore,
+    valuationBlend: latest.signalsV6?.valuationBlend ?? signalValuationBlendV6,
+    sthMvrv: latest.signalsV6?.sthMvrv ?? signalsV4.sthMvrv,
+    sthSoprTrigger: latest.signalsV6?.sthSoprTrigger ?? signalsV4.sthSoprTrigger,
+    lthMvrv: latest.signalsV6?.lthMvrv ?? signalsV4.lthMvrv,
+    lthSopr: latest.signalsV6?.lthSopr ?? signalsV4.lthSopr,
+    puell: latest.signalsV6?.puell ?? signalsV4.puell,
+  };
 
   const groupedSignalCount = [
     signals.priceMa200w,
@@ -295,6 +331,18 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     signalsV4.puell,
   ].filter(Boolean).length;
   const activeIndicatorCountV4 = latest.activeIndicatorCountV4 ?? (hasUsableValue(latest.mvrvZscore) ? 7 : 6);
+  const groupedSignalCountV6 = [
+    signalsV6.priceMa200w,
+    signalsV6.priceRealized,
+    signalsV6.mvrvZscore,
+    signalsV6.nupl,
+    signalsV6.sthMvrv,
+    signalsV6.lthMvrv,
+    signalsV6.lthSopr,
+    signalsV6.puell,
+  ].filter(Boolean).length;
+  const activeIndicatorCountV6 = latest.activeIndicatorCountV6
+    ?? (6 + (hasUsableValue(latest.mvrvZscore) ? 1 : 0) + (hasUsableValue(latest.nupl) ? 1 : 0));
 
   return {
     date: latest.d,
@@ -305,6 +353,7 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     realizedPrice: latest.realizedPrice,
     reserveRisk,
     mvrvZscore,
+    nupl,
     lthMvrv,
     lthSopr: lthSoprValue,
     sthSopr,
@@ -314,6 +363,8 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     activeIndicatorCount,
     signalCountV4: latest.signalCountV4 ?? groupedSignalCountV4,
     activeIndicatorCountV4,
+    signalCountV6: latest.signalCountV6 ?? groupedSignalCountV6,
+    activeIndicatorCountV6,
     maxSignalScoreV2,
     signalScoreV2: latest.signalScoreV2,
     signalScoreV2Min3d: latest.signalScoreV2Min3d ?? null,
@@ -332,15 +383,36 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     totalScoreV4Min3d: latest.totalScoreV4Min3d ?? null,
     signalConfirmed3dV4: latest.signalConfirmed3dV4,
     signalBandV4: latest.signalBandV4,
+    valuationScoreV6: latest.valuationScoreV6,
+    maxValuationScoreV6: latest.maxValuationScoreV6,
+    triggerScoreV6: latest.triggerScoreV6,
+    maxTriggerScoreV6: latest.maxTriggerScoreV6,
+    confirmationScoreV6: latest.confirmationScoreV6,
+    maxConfirmationScoreV6: latest.maxConfirmationScoreV6,
+    totalScoreV6: latest.totalScoreV6,
+    maxTotalScoreV6: latest.maxTotalScoreV6,
+    totalScoreV6Min3d: latest.totalScoreV6Min3d ?? null,
+    signalConfirmed3dV6: latest.signalConfirmed3dV6,
+    signalBandV6: latest.signalBandV6,
     signalConfidence: latest.signalConfidence,
+    signalConfidenceV6: latest.signalConfidenceV6,
     dataFreshnessScore: latest.dataFreshnessScore,
+    dataFreshnessScoreV6: latest.dataFreshnessScoreV6,
     fallbackMode: latest.fallbackMode,
+    fallbackModeV6: latest.fallbackModeV6,
     scoreMvrvZscoreCore: latest.scoreMvrvZscoreCore,
     signalMvrvZscoreCore,
+    scoreNupl: latest.scoreNupl,
+    scoreNuplCore: latest.scoreNuplCore,
+    valuationBlendScoreV6: latest.valuationBlendScoreV6,
+    signalNupl: latest.signalNupl,
+    signalNuplCore,
+    signalValuationBlendV6,
     scoreSthGroup: latest.scoreSthGroup,
     signalSthGroup: latest.signalSthGroup,
     signals,
     signalsV4,
+    signalsV6,
     thresholds: latest.thresholds,
     indicatorDates: findIndicatorDates(data),
   };
@@ -362,6 +434,7 @@ export function latestDataToHistoryRow(
   existingRow?: IndicatorData,
 ): IndicatorData {
   const signalsV4 = latest.signalsV4;
+  const signalsV6 = latest.signalsV6;
 
   return {
     ...existingRow,
@@ -373,6 +446,7 @@ export function latestDataToHistoryRow(
     realizedPrice: latest.realizedPrice ?? existingRow?.realizedPrice,
     reserveRisk: latest.reserveRisk,
     mvrvZscore: latest.mvrvZscore ?? existingRow?.mvrvZscore,
+    nupl: latest.nupl ?? existingRow?.nupl,
     lthMvrv: latest.lthMvrv ?? existingRow?.lthMvrv,
     lthSopr: latest.lthSopr ?? existingRow?.lthSopr,
     sthSopr: latest.sthSopr,
@@ -383,21 +457,27 @@ export function latestDataToHistoryRow(
     signalReserveRisk: latest.signals.reserveRisk,
     signalReserveRiskV4: signalsV4?.reserveRisk ?? signalsV4?.mvrvZscore ?? existingRow?.signalReserveRiskV4,
     signalMvrvZscoreCore: latest.signalMvrvZscoreCore
+      ?? signalsV6?.mvrvZscore
       ?? signalsV4?.mvrvZscore
       ?? signalsV4?.reserveRisk
       ?? existingRow?.signalMvrvZscoreCore,
+    signalNupl: latest.signalNupl ?? signalsV6?.nupl ?? existingRow?.signalNupl,
+    signalNuplCore: latest.signalNuplCore ?? signalsV6?.nupl ?? existingRow?.signalNuplCore,
+    signalValuationBlendV6: latest.signalValuationBlendV6 ?? signalsV6?.valuationBlend ?? existingRow?.signalValuationBlendV6,
     signalSthSopr: latest.signals.sthSopr,
-    signalSthMvrv: signalsV4?.sthMvrv ?? latest.signals.sthMvrv,
+    signalSthMvrv: signalsV6?.sthMvrv ?? signalsV4?.sthMvrv ?? latest.signals.sthMvrv,
     signalSthGroup: latest.signalSthGroup ?? latest.signals.sthGroup ?? existingRow?.signalSthGroup,
-    signalLthMvrv: signalsV4?.lthMvrv ?? existingRow?.signalLthMvrv,
-    signalLthSopr: signalsV4?.lthSopr ?? existingRow?.signalLthSopr,
-    signalSthSoprTrigger: signalsV4?.sthSoprTrigger ?? existingRow?.signalSthSoprTrigger,
+    signalLthMvrv: signalsV6?.lthMvrv ?? signalsV4?.lthMvrv ?? existingRow?.signalLthMvrv,
+    signalLthSopr: signalsV6?.lthSopr ?? signalsV4?.lthSopr ?? existingRow?.signalLthSopr,
+    signalSthSoprTrigger: signalsV6?.sthSoprTrigger ?? signalsV4?.sthSoprTrigger ?? existingRow?.signalSthSoprTrigger,
     signalSthSoprAux: existingRow?.signalSthSoprAux,
-    signalPuell: signalsV4?.puell ?? latest.signals.puell,
+    signalPuell: signalsV6?.puell ?? signalsV4?.puell ?? latest.signals.puell,
     signalCount: latest.signalCount,
     signalCountV4: latest.signalCountV4 ?? existingRow?.signalCountV4,
+    signalCountV6: latest.signalCountV6 ?? existingRow?.signalCountV6,
     activeIndicatorCount: latest.activeIndicatorCount ?? existingRow?.activeIndicatorCount,
     activeIndicatorCountV4: latest.activeIndicatorCountV4 ?? existingRow?.activeIndicatorCountV4,
+    activeIndicatorCountV6: latest.activeIndicatorCountV6 ?? existingRow?.activeIndicatorCountV6,
     maxSignalScoreV2: latest.maxSignalScoreV2 ?? existingRow?.maxSignalScoreV2,
     scorePriceMa200w: latest.scorePriceMa200w ?? existingRow?.scorePriceMa200w,
     scorePriceRealized: latest.scorePriceRealized ?? existingRow?.scorePriceRealized,
@@ -405,6 +485,9 @@ export function latestDataToHistoryRow(
     scoreReserveRiskV4: latest.scoreReserveRiskV4 ?? existingRow?.scoreReserveRiskV4,
     scoreMvrvZscore: latest.scoreMvrvZscore ?? existingRow?.scoreMvrvZscore,
     scoreMvrvZscoreCore: latest.scoreMvrvZscoreCore ?? existingRow?.scoreMvrvZscoreCore,
+    scoreNupl: latest.scoreNupl ?? existingRow?.scoreNupl,
+    scoreNuplCore: latest.scoreNuplCore ?? existingRow?.scoreNuplCore,
+    valuationBlendScoreV6: latest.valuationBlendScoreV6 ?? existingRow?.valuationBlendScoreV6,
     scoreLthMvrv: latest.scoreLthMvrv ?? existingRow?.scoreLthMvrv,
     scoreLthSopr: latest.scoreLthSopr ?? existingRow?.scoreLthSopr,
     scoreSthSopr: latest.scoreSthSopr ?? existingRow?.scoreSthSopr,
@@ -428,15 +511,29 @@ export function latestDataToHistoryRow(
     totalScoreV4Min3d: latest.totalScoreV4Min3d ?? existingRow?.totalScoreV4Min3d,
     signalConfirmed3dV4: latest.signalConfirmed3dV4 ?? existingRow?.signalConfirmed3dV4,
     signalBandV4: latest.signalBandV4 ?? existingRow?.signalBandV4,
+    valuationScoreV6: latest.valuationScoreV6 ?? existingRow?.valuationScoreV6,
+    maxValuationScoreV6: latest.maxValuationScoreV6 ?? existingRow?.maxValuationScoreV6,
+    triggerScoreV6: latest.triggerScoreV6 ?? existingRow?.triggerScoreV6,
+    maxTriggerScoreV6: latest.maxTriggerScoreV6 ?? existingRow?.maxTriggerScoreV6,
+    confirmationScoreV6: latest.confirmationScoreV6 ?? existingRow?.confirmationScoreV6,
+    maxConfirmationScoreV6: latest.maxConfirmationScoreV6 ?? existingRow?.maxConfirmationScoreV6,
+    totalScoreV6: latest.totalScoreV6 ?? existingRow?.totalScoreV6,
+    maxTotalScoreV6: latest.maxTotalScoreV6 ?? existingRow?.maxTotalScoreV6,
+    totalScoreV6Min3d: latest.totalScoreV6Min3d ?? existingRow?.totalScoreV6Min3d,
+    signalConfirmed3dV6: latest.signalConfirmed3dV6 ?? existingRow?.signalConfirmed3dV6,
+    signalBandV6: latest.signalBandV6 ?? existingRow?.signalBandV6,
     signalConfidence: latest.signalConfidence ?? existingRow?.signalConfidence,
+    signalConfidenceV6: latest.signalConfidenceV6 ?? existingRow?.signalConfidenceV6,
     dataFreshnessScore: latest.dataFreshnessScore ?? existingRow?.dataFreshnessScore,
+    dataFreshnessScoreV6: latest.dataFreshnessScoreV6 ?? existingRow?.dataFreshnessScoreV6,
     fallbackMode: latest.fallbackMode ?? existingRow?.fallbackMode,
+    fallbackModeV6: latest.fallbackModeV6 ?? existingRow?.fallbackModeV6,
     staleIndicators: latest.staleIndicators ?? existingRow?.staleIndicators,
     coreIndicatorSet: latest.coreIndicatorSet ?? existingRow?.coreIndicatorSet,
     scoringModelVersion: latest.scoringModelVersion ?? existingRow?.scoringModelVersion,
     thresholds: latest.thresholds ?? existingRow?.thresholds,
     indicatorDates: latest.indicatorDates ?? existingRow?.indicatorDates,
-    nupl: latest.nupl ?? existingRow?.nupl,
+    signalsV6: latest.signalsV6 ?? existingRow?.signalsV6,
     signalMvrvZ: latest.signalMvrvZ ?? existingRow?.signalMvrvZ,
   };
 }
@@ -541,6 +638,24 @@ export function getIndicatorChartData(
         preserveGap = true;
       }
 
+      if (indicator === 'nupl') {
+        const threshold = getThresholdRange(
+          item.thresholds,
+          'nuplCore',
+          DEFAULT_THRESHOLDS.nupl,
+          DEFAULT_DEEP_THRESHOLDS.nupl,
+        );
+        const observedDate = item.indicatorDates?.nupl;
+        const hasObservedDate = typeof observedDate === 'string' && observedDate.length > 0;
+        value = hasObservedDate
+          ? (observedDate === item.d ? (item.nupl ?? null) : null)
+          : (item.nupl ?? null);
+        triggerValue = threshold.trigger;
+        deepValue = threshold.deep;
+        signal = item.signalNuplCore ?? item.signalNupl ?? false;
+        preserveGap = true;
+      }
+
       if (indicator === 'lthMvrv') {
         value = item.lthMvrv ?? null;
         triggerValue = DEFAULT_THRESHOLDS.lthMvrv;
@@ -630,19 +745,21 @@ export function getMA200ChartData(
 
 export function getSignalEvents(data: IndicatorData[], minSignals = 4): SignalEvent[] {
   return data
-    .filter((item) => ((item.signalCountV4 ?? item.signalCount) ?? 0) >= minSignals)
+    .filter((item) => ((item.signalCountV6 ?? item.signalCountV4 ?? item.signalCount) ?? 0) >= minSignals)
     .map((item) => ({
       date: item.d,
       btcPrice: toNumericPrice(item.btcPrice),
-      signalCount: item.signalCountV4 ?? item.signalCount ?? 0,
+      signalCount: item.signalCountV6 ?? item.signalCountV4 ?? item.signalCount ?? 0,
       triggeredIndicators: [
         item.signalPriceMa200w || item.signalPriceMa ? 'Price / 200W-MA' : '',
         item.signalPriceRealized ? 'Price / Realized Price' : '',
         item.signalMvrvZscoreCore ?? item.signalReserveRiskV4 ?? item.signalMvrvZ ? 'MVRV Z-Score' : '',
+        item.signalNuplCore ?? item.signalNupl ? 'NUPL' : '',
         item.signalSthMvrv ? 'STH-MVRV' : '',
         item.signalLthMvrv ? 'LTH-MVRV' : '',
+        item.signalLthSopr ? 'LTH-SOPR' : '',
         item.signalPuell ? 'Puell Multiple' : '',
-        item.signalSthSoprAux ?? item.signalSthSopr ? 'STH-SOPR (Auxiliary)' : '',
+        item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr ? 'STH-SOPR (Trigger)' : '',
       ].filter(Boolean),
     }));
 }
@@ -691,6 +808,7 @@ export function getDataFreshnessHours(value: string): number {
 const ONCHAIN_INDICATOR_DATE_KEYS = [
   'priceRealized',
   'mvrvZscore',
+  'nupl',
   'lthMvrv',
   'lthSopr',
   'sthSopr',
@@ -751,6 +869,13 @@ export const INDICATOR_CONFIG = {
     targetValue: 0,
     color: '#10B981',
     description: '估值过热/过冷的标准化位置。',
+  },
+  nupl: {
+    name: 'NUPL',
+    unit: '',
+    targetValue: 0.25,
+    color: '#14B8A6',
+    description: '净未实现盈亏，用于补强估值层并与 MVRV Z-Score 共享计分槽位。',
   },
   reserveRisk: {
     name: 'Reserve Risk (Observation)',

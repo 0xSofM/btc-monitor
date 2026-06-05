@@ -79,6 +79,7 @@ export function hasCore8Coverage(rows: IndicatorData[]): boolean {
     'priceMa200wRatio',
     'priceRealizedRatio',
     'mvrvZscore',
+    'nupl',
     'lthMvrv',
     'lthSopr',
     'sthSopr',
@@ -108,8 +109,14 @@ function normalizeManifest(raw: unknown): DataManifest | null {
   const latestDate = typeof record.latestDate === 'string' ? record.latestDate : '';
   const lastUpdated = typeof record.lastUpdated === 'string' ? record.lastUpdated : '';
   const historyRows = toFiniteNumber(record.historyRows, 0);
-  const historyLightRows = toFiniteNumber(record.historyLightRows, 0);
   const schemaVersion = typeof record.schemaVersion === 'string' ? record.schemaVersion : 'unknown';
+  const signalEventsV4Rows = toFiniteNumber(record.signalEventsV4Rows, 0);
+  const indicatorSet = typeof record.indicatorSet === 'string' ? record.indicatorSet : undefined;
+  const scoringModelVersion = typeof record.scoringModelVersion === 'string' ? record.scoringModelVersion : undefined;
+  const activeIndicatorCountV4 = toFiniteNumber(record.activeIndicatorCountV4, Number.NaN);
+  const maxTotalScoreV4 = toFiniteNumber(record.maxTotalScoreV4, Number.NaN);
+  const activeIndicatorCountV6 = toFiniteNumber(record.activeIndicatorCountV6, Number.NaN);
+  const maxTotalScoreV6 = toFiniteNumber(record.maxTotalScoreV6, Number.NaN);
 
   if (!generatedAt || !latestDate) {
     return null;
@@ -120,8 +127,14 @@ function normalizeManifest(raw: unknown): DataManifest | null {
     latestDate,
     lastUpdated,
     historyRows,
-    historyLightRows,
     schemaVersion,
+    signalEventsV4Rows: signalEventsV4Rows > 0 ? signalEventsV4Rows : undefined,
+    indicatorSet,
+    scoringModelVersion,
+    activeIndicatorCountV4: Number.isNaN(activeIndicatorCountV4) ? undefined : activeIndicatorCountV4,
+    maxTotalScoreV4: Number.isNaN(maxTotalScoreV4) ? undefined : maxTotalScoreV4,
+    activeIndicatorCountV6: Number.isNaN(activeIndicatorCountV6) ? undefined : activeIndicatorCountV6,
+    maxTotalScoreV6: Number.isNaN(maxTotalScoreV6) ? undefined : maxTotalScoreV6,
   };
 }
 

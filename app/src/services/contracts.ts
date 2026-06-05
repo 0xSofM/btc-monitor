@@ -2,6 +2,7 @@ export type IndicatorKey =
   | 'priceMa200w'
   | 'priceRealized'
   | 'mvrvZscore'
+  | 'nupl'
   | 'reserveRisk'
   | 'lthMvrv'
   | 'lthSopr'
@@ -23,6 +24,7 @@ export type ApiDatePayload = {
   lth_sopr?: string;
   mvrvZscore?: string;
   mvrv_zscore?: string;
+  nupl?: string;
   sthSopr?: string;
   sth_sopr?: string;
   sthMvrv?: string;
@@ -36,6 +38,7 @@ export type ApiMetricPoint = {
   realizedPrice?: string | number;
   reserveRisk?: string | number;
   mvrvZscore?: string | number;
+  nupl?: string | number;
   sthSopr?: string | number;
   sthMvrv?: string | number;
   puellMultiple?: string | number;
@@ -56,11 +59,12 @@ export interface DataManifest {
   latestDate: string;
   lastUpdated: string;
   historyRows: number;
-  historyLightRows?: number;
   schemaVersion: string;
   signalEventsV4Rows?: number;
   indicatorSet?: string;
   scoringModelVersion?: string;
   activeIndicatorCountV4?: number;
   maxTotalScoreV4?: number;
+  activeIndicatorCountV6?: number;
+  maxTotalScoreV6?: number;
 }

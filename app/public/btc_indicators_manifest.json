@@ -1,19 +1,21 @@
 {
-  "generatedAt": "2026-06-05T02:33:50.996694+00:00",
+  "generatedAt": "2026-06-05T04:25:45.498310+00:00",
   "latestDate": "2026-06-05",
-  "lastUpdated": "2026-06-05T02:33:50.911509+00:00",
+  "lastUpdated": "2026-06-05T04:25:45.442709+00:00",
   "historyRows": 5484,
-  "historyLightRows": 2921,
   "signalEventsV4Rows": 19,
-  "schemaVersion": "v5",
-  "indicatorSet": "core7_bottom_v5_dual_confirm",
-  "scoringModelVersion": "v5_core7_dual_confirm",
+  "schemaVersion": "v6",
+  "indicatorSet": "core8_bottom_v6_nupl_valuation_blend",
+  "scoringModelVersion": "v6_core8_nupl_valuation_blend",
   "legacyScoringModelVersion": "v3_no_lookahead_replacement",
   "thresholdVersion": "v4_dynamic",
+  "activeIndicatorCountV6": 8,
+  "maxTotalScoreV6": 14,
+  "totalScoreV6": 5,
   "dynamicThresholds": {
     "reserveRisk": {
-      "trigger": 0.00058803342,
-      "deep": 0.00054438239,
+      "trigger": 0.001145,
+      "deep": 0.0010459,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -40,7 +42,7 @@
     }
   },
   "reserveRiskHealth": {
-    "primaryStatus": "healthy",
+    "primaryStatus": "null_tail",
     "sourceMode": null
   },
   "archivedSnapshot": null,

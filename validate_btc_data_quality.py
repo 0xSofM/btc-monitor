@@ -25,6 +25,7 @@ CRITICAL_FIELDS = [
     "priceMa200wRatio",
     "priceRealizedRatio",
     "mvrvZscore",
+    "nupl",
     "lthMvrv",
     "lthSopr",
     "sthSopr",
@@ -37,6 +38,7 @@ INDICATOR_DATE_FIELDS = {
     "priceRealized": ("priceRealized", "price_realized"),
     "reserveRisk": ("reserveRisk", "reserve_risk"),
     "mvrvZscore": ("mvrvZscore", "mvrv_zscore"),
+    "nupl": ("nupl",),
     "lthMvrv": ("lthMvrv", "lth_mvrv"),
     "lthSopr": ("lthSopr", "lth_sopr"),
     "sthSopr": ("sthSopr", "sth_sopr"),
@@ -45,7 +47,8 @@ INDICATOR_DATE_FIELDS = {
 }
 
 INDICATOR_MAX_LAG_OVERRIDES = {
-    # Reserve Risk remains an observation metric and can legitimately lag more than Core-6.
+    # Reserve Risk remains an observation metric in V6 and can be replaced by
+    # fresher compatibility sources when its primary source stalls.
     "reserveRisk": 30,
 }
 
@@ -262,6 +265,83 @@ def compute_total_score_v4_from_latest(latest: Dict[str, Any]) -> int | None:
     )
 
 
+def compute_signal_count_v6_from_row(row: Dict[str, Any]) -> int:
+    signals_v6 = row.get("signalsV6")
+    if isinstance(signals_v6, dict):
+        return sum(
+            [
+                bool(signals_v6.get("priceMa200w")),
+                bool(signals_v6.get("priceRealized")),
+                bool(signals_v6.get("mvrvZscore")),
+                bool(signals_v6.get("nupl")),
+                bool(signals_v6.get("sthMvrv")),
+                bool(signals_v6.get("lthMvrv")),
+                bool(signals_v6.get("lthSopr")),
+                bool(signals_v6.get("puell")),
+            ]
+        )
+
+    return sum(
+        [
+            bool(row.get("signalPriceMa200w") or row.get("signalPriceMa")),
+            bool(row.get("signalPriceRealized")),
+            bool(row.get("signalMvrvZscoreCore") or row.get("signalReserveRiskV4")),
+            bool(row.get("signalNuplCore") or row.get("signalNupl")),
+            bool(row.get("signalSthMvrv")),
+            bool(row.get("signalLthMvrv")),
+            bool(row.get("signalLthSopr")),
+            bool(row.get("signalPuell")),
+        ]
+    )
+
+
+def compute_signal_count_v6_from_latest(latest: Dict[str, Any]) -> int:
+    signals = latest.get("signalsV6")
+    if not isinstance(signals, dict):
+        return -1
+
+    return sum(
+        [
+            bool(signals.get("priceMa200w")),
+            bool(signals.get("priceRealized")),
+            bool(signals.get("mvrvZscore")),
+            bool(signals.get("nupl")),
+            bool(signals.get("sthMvrv")),
+            bool(signals.get("lthMvrv")),
+            bool(signals.get("lthSopr")),
+            bool(signals.get("puell")),
+        ]
+    )
+
+
+def compute_total_score_v6_from_row(row: Dict[str, Any]) -> int | None:
+    required = ("valuationScoreV6", "triggerScoreV6", "confirmationScoreV6")
+    if not any(row.get(key) is not None for key in required):
+        return None
+
+    return sum(
+        [
+            _as_int(row.get("valuationScoreV6")),
+            _as_int(row.get("triggerScoreV6")),
+            _as_int(row.get("confirmationScoreV6")),
+        ]
+    )
+
+
+def compute_total_score_v6_from_latest(latest: Dict[str, Any]) -> int | None:
+    required = ("valuationScoreV6", "triggerScoreV6", "confirmationScoreV6")
+    if not any(latest.get(key) is not None for key in required):
+        return None
+
+    return sum(
+        [
+            _as_int(latest.get("valuationScoreV6")),
+            _as_int(latest.get("triggerScoreV6")),
+            _as_int(latest.get("confirmationScoreV6")),
+        ]
+    )
+
+
 def validate_history_structure(history: List[Dict[str, Any]], errors: List[str]) -> None:
     if not history:
         errors.append("Current history is empty.")
@@ -357,6 +437,34 @@ def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str,
                 elif mismatch_counts[key] == max_mismatches_per_type + 1:
                     errors.append(f"... further totalScoreV4 mismatches suppressed (showing first {max_mismatches_per_type}).")
 
+        if "signalCountV6" in row:
+            count_v6_expected = compute_signal_count_v6_from_row(row)
+            count_v6_actual = row.get("signalCountV6")
+            if count_v6_actual is None or int(count_v6_actual) != count_v6_expected:
+                key = "signalCountV6"
+                mismatch_counts[key] = mismatch_counts.get(key, 0) + 1
+                if mismatch_counts[key] <= max_mismatches_per_type:
+                    errors.append(
+                        f"Row {idx} signalCountV6 mismatch: expected {count_v6_expected}, got {count_v6_actual}."
+                    )
+                elif mismatch_counts[key] == max_mismatches_per_type + 1:
+                    errors.append(f"... further signalCountV6 mismatches suppressed (showing first {max_mismatches_per_type}).")
+
+        if "totalScoreV6" in row:
+            total_v6_expected = compute_total_score_v6_from_row(row)
+            total_v6_actual = row.get("totalScoreV6")
+            if total_v6_expected is not None and (
+                total_v6_actual is None or int(total_v6_actual) != total_v6_expected
+            ):
+                key = "totalScoreV6"
+                mismatch_counts[key] = mismatch_counts.get(key, 0) + 1
+                if mismatch_counts[key] <= max_mismatches_per_type:
+                    errors.append(
+                        f"Row {idx} totalScoreV6 mismatch: expected {total_v6_expected}, got {total_v6_actual}."
+                    )
+                elif mismatch_counts[key] == max_mismatches_per_type + 1:
+                    errors.append(f"... further totalScoreV6 mismatches suppressed (showing first {max_mismatches_per_type}).")
+
     latest_expected = compute_signal_count_from_latest(latest)
     latest_actual = latest.get("signalCount")
     if latest_expected < 0:
@@ -397,6 +505,26 @@ def validate_signal_consistency(history: List[Dict[str, Any]], latest: Dict[str,
         ):
             errors.append(
                 f"Latest totalScoreV4 mismatch: expected {latest_total_v4_expected}, got {latest_total_v4_actual}."
+            )
+
+    if "signalCountV6" in latest:
+        latest_count_v6_expected = compute_signal_count_v6_from_latest(latest)
+        latest_count_v6_actual = latest.get("signalCountV6")
+        if latest_count_v6_expected < 0:
+            errors.append("Latest payload missing 'signalsV6' object.")
+        elif latest_count_v6_actual is None or int(latest_count_v6_actual) != latest_count_v6_expected:
+            errors.append(
+                f"Latest signalCountV6 mismatch: expected {latest_count_v6_expected}, got {latest_count_v6_actual}."
+            )
+
+    if "totalScoreV6" in latest:
+        latest_total_v6_expected = compute_total_score_v6_from_latest(latest)
+        latest_total_v6_actual = latest.get("totalScoreV6")
+        if latest_total_v6_expected is not None and (
+            latest_total_v6_actual is None or int(latest_total_v6_actual) != latest_total_v6_expected
+        ):
+            errors.append(
+                f"Latest totalScoreV6 mismatch: expected {latest_total_v6_expected}, got {latest_total_v6_actual}."
             )
 
 
@@ -487,6 +615,8 @@ def validate_indicator_staleness(
 
     for indicator_key in INDICATOR_DATE_FIELDS:
         if indicator_key in inactive_indicators:
+            continue
+        if indicator_key == "reserveRisk" and latest.get("reserveRiskActive") is False:
             continue
 
         indicator_date_raw = get_latest_indicator_date(latest, indicator_key)

@@ -35,6 +35,17 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
             "https://charts.bgeometrics.com/files/mvrv_zscore.json",
         ],
     },
+    "nupl": {
+        "display_name": "NUPL",
+        "url": "https://charts.bgeometrics.com/files/nupl_data.json",
+        "history_urls": [
+            "https://bitcoin-data.com/v1/nupl",
+        ],
+        "latest_urls": [
+            "https://bitcoin-data.com/v1/nupl/1",
+            "https://r.jina.ai/http://bitcoin-data.com/v1/nupl/1",
+        ],
+    },
     "sth_sopr": {
         "display_name": "STH-SOPR",
         "url": "https://charts.bgeometrics.com/files/sth_sopr.json",
@@ -119,9 +130,9 @@ SCORING_INDICATOR_COUNT_V4 = 7
 SCORE_CONFIRM_RATIO = 7 / 12
 DEFAULT_RESERVE_RISK_DISABLE_LAG_DAYS = 30
 LEGACY_SCORING_MODEL_VERSION = "v3_no_lookahead_replacement"
-SCORING_MODEL_VERSION = "v5_core7_dual_confirm"
-SCHEMA_VERSION = "v5"
-INDICATOR_SET = "core7_bottom_v5_dual_confirm"
+SCORING_MODEL_VERSION = "v6_core8_nupl_valuation_blend"
+SCHEMA_VERSION = "v6"
+INDICATOR_SET = "core8_bottom_v6_nupl_valuation_blend"
 ARCHIVE_ROOT_DEFAULT = "archive/releases"
 SIGNAL_EVENTS_V4_JSON_PATH_DEFAULT = "app/public/btc_signal_events_v4.json"
 ROLLBACK_METADATA_FILE = "release_metadata.json"
@@ -141,6 +152,7 @@ INDICATOR_FRESHNESS_MAX_LAG_DAYS: Dict[str, int] = {
     "lth_mvrv": 7,
     "lth_sopr": 7,
     "mvrv_zscore": 7,
+    "nupl": 7,
     "sth_sopr": 7,
     "sth_mvrv": 7,
     "puell_multiple": 7,
@@ -155,6 +167,7 @@ THRESHOLD_STATIC: Dict[str, Dict[str, float]] = {
     "lth_mvrv": {"trigger": 1.0, "deep": 0.9},
     "lth_sopr": {"trigger": 1.0, "deep": 0.98},
     "mvrv_zscore": {"trigger": 0.0, "deep": -0.5},
+    "nupl": {"trigger": 0.25, "deep": 0.0},
 }
 
 GROUPED_SIGNAL_COLUMNS = [

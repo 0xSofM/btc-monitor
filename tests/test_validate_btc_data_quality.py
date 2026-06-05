@@ -12,6 +12,7 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "priceRealizedRatio": 0.98,
                 "reserveRisk": 0.0012,
                 "mvrvZscore": -0.35,
+                "nupl": 0.12,
                 "lthMvrv": 0.95,
                 "lthSopr": 0.99,
                 "sthSopr": 0.98,
@@ -22,6 +23,9 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "signalReserveRisk": True,
                 "signalReserveRiskV4": True,
                 "signalMvrvZscoreCore": True,
+                "signalNupl": True,
+                "signalNuplCore": True,
+                "signalValuationBlendV6": True,
                 "signalSthSopr": True,
                 "signalSthMvrv": True,
                 "signalSthGroup": True,
@@ -30,9 +34,14 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "signalPuell": True,
                 "signalCount": 5,
                 "signalCountV4": 7,
+                "signalCountV6": 8,
                 "scorePriceMa200w": 1,
                 "scorePriceRealized": 1,
                 "scoreReserveRisk": 1,
+                "scoreMvrvZscoreCore": 1,
+                "scoreNupl": 1,
+                "scoreNuplCore": 1,
+                "valuationBlendScoreV6": 1,
                 "scoreSthSopr": 1,
                 "scoreSthMvrv": 1,
                 "scoreSthGroup": 1,
@@ -43,11 +52,28 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "triggerScore": 1,
                 "confirmationScore": 2,
                 "totalScoreV4": 7,
+                "valuationScoreV6": 4,
+                "triggerScoreV6": 1,
+                "confirmationScoreV6": 2,
+                "totalScoreV6": 7,
+                "signalsV6": {
+                    "priceMa200w": True,
+                    "priceRealized": True,
+                    "mvrvZscore": True,
+                    "nupl": True,
+                    "valuationBlend": True,
+                    "sthMvrv": True,
+                    "lthMvrv": True,
+                    "lthSopr": True,
+                    "puell": True,
+                    "sthSoprTrigger": True,
+                },
                 "api_data_date": {
                     "price_ma200w": "2026-03-27",
                     "price_realized": "2026-03-27",
                     "reserve_risk": "2026-03-27",
                     "mvrv_zscore": "2026-03-27",
+                    "nupl": "2026-03-27",
                     "lth_mvrv": "2026-03-27",
                     "lth_sopr": "2026-03-27",
                     "sth_sopr": "2026-03-27",
@@ -61,6 +87,7 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "priceRealizedRatio": 0.97,
                 "reserveRisk": 0.0011,
                 "mvrvZscore": -0.28,
+                "nupl": 0.11,
                 "lthMvrv": 0.94,
                 "lthSopr": 0.97,
                 "sthSopr": 0.97,
@@ -71,6 +98,9 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "signalReserveRisk": True,
                 "signalReserveRiskV4": True,
                 "signalMvrvZscoreCore": True,
+                "signalNupl": True,
+                "signalNuplCore": True,
+                "signalValuationBlendV6": True,
                 "signalSthSopr": True,
                 "signalSthMvrv": True,
                 "signalSthGroup": True,
@@ -79,9 +109,14 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "signalPuell": True,
                 "signalCount": 5,
                 "signalCountV4": 7,
+                "signalCountV6": 8,
                 "scorePriceMa200w": 1,
                 "scorePriceRealized": 1,
                 "scoreReserveRisk": 1,
+                "scoreMvrvZscoreCore": 1,
+                "scoreNupl": 1,
+                "scoreNuplCore": 1,
+                "valuationBlendScoreV6": 1,
                 "scoreSthSopr": 1,
                 "scoreSthMvrv": 1,
                 "scoreSthGroup": 1,
@@ -92,11 +127,28 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "triggerScore": 1,
                 "confirmationScore": 2,
                 "totalScoreV4": 7,
+                "valuationScoreV6": 4,
+                "triggerScoreV6": 1,
+                "confirmationScoreV6": 2,
+                "totalScoreV6": 7,
+                "signalsV6": {
+                    "priceMa200w": True,
+                    "priceRealized": True,
+                    "mvrvZscore": True,
+                    "nupl": True,
+                    "valuationBlend": True,
+                    "sthMvrv": True,
+                    "lthMvrv": True,
+                    "lthSopr": True,
+                    "puell": True,
+                    "sthSoprTrigger": True,
+                },
                 "api_data_date": {
                     "price_ma200w": "2026-03-28",
                     "price_realized": "2026-03-28",
                     "reserve_risk": "2026-03-28",
                     "mvrv_zscore": "2026-03-28",
+                    "nupl": "2026-03-28",
                     "lth_mvrv": "2026-03-28",
                     "lth_sopr": "2026-03-28",
                     "sth_sopr": "2026-03-28",
@@ -113,6 +165,7 @@ class ValidateDataQualityTests(unittest.TestCase):
             "priceRealizedRatio": 0.97,
             "reserveRisk": 0.0011,
             "mvrvZscore": -0.28,
+            "nupl": 0.11,
             "lthMvrv": 0.94,
             "lthSopr": 0.97,
             "sthSopr": 0.97,
@@ -120,6 +173,7 @@ class ValidateDataQualityTests(unittest.TestCase):
             "puellMultiple": 0.45,
             "signalCount": 5,
             "signalCountV4": 7,
+            "signalCountV6": 8,
             "signals": {
                 "priceMa200w": True,
                 "priceRealized": True,
@@ -140,11 +194,24 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "puell": True,
                 "sthSoprTrigger": True,
             },
+            "signalsV6": {
+                "priceMa200w": True,
+                "priceRealized": True,
+                "mvrvZscore": True,
+                "nupl": True,
+                "valuationBlend": True,
+                "sthMvrv": True,
+                "lthMvrv": True,
+                "lthSopr": True,
+                "puell": True,
+                "sthSoprTrigger": True,
+            },
             "indicatorDates": {
                 "priceMa200w": "2026-03-28",
                 "priceRealized": "2026-03-28",
                 "reserveRisk": "2026-03-28",
                 "mvrvZscore": "2026-03-28",
+                "nupl": "2026-03-28",
                 "lthMvrv": "2026-03-28",
                 "lthSopr": "2026-03-28",
                 "sthSopr": "2026-03-28",
@@ -152,11 +219,17 @@ class ValidateDataQualityTests(unittest.TestCase):
                 "puell": "2026-03-28",
             },
             "activeIndicatorCount": 5,
+            "activeIndicatorCountV6": 8,
             "maxSignalScoreV2": 10,
             "valuationScore": 4,
             "triggerScore": 1,
             "confirmationScore": 2,
             "totalScoreV4": 7,
+            "valuationScoreV6": 4,
+            "triggerScoreV6": 1,
+            "confirmationScoreV6": 2,
+            "totalScoreV6": 7,
+            "maxTotalScoreV6": 14,
         }
 
     def test_validate_current_pair_passes_with_recent_indicator_dates(self):
@@ -213,6 +286,23 @@ class ValidateDataQualityTests(unittest.TestCase):
         latest["signalsV4"]["reserveRisk"] = False
         latest["signalsV4"]["mvrvZscore"] = False
         latest["signalsV4"]["lthSopr"] = True
+
+        ok, errors = validate_current_pair(
+            self.build_history(),
+            latest,
+            lookback_rows=30,
+            max_indicator_lag_days=7,
+        )
+
+        self.assertTrue(ok)
+        self.assertEqual(errors, [])
+
+    def test_validate_current_pair_skips_stale_reserve_when_replaced(self):
+        latest = self.build_latest()
+        latest["indicatorDates"]["reserveRisk"] = "2025-12-28"
+        latest["reserveRiskActive"] = False
+        latest["reserveRiskSourceMode"] = "replacement"
+        latest["reserveRiskReplacementActive"] = True
 
         ok, errors = validate_current_pair(
             self.build_history(),

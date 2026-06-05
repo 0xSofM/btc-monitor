@@ -12,6 +12,8 @@ interface SignalOverviewProps {
   maxSignalScoreV2?: number;
   totalScoreV4?: number;
   maxTotalScoreV4?: number;
+  totalScoreV6?: number;
+  maxTotalScoreV6?: number;
   valuationScore?: number;
   maxValuationScore?: number;
   triggerScore?: number;
@@ -22,6 +24,7 @@ interface SignalOverviewProps {
   fallbackMode?: string;
   signalConfirmed3d?: boolean;
   signalConfirmed3dV4?: boolean;
+  signalConfirmed3dV6?: boolean;
   dataTimestampLabel: string;
   dataSource: 'api' | 'static' | 'history';
   latestDataDate: string;
@@ -145,6 +148,8 @@ export function SignalOverview({
   maxSignalScoreV2 = 10,
   totalScoreV4,
   maxTotalScoreV4,
+  totalScoreV6,
+  maxTotalScoreV6,
   valuationScore = 0,
   maxValuationScore = 8,
   triggerScore = 0,
@@ -155,6 +160,7 @@ export function SignalOverview({
   fallbackMode,
   signalConfirmed3d = false,
   signalConfirmed3dV4 = false,
+  signalConfirmed3dV6 = false,
   dataTimestampLabel,
   dataSource,
   latestDataDate,
@@ -163,8 +169,10 @@ export function SignalOverview({
   laggingIndicators,
   oldestIndicatorDate,
 }: SignalOverviewProps) {
-  const effectiveScore = totalScoreV4 ?? signalScoreV2;
-  const effectiveMaxScore = maxTotalScoreV4 ?? maxSignalScoreV2;
+  const hasLayeredScore = totalScoreV6 !== undefined || totalScoreV4 !== undefined;
+  const modelLabel = totalScoreV6 !== undefined ? 'V6' : totalScoreV4 !== undefined ? 'V5' : 'V2';
+  const effectiveScore = totalScoreV6 ?? totalScoreV4 ?? signalScoreV2;
+  const effectiveMaxScore = maxTotalScoreV6 ?? maxTotalScoreV4 ?? maxSignalScoreV2;
   const thresholds = resolveScoreThresholds(effectiveMaxScore);
   const status = getSignalStatus(effectiveScore, signalCount, effectiveMaxScore);
   const sourceBadge = getSourceBadge(dataSource);
@@ -173,9 +181,12 @@ export function SignalOverview({
   const hasLaggingIndicators = laggingIndicators.length > 0;
   const scoreProgress = Math.max(0, Math.min(100, (effectiveScore / Math.max(1, effectiveMaxScore)) * 100));
   const confidencePercent = signalConfidence === undefined ? null : Math.round(signalConfidence * 100);
-  const fallbackLabel = fallbackMode === 'mvrv_zscore_inactive'
-    ? 'MVRV Z-Score 暂时不计入 V5 总分'
-    : null;
+  const isConfirmed = signalConfirmed3dV6 || signalConfirmed3dV4 || signalConfirmed3d;
+  const fallbackLabel = fallbackMode === 'valuation_blend_inactive'
+    ? '估值融合槽位暂时不计入 V6 总分'
+    : fallbackMode === 'mvrv_zscore_inactive'
+      ? 'MVRV Z-Score 暂时不计入 V5 总分'
+      : null;
 
   return (
     <Card className="surface-card mb-6">
@@ -184,7 +195,7 @@ export function SignalOverview({
           <div>
             <CardTitle className="text-lg font-semibold">信号总览</CardTitle>
             <p className="mt-1 text-sm text-muted-foreground">
-              基于 Core-7 V5 分层模型，分别追踪估值、触发与确认三层状态。
+              基于 Core-8 V6 分层模型，分别追踪估值、触发与确认三层状态。
             </p>
           </div>
 
@@ -228,7 +239,7 @@ export function SignalOverview({
               <span className="ml-1 text-sm font-normal text-muted-foreground">/ {totalIndicators}</span>
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              {totalScoreV4 !== undefined ? `V5 总分：${effectiveScore}/${effectiveMaxScore}` : `V2 加权评分：${signalScoreV2}/${maxSignalScoreV2}`}
+              {hasLayeredScore ? `${modelLabel} 总分：${effectiveScore}/${effectiveMaxScore}` : `V2 加权评分：${signalScoreV2}/${maxSignalScoreV2}`}
             </p>
           </article>
 
@@ -240,13 +251,13 @@ export function SignalOverview({
               市场状态
             </div>
             <p className={`text-2xl font-bold ${status.toneClass}`}>{status.label}</p>
-            <p className={`mt-1 text-xs ${(signalConfirmed3dV4 || signalConfirmed3d) ? 'text-emerald-600 dark:text-emerald-300' : 'text-muted-foreground'}`}>
-              {(signalConfirmed3dV4 || signalConfirmed3d) ? '已满足 3 日确认' : '尚未满足 3 日确认'}
+            <p className={`mt-1 text-xs ${isConfirmed ? 'text-emerald-600 dark:text-emerald-300' : 'text-muted-foreground'}`}>
+              {isConfirmed ? '已满足 3 日确认' : '尚未满足 3 日确认'}
             </p>
           </article>
         </section>
 
-        {totalScoreV4 !== undefined && (
+        {hasLayeredScore && (
           <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <article className="rounded-xl border bg-background/70 p-4">
               <p className="text-sm text-muted-foreground">估值层</p>
@@ -298,7 +309,7 @@ export function SignalOverview({
 
         <section>
           <div className="mb-2 flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">{totalScoreV4 !== undefined ? 'V5 评分强度' : 'V2 评分强度'}</span>
+            <span className="text-muted-foreground">{hasLayeredScore ? `${modelLabel} 评分强度` : 'V2 评分强度'}</span>
             <span className="font-semibold">{scoreProgress.toFixed(0)}%</span>
           </div>
           <Progress value={scoreProgress} className="h-2.5" />

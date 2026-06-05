@@ -31,6 +31,7 @@ from pipeline.config import (  # noqa: F401 — re-exported for backward compat
     SCHEMA_VERSION,
     SCORING_MODEL_VERSION,
     SIGNAL_EVENTS_V4_JSON_PATH_DEFAULT,
+    THRESHOLD_STATIC,
 )
 from pipeline.fetcher import (  # noqa: F401 — re-exported for backward compat
     _safe_float,
@@ -70,6 +71,7 @@ def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
             "price_realized_ratio": "BTC_Price_Realized_Price_Ratio",
             "reserve_risk": "Reserve_Risk",
             "lth_mvrv": "LTH_MVRV",
+            "nupl": "NUPL",
             "sth_sopr": "STH_SOPR",
             "sth_mvrv": "STH_MVRV",
             "puell_multiple": "Puell_Multiple",
@@ -78,8 +80,13 @@ def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
             "trigger_score": "Trigger_Score_V4",
             "confirmation_score": "Confirmation_Score_V4",
             "total_score_v4": "Total_Score_V4",
+            "valuation_score_v6": "Valuation_Score_V6",
+            "trigger_score_v6": "Trigger_Score_V6",
+            "confirmation_score_v6": "Confirmation_Score_V6",
+            "total_score_v6": "Total_Score_V6",
             "signal_count": "Signal_Count",
             "signal_count_v4": "Signal_Count_V4",
+            "signal_count_v6": "Signal_Count_V6",
         }
     )[
         [
@@ -88,6 +95,7 @@ def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
             "BTC_Price_Realized_Price_Ratio",
             "Reserve_Risk",
             "LTH_MVRV",
+            "NUPL",
             "STH_SOPR",
             "STH_MVRV",
             "Puell_Multiple",
@@ -96,8 +104,13 @@ def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
             "Trigger_Score_V4",
             "Confirmation_Score_V4",
             "Total_Score_V4",
+            "Valuation_Score_V6",
+            "Trigger_Score_V6",
+            "Confirmation_Score_V6",
+            "Total_Score_V6",
             "Signal_Count",
             "Signal_Count_V4",
+            "Signal_Count_V6",
         ]
     ].reset_index(drop=True)
 
@@ -127,6 +140,7 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "lthMvrv": _safe_float(getattr(row, "lth_mvrv")),
                 "lthSopr": _safe_float(getattr(row, "lth_sopr")),
                 "mvrvZscore": _safe_float(getattr(row, "mvrv_zscore")),
+                "nupl": _safe_float(getattr(row, "nupl")),
                 "sthSopr": _safe_float(getattr(row, "sth_sopr")),
                 "sthMvrv": _safe_float(getattr(row, "sth_mvrv")),
                 "puellMultiple": _safe_float(getattr(row, "puell_multiple")),
@@ -140,6 +154,11 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "signalMvrvZscoreCore": bool(
                     getattr(row, "signal_mvrv_zscore_core")
                 ),
+                "signalNupl": bool(getattr(row, "signal_nupl")),
+                "signalNuplCore": bool(getattr(row, "signal_nupl_core")),
+                "signalValuationBlendV6": bool(
+                    getattr(row, "signal_valuation_blend_v6")
+                ),
                 "signalLthMvrv": bool(getattr(row, "signal_lth_mvrv")),
                 "signalLthSopr": bool(getattr(row, "signal_lth_sopr")),
                 "signalSthSoprTrigger": bool(getattr(row, "signal_sth_sopr_trigger")),
@@ -150,6 +169,10 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "signalCountV4": int(getattr(row, "signal_count_v4")),
                 "activeIndicatorCountV4": int(
                     getattr(row, "active_indicator_count_v4")
+                ),
+                "signalCountV6": int(getattr(row, "signal_count_v6")),
+                "activeIndicatorCountV6": int(
+                    getattr(row, "active_indicator_count_v6")
                 ),
                 "scorePriceMa200w": int(getattr(row, "score_price_ma200w")),
                 "scorePriceRealized": int(getattr(row, "score_price_realized")),
@@ -165,6 +188,11 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                 "scoreLthSopr": int(getattr(row, "score_lth_sopr")),
                 "scoreMvrvZscore": int(getattr(row, "score_mvrv_zscore")),
                 "scoreMvrvZscoreCore": int(getattr(row, "score_mvrv_zscore_core")),
+                "scoreNupl": int(getattr(row, "score_nupl")),
+                "scoreNuplCore": int(getattr(row, "score_nupl_core")),
+                "valuationBlendScoreV6": int(
+                    getattr(row, "valuation_blend_score_v6")
+                ),
                 "scoreSthSopr": int(getattr(row, "score_sth_sopr")),
                 "scoreSthMvrv": int(getattr(row, "score_sth_mvrv")),
                 "scoreSthGroup": int(getattr(row, "score_sth_group")),
@@ -195,12 +223,39 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                     getattr(row, "signal_confirmed_3d_v4")
                 ),
                 "signalBandV4": str(getattr(row, "signal_band_v4")),
+                "valuationScoreV6": int(getattr(row, "valuation_score_v6")),
+                "maxValuationScoreV6": int(
+                    getattr(row, "max_valuation_score_v6")
+                ),
+                "triggerScoreV6": int(getattr(row, "trigger_score_v6")),
+                "maxTriggerScoreV6": int(getattr(row, "max_trigger_score_v6")),
+                "confirmationScoreV6": int(
+                    getattr(row, "confirmation_score_v6")
+                ),
+                "maxConfirmationScoreV6": int(
+                    getattr(row, "max_confirmation_score_v6")
+                ),
+                "totalScoreV6": int(getattr(row, "total_score_v6")),
+                "maxTotalScoreV6": int(getattr(row, "max_total_score_v6")),
+                "totalScoreV6Min3d": _safe_float(
+                    getattr(row, "total_score_v6_min3d")
+                ),
+                "signalConfirmed3dV6": bool(
+                    getattr(row, "signal_confirmed_3d_v6")
+                ),
+                "signalBandV6": str(getattr(row, "signal_band_v6")),
                 "reserveRiskActive": bool(
                     getattr(row, "reserve_risk_active")
                 ),
                 "signalConfidence": _safe_float(getattr(row, "signal_confidence")),
+                "signalConfidenceV6": _safe_float(
+                    getattr(row, "signal_confidence_v6")
+                ),
                 "dataFreshnessScore": _safe_float(
                     getattr(row, "data_freshness_score")
+                ),
+                "dataFreshnessScoreV6": _safe_float(
+                    getattr(row, "data_freshness_score_v6")
                 ),
                 "thresholds": {
                     "reserveRisk": {
@@ -215,6 +270,23 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                         "trigger": _safe_float(getattr(row, "sth_mvrv_trigger")),
                         "deep": _safe_float(getattr(row, "sth_mvrv_deep")),
                     },
+                    "nupl": THRESHOLD_STATIC["nupl"],
+                },
+                "signalsV6": {
+                    "priceMa200w": bool(getattr(row, "signal_price_ma200w")),
+                    "priceRealized": bool(getattr(row, "signal_price_realized")),
+                    "mvrvZscore": bool(getattr(row, "signal_mvrv_zscore_core")),
+                    "nupl": bool(getattr(row, "signal_nupl_core")),
+                    "valuationBlend": bool(
+                        getattr(row, "signal_valuation_blend_v6")
+                    ),
+                    "sthMvrv": bool(getattr(row, "signal_sth_mvrv")),
+                    "sthSoprTrigger": bool(
+                        getattr(row, "signal_sth_sopr_trigger")
+                    ),
+                    "lthMvrv": bool(getattr(row, "signal_lth_mvrv")),
+                    "lthSopr": bool(getattr(row, "signal_lth_sopr")),
+                    "puell": bool(getattr(row, "signal_puell")),
                 },
                 "staleIndicators": getattr(row, "stale_indicators", []),
                 "reserveRiskActive": bool(
@@ -248,6 +320,7 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                     getattr(row, "reserve_risk_fallback_lag_days_v4")
                 ),
                 "fallbackMode": str(getattr(row, "fallback_mode")),
+                "fallbackModeV6": str(getattr(row, "fallback_mode_v6")),
                 "staleIndicators": list(
                     getattr(row, "stale_indicators", [])
                 ),
@@ -267,6 +340,7 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                     "mvrv_zscore": _safe_iso_date(
                         getattr(row, "mvrv_zscore_date")
                     ),
+                    "nupl": _safe_iso_date(getattr(row, "nupl_date")),
                     "sth_sopr": _safe_iso_date(getattr(row, "sth_sopr_date")),
                     "sth_mvrv": _safe_iso_date(getattr(row, "sth_mvrv_date")),
                     "puell": _safe_iso_date(
@@ -286,6 +360,7 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                     "mvrvZscore": _safe_iso_date(
                         getattr(row, "mvrv_zscore_date")
                     ),
+                    "nupl": _safe_iso_date(getattr(row, "nupl_date")),
                     "sthSopr": _safe_iso_date(getattr(row, "sth_sopr_date")),
                     "sthMvrv": _safe_iso_date(getattr(row, "sth_mvrv_date")),
                     "puell": _safe_iso_date(
@@ -359,12 +434,13 @@ def build_latest_json(
 
     for indicator_key, stale_flag_field in [
         ("mvrvZscore", "mvrvZscore"),
+        ("nupl", "nupl"),
     ]:
         if any(stale_flag_field in str(s) for s in stale_indicators):
             inactive_indicators.append(
                 {
                     "key": indicator_key,
-                    "reason": "stale_mvrv_zscore",
+                    "reason": f"stale_{indicator_key}",
                 }
             )
 
@@ -377,6 +453,7 @@ def build_latest_json(
         ("lth_mvrv", "lthMvrv"),
         ("lth_sopr", "lthSopr"),
         ("mvrv_zscore", "mvrvZscore"),
+        ("nupl", "nupl"),
         ("sth_sopr", "sthSopr"),
         ("sth_mvrv", "sthMvrv"),
         ("puell_multiple", "puell"),
@@ -394,6 +471,7 @@ def build_latest_json(
         ("lth_mvrv", "lthMvrv"),
         ("lth_sopr", "lthSopr"),
         ("mvrv_zscore", "mvrvZscore"),
+        ("nupl", "nupl"),
         ("sth_sopr", "sthSopr"),
         ("sth_mvrv", "sthMvrv"),
         ("puell_multiple", "puell"),
@@ -419,6 +497,7 @@ def build_latest_json(
         "priceRealizedRatio": _safe_float(last.get("price_realized_ratio")),
         "reserveRisk": _safe_float(last.get("reserve_risk")),
         "mvrvZscore": _safe_float(last.get("mvrv_zscore")),
+        "nupl": _safe_float(last.get("nupl")),
         "lthMvrv": _safe_float(last.get("lth_mvrv")),
         "sthSopr": _safe_float(last.get("sth_sopr")),
         "lthSopr": _safe_float(last.get("lth_sopr")),
@@ -429,6 +508,10 @@ def build_latest_json(
         "signalCountV4": int(last.get("signal_count_v4") or 0),
         "activeIndicatorCountV4": int(
             last.get("active_indicator_count_v4") or 0
+        ),
+        "signalCountV6": int(last.get("signal_count_v6") or 0),
+        "activeIndicatorCountV6": int(
+            last.get("active_indicator_count_v6") or 0
         ),
         "maxSignalScoreV2": int(last.get("max_signal_score_v2") or 0),
         "valuationScore": int(last.get("valuation_score") or 0),
@@ -446,9 +529,28 @@ def build_latest_json(
             last.get("signal_confirmed_3d_v4") or False
         ),
         "signalBandV4": str(last.get("signal_band_v4") or ""),
+        "valuationScoreV6": int(last.get("valuation_score_v6") or 0),
+        "maxValuationScoreV6": int(last.get("max_valuation_score_v6") or 0),
+        "triggerScoreV6": int(last.get("trigger_score_v6") or 0),
+        "maxTriggerScoreV6": int(last.get("max_trigger_score_v6") or 0),
+        "confirmationScoreV6": int(last.get("confirmation_score_v6") or 0),
+        "maxConfirmationScoreV6": int(
+            last.get("max_confirmation_score_v6") or 0
+        ),
+        "totalScoreV6": int(last.get("total_score_v6") or 0),
+        "maxTotalScoreV6": int(last.get("max_total_score_v6") or 0),
+        "totalScoreV6Min3d": _safe_float(last.get("total_score_v6_min3d")),
+        "signalConfirmed3dV6": bool(
+            last.get("signal_confirmed_3d_v6") or False
+        ),
+        "signalBandV6": str(last.get("signal_band_v6") or ""),
         "signalConfidence": _safe_float(last.get("signal_confidence")),
+        "signalConfidenceV6": _safe_float(last.get("signal_confidence_v6")),
         "dataFreshnessScore": _safe_float(
             last.get("data_freshness_score")
+        ),
+        "dataFreshnessScoreV6": _safe_float(
+            last.get("data_freshness_score_v6")
         ),
         "signalScoreV2": int(last.get("signal_score_v2") or 0),
         "signalScoreV2Min3d": _safe_float(
@@ -472,6 +574,11 @@ def build_latest_json(
         "scoreMvrvZscoreCore": int(
             last.get("score_mvrv_zscore_core") or 0
         ),
+        "scoreNupl": int(last.get("score_nupl") or 0),
+        "scoreNuplCore": int(last.get("score_nupl_core") or 0),
+        "valuationBlendScoreV6": int(
+            last.get("valuation_blend_score_v6") or 0
+        ),
         "scoreLthMvrv": int(last.get("score_lth_mvrv") or 0),
         "scoreLthSopr": int(last.get("score_lth_sopr") or 0),
         "scoreSthSopr": int(last.get("score_sth_sopr") or 0),
@@ -488,6 +595,11 @@ def build_latest_json(
         ),
         "signalMvrvZscoreCore": bool(
             last.get("signal_mvrv_zscore_core") or False
+        ),
+        "signalNupl": bool(last.get("signal_nupl") or False),
+        "signalNuplCore": bool(last.get("signal_nupl_core") or False),
+        "signalValuationBlendV6": bool(
+            last.get("signal_valuation_blend_v6") or False
         ),
         "signalSthSopr": bool(last.get("signal_sth_sopr") or False),
         "signalSthMvrv": bool(last.get("signal_sth_mvrv") or False),
@@ -522,6 +634,8 @@ def build_latest_json(
         "inactiveIndicators": inactive_indicators,
         "staleIndicators": stale_indicators,
         "indicatorLagDays": indicator_lag_days,
+        "fallbackMode": str(last.get("fallback_mode") or ""),
+        "fallbackModeV6": str(last.get("fallback_mode_v6") or ""),
         "signals": {
             "priceMa200w": bool(last["signal_price_ma200w"]),
             "priceRealized": bool(last["signal_price_realized"]),
@@ -542,6 +656,30 @@ def build_latest_json(
             "puell": bool(last["signal_puell"]),
             "sthSoprTrigger": bool(last["signal_sth_sopr_trigger"]),
         },
+        "signalsV6": {
+            "priceMa200w": bool(last["signal_price_ma200w"]),
+            "priceRealized": bool(last["signal_price_realized"]),
+            "mvrvZscore": bool(last["signal_mvrv_zscore_core"]),
+            "nupl": bool(last["signal_nupl_core"]),
+            "valuationBlend": bool(last["signal_valuation_blend_v6"]),
+            "sthMvrv": bool(last["signal_sth_mvrv"]),
+            "sthSoprTrigger": bool(last["signal_sth_sopr_trigger"]),
+            "lthMvrv": bool(last["signal_lth_mvrv"]),
+            "lthSopr": bool(last["signal_lth_sopr"]),
+            "puell": bool(last["signal_puell"]),
+        },
+        "api_data_date": {
+            "price_ma200w": _safe_iso_date(last.get("btc_price_date")),
+            "price_realized": _safe_iso_date(last.get("realized_price_date")),
+            "reserve_risk": _safe_iso_date(last.get("reserve_risk_date")),
+            "lth_mvrv": _safe_iso_date(last.get("lth_mvrv_date")),
+            "lth_sopr": _safe_iso_date(last.get("lth_sopr_date")),
+            "mvrv_zscore": _safe_iso_date(last.get("mvrv_zscore_date")),
+            "nupl": _safe_iso_date(last.get("nupl_date")),
+            "sth_sopr": _safe_iso_date(last.get("sth_sopr_date")),
+            "sth_mvrv": _safe_iso_date(last.get("sth_mvrv_date")),
+            "puell": _safe_iso_date(last.get("puell_multiple_date")),
+        },
         "indicatorDates": indicator_dates,
         "coreIndicatorSet": INDICATOR_SET,
         "schemaVersion": SCHEMA_VERSION,
@@ -559,33 +697,9 @@ def build_latest_json(
     return latest_payload
 
 
-def build_light_history_json(
-    history_json: List[Dict[str, object]],
-    years: int = 8,
-) -> List[Dict[str, object]]:
-    """Build lightweight recent history subset for frontend default loading."""
-    if not history_json:
-        return []
-
-    latest_date_str = str(history_json[-1].get("d", ""))
-    latest_date = datetime.strptime(latest_date_str, "%Y-%m-%d")
-    cutoff = latest_date - pd.Timedelta(days=365 * years)
-
-    light: List[Dict[str, object]] = []
-    for row in history_json:
-        date_str = str(row.get("d", ""))
-        if not date_str:
-            continue
-        row_date = datetime.strptime(date_str, "%Y-%m-%d")
-        if row_date >= cutoff:
-            light.append(row)
-    return light
-
-
 def build_manifest_json(
     latest_json: Dict[str, object],
     history_rows: int,
-    light_rows: int,
     thresholds: Dict[str, Dict[str, object]],
     reserve_risk_diagnostics: Dict[str, object] | None = None,
     signal_events_rows: int = 0,
@@ -608,7 +722,6 @@ def build_manifest_json(
         "latestDate": latest_json.get("date"),
         "lastUpdated": latest_json.get("lastUpdated"),
         "historyRows": history_rows,
-        "historyLightRows": light_rows,
         "signalEventsV4Rows": signal_events_rows,
         "schemaVersion": SCHEMA_VERSION,
         "indicatorSet": INDICATOR_SET,
@@ -619,6 +732,9 @@ def build_manifest_json(
             "legacyScoringModelVersion", LEGACY_SCORING_MODEL_VERSION
         ),
         "thresholdVersion": "v4_dynamic",
+        "activeIndicatorCountV6": latest_json.get("activeIndicatorCountV6"),
+        "maxTotalScoreV6": latest_json.get("maxTotalScoreV6"),
+        "totalScoreV6": latest_json.get("totalScoreV6"),
         "dynamicThresholds": {
             k: v
             for k, v in thresholds.items()
@@ -660,14 +776,23 @@ def build_signal_events_v4_json(frontend_df: pd.DataFrame) -> List[Dict[str, obj
             "days": int(e_idx - s_idx + 1),
             "entryPrice": entry_price,
             "signalBandV4": str(start_row.get("signal_band_v4")),
+            "signalBandV6": str(start_row.get("signal_band_v6")),
             "signalConfidence": _safe_float(start_row.get("signal_confidence")),
+            "signalConfidenceV6": _safe_float(start_row.get("signal_confidence_v6")),
             "valuationScore": int(start_row.get("valuation_score")),
+            "valuationScoreV6": int(start_row.get("valuation_score_v6")),
             "triggerScore": int(start_row.get("trigger_score")),
+            "triggerScoreV6": int(start_row.get("trigger_score_v6")),
             "confirmationScore": int(start_row.get("confirmation_score")),
+            "confirmationScoreV6": int(start_row.get("confirmation_score_v6")),
             "totalScoreV4": int(start_row.get("total_score_v4")),
             "maxTotalScoreV4": int(start_row.get("max_total_score_v4")),
+            "totalScoreV6": int(start_row.get("total_score_v6")),
+            "maxTotalScoreV6": int(start_row.get("max_total_score_v6")),
             "fallbackMode": str(start_row.get("fallback_mode")),
+            "fallbackModeV6": str(start_row.get("fallback_mode_v6")),
             "maxScoreDuringEvent": int(window["total_score_v4"].max()),
+            "maxScoreDuringEventV6": int(window["total_score_v6"].max()),
             "minPriceDuringEvent": _safe_float(window["btc_price"].min()),
         }
 
@@ -715,11 +840,9 @@ def print_summary(
     sources: Dict[str, str],
     reserve_risk_diagnostics: Dict[str, object],
     history_path: Path,
-    history_light_path: Path,
     latest_path: Path,
     manifest_path: Path,
     history_rows: int,
-    light_rows: int,
 ) -> None:
     """Print concise run summary."""
     print()
@@ -744,6 +867,7 @@ def print_summary(
         "reserve_risk",
         "lth_mvrv",
         "mvrv_zscore",
+        "nupl",
         "sth_sopr",
         "sth_mvrv",
         "puell_multiple",
@@ -779,7 +903,6 @@ def print_summary(
     print()
     print("Output files:")
     print(f"  Full history : {history_path} ({history_rows} rows)")
-    print(f"  Light history: {history_light_path} ({light_rows} rows)")
     print(f"  Latest       : {latest_path}")
     print(f"  Manifest     : {manifest_path}")
 
@@ -822,17 +945,6 @@ def main() -> int:
         "--latest-json-path",
         default="app/public/btc_indicators_latest.json",
         help="Frontend latest JSON output path.",
-    )
-    parser.add_argument(
-        "--history-light-json-path",
-        default="app/public/btc_indicators_history_light.json",
-        help="Frontend lightweight history JSON output path.",
-    )
-    parser.add_argument(
-        "--history-light-years",
-        type=int,
-        default=8,
-        help="Number of recent years to keep in lightweight history JSON.",
     )
     parser.add_argument(
         "--manifest-json-path",
@@ -881,13 +993,11 @@ def main() -> int:
     args = parser.parse_args()
 
     history_path = Path(args.history_json_path)
-    history_light_path = Path(args.history_light_json_path)
     latest_path = Path(args.latest_json_path)
     manifest_path = Path(args.manifest_json_path)
     signal_events_v4_path = Path(args.signal_events_v4_json_path)
     output_paths = {
         "history": history_path,
-        "historyLight": history_light_path,
         "latest": latest_path,
         "manifest": manifest_path,
         "signalEventsV4": signal_events_v4_path,
@@ -934,21 +1044,16 @@ def main() -> int:
     latest_json = build_latest_json(
         frontend_df, thresholds, reserve_risk_diagnostics=reserve_risk_diagnostics
     )
-    light_history_json = build_light_history_json(
-        history_json, years=args.history_light_years
-    )
     signal_events_v4_json = build_signal_events_v4_json(frontend_df)
     manifest_json = build_manifest_json(
         latest_json=latest_json,
         history_rows=len(history_json),
-        light_rows=len(light_history_json),
         thresholds=thresholds,
         reserve_risk_diagnostics=reserve_risk_diagnostics,
         signal_events_rows=len(signal_events_v4_json),
     )
 
     write_json(history_path, history_json)
-    write_json(history_light_path, light_history_json)
     write_json(latest_path, latest_json)
     write_json(manifest_path, manifest_json)
     write_json(signal_events_v4_path, signal_events_v4_json)
@@ -958,11 +1063,9 @@ def main() -> int:
         sources,
         reserve_risk_diagnostics,
         history_path,
-        history_light_path,
         latest_path,
         manifest_path,
         len(history_json),
-        len(light_history_json),
     )
 
     return 0

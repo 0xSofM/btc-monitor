@@ -38,12 +38,13 @@ function getSignalBadges(item: IndicatorData): string[] {
 
   if (item.signalPriceMa200w || item.signalPriceMa) signals.push('Price / 200W-MA');
   if (item.signalPriceRealized) signals.push('Price / Realized Price');
-  if (item.signalMvrvZscoreCore ?? item.signalReserveRiskV4 ?? item.signalMvrvZ) signals.push('MVRV Z-Score');
-  if (item.signalSthMvrv) signals.push('STH-MVRV');
-  if (item.signalLthMvrv) signals.push('LTH-MVRV');
-  if (item.signalLthSopr) signals.push('LTH-SOPR');
-  if (item.signalPuell) signals.push('Puell Multiple');
-  if (item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr) signals.push('STH-SOPR (Trigger)');
+  if (item.signalsV6?.mvrvZscore ?? item.signalMvrvZscoreCore ?? item.signalReserveRiskV4 ?? item.signalMvrvZ) signals.push('MVRV Z-Score');
+  if (item.signalsV6?.nupl ?? item.signalNuplCore ?? item.signalNupl) signals.push('NUPL');
+  if (item.signalsV6?.sthMvrv ?? item.signalSthMvrv) signals.push('STH-MVRV');
+  if (item.signalsV6?.lthMvrv ?? item.signalLthMvrv) signals.push('LTH-MVRV');
+  if (item.signalsV6?.lthSopr ?? item.signalLthSopr) signals.push('LTH-SOPR');
+  if (item.signalsV6?.puell ?? item.signalPuell) signals.push('Puell Multiple');
+  if (item.signalsV6?.sthSoprTrigger ?? item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr) signals.push('STH-SOPR (Trigger)');
 
   return signals;
 }
@@ -53,7 +54,14 @@ export function HistoryReview({ data }: HistoryReviewProps) {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const maxSignalCount = useMemo(
-    () => data.reduce((max, row) => Math.max(max, row.activeIndicatorCountV4 ?? row.activeIndicatorCount ?? 0, row.signalCountV4 ?? row.signalCount ?? 0), 7),
+    () => data.reduce(
+      (max, row) => Math.max(
+        max,
+        row.activeIndicatorCountV6 ?? row.activeIndicatorCountV4 ?? row.activeIndicatorCount ?? 0,
+        row.signalCountV6 ?? row.signalCountV4 ?? row.signalCount ?? 0,
+      ),
+      8,
+    ),
     [data],
   );
   const strongSignalThreshold = Math.max(1, maxSignalCount - 1);
@@ -80,7 +88,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
 
     return data
       .filter((item) => {
-        const signalCount = item.signalCountV4 ?? item.signalCount ?? 0;
+        const signalCount = item.signalCountV6 ?? item.signalCountV4 ?? item.signalCount ?? 0;
         if (signalCount < minSignals) {
           return false;
         }
@@ -134,7 +142,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Calendar className="h-5 w-5" />
-          历史复盘（Core-7 V5）
+          历史复盘（Core-8 V6）
         </CardTitle>
       </CardHeader>
 
@@ -233,20 +241,20 @@ export function HistoryReview({ data }: HistoryReviewProps) {
                   <TableHead>日期</TableHead>
                   <TableHead>BTC价格</TableHead>
                   <TableHead>触发数</TableHead>
-                  <TableHead>V5评分</TableHead>
+                  <TableHead>V6评分</TableHead>
                   <TableHead>触发指标</TableHead>
                 </TableRow>
               </TableHeader>
 
               <TableBody>
                 {filteredData.slice(0, 120).map((item) => (
-                  <TableRow key={`${item.d}-${item.signalCountV4 ?? item.signalCount ?? 0}`}>
+                  <TableRow key={`${item.d}-${item.signalCountV6 ?? item.signalCountV4 ?? item.signalCount ?? 0}`}>
                     <TableCell>{item.d}</TableCell>
                     <TableCell className="font-medium">{formatPrice(parsePrice(item.btcPrice))}</TableCell>
                     <TableCell>
                       {(() => {
-                        const rowTotalSignals = item.activeIndicatorCountV4 ?? item.activeIndicatorCount ?? maxSignalCount;
-                        const rowSignalCount = item.signalCountV4 ?? item.signalCount ?? 0;
+                        const rowTotalSignals = item.activeIndicatorCountV6 ?? item.activeIndicatorCountV4 ?? item.activeIndicatorCount ?? maxSignalCount;
+                        const rowSignalCount = item.signalCountV6 ?? item.signalCountV4 ?? item.signalCount ?? 0;
                         const rowStrong = rowSignalCount >= Math.max(1, rowTotalSignals - 1);
                         return (
                           <Badge
@@ -260,7 +268,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline">
-                        {item.totalScoreV4 ?? item.signalScoreV2 ?? '-'} / {item.maxTotalScoreV4 ?? item.maxSignalScoreV2 ?? ((item.activeIndicatorCountV4 ?? item.activeIndicatorCount ?? maxSignalCount) * 2)}
+                        {item.totalScoreV6 ?? item.totalScoreV4 ?? item.signalScoreV2 ?? '-'} / {item.maxTotalScoreV6 ?? item.maxTotalScoreV4 ?? item.maxSignalScoreV2 ?? ((item.activeIndicatorCountV6 ?? item.activeIndicatorCountV4 ?? item.activeIndicatorCount ?? maxSignalCount) * 2)}
                       </Badge>
                     </TableCell>
                     <TableCell>

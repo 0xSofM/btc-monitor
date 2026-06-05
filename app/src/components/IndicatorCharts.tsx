@@ -21,7 +21,7 @@ interface IndicatorChartsProps {
   isHistoryLoading?: boolean;
 }
 
-type IndicatorType = 'priceMa200w' | 'priceRealized' | 'mvrvZscore' | 'lthMvrv' | 'lthSopr' | 'sthMvrv' | 'puell';
+type IndicatorType = 'priceMa200w' | 'priceRealized' | 'mvrvZscore' | 'nupl' | 'lthMvrv' | 'lthSopr' | 'sthMvrv' | 'puell';
 
 type DetailSeriesPoint = {
   date: string;
@@ -39,7 +39,7 @@ type MaSeriesPoint = {
   signal: boolean;
 };
 
-const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'priceRealized', 'mvrvZscore', 'lthMvrv', 'lthSopr', 'sthMvrv', 'puell'];
+const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'priceRealized', 'mvrvZscore', 'nupl', 'lthMvrv', 'lthSopr', 'sthMvrv', 'puell'];
 
 const TIME_RANGES = [
   { key: 'all', label: '全部' },
@@ -61,6 +61,7 @@ const CHART_FLOOR_CONFIG: Record<IndicatorType, number> = {
   priceMa200w: 0,
   priceRealized: 0,
   mvrvZscore: -1.5,
+  nupl: -0.2,
   lthMvrv: 0,
   lthSopr: 0.95,
   sthMvrv: 0,
@@ -142,6 +143,8 @@ function buildThresholdDescription(indicator: IndicatorType, point: DetailSeries
       return '固定阈值 < 1（深度 < 0.90）';
     case 'mvrvZscore':
       return '固定阈值 < 0（深度 < -0.5）';
+    case 'nupl':
+      return '固定阈值 < 0.25（深度 < 0）';
     case 'lthMvrv':
       return '固定阈值 < 1（深度 < 0.90）';
     case 'lthSopr':
@@ -221,6 +224,7 @@ export function IndicatorCharts({
       priceMa200w: getIndicatorChartData(data, 'priceMa200w', '1y') as DetailSeriesPoint[],
       priceRealized: getIndicatorChartData(data, 'priceRealized', '1y') as DetailSeriesPoint[],
       mvrvZscore: getIndicatorChartData(data, 'mvrvZscore', '1y') as DetailSeriesPoint[],
+      nupl: getIndicatorChartData(data, 'nupl', '1y') as DetailSeriesPoint[],
       lthMvrv: getIndicatorChartData(data, 'lthMvrv', '1y') as DetailSeriesPoint[],
       lthSopr: getIndicatorChartData(data, 'lthSopr', '1y') as DetailSeriesPoint[],
       sthMvrv: getIndicatorChartData(data, 'sthMvrv', '1y') as DetailSeriesPoint[],
@@ -291,7 +295,7 @@ export function IndicatorCharts({
   };
 
   const renderMiniCards = () => (
-    <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-6">
+    <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
       {INDICATOR_ORDER.map((indicatorKey) => {
         const indicatorConfig = INDICATOR_CONFIG[indicatorKey];
         const points = miniSeriesMap[indicatorKey];
@@ -527,7 +531,7 @@ export function IndicatorCharts({
       <CardHeader>
         <div className="space-y-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle className="text-lg font-semibold">Core-7 历史图表</CardTitle>
+            <CardTitle className="text-lg font-semibold">Core-8 V6 历史图表</CardTitle>
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
                 完整历史

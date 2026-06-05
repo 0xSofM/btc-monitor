@@ -33,8 +33,16 @@ const valuationIndicators: IndicatorItem[] = [
     name: 'MVRV Z-Score',
     icon: TrendingDown,
     target: '< 0（深度 < -0.5）',
-    description: '用标准差方式衡量 BTC 估值冷热，作为当前 Core-7 的第三个估值锚点。',
-    rationale: '当 MVRV Z-Score 回到 0 以下时，通常说明市场已经明显降温，更适合进入大周期观察区。',
+    description: '用标准差方式衡量 BTC 估值冷热，是 V6 估值融合槽位的一侧。',
+    rationale: '当 MVRV Z-Score 回到 0 以下时，通常说明市场已经明显降温；V6 中它与 NUPL 共享估值槽位，取有效核心分数较高者。',
+  },
+  {
+    id: 'nupl',
+    name: 'NUPL',
+    icon: TrendingDown,
+    target: '< 0.25（深度 < 0）',
+    description: '衡量市场净未实现盈亏，补充 MVRV Z-Score 对估值低位的识别。',
+    rationale: 'NUPL 能从持币者整体盈亏状态补强估值判断；V6 中它与 MVRV Z-Score 共享同一个估值计分槽位，不额外抬高总分上限。',
   },
   {
     id: 'puell',
@@ -83,15 +91,15 @@ const auxiliaryIndicators: IndicatorItem[] = [
     icon: AlertTriangle,
     target: '< p27（深度 < p13.5）',
     description: '保留为辅助确认项，用于验证短期持有者是否持续在亏损兑现。',
-    rationale: 'V5 中与 STH-MVRV 组成复合触发信号（取最大值），不再单独占据计分位。',
+    rationale: 'V6 中与 STH-MVRV 组成复合触发信号（取最大值），不再单独占据计分位。',
   },
   {
     id: 'reserve-risk',
     name: 'Reserve Risk (Observation)',
     icon: Info,
     target: '< p20（深度 < p10）',
-    description: '继续保留原始数值和诊断信息，用于观察长期持有者风险回报区间，但不再占据 Core-7 主评分位。',
-    rationale: '这样可以避免主源时滞直接影响 V5 总分，同时保留旧版本对照和回滚能力。',
+    description: '继续保留原始数值和诊断信息，用于观察长期持有者风险回报区间，但不再占据 Core-8 主评分位。',
+    rationale: '这样可以避免主源时滞直接影响 V6 总分，同时保留旧版本对照和回滚能力。',
   },
 ];
 
@@ -131,7 +139,7 @@ export function IndicatorExplanation() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <BookOpen className="h-5 w-5" />
-          Core-7 V5 指标说明
+          Core-8 V6 指标说明
         </CardTitle>
       </CardHeader>
 
@@ -145,13 +153,13 @@ export function IndicatorExplanation() {
           <div className="flex items-start gap-3">
             <Info className="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-300" />
             <div>
-              <h3 className="font-semibold text-blue-800 dark:text-blue-200">V5 评分框架</h3>
+              <h3 className="font-semibold text-blue-800 dark:text-blue-200">V6 评分框架</h3>
               <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
-                V5 将 7 个指标拆为”估值层 + 触发层（复合）+ 确认层（双指标）”。
-                估值层 4 指标（Price/200W-MA、Price/Realized、MVRV Z-Score、Puell）满分 8；
+                V6 将 8 个核心指标拆为“估值层 + 触发层（复合）+ 确认层（双指标）”。
+                估值层包含 Price/200W-MA、Price/Realized、MVRV Z-Score/NUPL 融合槽位、Puell，满分 8；
                 触发层取 STH-MVRV 与 STH-SOPR 的最大值，满分 2；
                 确认层 LTH-MVRV + LTH-SOPR 双指标独立计分，满分 4；
-                总分上限 14。同时保留 3 日确认和旧版兼容字段，便于归档、对照与回滚。
+                总分上限仍为 14。同时保留 3 日确认和旧版兼容字段，便于归档、对照与回滚。
               </p>
             </div>
           </div>

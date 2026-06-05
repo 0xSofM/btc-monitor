@@ -10,7 +10,6 @@ from fetch_btc_indicators_history_files import (
     build_reserve_risk_source_diagnostics,
     build_signal_events_v4_json,
     build_latest_json,
-    build_light_history_json,
     dataframe_to_history_json,
     enrich_for_frontend,
     merge_reserve_risk_history_sources,
@@ -32,6 +31,7 @@ class FetchHistoryPipelineTests(unittest.TestCase):
                 "lth_mvrv": [1.05, 0.98, 0.88],
                 "lth_sopr": [0.99, 0.97, 1.02],
                 "mvrv_zscore": [0.2, -0.1, -0.8],
+                "nupl": [0.35, 0.20, -0.10],
                 "sth_sopr": [1.05, None, 0.96],
                 "sth_mvrv": [1.10, 0.95, None],
                 "puell_multiple": [0.6, None, 0.4],
@@ -64,6 +64,14 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(int(enriched.iloc[2]["total_score_v4"]), 12)
         self.assertEqual(str(enriched.iloc[2]["signal_band_v4"]), "extreme_bottom")
         self.assertGreaterEqual(float(enriched.iloc[2]["signal_confidence"]), 0.75)
+        self.assertEqual(enriched.iloc[2]["nupl_date"].strftime("%Y-%m-%d"), "2024-01-03")
+        self.assertEqual(int(enriched.iloc[2]["score_nupl_core"]), 2)
+        self.assertEqual(int(enriched.iloc[2]["valuation_blend_score_v6"]), 2)
+        self.assertEqual(int(enriched.iloc[2]["signal_count_v6"]), 7)
+        self.assertEqual(int(enriched.iloc[2]["active_indicator_count_v6"]), 8)
+        self.assertEqual(int(enriched.iloc[2]["total_score_v6"]), 12)
+        self.assertEqual(str(enriched.iloc[2]["signal_band_v6"]), "extreme_bottom")
+        self.assertGreaterEqual(float(enriched.iloc[2]["signal_confidence_v6"]), 0.75)
 
     def test_history_json_contains_expected_fields(self) -> None:
         enriched, _ = enrich_for_frontend(self.build_base_df())
@@ -88,6 +96,16 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(last["totalScoreV4"], 12)
         self.assertTrue(last["signalMvrvZscoreCore"])
         self.assertEqual(int(last["scoreMvrvZscoreCore"]), 2)
+        self.assertAlmostEqual(float(last["nupl"]), -0.1)
+        self.assertTrue(last["signalNuplCore"])
+        self.assertEqual(int(last["scoreNuplCore"]), 2)
+        self.assertEqual(last["signalCountV6"], 7)
+        self.assertEqual(last["activeIndicatorCountV6"], 8)
+        self.assertEqual(last["valuationBlendScoreV6"], 2)
+        self.assertEqual(last["totalScoreV6"], 12)
+        self.assertTrue(last["signalsV6"]["nupl"])
+        self.assertTrue(last["signalsV6"]["valuationBlend"])
+        self.assertEqual(last["indicatorDates"]["nupl"], "2024-01-03")
         self.assertTrue(last["signalLthMvrv"])
         self.assertEqual(last["indicatorDates"]["lthMvrv"], "2024-01-03")
 
@@ -116,23 +134,21 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(int(latest["signalCountV4"]), 6)
         self.assertEqual(int(latest["activeIndicatorCountV4"]), 7)
         self.assertEqual(int(latest["totalScoreV4"]), 12)
+        self.assertEqual(int(latest["signalCountV6"]), 7)
+        self.assertEqual(int(latest["activeIndicatorCountV6"]), 8)
+        self.assertEqual(int(latest["valuationBlendScoreV6"]), 2)
+        self.assertEqual(int(latest["totalScoreV6"]), 12)
         self.assertTrue(bool(latest["signalsV4"]["mvrvZscore"]))
+        self.assertTrue(bool(latest["signalsV6"]["nupl"]))
+        self.assertTrue(bool(latest["signalsV6"]["valuationBlend"]))
         self.assertTrue(bool(latest["signalMvrvZscoreCore"]))
+        self.assertTrue(bool(latest["signalNuplCore"]))
         self.assertTrue(bool(latest["signalsV4"]["lthMvrv"]))
         self.assertFalse(bool(latest["signalsV4"]["lthSopr"]))
-        self.assertEqual(str(latest["scoringModelVersion"]), "v5_core7_dual_confirm")
+        self.assertEqual(str(latest["indicatorDates"]["nupl"]), "2024-01-03")
+        self.assertEqual(str(latest["scoringModelVersion"]), "v6_core8_nupl_valuation_blend")
         self.assertEqual(str(latest["legacyScoringModelVersion"]), "v3_no_lookahead_replacement")
         self.assertIn("reserveRiskDiagnostics", latest)
-
-    def test_build_light_history_json_filters_old_rows(self) -> None:
-        history = [
-            {"d": "2021-01-01", "signalCount": 0},
-            {"d": "2023-06-01", "signalCount": 1},
-            {"d": "2024-01-01", "signalCount": 2},
-        ]
-        light = build_light_history_json(history, years=1)
-
-        self.assertEqual([row["d"] for row in light], ["2023-06-01", "2024-01-01"])
 
     def test_reserve_risk_auto_excluded_when_stale(self) -> None:
         base = self.build_base_df().copy()
@@ -154,6 +170,8 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(int(latest["scoreMvrvZscoreCore"]), 2)
         self.assertEqual(int(latest["activeIndicatorCountV4"]), 7)
         self.assertEqual(int(latest["maxTotalScoreV4"]), 14)
+        self.assertEqual(int(latest["activeIndicatorCountV6"]), 8)
+        self.assertEqual(int(latest["maxTotalScoreV6"]), 14)
 
     def test_reserve_risk_stale_without_replacement_reduces_dimensions(self) -> None:
         base = self.build_base_df().copy()
@@ -176,6 +194,9 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(int(latest["activeIndicatorCountV4"]), 6)
         self.assertEqual(int(latest["maxTotalScoreV4"]), 12)
         self.assertEqual(str(latest["fallbackMode"]), "mvrv_zscore_inactive")
+        self.assertEqual(str(latest["fallbackModeV6"]), "none")
+        self.assertEqual(int(latest["activeIndicatorCountV6"]), 7)
+        self.assertEqual(int(latest["maxTotalScoreV6"]), 14)
 
     def test_patch_reserve_risk_tail_prefers_freshest_point_source(self) -> None:
         reserve_df = pd.DataFrame(

@@ -69,6 +69,7 @@ function createLatest(date = '2026-04-16'): LatestData {
     realizedPrice: 53661,
     reserveRisk: 0.0006,
     mvrvZscore: 0.35,
+    nupl: 0.18,
     sthSopr: 1.0035,
     sthMvrv: 0.92,
     puellMultiple: 0.7283,
@@ -77,14 +78,27 @@ function createLatest(date = '2026-04-16'): LatestData {
     activeIndicatorCount: 5,
     signalCountV4: 0,
     activeIndicatorCountV4: 6,
+    signalCountV6: 1,
+    activeIndicatorCountV6: 7,
     maxSignalScoreV2: 10,
     totalScoreV4: 0,
     maxTotalScoreV4: 12,
+    totalScoreV6: 1,
+    maxTotalScoreV6: 14,
     signalConfidence: 0.17,
+    signalConfidenceV6: 0.21,
     dataFreshnessScore: 0.94,
+    dataFreshnessScoreV6: 0.95,
     fallbackMode: 'none',
+    fallbackModeV6: 'none',
     scoreMvrvZscoreCore: 0,
     signalMvrvZscoreCore: false,
+    scoreNupl: 1,
+    scoreNuplCore: 1,
+    valuationBlendScoreV6: 1,
+    signalNupl: true,
+    signalNuplCore: true,
+    signalValuationBlendV6: true,
     signals: {
       priceMa200w: false,
       priceRealized: false,
@@ -104,11 +118,24 @@ function createLatest(date = '2026-04-16'): LatestData {
       puell: false,
       sthSoprTrigger: false,
     },
+    signalsV6: {
+      priceMa200w: false,
+      priceRealized: false,
+      mvrvZscore: false,
+      nupl: true,
+      valuationBlend: true,
+      sthMvrv: false,
+      lthMvrv: false,
+      lthSopr: false,
+      puell: false,
+      sthSoprTrigger: false,
+    },
     indicatorDates: {
       priceMa200w: date,
       priceRealized: '2026-04-15',
       reserveRisk: '2026-04-15',
       mvrvZscore: '2026-04-15',
+      nupl: '2026-04-15',
       lthMvrv: '2026-04-15',
       sthSopr: date,
       sthMvrv: '2026-04-15',
@@ -132,6 +159,7 @@ function createHistoryRows(count: number): IndicatorData[] {
       realizedPrice: 17000 + index,
       reserveRisk: 0.0005 + (index / 1_000_000),
       mvrvZscore: -0.5 + (index / 1000),
+      nupl: 0.3 - (index / 5000),
       lthMvrv: 0.9 + ((index % 20) / 100),
       sthSopr: 0.95 + ((index % 10) / 100),
       sthMvrv: 0.88 + ((index % 10) / 100),
@@ -141,6 +169,9 @@ function createHistoryRows(count: number): IndicatorData[] {
       signalReserveRisk: signal,
       signalReserveRiskV4: signal,
       signalMvrvZscoreCore: signal,
+      signalNupl: signal,
+      signalNuplCore: signal,
+      signalValuationBlendV6: signal,
       signalSthSopr: signal,
       signalSthMvrv: signal,
       signalLthMvrv: signal,
@@ -148,10 +179,15 @@ function createHistoryRows(count: number): IndicatorData[] {
       signalPuell: signal,
       signalCount: signal ? 4 : 1,
       signalCountV4: signal ? 5 : 1,
+      signalCountV6: signal ? 6 : 1,
       activeIndicatorCount: 5,
       activeIndicatorCountV4: 6,
+      activeIndicatorCountV6: 7,
       maxSignalScoreV2: 10,
       scoreMvrvZscoreCore: signal ? 2 : 0,
+      scoreNupl: signal ? 1 : 0,
+      scoreNuplCore: signal ? 1 : 0,
+      valuationBlendScoreV6: signal ? 2 : 0,
       signalScoreV2: signal ? 7 : 2,
       valuationScore: signal ? 6 : 1,
       maxValuationScore: 8,
@@ -161,9 +197,20 @@ function createHistoryRows(count: number): IndicatorData[] {
       maxConfirmationScore: 2,
       totalScoreV4: signal ? 8 : 2,
       maxTotalScoreV4: 12,
+      valuationScoreV6: signal ? 6 : 1,
+      maxValuationScoreV6: 8,
+      triggerScoreV6: signal ? 1 : 0,
+      maxTriggerScoreV6: 2,
+      confirmationScoreV6: signal ? 1 : 0,
+      maxConfirmationScoreV6: 4,
+      totalScoreV6: signal ? 8 : 1,
+      maxTotalScoreV6: 14,
       signalConfirmed3dV4: signal,
+      signalConfirmed3dV6: signal,
       signalConfidence: signal ? 0.8 : 0.2,
+      signalConfidenceV6: signal ? 0.82 : 0.22,
       dataFreshnessScore: 0.95,
+      dataFreshnessScoreV6: 0.96,
       staleIndicators: [
         { key: 'mvrvZscore', lagDays: 1, maxLagDays: 7, sourceDate: day },
         { key: 'lthMvrv', lagDays: 1, maxLagDays: 2, sourceDate: day },
@@ -175,13 +222,28 @@ function createHistoryRows(count: number): IndicatorData[] {
         priceRealized: day,
         reserveRisk: day,
         mvrvZscore: day,
+        nupl: day,
         lthMvrv: day,
         sthSopr: day,
         sthMvrv: day,
         puell: day,
       },
       signalBandV4: signal ? 'accumulate' : 'watch',
+      signalBandV6: signal ? 'accumulate' : 'watch',
       fallbackMode: signal ? 'none' : undefined,
+      fallbackModeV6: 'none',
+      signalsV6: {
+        priceMa200w: signal,
+        priceRealized: signal,
+        mvrvZscore: signal,
+        nupl: signal,
+        valuationBlend: signal,
+        sthMvrv: signal,
+        lthMvrv: signal,
+        lthSopr: false,
+        puell: signal,
+        sthSoprTrigger: signal,
+      },
     };
   });
 }
@@ -211,11 +273,13 @@ describe('storage quota handling', () => {
     saveLocalData({ latest: createLatest() });
 
     expect(getLocalLatestData()?.date).toBe('2026-04-16');
+    expect(getLocalLatestData()?.nupl).toBe(0.18);
+    expect(getLocalLatestData()?.totalScoreV6).toBe(1);
     expect(storage.getItem('btc_indicators_history')).toBeNull();
   });
 
   it('truncates history cache to fit storage limits without emitting console errors', () => {
-    const storage = new QuotaStorage(45000);
+    const storage = new QuotaStorage(90000);
     installStorage(storage);
 
     const history = createHistoryRows(720);
@@ -233,12 +297,14 @@ describe('storage quota handling', () => {
     expect(storedHistory.storedRows).toBeLessThan(history.length);
     expect(storedHistory.truncated).toBe(true);
     expect(getLocalData().at(-1)?.d).toBe(history.at(-1)?.d);
+    expect(getLocalData().at(-1)?.nupl).toBe(history.at(-1)?.nupl);
     expect(getLocalLatestData()?.date).toBe(history.at(-1)?.d);
+    expect(getLocalLatestData()?.totalScoreV6).toBe(1);
     expect(console.error).not.toHaveBeenCalled();
   });
 
   it('skips history persistence entirely when quota only fits latest data', () => {
-    const storage = new QuotaStorage(1500);
+    const storage = new QuotaStorage(3500);
     installStorage(storage);
 
     saveLocalData({

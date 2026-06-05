@@ -120,6 +120,7 @@ def enrich_for_frontend(
         "lth_mvrv",
         "lth_sopr",
         "mvrv_zscore",
+        "nupl",
         "sth_sopr",
         "sth_mvrv",
         "puell_multiple",
@@ -274,15 +275,33 @@ def enrich_for_frontend(
             THRESHOLD_STATIC["mvrv_zscore"]["deep"],
         )
     )
+    df["score_nupl"] = df["nupl"].apply(
+        lambda v: _score_by_lt(
+            v,
+            THRESHOLD_STATIC["nupl"]["trigger"],
+            THRESHOLD_STATIC["nupl"]["deep"],
+        )
+    )
     df["lth_mvrv_lag_days"] = (df["date"] - df["lth_mvrv_date"]).dt.days
     df["lth_sopr_lag_days"] = (df["date"] - df["lth_sopr_date"]).dt.days
     df["mvrv_zscore_lag_days"] = (df["date"] - df["mvrv_zscore_date"]).dt.days
+    df["nupl_lag_days"] = (df["date"] - df["nupl_date"]).dt.days
     df["mvrv_zscore_core_active"] = (
         df["mvrv_zscore_date"].notna() & df["mvrv_zscore_is_fresh"]
     )
     df["score_mvrv_zscore_core"] = np.where(
         df["mvrv_zscore_core_active"], df["score_mvrv_zscore"], 0
     ).astype(int)
+    df["nupl_core_active"] = df["nupl_date"].notna() & df["nupl_is_fresh"]
+    df["score_nupl_core"] = np.where(
+        df["nupl_core_active"], df["score_nupl"], 0
+    ).astype(int)
+    df["valuation_blend_active_v6"] = (
+        df["mvrv_zscore_core_active"] | df["nupl_core_active"]
+    )
+    df["valuation_blend_score_v6"] = df[
+        ["score_mvrv_zscore_core", "score_nupl_core"]
+    ].max(axis=1).astype(int)
 
     # Legacy V2/V3 Reserve Risk replacement logic kept for rollback compatibility.
     df["score_reserve_risk_replacement"] = df[
@@ -380,6 +399,15 @@ def enrich_for_frontend(
             **THRESHOLD_STATIC["mvrv_zscore"],
             "role": "valuation_core_v4",
         },
+        "nupl": THRESHOLD_STATIC["nupl"],
+        "nuplCore": {
+            **THRESHOLD_STATIC["nupl"],
+            "role": "valuation_core_v6",
+        },
+        "valuationBlendV6": {
+            "method": "max(mvrvZscoreCore,nuplCore)",
+            "role": "shared_valuation_slot_v6",
+        },
         "reserveRiskReplacementLegacy": {
             "lthMvrv": THRESHOLD_STATIC["lth_mvrv"],
             "mvrvZscore": THRESHOLD_STATIC["mvrv_zscore"],
@@ -424,6 +452,9 @@ def enrich_for_frontend(
     df["signal_lth_sopr"] = df["score_lth_sopr"] > 0
     df["signal_sth_sopr_trigger"] = df["score_sth_sopr"] > 0
     df["signal_sth_sopr_aux"] = df["score_sth_sopr"] > 0
+    df["signal_nupl"] = df["score_nupl"] > 0
+    df["signal_nupl_core"] = df["score_nupl_core"] > 0
+    df["signal_valuation_blend_v6"] = df["valuation_blend_score_v6"] > 0
     df["valuation_score"] = (
         df["score_price_ma200w"]
         + df["score_price_realized"]
@@ -481,8 +512,72 @@ def enrich_for_frontend(
         for score, max_score in zip(df["total_score_v4"], df["max_total_score_v4"])
     ]
 
+    # V6: NUPL shares the valuation slot with MVRV Z-Score.
+    df["valuation_score_v6"] = (
+        df["score_price_ma200w"]
+        + df["score_price_realized"]
+        + df["valuation_blend_score_v6"]
+        + df["score_puell"]
+    ).astype(int)
+    df["max_valuation_score_v6"] = (
+        6 + (df["valuation_blend_active_v6"].astype(int) * 2)
+    ).astype(int)
+    df["trigger_score_v6"] = df[["score_sth_mvrv", "score_sth_sopr"]].max(
+        axis=1
+    ).astype(int)
+    df["max_trigger_score_v6"] = 2
+    df["confirmation_score_v6"] = (
+        df["score_lth_mvrv"] + df["score_lth_sopr"]
+    ).astype(int)
+    df["max_confirmation_score_v6"] = 4
+    df["active_indicator_count_v6"] = (
+        6
+        + df["mvrv_zscore_core_active"].astype(int)
+        + df["nupl_core_active"].astype(int)
+    ).astype(int)
+    df["signal_count_v6"] = (
+        df[
+            [
+                "signal_price_ma200w",
+                "signal_price_realized",
+                "signal_mvrv_zscore_core",
+                "signal_nupl_core",
+                "signal_sth_mvrv",
+                "signal_lth_mvrv",
+                "signal_lth_sopr",
+                "signal_puell",
+            ]
+        ]
+        .sum(axis=1)
+        .astype(int)
+    )
+    df["max_total_score_v6"] = (
+        df["max_valuation_score_v6"]
+        + df["max_trigger_score_v6"]
+        + df["max_confirmation_score_v6"]
+    ).astype(int)
+    df["total_score_v6"] = (
+        df["valuation_score_v6"]
+        + df["trigger_score_v6"]
+        + df["confirmation_score_v6"]
+    ).astype(int)
+    df["total_score_v6_min3d"] = (
+        df["total_score_v6"].rolling(window=3, min_periods=3).min()
+    )
+    min3d_ratio_v6 = (
+        df["total_score_v6_min3d"] / df["max_total_score_v6"].replace(0, pd.NA)
+    ).fillna(0)
+    df["signal_confirmed_3d_v6"] = min3d_ratio_v6 >= SCORE_CONFIRM_RATIO
+    df["signal_band_v6"] = [
+        _classify_score_band(int(score), int(max_score))
+        for score, max_score in zip(df["total_score_v6"], df["max_total_score_v6"])
+    ]
+
     mvrv_core_freshness = df["mvrv_zscore_freshness_score"].where(
         df["mvrv_zscore_core_active"], 0.0
+    ).fillna(0.0)
+    nupl_core_freshness = df["nupl_freshness_score"].where(
+        df["nupl_core_active"], 0.0
     ).fillna(0.0)
     df["data_freshness_score"] = (
         df[
@@ -498,6 +593,21 @@ def enrich_for_frontend(
         ].sum(axis=1)
         + mvrv_core_freshness
     ) / 8
+    df["data_freshness_score_v6"] = (
+        df[
+            [
+                "btc_price_freshness_score",
+                "realized_price_freshness_score",
+                "ma200w_freshness_score",
+                "sth_mvrv_freshness_score",
+                "lth_mvrv_freshness_score",
+                "lth_sopr_freshness_score",
+                "puell_multiple_freshness_score",
+            ]
+        ].sum(axis=1)
+        + mvrv_core_freshness
+        + nupl_core_freshness
+    ) / 9
     base_score_ratio = (
         df["total_score_v4"] / df["max_total_score_v4"].replace(0, pd.NA)
     ).fillna(0)
@@ -517,6 +627,23 @@ def enrich_for_frontend(
         .clip(lower=0, upper=1)
         .round(4)
     )
+    base_score_ratio_v6 = (
+        df["total_score_v6"] / df["max_total_score_v6"].replace(0, pd.NA)
+    ).fillna(0)
+    confirmation_bonus_v6 = np.where(df["signal_confirmed_3d_v6"], 0.1, 0.0)
+    fallback_penalty_v6 = np.where(~df["valuation_blend_active_v6"], 0.2, 0.0)
+    df["signal_confidence_v6"] = (
+        (
+            0.5 * base_score_ratio_v6
+            + 0.3 * df["data_freshness_score_v6"]
+            + trigger_bonus
+            + confirmation_bonus_v6
+            + lth_sopr_bonus
+            - fallback_penalty_v6
+        )
+        .clip(lower=0, upper=1)
+        .round(4)
+    )
 
     stale_flags = pd.DataFrame(
         {
@@ -529,6 +656,7 @@ def enrich_for_frontend(
             "lthSopr": ~df["lth_sopr_is_fresh"],
             "puell": ~df["puell_multiple_is_fresh"],
             "mvrvZscore": ~df["mvrv_zscore_core_active"],
+            "nupl": ~df["nupl_core_active"],
         }
     )
     df["stale_indicators"] = [
@@ -538,6 +666,11 @@ def enrich_for_frontend(
     df["fallback_mode"] = np.where(
         ~df["mvrv_zscore_core_active"],
         "mvrv_zscore_inactive",
+        "none",
+    )
+    df["fallback_mode_v6"] = np.where(
+        ~df["valuation_blend_active_v6"],
+        "valuation_blend_inactive",
         "none",
     )
 

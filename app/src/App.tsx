@@ -45,6 +45,7 @@ type IndicatorDateKey =
   | 'priceRealized'
   | 'reserveRisk'
   | 'mvrvZscore'
+  | 'nupl'
   | 'lthMvrv'
   | 'lthSopr'
   | 'sthSopr'
@@ -140,6 +141,10 @@ function formatFallbackModeLabel(fallbackMode: string | undefined): string | nul
     return 'MVRV Z-Score 暂不计分';
   }
 
+  if (fallbackMode === 'valuation_blend_inactive') {
+    return '估值融合槽位暂不计分';
+  }
+
   return '主模型正常';
 }
 
@@ -223,9 +228,9 @@ function App() {
         applyLatestData(runtimeData, 'api');
 
         if (mode === 'manual') {
-          const score = runtimeData.totalScoreV4 ?? runtimeData.signalScoreV2 ?? 0;
-          const maxScore = runtimeData.maxTotalScoreV4 ?? runtimeData.maxSignalScoreV2 ?? 10;
-          toast.success(`V5 运行时已刷新：${score}/${maxScore}`, {
+          const score = runtimeData.totalScoreV6 ?? runtimeData.totalScoreV4 ?? runtimeData.signalScoreV2 ?? 0;
+          const maxScore = runtimeData.maxTotalScoreV6 ?? runtimeData.maxTotalScoreV4 ?? runtimeData.maxSignalScoreV2 ?? 10;
+          toast.success(`V6 运行时已刷新：${score}/${maxScore}`, {
             description: `BTC 价格：$${runtimeData.btcPrice.toLocaleString()}`,
             duration: 6000,
           });
@@ -241,7 +246,7 @@ function App() {
         applyLatestData(staticData, 'static');
 
         if (mode === 'manual') {
-          toast.info('运行时不可用，已回退到 V5 静态快照', {
+          toast.info('运行时不可用，已回退到 V6 静态快照', {
             description: `BTC 价格：$${staticData.btcPrice.toLocaleString()}`,
             duration: 6000,
           });
@@ -294,6 +299,7 @@ function App() {
     priceRealized: 'Price / Realized Price',
     reserveRisk: 'Reserve Risk',
     mvrvZscore: 'MVRV Z-Score',
+    nupl: 'NUPL',
     lthMvrv: 'LTH-MVRV',
     lthSopr: 'LTH-SOPR',
     sthSopr: 'STH-SOPR',
@@ -333,35 +339,42 @@ function App() {
     : 0;
   const signalScoreV2 = latestData?.signalScoreV2 ?? 0;
   const maxSignalScoreV2 = latestData?.maxSignalScoreV2 ?? 10;
+  const totalScoreV6 = latestData?.totalScoreV6;
+  const maxTotalScoreV6 = latestData?.maxTotalScoreV6 ?? 14;
   const totalScoreV4 = latestData?.totalScoreV4;
   const maxTotalScoreV4 = latestData?.maxTotalScoreV4 ?? 14;
-  const signalCountDisplay = latestData?.signalCountV4 ?? latestData?.signalCount ?? 0;
-  // Core-7 model always evaluates 7 indicators. activeIndicatorCountV4 can be
-  // 6 when MVRV Z-Score is inactive, but signalCountV4 still counts all 7.
-  const activeIndicatorCount = latestData?.activeIndicatorCountV4 ?? latestData?.activeIndicatorCount ?? 7;
-  const totalCoreIndicators = 7;
-  const effectiveScore = totalScoreV4 ?? signalScoreV2;
-  const effectiveMaxScore = totalScoreV4 !== undefined ? maxTotalScoreV4 : maxSignalScoreV2;
+  const hasLayeredScore = totalScoreV6 !== undefined || totalScoreV4 !== undefined;
+  const modelLabel = totalScoreV6 !== undefined ? 'V6' : totalScoreV4 !== undefined ? 'V5' : 'V2';
+  const signalCountDisplay = latestData?.signalCountV6 ?? latestData?.signalCountV4 ?? latestData?.signalCount ?? 0;
+  const totalCoreIndicators = 8;
+  const effectiveScore = totalScoreV6 ?? totalScoreV4 ?? signalScoreV2;
+  const effectiveMaxScore = totalScoreV6 !== undefined
+    ? maxTotalScoreV6
+    : totalScoreV4 !== undefined
+      ? maxTotalScoreV4
+      : maxSignalScoreV2;
   const effectiveSignalBand = formatSignalBand(
-    latestData?.signalBandV4 ?? latestData?.signalBandV2,
+    latestData?.signalBandV6 ?? latestData?.signalBandV4 ?? latestData?.signalBandV2,
     effectiveScore,
     effectiveMaxScore,
   );
-  const isSignalConfirmed = latestData?.signalConfirmed3dV4 ?? latestData?.signalConfirmed3d ?? false;
-  const fallbackModeLabel = formatFallbackModeLabel(latestData?.fallbackMode);
-  const confidencePercent = latestData?.signalConfidence === undefined
+  const isSignalConfirmed = latestData?.signalConfirmed3dV6 ?? latestData?.signalConfirmed3dV4 ?? latestData?.signalConfirmed3d ?? false;
+  const fallbackModeLabel = formatFallbackModeLabel(latestData?.fallbackModeV6 ?? latestData?.fallbackMode);
+  const confidenceValue = latestData?.signalConfidenceV6 ?? latestData?.signalConfidence;
+  const freshnessValue = latestData?.dataFreshnessScoreV6 ?? latestData?.dataFreshnessScore;
+  const confidencePercent = confidenceValue === undefined
     ? null
-    : Math.round(latestData.signalConfidence * 100);
-  const freshnessPercent = latestData?.dataFreshnessScore === undefined
+    : Math.round(confidenceValue * 100);
+  const freshnessPercent = freshnessValue === undefined
     ? null
-    : Math.round(latestData.dataFreshnessScore * 100);
+    : Math.round(freshnessValue * 100);
   const scoreThresholds = resolveScoreThresholds(effectiveMaxScore);
 
   const statusTiles = useMemo(() => {
     if (!latestData) return [];
     const baseTiles = [
       {
-        label: totalScoreV4 !== undefined ? 'V5总分' : 'V2评分',
+        label: hasLayeredScore ? `${modelLabel}总分` : 'V2评分',
         value: `${effectiveScore}/${effectiveMaxScore}`,
         note: effectiveSignalBand,
         icon: TrendingUp,
@@ -380,7 +393,7 @@ function App() {
       },
     ];
 
-    if (totalScoreV4 === undefined) {
+    if (!hasLayeredScore) {
       return baseTiles;
     }
 
@@ -397,12 +410,12 @@ function App() {
     ];
   }, [
     latestData,
-    totalScoreV4,
+    hasLayeredScore,
+    modelLabel,
     effectiveScore,
     effectiveMaxScore,
     effectiveSignalBand,
     signalCountDisplay,
-    activeIndicatorCount,
     isSignalConfirmed,
     confidencePercent,
     fallbackModeLabel,
@@ -418,7 +431,7 @@ function App() {
           currentValue: latestData.priceMa200wRatio,
           targetValue: 1,
           targetOperator: 'lt' as const,
-          triggered: latestData.signals.priceMa200w,
+          triggered: latestData.signalsV6?.priceMa200w ?? latestData.signals.priceMa200w,
           format: 'ratio' as const,
           color: '#F7931A',
           dataDate: latestData.indicatorDates?.priceMa200w || latestData.date,
@@ -432,7 +445,7 @@ function App() {
           currentValue: latestData.priceRealizedRatio,
           targetValue: 1,
           targetOperator: 'lt' as const,
-          triggered: latestData.signals.priceRealized,
+          triggered: latestData.signalsV6?.priceRealized ?? latestData.signals.priceRealized,
           format: 'ratio' as const,
           color: '#0EA5E9',
           dataDate: latestData.indicatorDates?.priceRealized || latestData.date,
@@ -444,7 +457,8 @@ function App() {
           currentValue: latestData.mvrvZscore ?? 0,
           targetValue: latestData.thresholds?.mvrvZscoreCore?.trigger ?? latestData.thresholds?.mvrvZscore?.trigger ?? 0,
           targetOperator: 'lt' as const,
-          triggered: latestData.signalsV4?.mvrvZscore
+          triggered: latestData.signalsV6?.mvrvZscore
+            ?? latestData.signalsV4?.mvrvZscore
             ?? latestData.signalMvrvZscoreCore
             ?? latestData.signalMvrvZ
             ?? latestData.signalsV4?.reserveRisk
@@ -454,7 +468,24 @@ function App() {
           dataDate: latestData.indicatorDates?.mvrvZscore || latestData.date,
           detailValue: latestData.indicatorDates?.reserveRisk
             ? `Reserve Risk 仅作观测：${latestData.reserveRisk.toFixed(6)}（${latestData.indicatorDates.reserveRisk}）`
-            : 'Reserve Risk 仅作观测，不参与当前 Core-7 计分。',
+            : '与 NUPL 共享 V6 估值槽位，Reserve Risk 仅作观测。',
+        },
+        {
+          name: 'NUPL',
+          description: '净未实现盈亏，估值融合槽位',
+          currentValue: latestData.nupl ?? 0,
+          targetValue: latestData.thresholds?.nuplCore?.trigger ?? latestData.thresholds?.nupl?.trigger ?? 0.25,
+          targetOperator: 'lt' as const,
+          triggered: latestData.signalsV6?.nupl
+            ?? latestData.signalNuplCore
+            ?? latestData.signalNupl
+            ?? false,
+          format: 'number' as const,
+          color: '#14B8A6',
+          dataDate: latestData.indicatorDates?.nupl || latestData.date,
+          detailValue: latestData.valuationBlendScoreV6 === undefined
+            ? '与 MVRV Z-Score 共享 V6 估值槽位。'
+            : `与 MVRV Z-Score 共享估值槽位，当前融合分 ${latestData.valuationBlendScoreV6}/2。`,
         },
         {
           name: 'LTH-MVRV',
@@ -462,7 +493,7 @@ function App() {
           currentValue: latestData.lthMvrv ?? 0,
           targetValue: latestData.thresholds?.lthMvrv?.trigger ?? 1,
           targetOperator: 'lt' as const,
-          triggered: latestData.signalsV4?.lthMvrv ?? false,
+          triggered: latestData.signalsV6?.lthMvrv ?? latestData.signalsV4?.lthMvrv ?? false,
           format: 'ratio' as const,
           color: '#8B5CF6',
           dataDate: latestData.indicatorDates?.lthMvrv || latestData.date,
@@ -473,7 +504,7 @@ function App() {
           currentValue: latestData.lthSopr ?? 0,
           targetValue: latestData.thresholds?.lthSopr?.trigger ?? 1,
           targetOperator: 'lt' as const,
-          triggered: latestData.signalsV4?.lthSopr ?? false,
+          triggered: latestData.signalsV6?.lthSopr ?? latestData.signalsV4?.lthSopr ?? false,
           format: 'ratio' as const,
           color: '#A855F7',
           dataDate: latestData.indicatorDates?.lthSopr || latestData.date,
@@ -484,7 +515,7 @@ function App() {
           currentValue: latestData.sthMvrv,
           targetValue: latestData.thresholds?.sthMvrv?.trigger ?? 1,
           targetOperator: 'lt' as const,
-          triggered: latestData.signalsV4?.sthMvrv ?? latestData.signals.sthMvrv,
+          triggered: latestData.signalsV6?.sthMvrv ?? latestData.signalsV4?.sthMvrv ?? latestData.signals.sthMvrv,
           format: 'ratio' as const,
           color: '#22C55E',
           dataDate: latestData.indicatorDates?.sthMvrv || latestData.date,
@@ -498,7 +529,7 @@ function App() {
           currentValue: latestData.puellMultiple,
           targetValue: latestData.thresholds?.puellMultiple?.trigger ?? 0.6,
           targetOperator: 'lt' as const,
-          triggered: latestData.signalsV4?.puell ?? latestData.signals.puell,
+          triggered: latestData.signalsV6?.puell ?? latestData.signalsV4?.puell ?? latestData.signals.puell,
           format: 'ratio' as const,
           color: '#F97316',
           dataDate: latestData.indicatorDates?.puell || latestData.date,
@@ -514,8 +545,8 @@ function App() {
           titleClass: 'text-green-800 dark:text-green-200',
           textClass: 'text-green-700 dark:text-green-300',
           title: '极端底部区',
-          description: totalScoreV4 !== undefined
-            ? `当前 V5 总分 ${effectiveScore}/${effectiveMaxScore}，估值、触发、确认三层已形成共振，可在风控前提下执行高优先级分批建仓。`
+          description: hasLayeredScore
+            ? `当前 ${modelLabel} 总分 ${effectiveScore}/${effectiveMaxScore}，估值、触发、确认三层已形成共振，可在风控前提下执行高优先级分批建仓。`
             : `当前评分 ${effectiveScore}/${effectiveMaxScore}，市场处于深度价值区间，可在风控前提下执行分批入场。`,
         }
       : effectiveScore >= scoreThresholds.accumulate
@@ -525,8 +556,8 @@ function App() {
           titleClass: 'text-emerald-800 dark:text-emerald-200',
           textClass: 'text-emerald-700 dark:text-emerald-300',
           title: '分批配置区',
-          description: totalScoreV4 !== undefined
-            ? `当前 V5 总分 ${effectiveScore}/${effectiveMaxScore}，至少两层信号正在协同改善，适合按计划分批配置。`
+          description: hasLayeredScore
+            ? `当前 ${modelLabel} 总分 ${effectiveScore}/${effectiveMaxScore}，至少两层信号正在协同改善，适合按计划分批配置。`
             : `当前评分 ${effectiveScore}/${effectiveMaxScore}，信号较强，适合按计划分批配置。`,
         }
       : effectiveScore >= scoreThresholds.focus
@@ -536,8 +567,8 @@ function App() {
           titleClass: 'text-amber-800 dark:text-amber-200',
           textClass: 'text-amber-700 dark:text-amber-300',
           title: '重点关注区',
-          description: totalScoreV4 !== undefined
-            ? `当前 V5 总分 ${effectiveScore}/${effectiveMaxScore}，估值或触发层已有改善，但确认层尚未跟上，适合重点跟踪。`
+          description: hasLayeredScore
+            ? `当前 ${modelLabel} 总分 ${effectiveScore}/${effectiveMaxScore}，估值或触发层已有改善，但确认层尚未跟上，适合重点跟踪。`
             : `当前评分 ${effectiveScore}/${effectiveMaxScore}，状态改善中，但尚未进入高确定性区间。`,
         }
       : {
@@ -546,8 +577,8 @@ function App() {
           titleClass: 'text-slate-800 dark:text-slate-200',
           textClass: 'text-slate-700 dark:text-slate-300',
           title: '观察区',
-          description: totalScoreV4 !== undefined
-            ? `当前 V5 总分 ${effectiveScore}/${effectiveMaxScore}，底部共振尚未形成，继续等待估值与确认层同步改善。`
+          description: hasLayeredScore
+            ? `当前 ${modelLabel} 总分 ${effectiveScore}/${effectiveMaxScore}，底部共振尚未形成，继续等待估值与确认层同步改善。`
             : `当前评分 ${effectiveScore}/${effectiveMaxScore}，暂未出现强大周期底部信号。`,
         }
     : null;
@@ -566,9 +597,9 @@ function App() {
                   <Bitcoin className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold tracking-tight">BTC 大周期底部监测 V5</h1>
+                  <h1 className="text-xl font-bold tracking-tight">BTC 大周期底部监测 V6</h1>
                   <p className="text-sm text-muted-foreground">
-                    Core-7 分层模型：估值层 + 触发层（复合）+ 确认层（双指标），并保留旧版字段用于对照、归档与回滚
+                    Core-8 分层模型：估值层 + 触发层（复合）+ 确认层（双指标），NUPL 与 MVRV Z-Score 共享估值槽位
                   </p>
                 </div>
               </div>
@@ -651,7 +682,7 @@ function App() {
                   <AlertTriangle className="h-4 w-4 text-blue-600" />
                   <AlertTitle className="text-blue-800 dark:text-blue-200">静态快照模式</AlertTitle>
                   <AlertDescription className="text-blue-700 dark:text-blue-300">
-                    当前优先展示可归档、可回滚的静态快照数据，这是 V5 发布链路的默认模式。
+                    当前优先展示可归档、可回滚的静态快照数据，这是 V6 发布链路的默认模式。
                   </AlertDescription>
                   <button
                     onClick={() => setStaticAlertDismissed(true)}
@@ -690,16 +721,19 @@ function App() {
                     maxSignalScoreV2={maxSignalScoreV2}
                     totalScoreV4={latestData.totalScoreV4}
                     maxTotalScoreV4={latestData.maxTotalScoreV4}
-                    valuationScore={latestData.valuationScore}
-                    maxValuationScore={latestData.maxValuationScore}
-                    triggerScore={latestData.triggerScore}
-                    maxTriggerScore={latestData.maxTriggerScore}
-                    confirmationScore={latestData.confirmationScore}
-                    maxConfirmationScore={latestData.maxConfirmationScore}
-                    signalConfidence={latestData.signalConfidence}
-                    fallbackMode={latestData.fallbackMode}
+                    totalScoreV6={latestData.totalScoreV6}
+                    maxTotalScoreV6={latestData.maxTotalScoreV6}
+                    valuationScore={latestData.valuationScoreV6 ?? latestData.valuationScore}
+                    maxValuationScore={latestData.maxValuationScoreV6 ?? latestData.maxValuationScore}
+                    triggerScore={latestData.triggerScoreV6 ?? latestData.triggerScore}
+                    maxTriggerScore={latestData.maxTriggerScoreV6 ?? latestData.maxTriggerScore}
+                    confirmationScore={latestData.confirmationScoreV6 ?? latestData.confirmationScore}
+                    maxConfirmationScore={latestData.maxConfirmationScoreV6 ?? latestData.maxConfirmationScore}
+                    signalConfidence={latestData.signalConfidenceV6 ?? latestData.signalConfidence}
+                    fallbackMode={latestData.fallbackModeV6 ?? latestData.fallbackMode}
                     signalConfirmed3d={latestData.signalConfirmed3d}
                     signalConfirmed3dV4={latestData.signalConfirmed3dV4}
+                    signalConfirmed3dV6={latestData.signalConfirmed3dV6}
                     dataTimestampLabel={dataTimestampLabel}
                     dataSource={dataSource}
                     latestDataDate={latestData.date}
@@ -800,7 +834,7 @@ function App() {
 
         <footer className="footer-line mt-12">
           <div className="app-container flex flex-col items-center justify-between gap-3 py-6 text-sm text-muted-foreground md:flex-row">
-            <p>数据来源：BGeometrics 文件端点 | 模型：Core-7 V5（双确认层 + 复合触发 + 3日确认）</p>
+            <p>数据来源：BGeometrics 文件端点 | 模型：Core-8 V6（NUPL 估值融合 + 复合触发 + 双确认层 + 3日确认）</p>
             <p>
               数据时间：{dataTimestampLabel}
               {manifestGeneratedAt ? ` | 清单生成时间：${manifestGeneratedAt}` : ''}

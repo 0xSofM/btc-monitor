@@ -207,10 +207,163 @@ def parse_reserve_risk_history_series(raw_rows: object) -> pd.DataFrame:
     return df.sort_values("date").groupby("date", as_index=False).last()
 
 
+def parse_nupl_history_series(raw_rows: object) -> pd.DataFrame:
+    """Parse NUPL history from either dict-list or chart-file array formats."""
+    if not isinstance(raw_rows, list):
+        if isinstance(raw_rows, dict):
+            point = _parse_nupl_point(raw_rows)
+            if point is None:
+                return pd.DataFrame(columns=["date", "nupl"])
+            return pd.DataFrame([{"date": point[0], "nupl": point[1]}])
+        return pd.DataFrame(columns=["date", "nupl"])
+
+    if raw_rows and isinstance(raw_rows[0], list):
+        return parse_series("nupl", raw_rows)
+
+    parsed: List[Dict[str, object]] = []
+    for row in raw_rows:
+        if not isinstance(row, dict):
+            continue
+
+        date_raw = _safe_iso_date(row.get("d"))
+        if not date_raw:
+            continue
+
+        try:
+            date_value = pd.to_datetime(date_raw)
+        except Exception:
+            continue
+
+        parsed.append(
+            {
+                "date": date_value,
+                "nupl": _safe_float(row.get("nupl")),
+            }
+        )
+
+    if not parsed:
+        return pd.DataFrame(columns=["date", "nupl"])
+
+    df = pd.DataFrame(parsed)
+    return df.sort_values("date").groupby("date", as_index=False).last()
+
+
+def _parse_nupl_point(payload: object) -> Tuple[pd.Timestamp, float] | None:
+    point: Dict[str, object] | None = None
+
+    if isinstance(payload, dict):
+        if "d" in payload and "nupl" in payload:
+            point = payload
+    elif isinstance(payload, list) and payload:
+        if isinstance(payload[-1], dict):
+            point = payload[-1]
+
+    if not point:
+        return None
+
+    date_raw = _safe_iso_date(point.get("d"))
+    value_raw = _safe_float(point.get("nupl"))
+    if not date_raw or value_raw is None:
+        return None
+
+    try:
+        date_value = pd.to_datetime(date_raw)
+    except Exception:
+        return None
+
+    return date_value, value_raw
+
+
+def merge_metric_history_sources(
+    metric_key: str, source_frames: Iterable[Tuple[pd.DataFrame, int]]
+) -> pd.DataFrame:
+    parts: List[pd.DataFrame] = []
+
+    for df, source_rank in source_frames:
+        if df.empty or "date" not in df.columns or metric_key not in df.columns:
+            continue
+        parts.append(
+            df.assign(
+                _source_rank=int(source_rank),
+                _non_null_rank=df[metric_key].notna().astype(int),
+            )
+        )
+
+    if not parts:
+        return pd.DataFrame(columns=["date", metric_key])
+
+    merged = pd.concat(parts, ignore_index=True)
+    merged["date"] = pd.to_datetime(merged["date"])
+    merged = merged.sort_values(
+        ["date", "_non_null_rank", "_source_rank"]
+    ).drop_duplicates(subset=["date"], keep="last")
+    return merged.drop(columns=["_source_rank", "_non_null_rank"]).reset_index(
+        drop=True
+    )
+
+
+def fetch_nupl_series(config: Dict[str, object]) -> Tuple[pd.DataFrame, str]:
+    """Fetch NUPL long history and patch the newest tail from bitcoin-data."""
+    source_frames: List[Tuple[pd.DataFrame, int]] = []
+    selected_sources: List[str] = []
+    errors: List[str] = []
+
+    urls = [str(config["url"])] + [str(x) for x in config.get("fallback_urls", [])]
+    for url in urls:
+        try:
+            raw_data = fetch_json(url)
+            df = parse_series("nupl", raw_data)
+            if not df.empty:
+                source_frames.append((df, 0))
+                selected_sources.append(url)
+                break
+            errors.append(f"{url} -> empty NUPL chart series")
+        except Exception as exc:
+            errors.append(f"{url} -> {exc}")
+
+    for url in [str(x) for x in config.get("history_urls", [])]:
+        try:
+            payload = fetch_json_payload(url)
+            df = parse_nupl_history_series(payload)
+            if not df.empty:
+                source_frames.append((df, 1))
+                selected_sources.append(url)
+            else:
+                errors.append(f"{url} -> empty NUPL history")
+        except Exception as exc:
+            errors.append(f"{url} -> {exc}")
+
+    for url in [str(x) for x in config.get("latest_urls", [])]:
+        try:
+            payload = fetch_json_payload(url)
+            point = _parse_nupl_point(payload)
+            if point is None:
+                errors.append(f"{url} -> invalid NUPL latest payload")
+                continue
+
+            source_frames.append(
+                (pd.DataFrame([{"date": point[0], "nupl": point[1]}]), 2)
+            )
+            selected_sources.append(url)
+            break
+        except Exception as exc:
+            errors.append(f"{url} -> {exc}")
+
+    merged = merge_metric_history_sources("nupl", source_frames)
+    if merged.empty:
+        last_error = " | ".join(errors[-3:]) if errors else "no usable source"
+        raise RuntimeError(f"Failed to fetch nupl: {last_error}")
+
+    return merged, " + ".join(selected_sources)
+
+
 def fetch_metric(
     metric_key: str, config: Dict[str, object]
 ) -> Tuple[pd.DataFrame, str]:
     """Fetch one metric; try primary URL then fallback URLs."""
+    if metric_key == "nupl":
+        return fetch_nupl_series(config)
+
     urls = [str(config["url"])] + [str(x) for x in config.get("fallback_urls", [])]
     last_error: Exception | None = None
 
@@ -876,6 +1029,7 @@ def build_base_dataframe(
         "lth_mvrv",
         "lth_sopr",
         "mvrv_zscore",
+        "nupl",
         "sth_sopr",
         "sth_mvrv",
         "puell_multiple",

@@ -23,11 +23,15 @@ export interface IndicatorData {
   sthSopr?: number;
   sthMvrv?: number;
   puellMultiple?: number;
+  nupl?: number;
   signalPriceMa200w?: boolean;
   signalPriceRealized?: boolean;
   signalReserveRisk?: boolean;
   signalReserveRiskV4?: boolean;
   signalMvrvZscoreCore?: boolean;
+  signalNupl?: boolean;
+  signalNuplCore?: boolean;
+  signalValuationBlendV6?: boolean;
   signalSthSopr?: boolean;
   signalSthMvrv?: boolean;
   signalSthGroup?: boolean;
@@ -38,8 +42,10 @@ export interface IndicatorData {
   signalPuell?: boolean;
   signalCount?: number;
   signalCountV4?: number;
+  signalCountV6?: number;
   activeIndicatorCount?: number;
   activeIndicatorCountV4?: number;
+  activeIndicatorCountV6?: number;
   maxSignalScoreV2?: number;
   scorePriceMa200w?: number;
   scorePriceRealized?: number;
@@ -47,6 +53,9 @@ export interface IndicatorData {
   scoreReserveRiskV4?: number;
   scoreMvrvZscore?: number;
   scoreMvrvZscoreCore?: number;
+  scoreNupl?: number;
+  scoreNuplCore?: number;
+  valuationBlendScoreV6?: number;
   scoreLthMvrv?: number;
   scoreLthSopr?: number;
   scoreSthSopr?: number;
@@ -70,9 +79,23 @@ export interface IndicatorData {
   totalScoreV4Min3d?: number;
   signalConfirmed3dV4?: boolean;
   signalBandV4?: string;
+  valuationScoreV6?: number;
+  maxValuationScoreV6?: number;
+  triggerScoreV6?: number;
+  maxTriggerScoreV6?: number;
+  confirmationScoreV6?: number;
+  maxConfirmationScoreV6?: number;
+  totalScoreV6?: number;
+  maxTotalScoreV6?: number;
+  totalScoreV6Min3d?: number;
+  signalConfirmed3dV6?: boolean;
+  signalBandV6?: string;
   signalConfidence?: number;
+  signalConfidenceV6?: number;
   dataFreshnessScore?: number;
+  dataFreshnessScoreV6?: number;
   fallbackMode?: string;
+  fallbackModeV6?: string;
   staleIndicators?: Array<string | { key?: string; lagDays?: number; maxLagDays?: number; sourceDate?: string }>;
   coreIndicatorSet?: string;
   scoringModelVersion?: string;
@@ -85,6 +108,7 @@ export interface IndicatorData {
     lthMvrv?: string;
     lthSopr?: string;
     mvrvZscore?: string;
+    nupl?: string;
     sthSopr?: string;
     sthMvrv?: string;
     puell?: string;
@@ -92,10 +116,20 @@ export interface IndicatorData {
   // Legacy V1 compatibility fields
   mvrvZscore?: number;
   lthMvrv?: number;
-  nupl?: number;
   signalPriceMa?: boolean;
   signalMvrvZ?: boolean;
-  signalNupl?: boolean;
+  signalsV6?: {
+    priceMa200w?: boolean;
+    priceRealized?: boolean;
+    mvrvZscore?: boolean;
+    nupl?: boolean;
+    valuationBlend?: boolean;
+    sthMvrv?: boolean;
+    sthSoprTrigger?: boolean;
+    lthMvrv?: boolean;
+    lthSopr?: boolean;
+    puell?: boolean;
+  };
 }
 
 export interface LatestData {
@@ -107,6 +141,7 @@ export interface LatestData {
   ma200w?: number;
   realizedPrice?: number;
   reserveRisk: number;
+  nupl?: number;
   lthSopr?: number;
   sthSopr: number;
   sthMvrv: number;
@@ -115,6 +150,8 @@ export interface LatestData {
   activeIndicatorCount?: number;
   signalCountV4?: number;
   activeIndicatorCountV4?: number;
+  signalCountV6?: number;
+  activeIndicatorCountV6?: number;
   maxSignalScoreV2?: number;
   signalScoreV2?: number;
   signalScoreV2Min3d?: number | null;
@@ -133,11 +170,31 @@ export interface LatestData {
   totalScoreV4Min3d?: number | null;
   signalConfirmed3dV4?: boolean;
   signalBandV4?: string;
+  valuationScoreV6?: number;
+  maxValuationScoreV6?: number;
+  triggerScoreV6?: number;
+  maxTriggerScoreV6?: number;
+  confirmationScoreV6?: number;
+  maxConfirmationScoreV6?: number;
+  totalScoreV6?: number;
+  maxTotalScoreV6?: number;
+  totalScoreV6Min3d?: number | null;
+  signalConfirmed3dV6?: boolean;
+  signalBandV6?: string;
   signalConfidence?: number;
+  signalConfidenceV6?: number;
   dataFreshnessScore?: number;
+  dataFreshnessScoreV6?: number;
   fallbackMode?: string;
+  fallbackModeV6?: string;
   scoreMvrvZscoreCore?: number;
   signalMvrvZscoreCore?: boolean;
+  scoreNupl?: number;
+  scoreNuplCore?: number;
+  valuationBlendScoreV6?: number;
+  signalNupl?: boolean;
+  signalNuplCore?: boolean;
+  signalValuationBlendV6?: boolean;
   scorePriceMa200w?: number;
   scorePriceRealized?: number;
   scoreReserveRisk?: number;
@@ -174,6 +231,18 @@ export interface LatestData {
     puell: boolean;
     sthSoprTrigger?: boolean;
   };
+  signalsV6?: {
+    priceMa200w?: boolean;
+    priceRealized?: boolean;
+    mvrvZscore?: boolean;
+    nupl?: boolean;
+    valuationBlend?: boolean;
+    sthMvrv?: boolean;
+    sthSoprTrigger?: boolean;
+    lthMvrv?: boolean;
+    lthSopr?: boolean;
+    puell?: boolean;
+  };
   indicatorDates?: {
     btcPrice?: string;
     priceMa200w?: string;
@@ -182,6 +251,7 @@ export interface LatestData {
     lthMvrv?: string;
     lthSopr?: string;
     mvrvZscore?: string;
+    nupl?: string;
     sthSopr?: string;
     sthMvrv?: string;
     puell?: string;
@@ -191,7 +261,6 @@ export interface LatestData {
   // Legacy V1 compatibility fields
   mvrvZscore?: number;
   lthMvrv?: number;
-  nupl?: number;
   signalMvrvZ?: boolean;
 }
 
