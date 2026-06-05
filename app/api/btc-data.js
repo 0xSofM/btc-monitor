@@ -125,8 +125,8 @@ const DEFAULT_THRESHOLDS = {
   lthSopr: { trigger: 1, deep: 0.98 },
   mvrvZscore: { trigger: 0, deep: -0.5 },
   mvrvZscoreCore: { trigger: 0, deep: -0.5, role: 'valuation_core_v4' },
-  nupl: { trigger: 0.25, deep: 0 },
-  nuplCore: { trigger: 0.25, deep: 0, role: 'valuation_core_v6' },
+  nupl: { trigger: 0.15, deep: 0 },
+  nuplCore: { trigger: 0.15, deep: 0, role: 'valuation_core_v6' },
   reserveRiskV4Compatibility: { aliasOf: 'mvrvZscoreCore', deprecated: true },
 };
 

@@ -144,7 +144,7 @@ function buildThresholdDescription(indicator: IndicatorType, point: DetailSeries
     case 'mvrvZscore':
       return '固定阈值 < 0（深度 < -0.5）';
     case 'nupl':
-      return '固定阈值 < 0.25（深度 < 0）';
+      return '固定阈值 < 0.15（深度 < 0）';
     case 'lthMvrv':
       return '固定阈值 < 1（深度 < 0.90）';
     case 'lthSopr':

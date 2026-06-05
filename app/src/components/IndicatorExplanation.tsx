@@ -40,7 +40,7 @@ const valuationIndicators: IndicatorItem[] = [
     id: 'nupl',
     name: 'NUPL',
     icon: TrendingDown,
-    target: '< 0.25（深度 < 0）',
+    target: '< 0.15（深度 < 0）',
     description: '衡量市场净未实现盈亏，补充 MVRV Z-Score 对估值低位的识别。',
     rationale: 'NUPL 能从持币者整体盈亏状态补强估值判断；V6 中它与 MVRV Z-Score 共享同一个估值计分槽位，不额外抬高总分上限。',
   },

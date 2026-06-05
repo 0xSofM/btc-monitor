@@ -167,7 +167,7 @@ THRESHOLD_STATIC: Dict[str, Dict[str, float]] = {
     "lth_mvrv": {"trigger": 1.0, "deep": 0.9},
     "lth_sopr": {"trigger": 1.0, "deep": 0.98},
     "mvrv_zscore": {"trigger": 0.0, "deep": -0.5},
-    "nupl": {"trigger": 0.25, "deep": 0.0},
+    "nupl": {"trigger": 0.15, "deep": 0.0},
 }
 
 GROUPED_SIGNAL_COLUMNS = [

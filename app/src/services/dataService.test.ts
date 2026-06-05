@@ -63,7 +63,7 @@ describe('dataService helpers', () => {
         },
         thresholds: {
           sthMvrv: { trigger: 0.914, deep: 0.846 },
-          nuplCore: { trigger: 0.25, deep: 0 },
+          nuplCore: { trigger: 0.15, deep: 0 },
         },
         api_data_date: {
           price_ma200w: '2026-03-28',
@@ -214,7 +214,7 @@ describe('dataService helpers', () => {
     const chartData = getIndicatorChartData(history, 'nupl', 'all');
     expect(chartData).toHaveLength(2);
     expect(chartData.map((point) => point.value)).toEqual([0.18, null]);
-    expect(chartData.map((point) => point.triggerValue)).toEqual([0.25, 0.25]);
+    expect(chartData.map((point) => point.triggerValue)).toEqual([0.15, 0.15]);
   });
 
   it('normalizeIndicatorData preserves compact indicatorDates for NUPL chart gaps', () => {
@@ -317,7 +317,7 @@ describe('dataService helpers', () => {
       },
       thresholds: {
         sthMvrv: { trigger: 0.914, deep: 0.846 },
-        nuplCore: { trigger: 0.25, deep: 0 },
+        nuplCore: { trigger: 0.15, deep: 0 },
       },
       indicatorDates: {
         priceMa200w: '2026-04-16',
@@ -350,7 +350,7 @@ describe('dataService helpers', () => {
       date: '2026-04-16',
       value: 0.18,
       signal: true,
-      triggerValue: 0.25,
+      triggerValue: 0.15,
     });
 
     const replaced = mergeLatestIntoHistory(appended, {

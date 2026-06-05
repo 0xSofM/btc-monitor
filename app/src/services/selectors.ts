@@ -16,7 +16,7 @@ const DEFAULT_THRESHOLDS = {
   priceRealized: 1,
   reserveRisk: 0.0016,
   mvrvZscore: 0,
-  nupl: 0.25,
+  nupl: 0.15,
   lthMvrv: 1,
   lthSopr: 1,
   sthSopr: 1,
@@ -876,7 +876,7 @@ export const INDICATOR_CONFIG = {
   nupl: {
     name: 'NUPL',
     unit: '',
-    targetValue: 0.25,
+    targetValue: 0.15,
     color: '#14B8A6',
     description: '净未实现盈亏，用于补强估值层并与 MVRV Z-Score 共享计分槽位。',
   },

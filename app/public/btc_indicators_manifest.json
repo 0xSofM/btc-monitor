@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-05T04:25:45.498310+00:00",
+  "generatedAt": "2026-06-05T06:21:11.224068+00:00",
   "latestDate": "2026-06-05",
-  "lastUpdated": "2026-06-05T04:25:45.442709+00:00",
-  "historyRows": 5484,
+  "lastUpdated": "2026-06-05T06:21:11.173147+00:00",
+  "historyRows": 5635,
   "signalEventsV4Rows": 19,
   "schemaVersion": "v6",
   "indicatorSet": "core8_bottom_v6_nupl_valuation_blend",
@@ -11,11 +11,11 @@
   "thresholdVersion": "v4_dynamic",
   "activeIndicatorCountV6": 8,
   "maxTotalScoreV6": 14,
-  "totalScoreV6": 5,
+  "totalScoreV6": 4,
   "dynamicThresholds": {
     "reserveRisk": {
-      "trigger": 0.001145,
-      "deep": 0.0010459,
+      "trigger": 0.00058803342,
+      "deep": 0.00054438239,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -42,7 +42,7 @@
     }
   },
   "reserveRiskHealth": {
-    "primaryStatus": "null_tail",
+    "primaryStatus": "healthy",
     "sourceMode": null
   },
   "archivedSnapshot": null,

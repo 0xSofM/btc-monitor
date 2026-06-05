@@ -474,7 +474,7 @@ function App() {
           name: 'NUPL',
           description: '净未实现盈亏，估值融合槽位',
           currentValue: latestData.nupl ?? 0,
-          targetValue: latestData.thresholds?.nuplCore?.trigger ?? latestData.thresholds?.nupl?.trigger ?? 0.25,
+          targetValue: latestData.thresholds?.nuplCore?.trigger ?? latestData.thresholds?.nupl?.trigger ?? 0.15,
           targetOperator: 'lt' as const,
           triggered: latestData.signalsV6?.nupl
             ?? latestData.signalNuplCore

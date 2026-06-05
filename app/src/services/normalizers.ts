@@ -390,7 +390,7 @@ export function normalizeLatestData(item: unknown): LatestData | null {
           ?? record.signal_nupl_core
           ?? record.signalNupl
           ?? record.signal_nupl,
-        ) ?? ((nupl ?? 1) < 0.25),
+        ) ?? ((nupl ?? 1) < 0.15),
         valuationBlend: asBoolean(
           incomingSignalsV6.valuationBlend
           ?? record.signalValuationBlendV6
