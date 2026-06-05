@@ -18,9 +18,7 @@ import { INDICATOR_CONFIG, getIndicatorChartData, getMA200ChartData } from '@/se
 
 interface IndicatorChartsProps {
   data: IndicatorData[];
-  isFullHistoryLoaded?: boolean;
-  isFullHistoryLoading?: boolean;
-  onRequestFullHistory?: () => void | Promise<void>;
+  isHistoryLoading?: boolean;
 }
 
 type IndicatorType = 'priceMa200w' | 'priceRealized' | 'mvrvZscore' | 'lthMvrv' | 'lthSopr' | 'sthMvrv' | 'puell';
@@ -201,9 +199,7 @@ function IndicatorTooltip({
 
 export function IndicatorCharts({
   data,
-  isFullHistoryLoaded = false,
-  isFullHistoryLoading = false,
-  onRequestFullHistory,
+  isHistoryLoading = false,
 }: IndicatorChartsProps) {
   const [activeIndicator, setActiveIndicator] = useState<IndicatorType>('priceMa200w');
   const [showThresholds, setShowThresholds] = useState(true);
@@ -240,6 +236,8 @@ export function IndicatorCharts({
     ? '价格跌破 200W-MA 时通常进入长期底部观察区。'
     : buildThresholdDescription(activeIndicator, detailThresholdPoint);
   const totalPoints = detailSeries.length;
+  const historyStartDate = data[0]?.d ?? '-';
+  const historyEndDate = data.at(-1)?.d ?? '-';
 
   const resolvedEndIndex = totalPoints > 0
     ? Math.min(brushEndIndex ?? (totalPoints - 1), totalPoints - 1)
@@ -531,25 +529,16 @@ export function IndicatorCharts({
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle className="text-lg font-semibold">Core-7 历史图表</CardTitle>
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span
-                className={`rounded-full px-2.5 py-1 ${
-                  isFullHistoryLoaded
-                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
-                    : 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
-                }`}
-              >
-                {isFullHistoryLoaded ? '已加载全量历史' : '已加载轻量历史'}
+              <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                完整历史
               </span>
-
-              {!isFullHistoryLoaded && (
-                <button
-                  type="button"
-                  onClick={() => void onRequestFullHistory?.()}
-                  disabled={isFullHistoryLoading}
-                  className="rounded-md border px-2 py-1 transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {isFullHistoryLoading ? '正在加载全量历史...' : '加载全量历史'}
-                </button>
+              <span className="rounded-full bg-muted px-2.5 py-1 text-muted-foreground">
+                {historyStartDate} 至 {historyEndDate} · {data.length.toLocaleString('en-US')} 条
+              </span>
+              {isHistoryLoading && (
+                <span className="rounded-full bg-blue-100 px-2.5 py-1 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+                  正在刷新历史
+                </span>
               )}
             </div>
           </div>

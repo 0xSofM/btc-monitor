@@ -1,12 +1,11 @@
 ﻿import type { ApiMetricPoint } from './contracts';
 
 export const API_BASE_URL = 'https://bitcoin-data.com';
-export const STATIC_HISTORY_LIGHT_PATH = '/btc_indicators_history_light.json';
 export const STATIC_HISTORY_FULL_PATH = '/btc_indicators_history.json';
 export const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
 export const STATIC_MANIFEST_PATH = '/btc_indicators_manifest.json';
 
-const DEFAULT_PROXY_URL = import.meta.env.PROD ? '/api/btc-data' : '';
+const DEFAULT_PROXY_URL = '/api/btc-data';
 export const PROXY_URL = import.meta.env.VITE_API_PROXY_URL || DEFAULT_PROXY_URL;
 
 export async function fetchWithTimeout(

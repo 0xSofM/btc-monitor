@@ -15,7 +15,7 @@ const UPSTREAM_TIMEOUT_MS = 8000;
 const memoryCache = new Map();
 const MEMORY_CACHE_TTL_MS = 600_000; // 10 min
 const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
-const STATIC_HISTORY_LIGHT_PATH = '/btc_indicators_history_light.json';
+const STATIC_HISTORY_PATH = '/btc_indicators_history.json';
 const BLOCKCHAIN_INFO_STATS_URL = 'https://api.blockchain.info/stats';
 
 async function fetchBlockchainInfoSpotPrice() {
@@ -310,6 +310,20 @@ function pickNewerPoint(primary, backup) {
   return compareDateStrings(backup.d, primary.d) >= 0 ? backup : primary;
 }
 
+function pickFreshestPoint(...points) {
+  return points.reduce((freshest, point) => {
+    if (!point) {
+      return freshest;
+    }
+
+    if (!freshest) {
+      return point;
+    }
+
+    return compareDateStrings(point.d, freshest.d) > 0 ? point : freshest;
+  }, null);
+}
+
 function daysBetween(laterDate, earlierDate) {
   if (!laterDate || !earlierDate) {
     return null;
@@ -504,13 +518,13 @@ async function fetchStaticLatestSnapshot(request) {
   }
 }
 
-async function fetchStaticHistoryLight(request) {
+async function fetchStaticHistory(request) {
   try {
-    const url = new URL(STATIC_HISTORY_LIGHT_PATH, request.url);
+    const url = new URL(STATIC_HISTORY_PATH, request.url);
     const payload = await fetchJsonSafely(url.toString(), []);
     return Array.isArray(payload) ? payload : [];
   } catch (error) {
-    console.warn('Static history-light fetch failed:', error);
+    console.warn('Static history fetch failed:', error);
     return [];
   }
 }
@@ -638,7 +652,7 @@ async function fetchRuntimeInputs(request) {
     puellPoint,
   ] = await Promise.all([
     fetchStaticLatestSnapshot(request),
-    fetchStaticHistoryLight(request),
+    fetchStaticHistory(request),
     fetchLatestFilePoint('btcPrice'),
     fetchLatestFilePoint('ma200w'),
     fetchLatestFilePoint('realizedPrice'),
@@ -652,7 +666,7 @@ async function fetchRuntimeInputs(request) {
     fetchLatestFilePoint('puellMultiple'),
   ]);
 
-  const backupSpotPrice = filePricePoint ? null : await fetchBackupSpotPrice();
+  const backupSpotPrice = await fetchBackupSpotPrice();
   const resolvedPricePoint = pickNewerPoint(filePricePoint, backupSpotPrice);
   const resolvedReserveRiskPoint = pickNewerPoint(reserveRiskPrimaryPoint, reserveRiskBackupPoint);
 
@@ -685,17 +699,30 @@ function buildRuntimePayload({
   const thresholds = buildThresholdBundle(staticLatest);
   const snapshotDate = asString(staticLatest?.date) ?? getTodayUtcDate();
 
+  const snapshotPoints = {
+    btcPrice: buildSnapshotPoint(staticLatest, 'btcPrice', 'priceMa200w', snapshotDate),
+    ma200w: buildSnapshotPoint(staticLatest, 'ma200w', 'priceMa200w', snapshotDate),
+    realizedPrice: buildSnapshotPoint(staticLatest, 'realizedPrice', 'priceRealized', snapshotDate),
+    reserveRisk: buildSnapshotPoint(staticLatest, 'reserveRisk', 'reserveRisk', snapshotDate),
+    lthMvrv: buildSnapshotPoint(staticLatest, 'lthMvrv', 'lthMvrv', snapshotDate),
+    lthSopr: buildSnapshotPoint(staticLatest, 'lthSopr', 'lthSopr', snapshotDate),
+    mvrvZscore: buildSnapshotPoint(staticLatest, 'mvrvZscore', 'mvrvZscore', snapshotDate),
+    sthSopr: buildSnapshotPoint(staticLatest, 'sthSopr', 'sthSopr', snapshotDate),
+    sthMvrv: buildSnapshotPoint(staticLatest, 'sthMvrv', 'sthMvrv', snapshotDate),
+    puellMultiple: buildSnapshotPoint(staticLatest, 'puellMultiple', 'puell', snapshotDate),
+  };
+
   const points = {
-    btcPrice: pricePoint ?? buildSnapshotPoint(staticLatest, 'btcPrice', 'priceMa200w', snapshotDate),
-    ma200w: seriesPoints.ma200w ?? buildSnapshotPoint(staticLatest, 'ma200w', 'priceMa200w', snapshotDate),
-    realizedPrice: seriesPoints.realizedPrice ?? buildSnapshotPoint(staticLatest, 'realizedPrice', 'priceRealized', snapshotDate),
-    reserveRisk: seriesPoints.reserveRisk ?? buildSnapshotPoint(staticLatest, 'reserveRisk', 'reserveRisk', snapshotDate),
-    lthMvrv: seriesPoints.lthMvrv ?? buildSnapshotPoint(staticLatest, 'lthMvrv', 'lthMvrv', snapshotDate),
-    lthSopr: seriesPoints.lthSopr ?? buildSnapshotPoint(staticLatest, 'lthSopr', 'lthSopr', snapshotDate),
-    mvrvZscore: seriesPoints.mvrvZscore ?? buildSnapshotPoint(staticLatest, 'mvrvZscore', 'mvrvZscore', snapshotDate),
-    sthSopr: seriesPoints.sthSopr ?? buildSnapshotPoint(staticLatest, 'sthSopr', 'sthSopr', snapshotDate),
-    sthMvrv: seriesPoints.sthMvrv ?? buildSnapshotPoint(staticLatest, 'sthMvrv', 'sthMvrv', snapshotDate),
-    puellMultiple: seriesPoints.puellMultiple ?? buildSnapshotPoint(staticLatest, 'puellMultiple', 'puell', snapshotDate),
+    btcPrice: pickFreshestPoint(pricePoint, snapshotPoints.btcPrice),
+    ma200w: pickFreshestPoint(seriesPoints.ma200w, snapshotPoints.ma200w),
+    realizedPrice: pickFreshestPoint(seriesPoints.realizedPrice, snapshotPoints.realizedPrice),
+    reserveRisk: pickFreshestPoint(seriesPoints.reserveRisk, snapshotPoints.reserveRisk),
+    lthMvrv: pickFreshestPoint(seriesPoints.lthMvrv, snapshotPoints.lthMvrv),
+    lthSopr: pickFreshestPoint(seriesPoints.lthSopr, snapshotPoints.lthSopr),
+    mvrvZscore: pickFreshestPoint(seriesPoints.mvrvZscore, snapshotPoints.mvrvZscore),
+    sthSopr: pickFreshestPoint(seriesPoints.sthSopr, snapshotPoints.sthSopr),
+    sthMvrv: pickFreshestPoint(seriesPoints.sthMvrv, snapshotPoints.sthMvrv),
+    puellMultiple: pickFreshestPoint(seriesPoints.puellMultiple, snapshotPoints.puellMultiple),
   };
 
   if (!points.btcPrice && !staticLatest) {
@@ -761,7 +788,7 @@ function buildRuntimePayload({
   const mvrvZscoreCoreActive = Boolean(points.mvrvZscore?.d && mvrvZscoreIsFresh);
   const scoreMvrvZscoreCore = mvrvZscoreCoreActive ? scoreMvrvZscore : 0;
 
-  const reserveRiskPrimaryLagDays = daysBetween(latestDate, seriesPoints.reserveRiskPrimary?.d);
+  const reserveRiskPrimaryLagDays = reserveRiskLagDays;
   const reserveRiskActive = Boolean(
     points.reserveRisk?.d
       && reserveRiskPrimaryLagDays !== null
@@ -948,7 +975,7 @@ function buildRuntimePayload({
         ? 'primary_source_stale'
         : 'stale_source_lag',
       sourceDate: points.reserveRisk?.d ?? null,
-      primarySourceDate: seriesPoints.reserveRiskPrimary?.d ?? null,
+      primarySourceDate: points.reserveRisk?.d ?? null,
       latestDate,
       lagDays: reserveRiskLagDays,
       primaryLagDays: reserveRiskPrimaryLagDays,
@@ -1098,25 +1125,24 @@ async function fetchIndicatorRoute(path, request) {
     point = await fetchLatestFilePoint(routeConfig.seriesKey);
   }
 
-  if (!point) {
-    const snapshotKeyMap = {
-      mvrvZscore: 'mvrvZscore',
-      lthMvrv: 'lthMvrv',
-      puellMultiple: 'puellMultiple',
-      reserveRisk: 'reserveRisk',
-      realizedPrice: 'realizedPrice',
-      sthSopr: 'sthSopr',
-      sthMvrv: 'sthMvrv',
-      ma200w: 'ma200w',
-    };
+  const snapshotKeyMap = {
+    mvrvZscore: 'mvrvZscore',
+    lthMvrv: 'lthMvrv',
+    puellMultiple: 'puellMultiple',
+    reserveRisk: 'reserveRisk',
+    realizedPrice: 'realizedPrice',
+    sthSopr: 'sthSopr',
+    sthMvrv: 'sthMvrv',
+    ma200w: 'ma200w',
+  };
+  const snapshotPoint = buildSnapshotPoint(
+    staticLatest,
+    snapshotKeyMap[routeConfig.seriesKey],
+    routeConfig.dateKey,
+    asString(staticLatest?.date),
+  );
 
-    point = buildSnapshotPoint(
-      staticLatest,
-      snapshotKeyMap[routeConfig.seriesKey],
-      routeConfig.dateKey,
-      asString(staticLatest?.date),
-    );
-  }
+  point = pickFreshestPoint(point, snapshotPoint);
 
   return pointToArray(point, routeConfig.dataKey);
 }
@@ -1173,8 +1199,17 @@ export default async function handler(request) {
 
     if (path === '/btc-data/v1/btc-price/1') {
       const runtimeInputs = await fetchRuntimeInputs(request);
-      const priceArray = pointToArray(runtimeInputs.pricePoint, 'btcPrice');
-      return buildSuccessResponse(priceArray, corsHeaders, runtimeInputs.pricePoint?.source ? 'LIVE' : 'FALLBACK');
+      const pricePoint = pickFreshestPoint(
+        runtimeInputs.pricePoint,
+        buildSnapshotPoint(
+          runtimeInputs.staticLatest,
+          'btcPrice',
+          'priceMa200w',
+          asString(runtimeInputs.staticLatest?.date),
+        ),
+      );
+      const priceArray = pointToArray(pricePoint, 'btcPrice');
+      return buildSuccessResponse(priceArray, corsHeaders, pricePoint?.source ? 'LIVE' : 'FALLBACK');
     }
 
     const indicatorData = await fetchIndicatorRoute(path, request);

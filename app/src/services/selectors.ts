@@ -46,6 +46,37 @@ const CORE_INDICATOR_DATE_KEYS = [
   'puell',
 ] as const;
 
+function asNonEmptyString(value: unknown): string | undefined {
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  return trimmed ? trimmed : undefined;
+}
+
+function readRawIndicatorDates(row: IndicatorData): LatestData['indicatorDates'] | undefined {
+  const record = row as unknown as Record<string, unknown>;
+  const payload = record.apiDataDate ?? record.api_data_date;
+  if (!payload || typeof payload !== 'object') {
+    return undefined;
+  }
+
+  const dates = payload as Record<string, unknown>;
+  return {
+    btcPrice: asNonEmptyString(dates.btcPrice ?? dates.btc_price),
+    priceMa200w: asNonEmptyString(dates.priceMa200w ?? dates.price_ma200w),
+    priceRealized: asNonEmptyString(dates.priceRealized ?? dates.price_realized),
+    reserveRisk: asNonEmptyString(dates.reserveRisk ?? dates.reserve_risk),
+    lthMvrv: asNonEmptyString(dates.lthMvrv ?? dates.lth_mvrv),
+    lthSopr: asNonEmptyString(dates.lthSopr ?? dates.lth_sopr),
+    mvrvZscore: asNonEmptyString(dates.mvrvZscore ?? dates.mvrv_zscore),
+    sthSopr: asNonEmptyString(dates.sthSopr ?? dates.sth_sopr),
+    sthMvrv: asNonEmptyString(dates.sthMvrv ?? dates.sth_mvrv),
+    puell: asNonEmptyString(dates.puell),
+  };
+}
+
 function toNumericPrice(value: number | string | undefined): number {
   return toFiniteNumber(value, 0);
 }
@@ -137,8 +168,9 @@ export function findIndicatorDates(data: IndicatorData[]): NonNullable<LatestDat
 
   // Overlay explicit indicatorDates from payload — they take priority
   // over backward-scan dates.
-  const fromPayload = latest.indicatorDates;
+  const fromPayload = latest.indicatorDates ?? readRawIndicatorDates(latest);
   if (fromPayload) {
+    if (fromPayload.btcPrice) dates.btcPrice = fromPayload.btcPrice;
     if (fromPayload.priceMa200w) dates.priceMa200w = fromPayload.priceMa200w;
     if (fromPayload.priceRealized) dates.priceRealized = fromPayload.priceRealized;
     if (fromPayload.reserveRisk) dates.reserveRisk = fromPayload.reserveRisk;
@@ -323,6 +355,116 @@ export function enrichLatestDataWithHistory(latest: LatestData, history: Indicat
     ...latest,
     indicatorDates: latest.indicatorDates ?? findIndicatorDates(history),
   };
+}
+
+export function latestDataToHistoryRow(
+  latest: LatestData,
+  existingRow?: IndicatorData,
+): IndicatorData {
+  const signalsV4 = latest.signalsV4;
+
+  return {
+    ...existingRow,
+    d: latest.date,
+    btcPrice: latest.btcPrice,
+    priceMa200wRatio: latest.priceMa200wRatio,
+    priceRealizedRatio: latest.priceRealizedRatio,
+    ma200w: latest.ma200w ?? existingRow?.ma200w,
+    realizedPrice: latest.realizedPrice ?? existingRow?.realizedPrice,
+    reserveRisk: latest.reserveRisk,
+    mvrvZscore: latest.mvrvZscore ?? existingRow?.mvrvZscore,
+    lthMvrv: latest.lthMvrv ?? existingRow?.lthMvrv,
+    lthSopr: latest.lthSopr ?? existingRow?.lthSopr,
+    sthSopr: latest.sthSopr,
+    sthMvrv: latest.sthMvrv,
+    puellMultiple: latest.puellMultiple,
+    signalPriceMa200w: signalsV4?.priceMa200w ?? latest.signals.priceMa200w,
+    signalPriceRealized: signalsV4?.priceRealized ?? latest.signals.priceRealized,
+    signalReserveRisk: latest.signals.reserveRisk,
+    signalReserveRiskV4: signalsV4?.reserveRisk ?? signalsV4?.mvrvZscore ?? existingRow?.signalReserveRiskV4,
+    signalMvrvZscoreCore: latest.signalMvrvZscoreCore
+      ?? signalsV4?.mvrvZscore
+      ?? signalsV4?.reserveRisk
+      ?? existingRow?.signalMvrvZscoreCore,
+    signalSthSopr: latest.signals.sthSopr,
+    signalSthMvrv: signalsV4?.sthMvrv ?? latest.signals.sthMvrv,
+    signalSthGroup: latest.signalSthGroup ?? latest.signals.sthGroup ?? existingRow?.signalSthGroup,
+    signalLthMvrv: signalsV4?.lthMvrv ?? existingRow?.signalLthMvrv,
+    signalLthSopr: signalsV4?.lthSopr ?? existingRow?.signalLthSopr,
+    signalSthSoprTrigger: signalsV4?.sthSoprTrigger ?? existingRow?.signalSthSoprTrigger,
+    signalSthSoprAux: existingRow?.signalSthSoprAux,
+    signalPuell: signalsV4?.puell ?? latest.signals.puell,
+    signalCount: latest.signalCount,
+    signalCountV4: latest.signalCountV4 ?? existingRow?.signalCountV4,
+    activeIndicatorCount: latest.activeIndicatorCount ?? existingRow?.activeIndicatorCount,
+    activeIndicatorCountV4: latest.activeIndicatorCountV4 ?? existingRow?.activeIndicatorCountV4,
+    maxSignalScoreV2: latest.maxSignalScoreV2 ?? existingRow?.maxSignalScoreV2,
+    scorePriceMa200w: latest.scorePriceMa200w ?? existingRow?.scorePriceMa200w,
+    scorePriceRealized: latest.scorePriceRealized ?? existingRow?.scorePriceRealized,
+    scoreReserveRisk: latest.scoreReserveRisk ?? existingRow?.scoreReserveRisk,
+    scoreReserveRiskV4: latest.scoreReserveRiskV4 ?? existingRow?.scoreReserveRiskV4,
+    scoreMvrvZscore: latest.scoreMvrvZscore ?? existingRow?.scoreMvrvZscore,
+    scoreMvrvZscoreCore: latest.scoreMvrvZscoreCore ?? existingRow?.scoreMvrvZscoreCore,
+    scoreLthMvrv: latest.scoreLthMvrv ?? existingRow?.scoreLthMvrv,
+    scoreLthSopr: latest.scoreLthSopr ?? existingRow?.scoreLthSopr,
+    scoreSthSopr: latest.scoreSthSopr ?? existingRow?.scoreSthSopr,
+    scoreSthMvrv: latest.scoreSthMvrv ?? existingRow?.scoreSthMvrv,
+    scoreSthGroup: latest.scoreSthGroup ?? existingRow?.scoreSthGroup,
+    scorePuell: latest.scorePuell ?? existingRow?.scorePuell,
+    signalScoreV2: latest.signalScoreV2 ?? existingRow?.signalScoreV2,
+    signalScoreV2Min3d: latest.signalScoreV2Min3d ?? existingRow?.signalScoreV2Min3d,
+    signalConfirmed3d: latest.signalConfirmed3d ?? existingRow?.signalConfirmed3d,
+    signalBandV2: latest.signalBandV2 ?? existingRow?.signalBandV2,
+    valuationScore: latest.valuationScore ?? existingRow?.valuationScore,
+    maxValuationScore: latest.maxValuationScore ?? existingRow?.maxValuationScore,
+    triggerScore: latest.triggerScore ?? existingRow?.triggerScore,
+    maxTriggerScore: latest.maxTriggerScore ?? existingRow?.maxTriggerScore,
+    confirmationScore: latest.confirmationScore ?? existingRow?.confirmationScore,
+    maxConfirmationScore: latest.maxConfirmationScore ?? existingRow?.maxConfirmationScore,
+    auxiliaryScore: latest.auxiliaryScore ?? existingRow?.auxiliaryScore,
+    maxAuxiliaryScore: latest.maxAuxiliaryScore ?? existingRow?.maxAuxiliaryScore,
+    totalScoreV4: latest.totalScoreV4 ?? existingRow?.totalScoreV4,
+    maxTotalScoreV4: latest.maxTotalScoreV4 ?? existingRow?.maxTotalScoreV4,
+    totalScoreV4Min3d: latest.totalScoreV4Min3d ?? existingRow?.totalScoreV4Min3d,
+    signalConfirmed3dV4: latest.signalConfirmed3dV4 ?? existingRow?.signalConfirmed3dV4,
+    signalBandV4: latest.signalBandV4 ?? existingRow?.signalBandV4,
+    signalConfidence: latest.signalConfidence ?? existingRow?.signalConfidence,
+    dataFreshnessScore: latest.dataFreshnessScore ?? existingRow?.dataFreshnessScore,
+    fallbackMode: latest.fallbackMode ?? existingRow?.fallbackMode,
+    staleIndicators: latest.staleIndicators ?? existingRow?.staleIndicators,
+    coreIndicatorSet: latest.coreIndicatorSet ?? existingRow?.coreIndicatorSet,
+    scoringModelVersion: latest.scoringModelVersion ?? existingRow?.scoringModelVersion,
+    thresholds: latest.thresholds ?? existingRow?.thresholds,
+    indicatorDates: latest.indicatorDates ?? existingRow?.indicatorDates,
+    nupl: latest.nupl ?? existingRow?.nupl,
+    signalMvrvZ: latest.signalMvrvZ ?? existingRow?.signalMvrvZ,
+  };
+}
+
+export function mergeLatestIntoHistory(
+  history: IndicatorData[],
+  latest: LatestData | null,
+): IndicatorData[] {
+  if (!latest?.date) {
+    return history;
+  }
+
+  const existingIndex = history.findIndex((row) => row.d === latest.date);
+  if (existingIndex >= 0) {
+    const next = history.slice();
+    next[existingIndex] = latestDataToHistoryRow(latest, next[existingIndex]);
+    return next;
+  }
+
+  const lastHistoryDate = history.at(-1)?.d;
+  if (lastHistoryDate && latest.date < lastHistoryDate) {
+    return history;
+  }
+
+  return [
+    ...history,
+    latestDataToHistoryRow(latest),
+  ];
 }
 
 export function filterDataByTimeRange(data: IndicatorData[], range: TimeRange): IndicatorData[] {

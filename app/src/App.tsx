@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useCallback, useDeferredValue, useEffect, useMemo, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import {
   AlertTriangle,
@@ -27,7 +27,6 @@ import { SignalOverview } from '@/components/SignalOverview';
 import type { IndicatorData, LatestData } from '@/types';
 import {
   fetchDataManifest,
-  fetchFullHistoricalData,
   fetchHistoricalData,
   fetchRuntimeLatestData,
   fetchStaticLatestData,
@@ -35,7 +34,7 @@ import {
   getPriceFreshnessHours,
   getOnchainFreshnessHours,
   getLatestFromHistory,
-  hasCore8Coverage,
+  mergeLatestIntoHistory,
 } from '@/services/dataService';
 
 import './App.css';
@@ -147,36 +146,40 @@ function formatFallbackModeLabel(fallbackMode: string | undefined): string | nul
 function App() {
   const [latestData, setLatestData] = useState<LatestData | null>(null);
   const [historicalData, setHistoricalData] = useState<IndicatorData[]>([]);
+  const deferredHistoricalData = useDeferredValue(historicalData);
   const [staticAlertDismissed, setStaticAlertDismissed] = useState(false);
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const [manifestGeneratedAt, setManifestGeneratedAt] = useState<string | null>(null);
-  const [isLightHistoryLoading, setIsLightHistoryLoading] = useState(false);
-  const [isFullHistoryLoaded, setIsFullHistoryLoaded] = useState(false);
-  const [isFullHistoryLoading, setIsFullHistoryLoading] = useState(false);
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dataTimestampLabel, setDataTimestampLabel] = useState('-');
   const [error, setError] = useState<string | null>(null);
   const [dataSource, setDataSource] = useState<DataSource>('static');
   const { theme, setTheme } = useTheme();
 
-  const loadLightHistory = useCallback(async () => {
-    if (historicalData.length > 0 || isLightHistoryLoading) {
-      return;
+  const loadHistory = useCallback(async (forceRefresh = false) => {
+    if (!forceRefresh && historicalData.length > 0) {
+      return historicalData;
     }
 
-    setIsLightHistoryLoading(true);
+    if (isHistoryLoading) {
+      return historicalData;
+    }
+
+    setIsHistoryLoading(true);
     try {
-      const data = await fetchHistoricalData({ mode: 'light' });
+      const data = await fetchHistoricalData({ forceRefresh });
       if (data.length > 0) {
         setHistoricalData(data);
       }
-      setIsFullHistoryLoaded(false);
+      return data;
     } catch (err) {
-      console.error('Error loading light history:', err);
+      console.error('Error loading history:', err);
+      return historicalData;
     } finally {
-      setIsLightHistoryLoading(false);
+      setIsHistoryLoading(false);
     }
-  }, [historicalData.length, isLightHistoryLoading]);
+  }, [historicalData, isHistoryLoading]);
 
   const loadManifest = useCallback(async () => {
     const manifest = await fetchDataManifest();
@@ -194,41 +197,19 @@ function App() {
       return historicalData;
     }
 
-    const data = await fetchHistoricalData({ mode: 'light' });
-    if (data.length > 0) {
-      setHistoricalData(data);
-      setIsFullHistoryLoaded(false);
-    }
-    return data;
-  }, [historicalData]);
+    return loadHistory();
+  }, [historicalData, loadHistory]);
 
   const applyLatestData = (data: LatestData, source: DataSource) => {
     setLatestData(data);
     setDataSource(source);
     setDataTimestampLabel(buildDataTimestampLabel(data, source));
+    setHistoricalData((currentHistory) => (
+      currentHistory.length > 0
+        ? mergeLatestIntoHistory(currentHistory, data)
+        : currentHistory
+    ));
   };
-
-  const ensureFullHistoryLoaded = useCallback(async () => {
-    if (isFullHistoryLoaded || isFullHistoryLoading) {
-      return;
-    }
-
-    setIsFullHistoryLoading(true);
-    try {
-      const fullHistory = await fetchFullHistoricalData();
-      if (fullHistory.length > 0 && hasCore8Coverage(fullHistory)) {
-        setHistoricalData(fullHistory);
-        setIsFullHistoryLoaded(true);
-      } else {
-        setIsFullHistoryLoaded(false);
-        toast.warning('全量历史加载未通过完整性校验，仍使用当前可用数据。');
-      }
-    } catch (err) {
-      console.error('Error loading full history:', err);
-    } finally {
-      setIsFullHistoryLoading(false);
-    }
-  }, [isFullHistoryLoaded, isFullHistoryLoading]);
 
   const fetchLatestData = async (mode: 'auto' | 'manual' = 'auto') => {
     setLoading(true);
@@ -287,15 +268,13 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    if (activeTab === 'history') {
-      void ensureFullHistoryLoaded();
-    }
-  }, [activeTab, ensureFullHistoryLoaded]);
-
   const handleTabChange = (value: string) => {
     setActiveTab(value as AppTab);
   };
+
+  useEffect(() => {
+    void loadHistory();
+  }, [loadHistory]);
 
   useEffect(() => {
     void fetchLatestData('auto');
@@ -766,10 +745,8 @@ function App() {
                   {historicalData.length > 0 ? (
                     <Suspense fallback={<SectionLoader message="正在加载图表工作区..." />}>
                       <IndicatorChartsPanel
-                        data={historicalData}
-                        isFullHistoryLoaded={isFullHistoryLoaded}
-                        isFullHistoryLoading={isFullHistoryLoading}
-                        onRequestFullHistory={ensureFullHistoryLoaded}
+                        data={deferredHistoricalData}
+                        isHistoryLoading={isHistoryLoading}
                       />
                     </Suspense>
                   ) : (
@@ -782,10 +759,10 @@ function App() {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => void loadLightHistory()}
-                            disabled={isLightHistoryLoading}
+                            onClick={() => void loadHistory()}
+                            disabled={isHistoryLoading}
                           >
-                            {isLightHistoryLoading ? (
+                            {isHistoryLoading ? (
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             ) : (
                               <History className="mr-2 h-4 w-4" />
@@ -803,25 +780,12 @@ function App() {
             <TabsContent value="history" className="fade-up">
               {historicalData.length > 0 ? (
                 <Suspense fallback={<SectionLoader message="正在加载复盘工作区..." />}>
-                  <>
-                    {!isFullHistoryLoaded && (
-                      <Alert className="mb-4 border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
-                        <AlertTriangle className="h-4 w-4 text-blue-600" />
-                        <AlertTitle className="text-blue-800 dark:text-blue-200">历史数据仍在扩展</AlertTitle>
-                        <AlertDescription className="text-blue-700 dark:text-blue-300">
-                          后台正在补齐全量历史数据，以支持完整复盘。
-                        </AlertDescription>
-                      </Alert>
-                    )}
-                    <HistoryReviewPanel data={historicalData} />
-                  </>
+                  <HistoryReviewPanel data={deferredHistoricalData} />
                 </Suspense>
               ) : (
                 <div className="surface-card flex flex-col items-center justify-center py-12">
                   <Loader2 className="mb-4 h-12 w-12 animate-spin text-orange-500" />
-                  <p className="text-muted-foreground">
-                    {isFullHistoryLoading ? '正在加载全量历史数据...' : '正在加载历史数据...'}
-                  </p>
+                  <p className="text-muted-foreground">正在加载历史数据...</p>
                 </div>
               )}
             </TabsContent>

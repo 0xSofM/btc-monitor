@@ -45,7 +45,9 @@ export interface IndicatorData {
   scorePriceRealized?: number;
   scoreReserveRisk?: number;
   scoreReserveRiskV4?: number;
+  scoreMvrvZscore?: number;
   scoreMvrvZscoreCore?: number;
+  scoreLthMvrv?: number;
   scoreLthSopr?: number;
   scoreSthSopr?: number;
   scoreSthMvrv?: number;
@@ -136,6 +138,16 @@ export interface LatestData {
   fallbackMode?: string;
   scoreMvrvZscoreCore?: number;
   signalMvrvZscoreCore?: boolean;
+  scorePriceMa200w?: number;
+  scorePriceRealized?: number;
+  scoreReserveRisk?: number;
+  scoreReserveRiskV4?: number;
+  scoreMvrvZscore?: number;
+  scoreLthMvrv?: number;
+  scoreLthSopr?: number;
+  scoreSthSopr?: number;
+  scoreSthMvrv?: number;
+  scorePuell?: number;
   scoreSthGroup?: number;
   signalSthGroup?: boolean;
   scoringModelVersion?: string;

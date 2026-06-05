@@ -1,12 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import type { IndicatorData } from '@/types';
+import type { IndicatorData, LatestData } from '@/types';
 import {
   getEffectiveDataDate,
   getDataFreshnessHours,
   getIndicatorChartData,
   getLatestFromHistory,
   getMA200ChartData,
+  mergeLatestIntoHistory,
 } from '@/services/dataService';
 
 describe('dataService helpers', () => {
@@ -164,6 +165,103 @@ describe('dataService helpers', () => {
     const chartData = getMA200ChartData(history, 'all');
     expect(chartData).toHaveLength(1);
     expect(chartData[0].ma200).toBeCloseTo(50000, 6);
+  });
+
+  it('mergeLatestIntoHistory appends and replaces the realtime latest chart row', () => {
+    const history = [
+      {
+        d: '2026-04-15',
+        btcPrice: 82800,
+        priceMa200wRatio: 1.2,
+        ma200w: 69000,
+        sthMvrv: 0.96,
+        signalPriceMa200w: false,
+        signalSthMvrv: false,
+      },
+    ] as IndicatorData[];
+
+    const latest = {
+      date: '2026-04-16',
+      btcPrice: 84000,
+      priceMa200wRatio: 1.25,
+      priceRealizedRatio: 1.45,
+      ma200w: 67200,
+      realizedPrice: 57931,
+      reserveRisk: 0.0018,
+      mvrvZscore: 0.4,
+      lthMvrv: 1.4,
+      lthSopr: 1.01,
+      sthSopr: 1.002,
+      sthMvrv: 0.91,
+      puellMultiple: 0.72,
+      signalCount: 1,
+      activeIndicatorCount: 5,
+      signalCountV4: 1,
+      activeIndicatorCountV4: 7,
+      scoreSthMvrv: 1,
+      scoreSthGroup: 1,
+      signals: {
+        priceMa200w: false,
+        priceRealized: false,
+        reserveRisk: false,
+        sthSopr: false,
+        sthMvrv: true,
+        sthGroup: true,
+        puell: false,
+      },
+      signalsV4: {
+        priceMa200w: false,
+        priceRealized: false,
+        reserveRisk: false,
+        mvrvZscore: false,
+        sthMvrv: true,
+        lthMvrv: false,
+        lthSopr: false,
+        puell: false,
+        sthSoprTrigger: false,
+      },
+      thresholds: {
+        sthMvrv: { trigger: 0.914, deep: 0.846 },
+      },
+      indicatorDates: {
+        priceMa200w: '2026-04-16',
+        priceRealized: '2026-04-16',
+        mvrvZscore: '2026-04-16',
+        lthMvrv: '2026-04-16',
+        lthSopr: '2026-04-16',
+        sthSopr: '2026-04-16',
+        sthMvrv: '2026-04-16',
+        puell: '2026-04-16',
+      },
+    } satisfies LatestData;
+
+    const appended = mergeLatestIntoHistory(history, latest);
+    expect(appended).toHaveLength(2);
+    expect(appended.at(-1)?.d).toBe('2026-04-16');
+    expect(getMA200ChartData(appended, 'all').at(-1)).toMatchObject({
+      date: '2026-04-16',
+      price: 84000,
+      ma200: 67200,
+    });
+    expect(getIndicatorChartData(appended, 'sthMvrv', 'all').at(-1)).toMatchObject({
+      date: '2026-04-16',
+      value: 0.91,
+      signal: true,
+      triggerValue: 0.914,
+    });
+
+    const replaced = mergeLatestIntoHistory(appended, {
+      ...latest,
+      btcPrice: 84500,
+      priceMa200wRatio: 1.3,
+      ma200w: 65000,
+    });
+    expect(replaced).toHaveLength(2);
+    expect(getMA200ChartData(replaced, 'all').at(-1)).toMatchObject({
+      date: '2026-04-16',
+      price: 84500,
+      ma200: 65000,
+    });
   });
 
   it('getDataFreshnessHours prefers exact timestamps and falls back to date start', () => {

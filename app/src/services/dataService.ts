@@ -4,14 +4,13 @@ import {
   API_BASE_URL,
   PROXY_URL,
   STATIC_HISTORY_FULL_PATH,
-  STATIC_HISTORY_LIGHT_PATH,
   checkEndpoint,
   fetchRuntimeLatestRaw,
   fetchStaticHistoryRaw,
   fetchStaticLatestRaw,
   fetchStaticManifestRaw,
 } from './apiClient';
-import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions, HistoryMode } from './contracts';
+import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions } from './contracts';
 import { normalizeIndicatorData, normalizeLatestData, toFiniteNumber } from './normalizers';
 import {
   INDICATOR_CONFIG,
@@ -24,6 +23,7 @@ import {
   getIndicatorChartData,
   getLatestFromHistory,
   getMA200ChartData,
+  mergeLatestIntoHistory,
   getSignalEvents,
 } from './selectors';
 import {
@@ -39,8 +39,7 @@ const MANIFEST_CACHE_DURATION = 60 * 1000;
 
 type CacheState = {
   latest: LatestData | null;
-  historyLight: IndicatorData[];
-  historyFull: IndicatorData[];
+  history: IndicatorData[];
   latestTimestamp: number;
   manifest: DataManifest | null;
   manifestTimestamp: number;
@@ -48,12 +47,27 @@ type CacheState = {
 
 const cache: CacheState = {
   latest: null,
-  historyLight: [],
-  historyFull: [],
+  history: [],
   latestTimestamp: 0,
   manifest: null,
   manifestTimestamp: 0,
 };
+
+function mergeCachedLatestIntoHistory(rows: IndicatorData[]): IndicatorData[] {
+  return cache.latest ? mergeLatestIntoHistory(rows, cache.latest) : rows;
+}
+
+function rememberLatestData(latest: LatestData, timestamp = Date.now()): LatestData {
+  cache.latest = latest;
+  cache.latestTimestamp = timestamp;
+
+  if (cache.history.length > 0) {
+    cache.history = mergeLatestIntoHistory(cache.history, latest);
+  }
+
+  persistLocalData({ latest });
+  return latest;
+}
 
 export function hasCore8Coverage(rows: IndicatorData[]): boolean {
   if (!rows.length) {
@@ -134,76 +148,30 @@ export async function fetchDataManifest(forceRefresh = false): Promise<DataManif
 }
 
 export async function fetchHistoricalData(options: FetchHistoricalOptions = {}): Promise<IndicatorData[]> {
-  const mode: HistoryMode = options.mode ?? 'light';
   const forceRefresh = options.forceRefresh ?? false;
 
-  if (mode === 'light' && !forceRefresh && cache.historyLight.length > 0) {
-    return cache.historyLight;
+  if (!forceRefresh && cache.history.length > 0) {
+    return cache.history;
   }
-
-  if (mode === 'full' && !forceRefresh && cache.historyFull.length > 0) {
-    return cache.historyFull;
-  }
-
-  const primaryPath = mode === 'full' ? STATIC_HISTORY_FULL_PATH : STATIC_HISTORY_LIGHT_PATH;
-  const primaryTimeout = mode === 'full' ? 120000 : 30000;
-  const fallbackPath = mode === 'light' ? STATIC_HISTORY_FULL_PATH : null;
 
   try {
-    const primaryRaw = await fetchStaticHistoryRaw(primaryPath, primaryTimeout);
-    const primaryData = normalizeHistoryRows(primaryRaw);
-    persistLocalData({ history: primaryData });
+    const raw = await fetchStaticHistoryRaw(STATIC_HISTORY_FULL_PATH, 120000);
+    const history = mergeCachedLatestIntoHistory(normalizeHistoryRows(raw));
+    persistLocalData({ history });
+    cache.history = history;
+    return history;
+  } catch (error) {
+    console.error(`[DataService] Error fetching full historical data (${STATIC_HISTORY_FULL_PATH}):`, error);
 
-    if (mode === 'full') {
-      cache.historyFull = primaryData;
-      if (cache.historyLight.length === 0) {
-        cache.historyLight = primaryData;
-      }
-    } else {
-      cache.historyLight = primaryData;
+    const localHistory = readLocalData();
+    if (localHistory.length > 0 && hasCore8Coverage(localHistory)) {
+      const mergedLocalHistory = mergeCachedLatestIntoHistory(localHistory);
+      cache.history = mergedLocalHistory;
+      return mergedLocalHistory;
     }
 
-    return primaryData;
-  } catch (primaryError) {
-    if (mode === 'full') {
-      console.warn(`[DataService] Full history source failed (${primaryPath}).`, primaryError);
-      const localHistory = readLocalData();
-      if (localHistory.length > 0 && hasCore8Coverage(localHistory)) {
-        cache.historyFull = localHistory;
-        return localHistory;
-      }
-      return [];
-    }
-
-    console.warn(`[DataService] Primary history source failed (${primaryPath}), trying fallback (${fallbackPath}).`, primaryError);
-
-    try {
-      if (!fallbackPath) {
-        return [];
-      }
-
-      const fallbackRaw = await fetchStaticHistoryRaw(fallbackPath, 30000);
-      const fallbackData = normalizeHistoryRows(fallbackRaw);
-      persistLocalData({ history: fallbackData });
-
-      cache.historyLight = fallbackData;
-
-      return fallbackData;
-    } catch (fallbackError) {
-      console.error('[DataService] Error fetching historical data:', fallbackError);
-
-      const localHistory = readLocalData();
-      if (localHistory.length > 0) {
-        cache.historyLight = localHistory;
-      }
-
-      return localHistory;
-    }
+    return [];
   }
-}
-
-export async function fetchFullHistoricalData(forceRefresh = false): Promise<IndicatorData[]> {
-  return fetchHistoricalData({ mode: 'full', forceRefresh });
 }
 
 export async function fetchStaticLatestData(options: FetchStaticLatestOptions = {}): Promise<LatestData | null> {
@@ -216,11 +184,9 @@ export async function fetchStaticLatestData(options: FetchStaticLatestOptions = 
       return cache.latest;
     }
 
-    const history = cache.historyLight.length > 0
-      ? cache.historyLight
-      : (cache.historyFull.length > 0 ? cache.historyFull : await fetchHistoricalData({ mode: 'light' }));
-
-    return enrichLatestDataWithHistory(cache.latest, history);
+    return cache.history.length > 0
+      ? enrichLatestDataWithHistory(cache.latest, cache.history)
+      : cache.latest;
   }
 
   try {
@@ -231,18 +197,11 @@ export async function fetchStaticLatestData(options: FetchStaticLatestOptions = 
     }
 
     let latest = normalized;
-    if (enrichWithHistory) {
-      const history = cache.historyLight.length > 0
-        ? cache.historyLight
-        : (cache.historyFull.length > 0 ? cache.historyFull : await fetchHistoricalData({ mode: 'light' }));
-
-      latest = enrichLatestDataWithHistory(latest, history);
+    if (enrichWithHistory && cache.history.length > 0) {
+      latest = enrichLatestDataWithHistory(latest, cache.history);
     }
 
-    cache.latest = latest;
-    cache.latestTimestamp = now;
-    persistLocalData({ latest });
-    return latest;
+    return rememberLatestData(latest, now);
   } catch (error) {
     console.error('[DataService] Error fetching latest static data:', error);
 
@@ -272,11 +231,10 @@ export async function fetchRuntimeLatestData(): Promise<LatestData | null> {
       throw new Error('Invalid runtime latest data format');
     }
 
-    const history = cache.historyLight.length > 0
-      ? cache.historyLight
-      : (cache.historyFull.length > 0 ? cache.historyFull : await fetchHistoricalData({ mode: 'light' }));
-
-    return enrichLatestDataWithHistory(normalized, history);
+    const latest = cache.history.length > 0
+      ? enrichLatestDataWithHistory(normalized, cache.history)
+      : normalized;
+    return rememberLatestData(latest);
   } catch (error) {
     console.error('[DataService] Error fetching runtime latest data:', error);
     return null;
@@ -298,7 +256,7 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
       return staticLatest;
     }
 
-    const historyData = await fetchHistoricalData({ mode: 'light' });
+    const historyData = await fetchHistoricalData();
     const latestFromHistory = getLatestFromHistory(historyData);
     if (latestFromHistory) {
       cache.latest = latestFromHistory;
@@ -348,14 +306,12 @@ export async function checkDataSource(): Promise<{
   apiAvailable: boolean;
   proxyAvailable: boolean;
   historyAvailable: boolean;
-  historyLightAvailable: boolean;
   historyFullAvailable: boolean;
   localAvailable: boolean;
   manifestAvailable: boolean;
 }> {
-  const [apiAvailable, historyLightAvailable, historyFullAvailable, manifestAvailable] = await Promise.all([
+  const [apiAvailable, historyFullAvailable, manifestAvailable] = await Promise.all([
     checkEndpoint(`${API_BASE_URL}/v1/btc-price/1`),
-    checkEndpoint(STATIC_HISTORY_LIGHT_PATH),
     checkEndpoint(STATIC_HISTORY_FULL_PATH),
     checkEndpoint('/btc_indicators_manifest.json'),
   ]);
@@ -367,8 +323,7 @@ export async function checkDataSource(): Promise<{
   return {
     apiAvailable,
     proxyAvailable,
-    historyAvailable: historyLightAvailable || historyFullAvailable,
-    historyLightAvailable,
+    historyAvailable: historyFullAvailable,
     historyFullAvailable,
     localAvailable: !!readLocalLatestData(),
     manifestAvailable,
@@ -403,6 +358,7 @@ export {
   getIndicatorChartData,
   getLatestFromHistory,
   getMA200ChartData,
+  mergeLatestIntoHistory,
   getSignalEvents,
   validateLocalDataConsistency,
 };

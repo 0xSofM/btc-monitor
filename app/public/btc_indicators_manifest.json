@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-24T06:00:22.516302+00:00",
-  "latestDate": "2026-05-24",
-  "lastUpdated": "2026-05-24T06:00:22.438993+00:00",
-  "historyRows": 5623,
+  "generatedAt": "2026-06-05T02:33:50.996694+00:00",
+  "latestDate": "2026-06-05",
+  "lastUpdated": "2026-06-05T02:33:50.911509+00:00",
+  "historyRows": 5484,
   "historyLightRows": 2921,
   "signalEventsV4Rows": 19,
   "schemaVersion": "v5",
@@ -12,8 +12,8 @@
   "thresholdVersion": "v4_dynamic",
   "dynamicThresholds": {
     "reserveRisk": {
-      "trigger": 0.00058878408,
-      "deep": 0.00054528838,
+      "trigger": 0.00058803342,
+      "deep": 0.00054438239,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -21,8 +21,8 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.993758691903,
-      "deep": 0.985320715792,
+      "trigger": 0.993938470555,
+      "deep": 0.9857624670185,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -30,8 +30,8 @@
       "deepQuantile": 0.135
     },
     "sthMvrv": {
-      "trigger": 0.91993,
-      "deep": 0.856,
+      "trigger": 0.92,
+      "deep": 0.859965,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,

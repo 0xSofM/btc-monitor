@@ -1,5 +1,3 @@
-export type HistoryMode = 'light' | 'full';
-
 export type IndicatorKey =
   | 'priceMa200w'
   | 'priceRealized'
@@ -45,7 +43,6 @@ export type ApiMetricPoint = {
 };
 
 export type FetchHistoricalOptions = {
-  mode?: HistoryMode;
   forceRefresh?: boolean;
 };
 
@@ -59,7 +56,7 @@ export interface DataManifest {
   latestDate: string;
   lastUpdated: string;
   historyRows: number;
-  historyLightRows: number;
+  historyLightRows?: number;
   schemaVersion: string;
   signalEventsV4Rows?: number;
   indicatorSet?: string;
