@@ -184,8 +184,11 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     ? undefined
     : toFiniteNumber(unixTsRaw, Number.NaN);
 
-  const rawApiDates = record.apiDataDate ?? record.api_data_date;
-  const indicatorDates = normalizeIndicatorDates(rawApiDates, date);
+  const rawIndicatorDates = record.indicatorDates
+    ?? record.indicator_dates
+    ?? record.apiDataDate
+    ?? record.api_data_date;
+  const indicatorDates = normalizeIndicatorDates(rawIndicatorDates, date);
 
   return {
     d: date,
@@ -304,7 +307,10 @@ export function normalizeLatestData(item: unknown): LatestData | null {
   const incomingSignals = asRecord(record.signals);
   const incomingSignalsV4 = asRecord(record.signalsV4 ?? record.signals_v4);
   const incomingSignalsV6 = asRecord(record.signalsV6 ?? record.signals_v6);
-  const incomingIndicatorDates = record.indicatorDates ?? record.apiDataDate ?? record.api_data_date;
+  const incomingIndicatorDates = record.indicatorDates
+    ?? record.indicator_dates
+    ?? record.apiDataDate
+    ?? record.api_data_date;
 
   const btcPrice = toNumberOrNull(record.btcPrice ?? record.btc_price) ?? 0;
   const priceMa200wRatio = toNumberOrNull(record.priceMa200wRatio ?? record.price_ma200w_ratio) ?? 0;

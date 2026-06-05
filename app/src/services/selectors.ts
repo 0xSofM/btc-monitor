@@ -60,7 +60,10 @@ function asNonEmptyString(value: unknown): string | undefined {
 
 function readRawIndicatorDates(row: IndicatorData): LatestData['indicatorDates'] | undefined {
   const record = row as unknown as Record<string, unknown>;
-  const payload = record.apiDataDate ?? record.api_data_date;
+  const payload = record.indicatorDates
+    ?? record.indicator_dates
+    ?? record.apiDataDate
+    ?? record.api_data_date;
   if (!payload || typeof payload !== 'object') {
     return undefined;
   }

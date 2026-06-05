@@ -316,4 +316,32 @@ describe('storage quota handling', () => {
     expect(getLocalData()).toEqual([]);
     expect(console.error).not.toHaveBeenCalled();
   });
+
+  it('invalidates old-version history cache envelopes', () => {
+    const storage = new QuotaStorage(20000);
+    installStorage(storage);
+
+    storage.setItem('btc_indicators_history', JSON.stringify({
+      version: 'v1.3.0',
+      timestamp: Date.now(),
+      data: createHistoryRows(2),
+    }));
+
+    expect(getLocalData()).toEqual([]);
+    expect(storage.getItem('btc_indicators_history')).toBeNull();
+  });
+
+  it('invalidates old-version latest cache envelopes', () => {
+    const storage = new QuotaStorage(20000);
+    installStorage(storage);
+
+    storage.setItem('btc_indicators_latest', JSON.stringify({
+      version: 'v1.3.0',
+      timestamp: Date.now(),
+      data: createLatest(),
+    }));
+
+    expect(getLocalLatestData()).toBeNull();
+    expect(storage.getItem('btc_indicators_latest')).toBeNull();
+  });
 });

@@ -3,7 +3,7 @@ import type { IndicatorData, LatestData } from '@/types';
 import { normalizeIndicatorData, normalizeLatestData } from './normalizers';
 import { enrichLatestDataWithHistory, getLatestFromHistory } from './selectors';
 
-const DATA_VERSION = 'v1.3.0';
+const DATA_VERSION = 'v1.4.0';
 const HISTORY_KEY = 'btc_indicators_history';
 const LATEST_KEY = 'btc_indicators_latest';
 
@@ -197,6 +197,12 @@ function writeStoredValue(storage: Storage, key: string, value: string): WriteRe
   }
 }
 
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === 'object'
+    ? value as Record<string, unknown>
+    : null;
+}
+
 function compactHistoryRow(row: IndicatorData): IndicatorData {
   const compact: IndicatorData = { d: row.d };
   const compactRecord = compact as unknown as Record<string, unknown>;
@@ -324,13 +330,16 @@ export function getLocalData(): IndicatorData[] {
     }
 
     const parsed = JSON.parse(raw) as unknown;
-    const candidate = (
-      parsed &&
-      typeof parsed === 'object' &&
-      'data' in (parsed as Record<string, unknown>) &&
-      Array.isArray((parsed as Record<string, unknown>).data)
-    )
-      ? ((parsed as Record<string, unknown>).data as unknown[])
+    const envelope = asRecord(parsed);
+    const storedVersion = typeof envelope?.version === 'string' ? envelope.version : undefined;
+
+    if (storedVersion && storedVersion !== DATA_VERSION) {
+      removeStoredValue(storage, HISTORY_KEY);
+      return [];
+    }
+
+    const candidate = envelope && 'data' in envelope
+      ? (Array.isArray(envelope.data) ? envelope.data as unknown[] : [])
       : (Array.isArray(parsed) ? parsed : []);
 
     return candidate
@@ -359,15 +368,16 @@ export function getLocalLatestData(): LatestData | null {
     }
 
     const parsed = JSON.parse(raw) as unknown;
-    const candidate = (
-      parsed &&
-      typeof parsed === 'object' &&
-      'data' in (parsed as Record<string, unknown>) &&
-      (parsed as Record<string, unknown>).data &&
-      typeof (parsed as Record<string, unknown>).data === 'object'
-    )
-      ? (parsed as Record<string, unknown>).data
-      : parsed;
+    const envelope = asRecord(parsed);
+    const storedVersion = typeof envelope?.version === 'string' ? envelope.version : undefined;
+
+    if (storedVersion && storedVersion !== DATA_VERSION) {
+      removeStoredValue(storage, LATEST_KEY);
+      return null;
+    }
+
+    const envelopeData = envelope && 'data' in envelope ? envelope.data : undefined;
+    const candidate = asRecord(envelopeData) ?? parsed;
 
     const normalized = normalizeLatestData(candidate);
     if (!normalized) {

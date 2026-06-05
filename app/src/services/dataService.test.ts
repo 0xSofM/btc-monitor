@@ -9,6 +9,7 @@ import {
   getMA200ChartData,
   mergeLatestIntoHistory,
 } from '@/services/dataService';
+import { normalizeIndicatorData } from '@/services/normalizers';
 
 describe('dataService helpers', () => {
   it('getLatestFromHistory reads latest row and api_data_date fields', () => {
@@ -214,6 +215,32 @@ describe('dataService helpers', () => {
     expect(chartData).toHaveLength(2);
     expect(chartData.map((point) => point.value)).toEqual([0.18, null]);
     expect(chartData.map((point) => point.triggerValue)).toEqual([0.25, 0.25]);
+  });
+
+  it('normalizeIndicatorData preserves compact indicatorDates for NUPL chart gaps', () => {
+    const observedRow = normalizeIndicatorData({
+      d: '2026-06-04',
+      btcPrice: 104000,
+      nupl: 0.1606,
+      indicatorDates: { nupl: '2026-06-04' },
+    });
+    const staleRow = normalizeIndicatorData({
+      d: '2026-06-05',
+      btcPrice: 103500,
+      nupl: 0.1606,
+      indicatorDates: { nupl: '2026-06-04' },
+    });
+
+    expect(observedRow?.indicatorDates?.nupl).toBe('2026-06-04');
+    expect(staleRow?.indicatorDates?.nupl).toBe('2026-06-04');
+
+    const chartData = getIndicatorChartData(
+      [observedRow, staleRow].filter((item): item is IndicatorData => item !== null),
+      'nupl',
+      'all',
+    );
+
+    expect(chartData.map((point) => point.value)).toEqual([0.1606, null]);
   });
 
 
