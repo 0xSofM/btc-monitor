@@ -248,5 +248,21 @@
     "latestLegacyField": "legacy"
   },
   "archivedSnapshot": null,
-  "archiveRoot": "archive/releases"
+  "archiveRoot": "archive/releases",
+  "auxiliaryDataFiles": {
+    "strategyMnavLatest": "strategy_mnav_latest.json",
+    "strategyMnavHistory": "strategy_mnav_history.json"
+  },
+  "strategyMnavHealth": {
+    "source": "strategy_official_api",
+    "formula": "enterpriseValueUsd / btcReserveUsd",
+    "latestDate": "2026-06-20",
+    "historyRows": 1,
+    "mnav": 1.1425,
+    "band": "low_premium",
+    "riskFlag": "normal",
+    "isStale": false,
+    "mstrTimestampUtc": "2026-06-18T20:00:00",
+    "btcTimestamp": "2026-06-20T13:25:00"
+  }
 }

@@ -24,12 +24,14 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { SignalOverview } from '@/components/SignalOverview';
-import type { IndicatorData, LatestData } from '@/types';
+import { StrategyMnavCard } from '@/components/StrategyMnavCard';
+import type { IndicatorData, LatestData, StrategyMnavData } from '@/types';
 import {
   fetchDataManifest,
   fetchHistoricalData,
   fetchRuntimeLatestData,
   fetchStaticLatestData,
+  fetchStrategyMnavData,
   getEffectiveDataDate,
   getPriceFreshnessHours,
   getOnchainFreshnessHours,
@@ -152,6 +154,7 @@ function formatFallbackModeLabel(fallbackMode: string | undefined): string | nul
 
 function App() {
   const [latestData, setLatestData] = useState<LatestData | null>(null);
+  const [strategyMnavData, setStrategyMnavData] = useState<StrategyMnavData | null>(null);
   const [historicalData, setHistoricalData] = useState<IndicatorData[]>([]);
   const [historyMode, setHistoryMode] = useState<HistoryMode>('none');
   const deferredHistoricalData = useDeferredValue(historicalData);
@@ -202,9 +205,21 @@ function App() {
     }
   }, []);
 
+  const loadStrategyMnav = useCallback(async (forceRefresh = false) => {
+    const data = await fetchStrategyMnavData(forceRefresh);
+    if (data) {
+      setStrategyMnavData(data);
+    }
+    return data;
+  }, []);
+
   useEffect(() => {
     void loadManifest();
   }, [loadManifest]);
+
+  useEffect(() => {
+    void loadStrategyMnav(false);
+  }, [loadStrategyMnav]);
 
   const loadHistoryFallback = useCallback(async () => {
     if (historicalData.length > 0) {
@@ -230,6 +245,8 @@ function App() {
     setError(null);
 
     try {
+      void loadStrategyMnav(mode === 'manual');
+
       // Always try runtime first (Edge Function fetches live BGeometrics data).
       // Falls back to static JSON silently on failure.
       const runtimeData = await fetchRuntimeLatestData();
@@ -781,6 +798,10 @@ function App() {
                         </div>
                       </div>
                     </section>
+                  )}
+
+                  {strategyMnavData && (
+                    <StrategyMnavCard data={strategyMnavData} />
                   )}
 
                   {laggingIndicators.length > 0 && (

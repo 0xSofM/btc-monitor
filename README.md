@@ -17,6 +17,10 @@ Legacy compatibility indicator:
 
 - `Reserve Risk`
 
+Auxiliary market-structure monitor:
+
+- `MSTR mNAV` from Strategy's official API, using Strategy's own `Enterprise Value / BTC Reserve` definition. This is displayed as a BTC proxy premium/sentiment metric and is not included in the Core-8 bottom score.
+
 V6 scoring:
 
 - layered score: `valuationScoreV6 + triggerScoreV6 + confirmationScoreV6`
@@ -42,6 +46,8 @@ V6 scoring:
 - `app/public/btc_indicators_latest.json`: frontend latest snapshot
 - `app/public/btc_indicators_manifest.json`: data manifest for observability
 - `app/public/btc_signal_events_v4.json`: event-level V4 backtest windows
+- `app/public/strategy_mnav_latest.json`: Strategy official mNAV latest snapshot
+- `app/public/strategy_mnav_history.json`: locally accumulated Strategy mNAV daily snapshots
 - `app/`: Vite + React frontend
 - `tests/`: Python unit tests for data pipeline logic
 - `.github/workflows/update-btc-data.yml`: scheduled auto-update workflow
@@ -55,6 +61,7 @@ V6 scoring:
 5. GitHub Actions runs on schedule and commits updated JSON.
 6. Vercel redeploys from GitHub and serves fresh data.
 7. Manual refresh can optionally hit the Vercel Edge proxy, which rebuilds a runtime `Core-8 V6` latest payload from BGeometrics latest points plus the current static thresholds/history tail.
+8. Strategy mNAV is fetched independently from Strategy's official `bitcoinKpis` and `mstrKpiData` APIs, written as auxiliary JSON, and surfaced without changing the Core-8 score.
 
 ## Run Locally
 
@@ -101,6 +108,15 @@ python validate_btc_data_quality.py \
   --current-history app/public/btc_indicators_history.json \
   --current-latest app/public/btc_indicators_latest.json \
   --max-indicator-lag-days 30
+```
+
+Refresh and validate Strategy mNAV:
+
+```bash
+python fetch_strategy_mnav.py
+python validate_strategy_mnav.py \
+  --current-latest app/public/strategy_mnav_latest.json \
+  --current-history app/public/strategy_mnav_history.json
 ```
 
 Note:

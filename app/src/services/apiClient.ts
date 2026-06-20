@@ -5,6 +5,7 @@ export const STATIC_HISTORY_FULL_PATH = '/btc_indicators_history.json';
 export const STATIC_HISTORY_LIGHT_PATH = '/btc_indicators_history_light.json';
 export const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
 export const STATIC_MANIFEST_PATH = '/btc_indicators_manifest.json';
+export const STATIC_STRATEGY_MNAV_LATEST_PATH = '/strategy_mnav_latest.json';
 
 const DEFAULT_PROXY_URL = '/api/btc-data';
 export const PROXY_URL = import.meta.env.VITE_API_PROXY_URL || DEFAULT_PROXY_URL;
@@ -112,6 +113,15 @@ export async function fetchStaticManifestRaw(): Promise<unknown> {
   const response = await fetchWithTimeout(STATIC_MANIFEST_PATH, 10000);
   if (!response.ok) {
     throw new Error('Failed to fetch manifest data');
+  }
+
+  return response.json();
+}
+
+export async function fetchStaticStrategyMnavRaw(): Promise<unknown> {
+  const response = await fetchWithTimeout(STATIC_STRATEGY_MNAV_LATEST_PATH, 10000);
+  if (!response.ok) {
+    throw new Error('Failed to fetch Strategy mNAV data');
   }
 
   return response.json();

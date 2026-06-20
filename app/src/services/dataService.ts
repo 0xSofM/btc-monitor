@@ -1,4 +1,4 @@
-import type { IndicatorData, LatestData } from '@/types';
+import type { IndicatorData, LatestData, StrategyMnavData } from '@/types';
 
 import {
   API_BASE_URL,
@@ -10,9 +10,10 @@ import {
   fetchStaticHistoryRaw,
   fetchStaticLatestRaw,
   fetchStaticManifestRaw,
+  fetchStaticStrategyMnavRaw,
 } from './apiClient';
 import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions } from './contracts';
-import { normalizeIndicatorData, normalizeLatestData, toFiniteNumber } from './normalizers';
+import { normalizeIndicatorData, normalizeLatestData, normalizeStrategyMnavData, toFiniteNumber } from './normalizers';
 import { CORE8_COVERAGE_FIELDS, missingCoreHistoryFields } from './schema';
 import {
   INDICATOR_CONFIG,
@@ -46,6 +47,8 @@ type CacheState = {
   latestTimestamp: number;
   manifest: DataManifest | null;
   manifestTimestamp: number;
+  strategyMnav: StrategyMnavData | null;
+  strategyMnavTimestamp: number;
 };
 
 const cache: CacheState = {
@@ -55,6 +58,8 @@ const cache: CacheState = {
   latestTimestamp: 0,
   manifest: null,
   manifestTimestamp: 0,
+  strategyMnav: null,
+  strategyMnavTimestamp: 0,
 };
 
 function mergeCachedLatestIntoHistory(rows: IndicatorData[]): IndicatorData[] {
@@ -128,6 +133,12 @@ function normalizeManifest(raw: unknown): DataManifest | null {
   const dataHealth = record.dataHealth && typeof record.dataHealth === 'object'
     ? record.dataHealth as DataManifest['dataHealth']
     : undefined;
+  const auxiliaryDataFiles = record.auxiliaryDataFiles && typeof record.auxiliaryDataFiles === 'object'
+    ? record.auxiliaryDataFiles as DataManifest['auxiliaryDataFiles']
+    : undefined;
+  const strategyMnavHealth = record.strategyMnavHealth && typeof record.strategyMnavHealth === 'object'
+    ? record.strategyMnavHealth as DataManifest['strategyMnavHealth']
+    : undefined;
   const schemaContract = record.schemaContract && typeof record.schemaContract === 'object'
     ? record.schemaContract as DataManifest['schemaContract']
     : undefined;
@@ -162,6 +173,8 @@ function normalizeManifest(raw: unknown): DataManifest | null {
     activeIndicatorCountV6: Number.isNaN(activeIndicatorCountV6) ? undefined : activeIndicatorCountV6,
     maxTotalScoreV6: Number.isNaN(maxTotalScoreV6) ? undefined : maxTotalScoreV6,
     dataHealth,
+    auxiliaryDataFiles,
+    strategyMnavHealth,
     schemaContract: schemaContract
       ? {
           ...schemaContract,
@@ -242,6 +255,28 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
     }
 
     return [];
+  }
+}
+
+export async function fetchStrategyMnavData(forceRefresh = false): Promise<StrategyMnavData | null> {
+  const now = Date.now();
+  if (!forceRefresh && cache.strategyMnav && (now - cache.strategyMnavTimestamp) < MANIFEST_CACHE_DURATION) {
+    return cache.strategyMnav;
+  }
+
+  try {
+    const raw = await fetchStaticStrategyMnavRaw();
+    const data = normalizeStrategyMnavData(raw);
+    if (!data) {
+      throw new Error('Invalid Strategy mNAV data format');
+    }
+
+    cache.strategyMnav = data;
+    cache.strategyMnavTimestamp = now;
+    return data;
+  } catch (error) {
+    console.error('[DataService] Error fetching Strategy mNAV data:', error);
+    return cache.strategyMnav;
   }
 }
 

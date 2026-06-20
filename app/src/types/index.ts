@@ -334,6 +334,46 @@ export interface SignalEvent {
   triggeredIndicators: string[];
 }
 
+export interface StrategyMnavData {
+  date: string;
+  generatedAt?: string;
+  source?: string;
+  formula?: string;
+  mstr: {
+    price?: number;
+    marketCapUsdM?: number;
+    enterpriseValueUsdM?: number;
+    previousEnterpriseValueUsdM?: number;
+    debtUsdM?: number;
+    preferredEquityUsdM?: number;
+    debtPreferredByMarketCapPct?: number;
+    sharesVolume?: number;
+    timestampUtc?: string;
+  };
+  btcReserve: {
+    btcHoldings?: number;
+    btcPriceUsd?: number;
+    btcReserveUsdM?: number;
+    previousBtcReserveUsdM?: number;
+    satsPerShare?: number;
+    timestamp?: string;
+    msTimestamp?: number;
+  };
+  mnav: {
+    value?: number;
+    previousValue?: number;
+    change?: number;
+    band?: string;
+    riskFlag?: string;
+    equityPremium?: number;
+  };
+  dataHealth?: {
+    isStale?: boolean;
+    mstrTimestampUtc?: string;
+    btcTimestamp?: string;
+  };
+}
+
 export type TimeRange = '1w' | '1m' | '6m' | '1y' | 'all';
 
 export interface ChartDataPoint {

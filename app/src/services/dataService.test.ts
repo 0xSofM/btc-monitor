@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import type { IndicatorData, LatestData } from '@/types';
 import {
+  fetchStrategyMnavData,
   fetchHistoricalData,
   getEffectiveDataDate,
   getDataFreshnessHours,
@@ -13,6 +14,49 @@ import {
 import { normalizeIndicatorData } from '@/services/normalizers';
 
 describe('dataService helpers', () => {
+  it('fetchStrategyMnavData normalizes Strategy official mNAV payload', async () => {
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify({
+      date: '2026-06-20',
+      generatedAt: '2026-06-20T13:20:00+00:00',
+      source: 'strategy_official_api',
+      formula: 'enterpriseValueUsd / btcReserveUsd',
+      mstr: {
+        price: 112.53,
+        marketCapUsdM: 40097,
+        enterpriseValueUsdM: 61225,
+        timestampUtc: '2026-06-18T20:00:00',
+      },
+      btcReserve: {
+        btcHoldings: 846842,
+        btcPriceUsd: 63576,
+        btcReserveUsdM: 53839,
+        timestamp: '2026-06-20T13:08:00',
+      },
+      mnav: {
+        value: 1.1372,
+        previousValue: 1.1668,
+        change: -0.0296,
+        band: 'low_premium',
+        riskFlag: 'normal',
+        equityPremium: 0.7448,
+      },
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })) as unknown as ReturnType<typeof vi.fn<(url: RequestInfo | URL) => Promise<Response>>>;
+    vi.stubGlobal('fetch', fetchMock);
+
+    const data = await fetchStrategyMnavData(true);
+
+    expect(fetchMock.mock.calls[0]?.[0]).toBe('/strategy_mnav_latest.json');
+    expect(data?.mnav.value).toBe(1.1372);
+    expect(data?.mnav.band).toBe('low_premium');
+    expect(data?.mstr.enterpriseValueUsdM).toBe(61225);
+    expect(data?.btcReserve.btcHoldings).toBe(846842);
+
+    vi.unstubAllGlobals();
+  });
+
   it('fetchHistoricalData loads light history by default and full history on demand', async () => {
     const fetchMock = vi.fn(async (url: RequestInfo | URL) => {
       const path = String(url);

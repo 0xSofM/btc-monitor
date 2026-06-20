@@ -39,6 +39,8 @@ jobs:
           mkdir -p .tmp/previous
           cp app/public/btc_indicators_history.json .tmp/previous/btc_indicators_history.json || true
           cp app/public/btc_indicators_latest.json .tmp/previous/btc_indicators_latest.json || true
+          cp app/public/strategy_mnav_history.json .tmp/previous/strategy_mnav_history.json || true
+          cp app/public/strategy_mnav_latest.json .tmp/previous/strategy_mnav_latest.json || true
 
       - name: Refresh frontend data files
         run: |
@@ -48,6 +50,13 @@ jobs:
             --history-json-path app/public/btc_indicators_history.json \
             --history-light-json-path app/public/btc_indicators_history_light.json \
             --latest-json-path app/public/btc_indicators_latest.json \
+            --manifest-json-path app/public/btc_indicators_manifest.json
+
+      - name: Refresh Strategy mNAV files
+        run: |
+          python fetch_strategy_mnav.py \
+            --latest-json-path app/public/strategy_mnav_latest.json \
+            --history-json-path app/public/strategy_mnav_history.json \
             --manifest-json-path app/public/btc_indicators_manifest.json
 
       - name: Print data freshness snapshot
@@ -87,6 +96,14 @@ jobs:
             --max-row-drop 5 \
             --max-indicator-lag-days 30
 
+      - name: Validate Strategy mNAV quality gate
+        run: |
+          python validate_strategy_mnav.py \
+            --current-latest app/public/strategy_mnav_latest.json \
+            --current-history app/public/strategy_mnav_history.json \
+            --max-mstr-lag-days 7 \
+            --max-btc-lag-hours 36
+
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
@@ -95,7 +112,9 @@ jobs:
             app/public/btc_indicators_history.json \
             app/public/btc_indicators_history_light.json \
             app/public/btc_indicators_latest.json \
-            app/public/btc_indicators_manifest.json
+            app/public/btc_indicators_manifest.json \
+            app/public/strategy_mnav_latest.json \
+            app/public/strategy_mnav_history.json
           if git diff --cached --quiet; then
             echo "No data changes."
             exit 0

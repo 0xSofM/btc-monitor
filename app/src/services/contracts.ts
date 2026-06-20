@@ -84,6 +84,22 @@ export interface DataManifest {
     dataFreshnessScoreV6?: number;
     signalConfidenceV6?: number;
   };
+  auxiliaryDataFiles?: {
+    strategyMnavLatest?: string;
+    strategyMnavHistory?: string;
+  };
+  strategyMnavHealth?: {
+    source?: string;
+    formula?: string;
+    latestDate?: string;
+    historyRows?: number;
+    mnav?: number;
+    band?: string;
+    riskFlag?: string;
+    isStale?: boolean;
+    mstrTimestampUtc?: string;
+    btcTimestamp?: string;
+  };
   schemaContract?: {
     canonicalModel?: string;
     historyRequiredFields?: string[];
