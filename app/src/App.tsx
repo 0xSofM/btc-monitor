@@ -45,9 +45,6 @@ type DataSource = 'api' | 'static' | 'history';
 type HistoryMode = 'none' | 'light' | 'full';
 type IndicatorDateKey =
   | 'priceMa200w'
-  | 'priceRealized'
-  | 'valuationBlend'
-  | 'reserveRisk'
   | 'mvrvZscore'
   | 'nupl'
   | 'lthMvrv'
@@ -145,11 +142,67 @@ function formatFallbackModeLabel(fallbackMode: string | undefined): string | nul
     return 'MVRV Z-Score 暂不计分';
   }
 
-  if (fallbackMode === 'valuation_blend_inactive') {
-    return '估值融合槽位暂不计分';
+  if (fallbackMode === 'valuation_metrics_inactive' || fallbackMode === 'valuation_blend_inactive') {
+    return 'MVRV Z / NUPL 暂不计分';
   }
 
   return '主模型正常';
+}
+
+function toDisplayScore(value: number | undefined): number {
+  return typeof value === 'number' && Number.isFinite(value) ? value : 0;
+}
+
+function resolveCore8Display(latest: LatestData | null) {
+  if (!latest) {
+    return null;
+  }
+
+  const scorePriceMa200w = toDisplayScore(latest.scorePriceMa200w);
+  const scoreMvrvZscore = toDisplayScore(latest.scoreMvrvZscoreCore);
+  const scoreNupl = toDisplayScore(latest.scoreNuplCore);
+  const scorePuell = toDisplayScore(latest.scorePuell);
+  const scoreSthMvrv = toDisplayScore(latest.scoreSthMvrv);
+  const scoreSthSopr = toDisplayScore(latest.scoreSthSopr);
+  const scoreLthMvrv = toDisplayScore(latest.scoreLthMvrv);
+  const scoreLthSopr = toDisplayScore(latest.scoreLthSopr);
+
+  const signals = {
+    priceMa200w: latest.signalsV6?.priceMa200w ?? latest.signals.priceMa200w ?? scorePriceMa200w > 0,
+    mvrvZscore: latest.signalsV6?.mvrvZscore ?? latest.signalMvrvZscoreCore ?? scoreMvrvZscore > 0,
+    nupl: latest.signalsV6?.nupl ?? latest.signalNuplCore ?? latest.signalNupl ?? scoreNupl > 0,
+    puell: latest.signalsV6?.puell ?? latest.signalsV4?.puell ?? latest.signals.puell ?? scorePuell > 0,
+    sthMvrv: latest.signalsV6?.sthMvrv ?? latest.signalsV4?.sthMvrv ?? latest.signals.sthMvrv ?? scoreSthMvrv > 0,
+    sthSopr: latest.signalsV6?.sthSoprTrigger
+      ?? latest.signalsV4?.sthSoprTrigger
+      ?? latest.signals.sthSopr
+      ?? scoreSthSopr > 0,
+    lthMvrv: latest.signalsV6?.lthMvrv ?? latest.signalsV4?.lthMvrv ?? scoreLthMvrv > 0,
+    lthSopr: latest.signalsV6?.lthSopr ?? latest.signalsV4?.lthSopr ?? scoreLthSopr > 0,
+  };
+
+  const valuationScore = scorePriceMa200w + scoreMvrvZscore + scoreNupl + scorePuell;
+  const triggerScore = Math.max(scoreSthMvrv, scoreSthSopr);
+  const confirmationScore = scoreLthMvrv + scoreLthSopr;
+  const totalScore = valuationScore + triggerScore + confirmationScore;
+  const signalCount = Object.values(signals).filter(Boolean).length;
+  const fallbackMode = latest.fallbackModeV6 === 'valuation_blend_inactive'
+    ? 'valuation_metrics_inactive'
+    : latest.fallbackModeV6;
+
+  return {
+    signals,
+    signalCount,
+    valuationScore,
+    maxValuationScore: 8,
+    triggerScore,
+    maxTriggerScore: 2,
+    confirmationScore,
+    maxConfirmationScore: 4,
+    totalScore,
+    maxTotalScore: 14,
+    fallbackMode,
+  };
 }
 
 function App() {
@@ -325,8 +378,8 @@ function App() {
 
   const indicatorDateLabels: Partial<Record<IndicatorDateKey, string>> = {
     priceMa200w: 'Price / 200W-MA',
-    priceRealized: 'Price / Realized Price',
-    valuationBlend: '估值融合',
+    mvrvZscore: 'MVRV Z-Score',
+    nupl: 'NUPL',
     lthMvrv: 'LTH-MVRV',
     lthSopr: 'LTH-SOPR',
     sthSopr: 'STH-SOPR',
@@ -334,18 +387,11 @@ function App() {
     puell: 'Puell Multiple',
   };
 
-  const valuationBlendDate = latestData?.indicatorDates
-    ? [latestData.indicatorDates.mvrvZscore, latestData.indicatorDates.nupl]
-        .filter((value): value is string => Boolean(value))
-        .sort()
-        .at(-1)
-    : undefined;
-
   const indicatorDateEntries = latestData
     ? ([
         ['priceMa200w', latestData.indicatorDates?.priceMa200w],
-        ['priceRealized', latestData.indicatorDates?.priceRealized],
-        ['valuationBlend', valuationBlendDate],
+        ['mvrvZscore', latestData.indicatorDates?.mvrvZscore],
+        ['nupl', latestData.indicatorDates?.nupl],
         ['puell', latestData.indicatorDates?.puell],
         ['sthMvrv', latestData.indicatorDates?.sthMvrv],
         ['sthSopr', latestData.indicatorDates?.sthSopr],
@@ -377,13 +423,14 @@ function App() {
     : 0;
   const signalScoreV2 = latestData?.signalScoreV2 ?? 0;
   const maxSignalScoreV2 = latestData?.maxSignalScoreV2 ?? 10;
-  const totalScoreV6 = latestData?.totalScoreV6;
-  const maxTotalScoreV6 = latestData?.maxTotalScoreV6 ?? 14;
+  const core8Display = resolveCore8Display(latestData);
+  const totalScoreV6 = core8Display?.totalScore ?? latestData?.totalScoreV6;
+  const maxTotalScoreV6 = core8Display?.maxTotalScore ?? latestData?.maxTotalScoreV6 ?? 14;
   const totalScoreV4 = latestData?.totalScoreV4;
   const maxTotalScoreV4 = latestData?.maxTotalScoreV4 ?? 14;
   const hasLayeredScore = totalScoreV6 !== undefined || totalScoreV4 !== undefined;
   const modelLabel = totalScoreV6 !== undefined ? 'Core-8' : totalScoreV4 !== undefined ? '分层模型' : '加权模型';
-  const signalCountDisplay = latestData?.signalCountV6 ?? latestData?.signalCountV4 ?? latestData?.signalCount ?? 0;
+  const signalCountDisplay = core8Display?.signalCount ?? latestData?.signalCountV6 ?? latestData?.signalCountV4 ?? latestData?.signalCount ?? 0;
   const totalCoreIndicators = 8;
   const effectiveScore = totalScoreV6 ?? totalScoreV4 ?? signalScoreV2;
   const effectiveMaxScore = totalScoreV6 !== undefined
@@ -397,7 +444,7 @@ function App() {
     effectiveMaxScore,
   );
   const isSignalConfirmed = latestData?.signalConfirmed3dV6 ?? latestData?.signalConfirmed3dV4 ?? latestData?.signalConfirmed3d ?? false;
-  const fallbackModeLabel = formatFallbackModeLabel(latestData?.fallbackModeV6 ?? latestData?.fallbackMode);
+  const fallbackModeLabel = formatFallbackModeLabel(core8Display?.fallbackMode ?? latestData?.fallbackModeV6 ?? latestData?.fallbackMode);
   const confidenceValue = latestData?.signalConfidenceV6 ?? latestData?.signalConfidence;
   const freshnessValue = latestData?.dataFreshnessScoreV6 ?? latestData?.dataFreshnessScore;
   const confidencePercent = confidenceValue === undefined
@@ -477,36 +524,28 @@ function App() {
             : `BTC $${latestData.btcPrice.toLocaleString()}`,
         },
         {
-          name: 'Price / Realized Price',
-          description: '链上成本锚点',
-          currentValue: latestData.priceRealizedRatio,
-          targetValue: 1,
+          name: 'MVRV Z-Score',
+          description: '市值相对链上成本的标准化偏离，估值层',
+          currentValue: latestData.mvrvZscore ?? 0,
+          targetValue: latestData.thresholds?.mvrvZscoreCore?.trigger ?? 0,
           targetOperator: 'lt' as const,
-          triggered: latestData.signalsV6?.priceRealized ?? latestData.signals.priceRealized,
-          format: 'ratio' as const,
-          color: '#0EA5E9',
-          dataDate: latestData.indicatorDates?.priceRealized || latestData.date,
-          detailValue: latestData.realizedPrice ? `Realized Price $${Math.round(latestData.realizedPrice).toLocaleString()}` : undefined,
+          format: 'number' as const,
+          color: '#10B981',
+          dataDate: latestData.indicatorDates?.mvrvZscore || latestData.date,
+          detailValue: `计分 ${latestData.scoreMvrvZscoreCore ?? 0}/2，深度阈值 < ${(latestData.thresholds?.mvrvZscoreCore?.deep ?? -0.5).toFixed(2)}`,
+          triggered: core8Display?.signals.mvrvZscore ?? false,
         },
         {
-          name: '估值融合',
-          description: 'MVRV Z-Score + NUPL 共享估值槽位',
-          currentValue: latestData.valuationBlendScoreV6 ?? Math.max(latestData.scoreMvrvZscoreCore ?? 0, latestData.scoreNuplCore ?? 0),
-          targetValue: 0,
-          targetOperator: 'gt' as const,
-          targetLabel: '融合分 > 0',
-          triggered: latestData.signalsV6?.valuationBlend
-            ?? latestData.signalValuationBlendV6
-            ?? latestData.signalMvrvZscoreCore
-            ?? latestData.signalNuplCore
-            ?? false,
+          name: 'NUPL',
+          description: '全网净未实现盈亏，估值层',
+          currentValue: latestData.nupl ?? 0,
+          targetValue: latestData.thresholds?.nuplCore?.trigger ?? 0.15,
+          targetOperator: 'lt' as const,
           format: 'number' as const,
-          color: '#14B8A6',
-          dataDate: [latestData.indicatorDates?.mvrvZscore, latestData.indicatorDates?.nupl]
-            .filter((value): value is string => Boolean(value))
-            .sort()
-            .at(-1) || latestData.date,
-          detailValue: `MVRV Z ${latestData.mvrvZscore?.toFixed(3) ?? '-'} / NUPL ${latestData.nupl?.toFixed(4) ?? '-'}，融合分 ${latestData.valuationBlendScoreV6 ?? Math.max(latestData.scoreMvrvZscoreCore ?? 0, latestData.scoreNuplCore ?? 0)}/2`,
+          color: '#0EA5E9',
+          dataDate: latestData.indicatorDates?.nupl || latestData.date,
+          detailValue: `计分 ${latestData.scoreNuplCore ?? 0}/2，深度阈值 < ${(latestData.thresholds?.nuplCore?.deep ?? 0).toFixed(2)}`,
+          triggered: core8Display?.signals.nupl ?? false,
         },
         {
           name: 'Puell Multiple',
@@ -762,16 +801,16 @@ function App() {
                     maxSignalScoreV2={maxSignalScoreV2}
                     totalScoreV4={latestData.totalScoreV4}
                     maxTotalScoreV4={latestData.maxTotalScoreV4}
-                    totalScoreV6={latestData.totalScoreV6}
-                    maxTotalScoreV6={latestData.maxTotalScoreV6}
-                    valuationScore={latestData.valuationScoreV6 ?? latestData.valuationScore}
-                    maxValuationScore={latestData.maxValuationScoreV6 ?? latestData.maxValuationScore}
-                    triggerScore={latestData.triggerScoreV6 ?? latestData.triggerScore}
-                    maxTriggerScore={latestData.maxTriggerScoreV6 ?? latestData.maxTriggerScore}
-                    confirmationScore={latestData.confirmationScoreV6 ?? latestData.confirmationScore}
-                    maxConfirmationScore={latestData.maxConfirmationScoreV6 ?? latestData.maxConfirmationScore}
+                    totalScoreV6={core8Display?.totalScore ?? latestData.totalScoreV6}
+                    maxTotalScoreV6={core8Display?.maxTotalScore ?? latestData.maxTotalScoreV6}
+                    valuationScore={core8Display?.valuationScore ?? latestData.valuationScoreV6 ?? latestData.valuationScore}
+                    maxValuationScore={core8Display?.maxValuationScore ?? latestData.maxValuationScoreV6 ?? latestData.maxValuationScore}
+                    triggerScore={core8Display?.triggerScore ?? latestData.triggerScoreV6 ?? latestData.triggerScore}
+                    maxTriggerScore={core8Display?.maxTriggerScore ?? latestData.maxTriggerScoreV6 ?? latestData.maxTriggerScore}
+                    confirmationScore={core8Display?.confirmationScore ?? latestData.confirmationScoreV6 ?? latestData.confirmationScore}
+                    maxConfirmationScore={core8Display?.maxConfirmationScore ?? latestData.maxConfirmationScoreV6 ?? latestData.maxConfirmationScore}
                     signalConfidence={latestData.signalConfidenceV6 ?? latestData.signalConfidence}
-                    fallbackMode={latestData.fallbackModeV6 ?? latestData.fallbackMode}
+                    fallbackMode={core8Display?.fallbackMode ?? latestData.fallbackModeV6 ?? latestData.fallbackMode}
                     signalConfirmed3d={latestData.signalConfirmed3d}
                     signalConfirmed3dV4={latestData.signalConfirmed3dV4}
                     signalConfirmed3dV6={latestData.signalConfirmed3dV6}
@@ -805,7 +844,7 @@ function App() {
                   )}
 
                   {laggingIndicators.length > 0 && (
-                    <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
+                    <Alert className="chain-data-alert border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
                       <Clock3 className="h-4 w-4 text-blue-600" />
                       <AlertTitle className="text-blue-800 dark:text-blue-200">链上数据说明</AlertTitle>
                       <AlertDescription className="text-blue-700 dark:text-blue-300">
@@ -894,8 +933,8 @@ function App() {
         </main>
 
         <footer className="footer-line mt-12">
-          <div className="app-container flex flex-col items-center justify-between gap-3 py-6 text-sm text-muted-foreground md:flex-row">
-            <p>数据来源：BGeometrics 文件端点 | 模型：Core-8 分层模型（NUPL 估值融合 + 复合触发 + 双确认层 + 3日确认）</p>
+          <div className="app-container flex flex-col gap-2 py-6 text-left text-sm text-muted-foreground">
+            <p>数据来源：BGeometrics 文件端点 | 模型：Core-8 分层模型（MVRV Z-Score + NUPL 独立估值指标 + 复合触发 + 双确认层 + 3日确认）</p>
             <p>
               数据时间：{dataTimestampLabel}
               {manifestGeneratedAt ? ` | 清单生成时间：${manifestGeneratedAt}` : ''}

@@ -70,12 +70,12 @@ export function IndicatorCard({
   const targetText = targetLabel ?? `${targetOperator === 'lt' ? '<' : '>'} ${formatValue(targetValue)}`;
 
   return (
-    <Card className={`surface-card relative overflow-hidden transition-all duration-300 ${triggered ? 'ring-1 ring-emerald-500/60' : ''}`}>
+    <Card className={`indicator-card surface-card relative overflow-hidden transition-all duration-300 ${triggered ? 'ring-1 ring-emerald-500/60' : ''}`}>
       <div className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: color }} />
 
-      <CardHeader className="pb-2">
+      <CardHeader className="indicator-card-header pb-2">
         <div className="flex items-start justify-between gap-3">
-          <div>
+          <div className="min-w-0">
             <CardTitle className="text-sm font-semibold tracking-tight">{name}</CardTitle>
             <p className="mt-1 text-xs text-muted-foreground">{description}</p>
           </div>
@@ -99,14 +99,12 @@ export function IndicatorCard({
         </div>
       </CardHeader>
 
-      <CardContent>
-        <p className="text-2xl font-bold">{formatValue(currentValue)}</p>
+      <CardContent className="indicator-card-body">
+        <p className="indicator-card-value text-2xl font-bold">{formatValue(currentValue)}</p>
 
-        {detailValue && (
-          <div className="mt-2 rounded-md border bg-muted/30 px-2.5 py-1.5 text-xs text-muted-foreground">
-            {detailValue}
-          </div>
-        )}
+        <div className="indicator-card-detail mt-2 rounded-md border bg-muted/30 px-2.5 py-1.5 text-xs text-muted-foreground">
+          {detailValue ?? '当前指标使用固定阈值判断底部识别区间。'}
+        </div>
 
         <div className="mt-3 flex items-center gap-2 text-sm">
           <span className="text-muted-foreground">触发阈值：</span>
@@ -122,11 +120,13 @@ export function IndicatorCard({
           </div>
         )}
 
-        {triggered && (
-          <div className="mt-3 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-2 text-xs text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-            该指标当前位于底部识别区间内。
-          </div>
-        )}
+        <div className={`indicator-card-trigger mt-3 rounded-md border px-2.5 py-2 text-xs ${
+          triggered
+            ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+            : 'border-transparent bg-muted/20 text-muted-foreground'
+        }`}>
+          {triggered ? '该指标当前位于底部识别区间内。' : '尚未进入底部识别触发区间。'}
+        </div>
       </CardContent>
     </Card>
   );

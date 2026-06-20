@@ -55,7 +55,9 @@ export function StrategyMnavCard({ data }: { data: StrategyMnavData }) {
               <Building2 className="h-5 w-5 text-orange-500" />
               MSTR mNAV
             </CardTitle>
-            <p className="mt-1 text-sm text-muted-foreground">Strategy official EV / BTC Reserve</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Strategy 官方企业价值 / BTC 储备价值，仅作为外部溢价观察项。
+            </p>
           </div>
           <Badge variant="outline" className={bandClass(data.mnav.band)}>
             {bandLabel(data.mnav.band)}
@@ -92,6 +94,10 @@ export function StrategyMnavCard({ data }: { data: StrategyMnavData }) {
               <p className="mt-1 font-semibold">{formatUsdM(data.btcReserve.btcReserveUsdM)}</p>
             </div>
           </div>
+        </div>
+
+        <div className="rounded-md border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
+          mNAV 大于 1 表示 MSTR 相对其 BTC 储备存在溢价，小于 1 表示折价。它能辅助观察市场对 BTC 代理资产的风险偏好，但不参与本系统的 BTC 底部评分。
         </div>
 
         <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-4">

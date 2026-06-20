@@ -155,6 +155,14 @@ describe('dataService helpers', () => {
         totalScoreV6: 9,
         maxTotalScoreV4: 12,
         maxTotalScoreV6: 14,
+        scorePriceMa200w: 1,
+        scoreMvrvZscoreCore: 1,
+        scoreNuplCore: 1,
+        scoreSthMvrv: 1,
+        scoreSthSopr: 0,
+        scoreLthMvrv: 2,
+        scoreLthSopr: 0,
+        scorePuell: 2,
         signalLthMvrv: true,
         signalReserveRiskV4: true,
         signalMvrvZscoreCore: true,
@@ -198,7 +206,7 @@ describe('dataService helpers', () => {
     expect(latest?.signalCountV4).toBe(6);
     expect(latest?.signalCountV6).toBe(6);
     expect(latest?.totalScoreV4).toBe(9);
-    expect(latest?.totalScoreV6).toBe(9);
+    expect(latest?.totalScoreV6).toBe(8);
     expect(latest?.nupl).toBe(0.12);
     expect(latest?.indicatorDates?.priceRealized).toBe('2026-03-27');
     expect(latest?.indicatorDates?.reserveRisk).toBe('2026-03-27');
@@ -586,7 +594,7 @@ describe('dataService helpers', () => {
       sthSopr: '2026-05-05',
       sthMvrv: '2026-05-05',
       puell: '2026-05-05',
-    })).toBe('2026-05-05');
+    })).toBe('2026-05-04');
   });
 
   it('getEffectiveDataDate falls back to the snapshot date when core indicators are aligned', () => {

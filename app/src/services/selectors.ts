@@ -39,7 +39,8 @@ const DEFAULT_DEEP_THRESHOLDS = {
 
 const CORE_INDICATOR_DATE_KEYS = [
   'priceMa200w',
-  'priceRealized',
+  'mvrvZscore',
+  'nupl',
   'lthMvrv',
   'lthSopr',
   'sthSopr',
@@ -86,23 +87,45 @@ function toNumericPrice(value: number | string | undefined): number {
   return toFiniteNumber(value, 0);
 }
 
-function getValuationBlendDate(indicatorDates?: LatestData['indicatorDates']): string | undefined {
-  const candidates = [indicatorDates?.mvrvZscore, indicatorDates?.nupl]
-    .filter((value): value is string => typeof value === 'string' && value.length > 0);
+function resolveCore8Score(latest: Pick<
+  LatestData,
+  | 'scorePriceMa200w'
+  | 'scoreMvrvZscoreCore'
+  | 'scoreNuplCore'
+  | 'scorePuell'
+  | 'scoreSthMvrv'
+  | 'scoreSthSopr'
+  | 'scoreLthMvrv'
+  | 'scoreLthSopr'
+>): {
+  valuationScore: number;
+  triggerScore: number;
+  confirmationScore: number;
+  totalScore: number;
+} {
+  const valuationScore = toFiniteNumber(latest.scorePriceMa200w, 0)
+    + toFiniteNumber(latest.scoreMvrvZscoreCore, 0)
+    + toFiniteNumber(latest.scoreNuplCore, 0)
+    + toFiniteNumber(latest.scorePuell, 0);
+  const triggerScore = Math.max(
+    toFiniteNumber(latest.scoreSthMvrv, 0),
+    toFiniteNumber(latest.scoreSthSopr, 0),
+  );
+  const confirmationScore = toFiniteNumber(latest.scoreLthMvrv, 0)
+    + toFiniteNumber(latest.scoreLthSopr, 0);
 
-  if (candidates.length === 0) {
-    return undefined;
-  }
-
-  return candidates.reduce((newest, value) => (value > newest ? value : newest), candidates[0]);
+  return {
+    valuationScore,
+    triggerScore,
+    confirmationScore,
+    totalScore: valuationScore + triggerScore + confirmationScore,
+  };
 }
 
 function getCoreDisplayDates(indicatorDates?: LatestData['indicatorDates']): string[] {
-  const valuationBlendDate = getValuationBlendDate(indicatorDates);
-  return [
-    valuationBlendDate,
-    ...CORE_INDICATOR_DATE_KEYS.map((key) => indicatorDates?.[key]),
-  ].filter((value): value is string => typeof value === 'string' && value.length > 0);
+  return CORE_INDICATOR_DATE_KEYS
+    .map((key) => indicatorDates?.[key])
+    .filter((value): value is string => typeof value === 'string' && value.length > 0);
 }
 
 function getThresholdRange(
@@ -365,8 +388,8 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   const activeIndicatorCountV4 = latest.activeIndicatorCountV4 ?? (hasUsableValue(latest.mvrvZscore) ? 7 : 6);
   const groupedSignalCountV6 = [
     signalsV6.priceMa200w,
-    signalsV6.priceRealized,
-    signalsV6.valuationBlend,
+    signalsV6.mvrvZscore,
+    signalsV6.nupl,
     signalsV6.sthMvrv,
     signalsV6.sthSoprTrigger,
     signalsV6.lthMvrv,
@@ -374,6 +397,11 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     signalsV6.puell,
   ].filter(Boolean).length;
   const activeIndicatorCountV6 = latest.activeIndicatorCountV6 ?? 8;
+  const derivedCore8Score = resolveCore8Score(latest);
+  const maxValuationScoreV6 = 8;
+  const maxTriggerScoreV6 = 2;
+  const maxConfirmationScoreV6 = 4;
+  const maxTotalScoreV6 = maxValuationScoreV6 + maxTriggerScoreV6 + maxConfirmationScoreV6;
 
   return {
     date: latest.d,
@@ -396,7 +424,7 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     activeIndicatorCount,
     signalCountV4: latest.signalCountV4 ?? groupedSignalCountV4,
     activeIndicatorCountV4,
-    signalCountV6: latest.signalCountV6 ?? groupedSignalCountV6,
+    signalCountV6: groupedSignalCountV6,
     activeIndicatorCountV6,
     maxSignalScoreV2,
     signalScoreV2: latest.signalScoreV2,
@@ -416,14 +444,14 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     totalScoreV4Min3d: latest.totalScoreV4Min3d ?? null,
     signalConfirmed3dV4: latest.signalConfirmed3dV4,
     signalBandV4: latest.signalBandV4,
-    valuationScoreV6: latest.valuationScoreV6,
-    maxValuationScoreV6: latest.maxValuationScoreV6,
-    triggerScoreV6: latest.triggerScoreV6,
-    maxTriggerScoreV6: latest.maxTriggerScoreV6,
-    confirmationScoreV6: latest.confirmationScoreV6,
-    maxConfirmationScoreV6: latest.maxConfirmationScoreV6,
-    totalScoreV6: latest.totalScoreV6,
-    maxTotalScoreV6: latest.maxTotalScoreV6,
+    valuationScoreV6: derivedCore8Score.valuationScore,
+    maxValuationScoreV6,
+    triggerScoreV6: derivedCore8Score.triggerScore,
+    maxTriggerScoreV6,
+    confirmationScoreV6: derivedCore8Score.confirmationScore,
+    maxConfirmationScoreV6,
+    totalScoreV6: derivedCore8Score.totalScore,
+    maxTotalScoreV6,
     totalScoreV6Min3d: latest.totalScoreV6Min3d ?? null,
     signalConfirmed3dV6: latest.signalConfirmed3dV6,
     signalBandV6: latest.signalBandV6,
@@ -432,7 +460,9 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     dataFreshnessScore: latest.dataFreshnessScore,
     dataFreshnessScoreV6: latest.dataFreshnessScoreV6,
     fallbackMode: latest.fallbackMode,
-    fallbackModeV6: latest.fallbackModeV6,
+    fallbackModeV6: latest.fallbackModeV6 === 'valuation_blend_inactive'
+      ? 'valuation_metrics_inactive'
+      : latest.fallbackModeV6,
     scoreMvrvZscoreCore: latest.scoreMvrvZscoreCore,
     signalMvrvZscoreCore,
     scoreNupl: latest.scoreNupl,
@@ -802,17 +832,33 @@ export function getMA200ChartData(
 
 export function getSignalEvents(data: IndicatorData[], minSignals = 4): SignalEvent[] {
   return data
-    .filter((item) => ((item.signalCountV6 ?? item.signalCountV4 ?? item.signalCount) ?? 0) >= minSignals)
+    .filter((item) => ([
+      item.signalPriceMa200w || item.signalPriceMa,
+      item.signalsV6?.mvrvZscore ?? item.signalMvrvZscoreCore,
+      item.signalsV6?.nupl ?? item.signalNuplCore ?? item.signalNupl,
+      item.signalSthMvrv,
+      item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr,
+      item.signalLthMvrv,
+      item.signalLthSopr,
+      item.signalPuell,
+    ].filter(Boolean).length) >= minSignals)
     .map((item) => ({
       date: item.d,
       btcPrice: toNumericPrice(item.btcPrice),
-      signalCount: item.signalCountV6 ?? item.signalCountV4 ?? item.signalCount ?? 0,
+      signalCount: [
+        item.signalPriceMa200w || item.signalPriceMa,
+        item.signalsV6?.mvrvZscore ?? item.signalMvrvZscoreCore,
+        item.signalsV6?.nupl ?? item.signalNuplCore ?? item.signalNupl,
+        item.signalSthMvrv,
+        item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr,
+        item.signalLthMvrv,
+        item.signalLthSopr,
+        item.signalPuell,
+      ].filter(Boolean).length,
       triggeredIndicators: [
         item.signalPriceMa200w || item.signalPriceMa ? 'Price / 200W-MA' : '',
-        item.signalPriceRealized ? 'Price / Realized Price' : '',
-        (item.signalsV6?.valuationBlend ?? item.signalValuationBlendV6 ?? item.signalMvrvZscoreCore ?? item.signalNuplCore)
-          ? '估值融合(MVRV Z/NUPL)'
-          : '',
+        (item.signalsV6?.mvrvZscore ?? item.signalMvrvZscoreCore) ? 'MVRV Z-Score' : '',
+        (item.signalsV6?.nupl ?? item.signalNuplCore ?? item.signalNupl) ? 'NUPL' : '',
         item.signalSthMvrv ? 'STH-MVRV' : '',
         (item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr) ? 'STH-SOPR' : '',
         item.signalLthMvrv ? 'LTH-MVRV' : '',
@@ -862,7 +908,8 @@ export function getDataFreshnessHours(value: string): number {
 
 /** On-chain indicator keys — exclude btcPrice and priceMa200w (price-based). */
 const ONCHAIN_INDICATOR_DATE_KEYS = [
-  'priceRealized',
+  'mvrvZscore',
+  'nupl',
   'lthMvrv',
   'lthSopr',
   'sthSopr',
@@ -888,7 +935,6 @@ export function getOnchainFreshnessHours(
   }
 
   const candidates = [
-    getValuationBlendDate(indicatorDates),
     ...ONCHAIN_INDICATOR_DATE_KEYS.map((key) => indicatorDates[key]),
   ].filter((value): value is string => typeof value === 'string' && value.length > 0);
 
@@ -912,39 +958,39 @@ export const INDICATOR_CONFIG = {
     description: '现价相对 200 周均线的位置。',
   },
   priceRealized: {
-    name: 'Price / Realized Price',
+    name: 'Legacy realized-price ratio',
     unit: '',
     targetValue: 1,
     color: '#0EA5E9',
-    description: '现价相对链上实现价格的位置。',
+    description: '旧版兼容字段，不属于当前 Core-8 产品展示指标。',
   },
   valuationBlend: {
-    name: '估值融合',
+    name: 'Legacy valuation blend',
     unit: '',
     targetValue: 1,
     color: '#14B8A6',
-    description: 'MVRV Z-Score 与 NUPL 共享估值槽位，取两者核心分较高者。',
+    description: '旧版兼容字段；当前 Core-8 已改为 MVRV Z-Score 与 NUPL 独立指标。',
   },
   mvrvZscore: {
     name: 'MVRV Z-Score',
     unit: '',
     targetValue: 0,
     color: '#10B981',
-    description: '估值过热/过冷的标准化位置。',
+    description: '市值相对链上成本的标准化偏离程度，估值层。',
   },
   nupl: {
     name: 'NUPL',
     unit: '',
     targetValue: 0.15,
     color: '#14B8A6',
-    description: '净未实现盈亏，用于补强估值层并与 MVRV Z-Score 共享计分槽位。',
+    description: '全网净未实现盈亏状态，估值层。',
   },
   reserveRisk: {
-    name: 'Reserve Risk (Observation)',
+    name: 'Legacy reserve risk',
     unit: '',
     targetValue: 0.0016,
     color: '#10B981',
-    description: '长期持有者风险回报区间，仅保留为观测项。',
+    description: '旧版兼容字段，不在当前产品界面展示。',
   },
   lthMvrv: {
     name: 'LTH-MVRV',

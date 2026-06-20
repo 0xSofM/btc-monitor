@@ -21,7 +21,7 @@ interface IndicatorChartsProps {
   isHistoryLoading?: boolean;
 }
 
-type IndicatorType = 'priceMa200w' | 'priceRealized' | 'valuationBlend' | 'puell' | 'sthMvrv' | 'sthSopr' | 'lthMvrv' | 'lthSopr';
+type IndicatorType = 'priceMa200w' | 'mvrvZscore' | 'nupl' | 'puell' | 'sthMvrv' | 'sthSopr' | 'lthMvrv' | 'lthSopr';
 
 type DetailSeriesPoint = {
   date: string;
@@ -41,7 +41,7 @@ type MaSeriesPoint = {
   signal: boolean;
 };
 
-const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'priceRealized', 'valuationBlend', 'puell', 'sthMvrv', 'sthSopr', 'lthMvrv', 'lthSopr'];
+const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'mvrvZscore', 'nupl', 'puell', 'sthMvrv', 'sthSopr', 'lthMvrv', 'lthSopr'];
 
 const TIME_RANGES = [
   { key: 'all', label: '全部' },
@@ -61,8 +61,8 @@ const RANGE_DAYS: Record<(typeof TIME_RANGES)[number]['key'], number> = {
 
 const CHART_FLOOR_CONFIG: Record<IndicatorType, number> = {
   priceMa200w: 0,
-  priceRealized: 0,
-  valuationBlend: 0,
+  mvrvZscore: -2,
+  nupl: -0.2,
   puell: 0,
   sthMvrv: 0,
   sthSopr: 0.9,
@@ -79,17 +79,20 @@ type TooltipEntry = {
   };
 };
 
-function formatDate(value: string): string {
+function formatDate(value: string | number | null | undefined): string {
   if (!value) {
     return '';
   }
 
-  const parts = value.split('-');
+  const dateText = typeof value === 'number'
+    ? new Date(value).toISOString().slice(0, 10)
+    : value;
+  const parts = dateText.split('-');
   if (parts.length === 3) {
     return `${parts[0].slice(2)}/${parts[1]}/${parts[2]}`;
   }
 
-  return value;
+  return dateText;
 }
 
 function parseDateMs(value: string): number {
@@ -154,10 +157,10 @@ function buildThresholdDescription(indicator: IndicatorType, point: DetailSeries
   switch (indicator) {
     case 'priceMa200w':
       return '固定阈值 < 1（深度 < 0.85）';
-    case 'priceRealized':
-      return '固定阈值 < 1（深度 < 0.90）';
-    case 'valuationBlend':
-      return '融合分 > 0 触发（深度 = 2，MVRV Z-Score 与 NUPL 取较高核心分）';
+    case 'mvrvZscore':
+      return '固定阈值 < 0（深度 < -0.5）';
+    case 'nupl':
+      return '固定阈值 < 0.15（深度 < 0）';
     case 'puell':
       return '固定阈值 < 0.6（深度 < 0.5）';
     case 'sthMvrv':
@@ -192,7 +195,7 @@ function IndicatorTooltip({
 }: {
   active?: boolean;
   payload?: TooltipEntry[];
-  label?: string;
+  label?: string | number;
 }) {
   if (!active || !payload || payload.length === 0) {
     return null;
@@ -240,8 +243,8 @@ export function IndicatorCharts({
   const miniSeriesMap = useMemo(() => {
     return {
       priceMa200w: getIndicatorChartData(data, 'priceMa200w', '1y') as DetailSeriesPoint[],
-      priceRealized: getIndicatorChartData(data, 'priceRealized', '1y') as DetailSeriesPoint[],
-      valuationBlend: getIndicatorChartData(data, 'valuationBlend', '1y') as DetailSeriesPoint[],
+      mvrvZscore: getIndicatorChartData(data, 'mvrvZscore', '1y') as DetailSeriesPoint[],
+      nupl: getIndicatorChartData(data, 'nupl', '1y') as DetailSeriesPoint[],
       puell: getIndicatorChartData(data, 'puell', '1y') as DetailSeriesPoint[],
       sthMvrv: getIndicatorChartData(data, 'sthMvrv', '1y') as DetailSeriesPoint[],
       sthSopr: getIndicatorChartData(data, 'sthSopr', '1y') as DetailSeriesPoint[],

@@ -101,7 +101,6 @@ export const CORE_HISTORY_FIELDS = [
 
 export const CORE8_COVERAGE_FIELDS = [
   'priceMa200wRatio',
-  'priceRealizedRatio',
   'mvrvZscore',
   'nupl',
   'lthMvrv',

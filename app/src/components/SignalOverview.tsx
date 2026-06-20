@@ -182,8 +182,8 @@ export function SignalOverview({
   const scoreProgress = Math.max(0, Math.min(100, (effectiveScore / Math.max(1, effectiveMaxScore)) * 100));
   const confidencePercent = signalConfidence === undefined ? null : Math.round(signalConfidence * 100);
   const isConfirmed = signalConfirmed3dV6 || signalConfirmed3dV4 || signalConfirmed3d;
-  const fallbackLabel = fallbackMode === 'valuation_blend_inactive'
-    ? '估值融合槽位暂时不计入综合总分'
+  const fallbackLabel = fallbackMode === 'valuation_metrics_inactive' || fallbackMode === 'valuation_blend_inactive'
+    ? 'MVRV Z / NUPL 暂时不计入综合总分'
     : fallbackMode === 'mvrv_zscore_inactive'
       ? 'MVRV Z-Score 暂时不计入综合总分'
       : null;

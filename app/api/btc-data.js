@@ -1,5 +1,5 @@
 /**
- * Vercel Edge Function - BTC runtime V6 proxy.
+ * Vercel Edge Function - BTC runtime Core-8 proxy.
  */
 
 export const config = {
@@ -40,9 +40,9 @@ const RESERVE_RISK_DISABLE_LAG_DAYS = 30;
 const SCORE_CONFIRM_RATIO = 7 / 12;
 const SOPR_SMOOTHING_DAYS = 3;
 const SCHEMA_VERSION = 'v6';
-const SCORING_MODEL_VERSION = 'v6_core8_display_blend_sopr_refined';
+const SCORING_MODEL_VERSION = 'core8_independent_mvrv_nupl_sopr_refined';
 const LEGACY_SCORING_MODEL_VERSION = 'v3_no_lookahead_replacement';
-const CORE_INDICATOR_SET = 'core8_bottom_v6_display_blend_sopr_refined';
+const CORE_INDICATOR_SET = 'core8_bottom_independent_mvrv_nupl_sopr_refined';
 
 const BGEOMETRICS_SERIES = {
   btcPrice: {
@@ -133,7 +133,7 @@ const DEFAULT_THRESHOLDS = {
   valuationBlendV6: {
     method: 'max(mvrvZscoreCore,nuplCore)',
     role: 'shared_valuation_slot_v6',
-    displayRole: 'combined_frontend_indicator',
+    displayRole: 'legacy_compatibility_only',
   },
   reserveRiskV4Compatibility: { aliasOf: 'mvrvZscoreCore', deprecated: true },
 };
@@ -1004,7 +1004,7 @@ function buildRuntimePayload({
   const maxTotalScoreV4 = maxValuationScore + maxTriggerScore + maxConfirmationScore;
   const totalScoreV4 = valuationScore + triggerScore + confirmationScore;
 
-  const valuationScoreV6 = scorePriceMa200w + scorePriceRealized + valuationBlendScoreV6 + scorePuell;
+  const valuationScoreV6 = scorePriceMa200w + scoreMvrvZscoreCore + scoreNuplCore + scorePuell;
   const maxValuationScoreV6 = 8;
   const triggerScoreV6 = Math.max(scoreSthMvrv, scoreSthSopr);
   const maxTriggerScoreV6 = 2;
@@ -1013,8 +1013,8 @@ function buildRuntimePayload({
   const activeIndicatorCountV6 = 8;
   const signalCountV6 = [
     signalPriceMa200w,
-    signalPriceRealized,
-    signalValuationBlendV6,
+    signalMvrvZscoreCore,
+    signalNuplCore,
     signalSthMvrv,
     signalSthSoprAux,
     signalLthMvrv,
@@ -1043,8 +1043,6 @@ function buildRuntimePayload({
   const reserveEffectiveFreshness = mvrvZscoreCoreActive ? mvrvZscoreFreshnessScore : 0;
   const nuplEffectiveFreshness = nuplCoreActive ? nuplFreshnessScore : 0;
   const priceMa200wFreshnessScoreV6 = Math.min(btcPriceFreshnessScore, ma200wFreshnessScore);
-  const priceRealizedFreshnessScoreV6 = Math.min(btcPriceFreshnessScore, realizedPriceFreshnessScore);
-  const valuationBlendFreshnessScoreV6 = Math.max(reserveEffectiveFreshness, nuplEffectiveFreshness);
   const dataFreshnessScore = round(
     (
       btcPriceFreshnessScore
@@ -1061,8 +1059,8 @@ function buildRuntimePayload({
   const dataFreshnessScoreV6 = round(
     (
       priceMa200wFreshnessScoreV6
-      + priceRealizedFreshnessScoreV6
-      + valuationBlendFreshnessScoreV6
+      + reserveEffectiveFreshness
+      + nuplEffectiveFreshness
       + sthMvrvFreshnessScore
       + lthMvrvFreshnessScore
       + lthSoprFreshnessScore
@@ -1252,7 +1250,7 @@ function buildRuntimePayload({
     signals: signalsV6,
     signalCount: signalCountV6,
     activeIndicatorCount: activeIndicatorCountV6,
-    fallbackMode: valuationBlendActiveV6 ? 'none' : 'valuation_blend_inactive',
+    fallbackMode: valuationBlendActiveV6 ? 'none' : 'valuation_metrics_inactive',
   };
   const legacy = {
     v2: {
@@ -1329,7 +1327,7 @@ function buildRuntimePayload({
     dataFreshnessScore,
     dataFreshnessScoreV6,
     fallbackMode: mvrvZscoreCoreActive ? 'none' : 'mvrv_zscore_inactive',
-    fallbackModeV6: valuationBlendActiveV6 ? 'none' : 'valuation_blend_inactive',
+    fallbackModeV6: valuationBlendActiveV6 ? 'none' : 'valuation_metrics_inactive',
     scorePriceMa200w,
     scorePriceRealized,
     scoreReserveRisk,

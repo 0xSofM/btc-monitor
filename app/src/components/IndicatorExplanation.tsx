@@ -1,4 +1,4 @@
-import { AlertTriangle, BookOpen, Info, ShieldCheck, TrendingDown } from 'lucide-react';
+import { AlertTriangle, BookOpen, Building2, Info, ShieldCheck, TrendingDown } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -21,20 +21,20 @@ const valuationIndicators: IndicatorItem[] = [
     rationale: '价格跌破 200 周均线通常发生在恐慌阶段，长期风险回报比更优。',
   },
   {
-    id: 'price-realized',
-    name: 'Price / Realized Price',
+    id: 'mvrv-zscore',
+    name: 'MVRV Z-Score',
     icon: TrendingDown,
-    target: '< 1（深度 < 0.90）',
-    description: '比较现价与链上实现价格，反映市场是否跌破全网平均成本。',
-    rationale: '价格低于实现价格常对应低估区，是大周期底部的重要估值锚。',
+    target: '< 0（深度 < -0.50）',
+    description: '衡量市值相对链上实现价值的标准化偏离，识别市场是否进入历史低估区。',
+    rationale: '它对极端低估更敏感，适合作为估值层的强压力锚点，而不是与 NUPL 合并后只保留一个槽位。',
   },
   {
-    id: 'valuation-blend',
-    name: '估值融合（MVRV Z + NUPL）',
+    id: 'nupl',
+    name: 'NUPL',
     icon: TrendingDown,
-    target: 'MVRV Z < 0 或 NUPL < 0.15',
-    description: '把 MVRV Z-Score 与 NUPL 合并为一个估值展示项，并取两者核心分较高者计入综合评分。',
-    rationale: '两者都刻画市场估值和持币者盈亏状态，合并后能减少重复计数，同时保留 NUPL 对底部区间的补强能力。',
+    target: '< 0.15（深度 < 0）',
+    description: '衡量全网净未实现盈亏状态，观察市场整体筹码是否接近亏损或低利润区。',
+    rationale: '它比 MVRV Z 更直接反映持币者盈亏结构，独立保留能减少单一估值指标失真的风险。',
   },
   {
     id: 'puell',
@@ -84,17 +84,6 @@ const confirmationIndicators: IndicatorItem[] = [
   },
 ];
 
-const auxiliaryIndicators: IndicatorItem[] = [
-  {
-    id: 'reserve-risk',
-    name: 'Reserve Risk (Observation)',
-    icon: Info,
-    target: '< p20（深度 < p10）',
-    description: '继续保留原始数值和诊断信息，用于观察长期持有者风险回报区间，但不再占据 Core-8 主评分位。',
-    rationale: '这样可以避免主源时滞直接影响综合总分，同时保留旧版本对照和回滚能力。',
-  },
-];
-
 function IndicatorGrid({ title, items }: { title: string; items: IndicatorItem[] }) {
   return (
     <section>
@@ -139,7 +128,6 @@ export function IndicatorExplanation() {
         <IndicatorGrid title="估值层" items={valuationIndicators} />
         <IndicatorGrid title="触发层" items={triggerIndicators} />
         <IndicatorGrid title="确认层" items={confirmationIndicators} />
-        <IndicatorGrid title="辅助与观测" items={auxiliaryIndicators} />
 
         <section className="rounded-xl border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950">
           <div className="flex items-start gap-3">
@@ -148,10 +136,27 @@ export function IndicatorExplanation() {
               <h3 className="font-semibold text-blue-800 dark:text-blue-200">分层评分框架</h3>
               <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
                 Core-8 将 8 个核心指标拆为“估值层 + 触发层（复合）+ 确认层（双指标）”。
-                估值层包含 Price/200W-MA、Price/Realized、MVRV Z-Score/NUPL 融合槽位、Puell，满分 8；
+                估值层包含 Price/200W-MA、MVRV Z-Score、NUPL、Puell，满分 8；
                 触发层取 STH-MVRV 与 STH-SOPR 的最大值，满分 2；
                 确认层 LTH-MVRV + LTH-SOPR 双指标独立计分，满分 4；
                 总分上限仍为 14。同时保留 3 日确认和旧版兼容字段，便于归档、对照与回滚。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="rounded-xl border bg-background/70 p-4">
+          <div className="flex items-start gap-3">
+            <div className="rounded-full border bg-muted/50 p-2">
+              <Building2 className="h-4 w-4" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="font-semibold">MSTR mNAV 说明</h3>
+              <p className="text-sm text-muted-foreground">
+                mNAV 使用 Strategy 官方披露口径，近似衡量企业价值相对其 BTC 储备价值的倍数。数值高于 1 表示市场愿意为 MSTR 的 BTC 敞口、融资能力和公司结构支付溢价；低于 1 则表示折价。
+              </p>
+              <p className="text-sm">
+                该指标只作为外部情绪与相对溢价观察项，不参与 BTC 大周期底部综合评分。它适合回答“市场是否在追捧或回避 MSTR 这类 BTC 代理资产”，不适合作为 BTC 链上底部触发条件。
               </p>
             </div>
           </div>
