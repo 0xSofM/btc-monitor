@@ -256,7 +256,7 @@ function App() {
         if (mode === 'manual') {
           const score = runtimeData.totalScoreV6 ?? runtimeData.totalScoreV4 ?? runtimeData.signalScoreV2 ?? 0;
           const maxScore = runtimeData.maxTotalScoreV6 ?? runtimeData.maxTotalScoreV4 ?? runtimeData.maxSignalScoreV2 ?? 10;
-          toast.success(`V6 运行时已刷新：${score}/${maxScore}`, {
+          toast.success(`运行时数据已刷新：${score}/${maxScore}`, {
             description: `BTC 价格：$${runtimeData.btcPrice.toLocaleString()}`,
             duration: 6000,
           });
@@ -272,7 +272,7 @@ function App() {
         applyLatestData(staticData, 'static');
 
         if (mode === 'manual') {
-          toast.info('运行时不可用，已回退到 V6 静态快照', {
+          toast.info('运行时不可用，已回退到静态快照', {
             description: `BTC 价格：$${staticData.btcPrice.toLocaleString()}`,
             duration: 6000,
           });
@@ -382,7 +382,7 @@ function App() {
   const totalScoreV4 = latestData?.totalScoreV4;
   const maxTotalScoreV4 = latestData?.maxTotalScoreV4 ?? 14;
   const hasLayeredScore = totalScoreV6 !== undefined || totalScoreV4 !== undefined;
-  const modelLabel = totalScoreV6 !== undefined ? 'V6' : totalScoreV4 !== undefined ? 'V5' : 'V2';
+  const modelLabel = totalScoreV6 !== undefined ? 'Core-8' : totalScoreV4 !== undefined ? '分层模型' : '加权模型';
   const signalCountDisplay = latestData?.signalCountV6 ?? latestData?.signalCountV4 ?? latestData?.signalCount ?? 0;
   const totalCoreIndicators = 8;
   const effectiveScore = totalScoreV6 ?? totalScoreV4 ?? signalScoreV2;
@@ -412,7 +412,7 @@ function App() {
     if (!latestData) return [];
     const baseTiles = [
       {
-        label: hasLayeredScore ? `${modelLabel}总分` : 'V2评分',
+        label: hasLayeredScore ? '综合评分' : '加权评分',
         value: `${effectiveScore}/${effectiveMaxScore}`,
         note: effectiveSignalBand,
         icon: TrendingUp,
@@ -449,7 +449,6 @@ function App() {
   }, [
     latestData,
     hasLayeredScore,
-    modelLabel,
     effectiveScore,
     effectiveMaxScore,
     effectiveSignalBand,
@@ -626,7 +625,6 @@ function App() {
 
   return (
     <div className="app-shell">
-      <div className="app-backdrop" />
       <Toaster position="top-right" />
 
       <div className="app-content">
@@ -638,9 +636,9 @@ function App() {
                   <Bitcoin className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold tracking-tight">BTC 大周期底部监测 V6</h1>
+                  <h1 className="text-xl font-bold tracking-tight">基于链上指标的 BTC 大周期底部识别监测</h1>
                   <p className="text-sm text-muted-foreground">
-                    Core-8 分层模型：估值层 + 触发层（复合）+ 确认层（双指标），NUPL 与 MVRV Z-Score 共享估值槽位
+                    融合估值、短期触发与长期确认信号，辅助识别 BTC 大周期底部区间。
                   </p>
                 </div>
               </div>
@@ -681,12 +679,14 @@ function App() {
                 const Icon = tile.icon;
                 return (
                   <article key={tile.label} className="status-chip">
-                    <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
-                    <div className="min-w-0 flex-1">
+                    <div className="status-chip-header">
+                      <span className="status-icon">
+                        <Icon className="h-4 w-4" />
+                      </span>
                       <p className="status-label">{tile.label}</p>
-                      <p className="status-value">{tile.value}</p>
                     </div>
-                    <Badge variant="secondary" className="shrink-0">{tile.note}</Badge>
+                    <p className="status-value">{tile.value}</p>
+                    <Badge variant="secondary" className="status-note">{tile.note}</Badge>
                   </article>
                 );
               })}
@@ -723,7 +723,7 @@ function App() {
                   <AlertTriangle className="h-4 w-4 text-blue-600" />
                   <AlertTitle className="text-blue-800 dark:text-blue-200">静态快照模式</AlertTitle>
                   <AlertDescription className="text-blue-700 dark:text-blue-300">
-                    当前优先展示可归档、可回滚的静态快照数据，这是 V6 发布链路的默认模式。
+                    当前优先展示可归档、可回滚的静态快照数据，便于稳定归档、对照与回滚。
                   </AlertDescription>
                   <button
                     onClick={() => setStaticAlertDismissed(true)}
@@ -895,7 +895,7 @@ function App() {
 
         <footer className="footer-line mt-12">
           <div className="app-container flex flex-col items-center justify-between gap-3 py-6 text-sm text-muted-foreground md:flex-row">
-            <p>数据来源：BGeometrics 文件端点 | 模型：Core-8 V6（NUPL 估值融合 + 复合触发 + 双确认层 + 3日确认）</p>
+            <p>数据来源：BGeometrics 文件端点 | 模型：Core-8 分层模型（NUPL 估值融合 + 复合触发 + 双确认层 + 3日确认）</p>
             <p>
               数据时间：{dataTimestampLabel}
               {manifestGeneratedAt ? ` | 清单生成时间：${manifestGeneratedAt}` : ''}

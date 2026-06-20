@@ -445,7 +445,29 @@ export function IndicatorCharts({
             name="BTC Price"
             stroke="#F7931A"
             strokeWidth={2}
-            dot={false}
+            dot={(dotProps) => {
+              const payload = dotProps.payload as { signal?: boolean } | undefined;
+              const cx = typeof dotProps.cx === 'number' ? dotProps.cx : 0;
+              const cy = typeof dotProps.cy === 'number' ? dotProps.cy : 0;
+              const key = typeof dotProps.index === 'number' ? dotProps.index : `${cx}-${cy}`;
+
+              if (!payload?.signal) {
+                return <circle key={`price-ma200-neutral-${key}`} cx={cx} cy={cy} r={0} fill="transparent" />;
+              }
+
+              return (
+                <circle
+                  key={`price-ma200-signal-${key}`}
+                  cx={cx}
+                  cy={cy}
+                  r={3.5}
+                  fill="#10B981"
+                  stroke="#ffffff"
+                  strokeWidth={1.5}
+                />
+              );
+            }}
+            activeDot={{ r: 6 }}
             isAnimationActive={false}
           />
           <Line
@@ -531,14 +553,25 @@ export function IndicatorCharts({
             connectNulls={false}
             dot={(dotProps) => {
               const payload = dotProps.payload as { signal?: boolean } | undefined;
-              if (!payload?.signal) {
-                return <></>;
-              }
-
               const cx = typeof dotProps.cx === 'number' ? dotProps.cx : 0;
               const cy = typeof dotProps.cy === 'number' ? dotProps.cy : 0;
+              const key = typeof dotProps.index === 'number' ? dotProps.index : `${cx}-${cy}`;
 
-              return <circle cx={cx} cy={cy} r={3.5} fill="#10B981" stroke="#ffffff" strokeWidth={1.5} />;
+              if (!payload?.signal) {
+                return <circle key={`indicator-neutral-${key}`} cx={cx} cy={cy} r={0} fill="transparent" />;
+              }
+
+              return (
+                <circle
+                  key={`indicator-signal-${key}`}
+                  cx={cx}
+                  cy={cy}
+                  r={3.5}
+                  fill="#10B981"
+                  stroke="#ffffff"
+                  strokeWidth={1.5}
+                />
+              );
             }}
             activeDot={{ r: 6 }}
             isAnimationActive={false}
@@ -565,7 +598,7 @@ export function IndicatorCharts({
       <CardHeader>
         <div className="space-y-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle className="text-lg font-semibold">Core-8 V6 历史图表</CardTitle>
+            <CardTitle className="text-lg font-semibold">Core-8 历史图表</CardTitle>
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
                 完整历史
@@ -663,10 +696,16 @@ export function IndicatorCharts({
           </div>
 
           {activeIndicator === 'priceMa200w' ? (
-            <div className="flex items-center gap-1">
-              <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #3B82F6' }} />
-              <span>200W-MA</span>
-            </div>
+            <>
+              <div className="flex items-center gap-1">
+                <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #3B82F6' }} />
+                <span>200W-MA</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                <span>跌破 200W-MA 信号点</span>
+              </div>
+            </>
           ) : (
             <>
               {showThresholds && (

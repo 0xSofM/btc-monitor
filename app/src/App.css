@@ -1,16 +1,7 @@
 .app-shell {
   position: relative;
-  min-height: 100vh;
-}
-
-.app-backdrop {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(circle at 20% 0%, hsl(30 98% 66% / 0.12), transparent 45%),
-    radial-gradient(circle at 90% 10%, hsl(20 86% 62% / 0.1), transparent 42%);
+  min-height: 100dvh;
+  overflow-x: clip;
 }
 
 .app-content {
@@ -67,39 +58,76 @@
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .status-strip {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .status-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
 .status-chip {
   display: flex;
-  align-items: center;
-  gap: 0.65rem;
+  min-height: 7.25rem;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
   border: 1px solid hsl(var(--border));
-  border-radius: 0.85rem;
-  padding: 0.8rem 0.95rem;
-  background: hsl(var(--card) / 0.72);
-  transition: border-color 200ms ease, box-shadow 200ms ease;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: hsl(var(--card) / 0.9);
+  box-shadow: 0 12px 28px -24px rgb(15 23 42 / 0.42);
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
 }
 
 .status-chip:hover {
   border-color: hsl(var(--primary) / 0.35);
-  box-shadow: 0 2px 12px -6px hsl(var(--primary) / 0.18);
+  box-shadow: 0 18px 32px -24px hsl(var(--primary) / 0.32);
+  transform: translateY(-1px);
+}
+
+.status-chip-header {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-icon {
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.65rem;
+  background: hsl(var(--primary) / 0.1);
+  color: hsl(var(--primary));
 }
 
 .status-label {
   font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0;
   color: hsl(var(--muted-foreground));
 }
 
 .status-value {
-  font-size: 1.2rem;
+  font-size: 1.45rem;
   font-weight: 700;
   line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.status-note {
+  max-width: 100%;
+  white-space: normal;
+  text-align: left;
 }
 
 .tab-shell {

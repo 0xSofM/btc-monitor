@@ -33,7 +33,7 @@ const valuationIndicators: IndicatorItem[] = [
     name: '估值融合（MVRV Z + NUPL）',
     icon: TrendingDown,
     target: 'MVRV Z < 0 或 NUPL < 0.15',
-    description: '把 MVRV Z-Score 与 NUPL 合并为一个估值展示项，并取两者核心分较高者计入 V6。',
+    description: '把 MVRV Z-Score 与 NUPL 合并为一个估值展示项，并取两者核心分较高者计入综合评分。',
     rationale: '两者都刻画市场估值和持币者盈亏状态，合并后能减少重复计数，同时保留 NUPL 对底部区间的补强能力。',
   },
   {
@@ -61,7 +61,7 @@ const triggerIndicators: IndicatorItem[] = [
     icon: AlertTriangle,
     target: '3日均值 < p27（深度 < p13.5）',
     description: '衡量短期持有者是否在亏损兑现，阈值使用滚动分位数并以 3 日均值降噪。',
-    rationale: '它与 STH-MVRV 组成复合触发信号，V6 触发层取两者分数最大值，避免短期噪声重复抬分。',
+    rationale: '它与 STH-MVRV 组成复合触发信号，触发层取两者分数最大值，避免短期噪声重复抬分。',
   },
 ];
 
@@ -91,7 +91,7 @@ const auxiliaryIndicators: IndicatorItem[] = [
     icon: Info,
     target: '< p20（深度 < p10）',
     description: '继续保留原始数值和诊断信息，用于观察长期持有者风险回报区间，但不再占据 Core-8 主评分位。',
-    rationale: '这样可以避免主源时滞直接影响 V6 总分，同时保留旧版本对照和回滚能力。',
+    rationale: '这样可以避免主源时滞直接影响综合总分，同时保留旧版本对照和回滚能力。',
   },
 ];
 
@@ -131,7 +131,7 @@ export function IndicatorExplanation() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <BookOpen className="h-5 w-5" />
-          Core-8 V6 指标说明
+          Core-8 指标说明
         </CardTitle>
       </CardHeader>
 
@@ -145,9 +145,9 @@ export function IndicatorExplanation() {
           <div className="flex items-start gap-3">
             <Info className="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-300" />
             <div>
-              <h3 className="font-semibold text-blue-800 dark:text-blue-200">V6 评分框架</h3>
+              <h3 className="font-semibold text-blue-800 dark:text-blue-200">分层评分框架</h3>
               <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
-                V6 将 8 个核心指标拆为“估值层 + 触发层（复合）+ 确认层（双指标）”。
+                Core-8 将 8 个核心指标拆为“估值层 + 触发层（复合）+ 确认层（双指标）”。
                 估值层包含 Price/200W-MA、Price/Realized、MVRV Z-Score/NUPL 融合槽位、Puell，满分 8；
                 触发层取 STH-MVRV 与 STH-SOPR 的最大值，满分 2；
                 确认层 LTH-MVRV + LTH-SOPR 双指标独立计分，满分 4；
