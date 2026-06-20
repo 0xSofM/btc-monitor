@@ -79,6 +79,7 @@ jobs:
         run: |
           python validate_btc_data_quality.py \
             --current-history app/public/btc_indicators_history.json \
+            --current-history-light app/public/btc_indicators_history_light.json \
             --current-latest app/public/btc_indicators_latest.json \
             --previous-history .tmp/previous/btc_indicators_history.json \
             --previous-latest .tmp/previous/btc_indicators_latest.json \

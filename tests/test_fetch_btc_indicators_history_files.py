@@ -7,6 +7,8 @@ import pandas as pd
 from fetch_btc_indicators_history_files import (
     _classify_score_band,
     archive_existing_outputs,
+    build_light_history_json,
+    build_manifest_json,
     build_reserve_risk_source_diagnostics,
     build_signal_events_v4_json,
     build_latest_json,
@@ -116,6 +118,43 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertTrue(last["signalLthMvrv"])
         self.assertEqual(last["indicatorDates"]["lthMvrv"], "2024-01-03")
 
+    def test_light_history_keeps_recent_rows_and_compacts_fields(self) -> None:
+        history = [
+            {
+                "d": f"2024-01-{day:02d}",
+                "unixTs": 1704067200 + (day * 86400),
+                "btcPrice": 100 + day,
+                "priceMa200wRatio": 1.0,
+                "signalCountV6": day % 8,
+                "reserveRiskDiagnostics": {"debug": True},
+                "raw": "debug",
+            }
+            for day in range(1, 13)
+        ]
+        history.extend(
+            [
+                {
+                    "d": f"2025-01-{day:02d}",
+                    "unixTs": 1735689600 + (day * 86400),
+                    "btcPrice": 200 + day,
+                    "priceMa200wRatio": 1.1,
+                    "signalCountV6": day % 8,
+                    "indicatorDates": {"priceMa200w": f"2025-01-{day:02d}"},
+                }
+                for day in range(1, 6)
+            ]
+        )
+
+        light = build_light_history_json(history, recent_days=3)
+
+        self.assertLess(len(light), len(history))
+        self.assertEqual(light[0]["d"], "2024-01-01")
+        self.assertEqual(light[-1]["d"], "2025-01-05")
+        self.assertTrue(any(row["d"] == "2025-01-03" for row in light))
+        self.assertNotIn("reserveRiskDiagnostics", light[0])
+        self.assertNotIn("raw", light[0])
+        self.assertIn("signalCountV6", light[-1])
+
     def test_build_latest_json_uses_latest_row(self) -> None:
         enriched, thresholds = enrich_for_frontend(self.build_base_df())
         latest = build_latest_json(enriched, thresholds=thresholds)
@@ -158,6 +197,26 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(str(latest["scoringModelVersion"]), "v6_core8_display_blend_sopr_refined")
         self.assertEqual(str(latest["legacyScoringModelVersion"]), "v3_no_lookahead_replacement")
         self.assertIn("reserveRiskDiagnostics", latest)
+
+    def test_manifest_includes_light_history_and_data_health_contract(self) -> None:
+        enriched, thresholds = enrich_for_frontend(self.build_base_df())
+        history = dataframe_to_history_json(enriched)
+        light = build_light_history_json(history)
+        latest = build_latest_json(enriched, thresholds=thresholds)
+
+        manifest = build_manifest_json(
+            latest_json=latest,
+            history_rows=len(history),
+            history_light_rows=len(light),
+            thresholds=thresholds,
+        )
+
+        self.assertEqual(manifest["historyRows"], len(history))
+        self.assertEqual(manifest["historyLightRows"], len(light))
+        self.assertEqual(manifest["historyFiles"]["light"], "btc_indicators_history_light.json")
+        self.assertIn("historyRequiredFields", manifest["schemaContract"])
+        self.assertEqual(manifest["schemaContract"]["canonicalModel"], "v6")
+        self.assertIn("indicatorLagDays", manifest["dataHealth"])
 
     def test_reserve_risk_auto_excluded_when_stale(self) -> None:
         base = self.build_base_df().copy()

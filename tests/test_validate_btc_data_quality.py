@@ -1,6 +1,6 @@
 ﻿import unittest
 
-from validate_btc_data_quality import validate_current_pair
+from validate_btc_data_quality import validate_current_pair, validate_light_history
 
 
 class ValidateDataQualityTests(unittest.TestCase):
@@ -344,6 +344,47 @@ class ValidateDataQualityTests(unittest.TestCase):
         )
 
         self.assertTrue(ok)
+        self.assertEqual(errors, [])
+
+    def test_validate_light_history_requires_tail_alignment_and_recent_coverage(self):
+        full_history = self.build_history()
+        light_history = [
+            {key: value for key, value in row.items() if key != "nupl"}
+            for row in full_history
+        ]
+        latest = self.build_latest()
+        errors = []
+
+        validate_light_history(full_history, light_history, latest, errors)
+
+        self.assertTrue(any("nupl" in error for error in errors))
+
+    def test_validate_light_history_accepts_compacted_valid_history(self):
+        full_history = self.build_history()
+        light_history = [
+            {
+                key: row[key]
+                for key in (
+                    "d",
+                    "priceMa200wRatio",
+                    "priceRealizedRatio",
+                    "reserveRisk",
+                    "mvrvZscore",
+                    "nupl",
+                    "lthMvrv",
+                    "lthSopr",
+                    "sthSopr",
+                    "sthMvrv",
+                    "puellMultiple",
+                )
+            }
+            for row in full_history
+        ]
+        latest = self.build_latest()
+        errors = []
+
+        validate_light_history(full_history, light_history, latest, errors)
+
         self.assertEqual(errors, [])
 
 

@@ -61,6 +61,82 @@ from pipeline.archiver import (  # noqa: F401 — re-exported for backward compa
 # Serializer / output functions
 # =========================================================================
 
+HISTORY_LIGHT_RECENT_DAYS = 730
+HISTORY_LIGHT_FIELDS = [
+    "d",
+    "unixTs",
+    "btcPrice",
+    "ma200w",
+    "realizedPrice",
+    "priceMa200wRatio",
+    "priceRealizedRatio",
+    "reserveRisk",
+    "lthMvrv",
+    "lthSopr",
+    "lthSoprMa3",
+    "mvrvZscore",
+    "nupl",
+    "sthSopr",
+    "sthSoprMa3",
+    "sthMvrv",
+    "puellMultiple",
+    "signalPriceMa200w",
+    "signalPriceRealized",
+    "signalReserveRisk",
+    "signalReserveRiskV4",
+    "signalMvrvZscoreCore",
+    "signalNupl",
+    "signalNuplCore",
+    "signalValuationBlendV6",
+    "signalSthSopr",
+    "signalSthMvrv",
+    "signalSthGroup",
+    "signalLthMvrv",
+    "signalLthSopr",
+    "signalSthSoprTrigger",
+    "signalSthSoprAux",
+    "signalPuell",
+    "signalCount",
+    "signalCountV4",
+    "signalCountV6",
+    "activeIndicatorCount",
+    "activeIndicatorCountV4",
+    "activeIndicatorCountV6",
+    "signalScoreV2",
+    "maxSignalScoreV2",
+    "totalScoreV4",
+    "maxTotalScoreV4",
+    "totalScoreV4Min3d",
+    "signalConfirmed3dV4",
+    "signalBandV4",
+    "valuationScoreV6",
+    "triggerScoreV6",
+    "confirmationScoreV6",
+    "totalScoreV6",
+    "maxTotalScoreV6",
+    "totalScoreV6Min3d",
+    "signalConfirmed3dV6",
+    "signalBandV6",
+    "scoreMvrvZscoreCore",
+    "scoreNuplCore",
+    "valuationBlendScoreV6",
+    "scoreSthSopr",
+    "scoreSthMvrv",
+    "scoreLthMvrv",
+    "scoreLthSopr",
+    "scorePuell",
+    "signalConfidenceV6",
+    "dataFreshnessScoreV6",
+    "fallbackModeV6",
+    "thresholds",
+    "signalsV6",
+    "staleIndicators",
+    "indicatorDates",
+    "indicatorSet",
+    "coreIndicatorSet",
+    "scoringModelVersion",
+]
+
 
 def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
     """Prepare human-readable table used for CSV/XLSX exports."""
@@ -382,6 +458,62 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
         )
 
     return records
+
+
+def build_light_history_json(
+    history_json: List[Dict[str, object]],
+    recent_days: int = HISTORY_LIGHT_RECENT_DAYS,
+) -> List[Dict[str, object]]:
+    """Build a dashboard-friendly history file.
+
+    It keeps all recent daily rows and one monthly anchor for older history,
+    while preserving only the fields the frontend charts/review need.
+    """
+    if not history_json:
+        return []
+
+    latest_date_raw = history_json[-1].get("d")
+    latest_date = (
+        datetime.strptime(str(latest_date_raw), "%Y-%m-%d")
+        if latest_date_raw
+        else None
+    )
+    seen_old_months: set[str] = set()
+    selected: List[Dict[str, object]] = []
+
+    for index, row in enumerate(history_json):
+        date_raw = row.get("d")
+        include_row = index == 0 or index == len(history_json) - 1
+
+        row_date: datetime | None = None
+        if date_raw:
+            try:
+                row_date = datetime.strptime(str(date_raw), "%Y-%m-%d")
+            except ValueError:
+                row_date = None
+
+        if not include_row and latest_date is not None and row_date is not None:
+            row_age_days = (latest_date - row_date).days
+            if row_age_days <= recent_days:
+                include_row = True
+            else:
+                month_key = row_date.strftime("%Y-%m")
+                if month_key not in seen_old_months:
+                    include_row = True
+                    seen_old_months.add(month_key)
+
+        if not include_row:
+            continue
+
+        selected.append(
+            {
+                key: row[key]
+                for key in HISTORY_LIGHT_FIELDS
+                if key in row and row[key] is not None
+            }
+        )
+
+    return selected
 
 
 def build_latest_json(
@@ -708,12 +840,47 @@ def build_latest_json(
         "legacyScoringModelVersion": LEGACY_SCORING_MODEL_VERSION,
         "lastUpdated": datetime.now(timezone.utc).isoformat(),
     }
+    latest_payload["canonical"] = {
+        "model": "v6",
+        "score": {
+            "valuation": latest_payload["valuationScoreV6"],
+            "trigger": latest_payload["triggerScoreV6"],
+            "confirmation": latest_payload["confirmationScoreV6"],
+            "total": latest_payload["totalScoreV6"],
+            "maxTotal": latest_payload["maxTotalScoreV6"],
+            "band": latest_payload["signalBandV6"],
+            "confirmed3d": latest_payload["signalConfirmed3dV6"],
+            "confidence": latest_payload["signalConfidenceV6"],
+        },
+        "signals": latest_payload["signalsV6"],
+        "signalCount": latest_payload["signalCountV6"],
+        "activeIndicatorCount": latest_payload["activeIndicatorCountV6"],
+        "fallbackMode": latest_payload["fallbackModeV6"],
+    }
+    latest_payload["legacy"] = {
+        "v2": {
+            "signalCount": latest_payload["signalCount"],
+            "signalScore": latest_payload["signalScoreV2"],
+            "maxSignalScore": latest_payload["maxSignalScoreV2"],
+            "band": latest_payload["signalBandV2"],
+            "confirmed3d": latest_payload["signalConfirmed3d"],
+        },
+        "v4": {
+            "signalCount": latest_payload["signalCountV4"],
+            "totalScore": latest_payload["totalScoreV4"],
+            "maxTotalScore": latest_payload["maxTotalScoreV4"],
+            "band": latest_payload["signalBandV4"],
+            "confirmed3d": latest_payload["signalConfirmed3dV4"],
+            "signals": latest_payload["signalsV4"],
+        },
+    }
     return latest_payload
 
 
 def build_manifest_json(
     latest_json: Dict[str, object],
     history_rows: int,
+    history_light_rows: int,
     thresholds: Dict[str, Dict[str, object]],
     reserve_risk_diagnostics: Dict[str, object] | None = None,
     signal_events_rows: int = 0,
@@ -731,11 +898,21 @@ def build_manifest_json(
         if isinstance(reserve_risk_diagnostics, dict)
         else {}
     )
+    indicator_lag_days = latest_json.get("indicatorLagDays", {})
+    stale_indicators = latest_json.get("staleIndicators", [])
+    inactive_indicators = latest_json.get("inactiveIndicators", [])
     return {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "latestDate": latest_json.get("date"),
         "lastUpdated": latest_json.get("lastUpdated"),
         "historyRows": history_rows,
+        "historyLightRows": history_light_rows,
+        "historyFiles": {
+            "full": "btc_indicators_history.json",
+            "light": "btc_indicators_history_light.json",
+            "lightRecentDays": HISTORY_LIGHT_RECENT_DAYS,
+            "lightFields": HISTORY_LIGHT_FIELDS,
+        },
         "signalEventsV4Rows": signal_events_rows,
         "schemaVersion": SCHEMA_VERSION,
         "indicatorSet": INDICATOR_SET,
@@ -760,11 +937,42 @@ def build_manifest_json(
                 if isinstance(primary_series, dict)
                 else None
             ),
+            "primaryLatestNonNullDate": (
+                primary_series.get("latestNonNullDate")
+                if isinstance(primary_series, dict)
+                else None
+            ),
+            "primaryTrailingNullDays": (
+                primary_series.get("trailingNullDays")
+                if isinstance(primary_series, dict)
+                else None
+            ),
             "sourceMode": (
                 reserve_risk_diagnostics.get("selectedPointSourceKey")
                 if isinstance(reserve_risk_diagnostics, dict)
                 else None
             ),
+        },
+        "dataHealth": {
+            "indicatorLagDays": (
+                indicator_lag_days if isinstance(indicator_lag_days, dict) else {}
+            ),
+            "staleIndicators": (
+                stale_indicators if isinstance(stale_indicators, list) else []
+            ),
+            "inactiveIndicators": (
+                inactive_indicators if isinstance(inactive_indicators, list) else []
+            ),
+            "fallbackModeV6": latest_json.get("fallbackModeV6"),
+            "dataFreshnessScoreV6": latest_json.get("dataFreshnessScoreV6"),
+            "signalConfidenceV6": latest_json.get("signalConfidenceV6"),
+        },
+        "schemaContract": {
+            "canonicalModel": "v6",
+            "historyRequiredFields": HISTORY_LIGHT_FIELDS,
+            "legacyCompatibility": ["v2", "v4"],
+            "latestCanonicalField": "canonical",
+            "latestLegacyField": "legacy",
         },
         "archivedSnapshot": archived_snapshot_path,
         "archiveRoot": archive_root or ARCHIVE_ROOT_DEFAULT,
@@ -854,9 +1062,11 @@ def print_summary(
     sources: Dict[str, str],
     reserve_risk_diagnostics: Dict[str, object],
     history_path: Path,
+    history_light_path: Path,
     latest_path: Path,
     manifest_path: Path,
     history_rows: int,
+    history_light_rows: int,
 ) -> None:
     """Print concise run summary."""
     print()
@@ -918,6 +1128,7 @@ def print_summary(
     print()
     print("Output files:")
     print(f"  Full history : {history_path} ({history_rows} rows)")
+    print(f"  Light history: {history_light_path} ({history_light_rows} rows)")
     print(f"  Latest       : {latest_path}")
     print(f"  Manifest     : {manifest_path}")
 
@@ -955,6 +1166,11 @@ def main() -> int:
         "--history-json-path",
         default="app/public/btc_indicators_history.json",
         help="Frontend history JSON output path.",
+    )
+    parser.add_argument(
+        "--history-light-json-path",
+        default="app/public/btc_indicators_history_light.json",
+        help="Frontend light history JSON output path.",
     )
     parser.add_argument(
         "--latest-json-path",
@@ -1008,11 +1224,13 @@ def main() -> int:
     args = parser.parse_args()
 
     history_path = Path(args.history_json_path)
+    history_light_path = Path(args.history_light_json_path)
     latest_path = Path(args.latest_json_path)
     manifest_path = Path(args.manifest_json_path)
     signal_events_v4_path = Path(args.signal_events_v4_json_path)
     output_paths = {
         "history": history_path,
+        "historyLight": history_light_path,
         "latest": latest_path,
         "manifest": manifest_path,
         "signalEventsV4": signal_events_v4_path,
@@ -1056,6 +1274,7 @@ def main() -> int:
         tabular_df = build_tabular_view(frontend_df)
 
     history_json = dataframe_to_history_json(frontend_df)
+    history_light_json = build_light_history_json(history_json)
     latest_json = build_latest_json(
         frontend_df, thresholds, reserve_risk_diagnostics=reserve_risk_diagnostics
     )
@@ -1063,12 +1282,14 @@ def main() -> int:
     manifest_json = build_manifest_json(
         latest_json=latest_json,
         history_rows=len(history_json),
+        history_light_rows=len(history_light_json),
         thresholds=thresholds,
         reserve_risk_diagnostics=reserve_risk_diagnostics,
         signal_events_rows=len(signal_events_v4_json),
     )
 
     write_json(history_path, history_json)
+    write_json(history_light_path, history_light_json)
     write_json(latest_path, latest_json)
     write_json(manifest_path, manifest_json)
     write_json(signal_events_v4_path, signal_events_v4_json)
@@ -1078,9 +1299,11 @@ def main() -> int:
         sources,
         reserve_risk_diagnostics,
         history_path,
+        history_light_path,
         latest_path,
         manifest_path,
         len(history_json),
+        len(history_light_json),
     )
 
     return 0

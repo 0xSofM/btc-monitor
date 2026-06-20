@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import type { IndicatorData, LatestData } from '@/types';
 import {
+  fetchHistoricalData,
   getEffectiveDataDate,
   getDataFreshnessHours,
   getIndicatorChartData,
@@ -12,6 +13,72 @@ import {
 import { normalizeIndicatorData } from '@/services/normalizers';
 
 describe('dataService helpers', () => {
+  it('fetchHistoricalData loads light history by default and full history on demand', async () => {
+    const fetchMock = vi.fn(async (url: RequestInfo | URL) => {
+      const path = String(url);
+      const body = path.includes('btc_indicators_history_light.json')
+        ? [
+            {
+              d: '2026-04-15',
+              btcPrice: 83000,
+              priceMa200wRatio: 1.2,
+              priceRealizedRatio: 1.1,
+              mvrvZscore: 0.1,
+              nupl: 0.18,
+              lthMvrv: 1.1,
+              lthSopr: 0.98,
+              sthSopr: 1.01,
+              sthMvrv: 1.05,
+              puellMultiple: 0.72,
+            },
+          ]
+        : [
+            {
+              d: '2026-04-14',
+              btcPrice: 82500,
+              priceMa200wRatio: 1.19,
+              priceRealizedRatio: 1.08,
+              mvrvZscore: 0.05,
+              nupl: 0.17,
+              lthMvrv: 1.08,
+              lthSopr: 0.97,
+              sthSopr: 1.0,
+              sthMvrv: 1.03,
+              puellMultiple: 0.7,
+            },
+            {
+              d: '2026-04-15',
+              btcPrice: 83000,
+              priceMa200wRatio: 1.2,
+              priceRealizedRatio: 1.1,
+              mvrvZscore: 0.1,
+              nupl: 0.18,
+              lthMvrv: 1.1,
+              lthSopr: 0.98,
+              sthSopr: 1.01,
+              sthMvrv: 1.05,
+              puellMultiple: 0.72,
+            },
+          ];
+
+      return new Response(JSON.stringify(body), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const light = await fetchHistoricalData({ forceRefresh: true });
+    const full = await fetchHistoricalData({ forceRefresh: true, full: true });
+
+    expect(fetchMock.mock.calls[0]?.[0]).toBe('/btc_indicators_history_light.json');
+    expect(fetchMock.mock.calls[1]?.[0]).toBe('/btc_indicators_history.json');
+    expect(light).toHaveLength(1);
+    expect(full).toHaveLength(2);
+
+    vi.unstubAllGlobals();
+  });
+
   it('getLatestFromHistory reads latest row and api_data_date fields', () => {
     const history = [
       {

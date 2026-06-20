@@ -1,109 +1,12 @@
 import type { IndicatorData, LatestData } from '@/types';
 
 import { normalizeIndicatorData, normalizeLatestData } from './normalizers';
+import { CORE_HISTORY_FIELDS } from './schema';
 import { enrichLatestDataWithHistory, getLatestFromHistory } from './selectors';
 
 const DATA_VERSION = 'v1.5.0';
 const HISTORY_KEY = 'btc_indicators_history';
 const LATEST_KEY = 'btc_indicators_latest';
-
-const HISTORY_STORAGE_FIELDS: Array<keyof IndicatorData> = [
-  'unixTs',
-  'btcPrice',
-  'priceMa200wRatio',
-  'priceRealizedRatio',
-  'ma200w',
-  'realizedPrice',
-  'reserveRisk',
-  'mvrvZscore',
-  'nupl',
-  'lthMvrv',
-  'lthSopr',
-  'lthSoprMa3',
-  'sthSopr',
-  'sthSoprMa3',
-  'sthMvrv',
-  'puellMultiple',
-  'signalPriceMa200w',
-  'signalPriceMa',
-  'signalPriceRealized',
-  'signalReserveRisk',
-  'signalReserveRiskV4',
-  'signalMvrvZscoreCore',
-  'signalNupl',
-  'signalNuplCore',
-  'signalValuationBlendV6',
-  'signalSthSopr',
-  'signalSthMvrv',
-  'signalSthGroup',
-  'signalLthMvrv',
-  'signalLthSopr',
-  'signalSthSoprTrigger',
-  'signalSthSoprAux',
-  'signalPuell',
-  'signalCount',
-  'signalCountV4',
-  'signalCountV6',
-  'activeIndicatorCount',
-  'activeIndicatorCountV4',
-  'activeIndicatorCountV6',
-  'maxSignalScoreV2',
-  'scorePriceMa200w',
-  'scorePriceRealized',
-  'scoreReserveRisk',
-  'scoreReserveRiskV4',
-  'scoreMvrvZscore',
-  'scoreMvrvZscoreCore',
-  'scoreNupl',
-  'scoreNuplCore',
-  'valuationBlendScoreV6',
-  'scoreLthMvrv',
-  'scoreLthSopr',
-  'scoreSthSopr',
-  'scoreSthMvrv',
-  'scoreSthGroup',
-  'scorePuell',
-  'signalScoreV2',
-  'signalScoreV2Min3d',
-  'signalConfirmed3d',
-  'valuationScore',
-  'maxValuationScore',
-  'triggerScore',
-  'maxTriggerScore',
-  'confirmationScore',
-  'maxConfirmationScore',
-  'auxiliaryScore',
-  'maxAuxiliaryScore',
-  'totalScoreV4',
-  'maxTotalScoreV4',
-  'totalScoreV4Min3d',
-  'signalConfirmed3dV4',
-  'signalBandV4',
-  'valuationScoreV6',
-  'maxValuationScoreV6',
-  'triggerScoreV6',
-  'maxTriggerScoreV6',
-  'confirmationScoreV6',
-  'maxConfirmationScoreV6',
-  'totalScoreV6',
-  'maxTotalScoreV6',
-  'totalScoreV6Min3d',
-  'signalConfirmed3dV6',
-  'signalBandV6',
-  'signalConfidence',
-  'signalConfidenceV6',
-  'dataFreshnessScore',
-  'dataFreshnessScoreV6',
-  'fallbackMode',
-  'fallbackModeV6',
-  'staleIndicators',
-  'indicatorSet',
-  'coreIndicatorSet',
-  'scoringModelVersion',
-  'thresholds',
-  'indicatorDates',
-  'signalsV6',
-];
 
 const storageWarnings = {
   latestQuota: false,
@@ -210,7 +113,7 @@ function compactHistoryRow(row: IndicatorData): IndicatorData {
   const compact: IndicatorData = { d: row.d };
   const compactRecord = compact as unknown as Record<string, unknown>;
 
-  for (const field of HISTORY_STORAGE_FIELDS) {
+  for (const field of CORE_HISTORY_FIELDS) {
     const value = row[field];
     if (value !== undefined && value !== null) {
       compactRecord[field] = value;

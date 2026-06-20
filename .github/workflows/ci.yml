@@ -34,6 +34,7 @@ jobs:
         run: |
           python validate_btc_data_quality.py \
             --current-history app/public/btc_indicators_history.json \
+            --current-history-light app/public/btc_indicators_history_light.json \
             --current-latest app/public/btc_indicators_latest.json \
             --lookback-rows 30 \
             --max-row-drop 5 \
@@ -62,6 +63,10 @@ jobs:
       - name: Run frontend tests
         working-directory: ./app
         run: npm run test
+
+      - name: Check Edge proxy syntax
+        working-directory: ./app
+        run: node --check api/btc-data.js
 
       - name: Build
         working-directory: ./app

@@ -371,5 +371,60 @@
   },
   "scoringModelVersion": "v6_core8_display_blend_sopr_refined",
   "legacyScoringModelVersion": "v3_no_lookahead_replacement",
-  "lastUpdated": "2026-06-05T07:36:51.866529+00:00"
+  "lastUpdated": "2026-06-05T07:36:51.866529+00:00",
+  "canonical": {
+    "model": "v6",
+    "score": {
+      "valuation": 0,
+      "trigger": 2,
+      "confirmation": 1,
+      "total": 3,
+      "maxTotal": 14,
+      "band": "watch",
+      "confirmed3d": false,
+      "confidence": 0.4696
+    },
+    "signals": {
+      "priceMa200w": false,
+      "priceRealized": false,
+      "mvrvZscore": false,
+      "nupl": false,
+      "valuationBlend": false,
+      "sthMvrv": true,
+      "sthSoprTrigger": true,
+      "lthMvrv": false,
+      "lthSopr": true,
+      "puell": false
+    },
+    "signalCount": 3,
+    "activeIndicatorCount": 8,
+    "fallbackMode": "none"
+  },
+  "legacy": {
+    "v2": {
+      "signalCount": 2,
+      "signalScore": 4,
+      "maxSignalScore": 10,
+      "band": "focus",
+      "confirmed3d": false
+    },
+    "v4": {
+      "signalCount": 2,
+      "totalScore": 3,
+      "maxTotalScore": 14,
+      "band": "watch",
+      "confirmed3d": false,
+      "signals": {
+        "priceMa200w": false,
+        "priceRealized": false,
+        "reserveRisk": false,
+        "mvrvZscore": false,
+        "sthMvrv": true,
+        "lthMvrv": false,
+        "lthSopr": true,
+        "puell": false,
+        "sthSoprTrigger": true
+      }
+    }
+  }
 }

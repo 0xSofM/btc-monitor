@@ -48,6 +48,7 @@ export type ApiMetricPoint = {
 
 export type FetchHistoricalOptions = {
   forceRefresh?: boolean;
+  full?: boolean;
 };
 
 export type FetchStaticLatestOptions = {
@@ -60,6 +61,13 @@ export interface DataManifest {
   latestDate: string;
   lastUpdated: string;
   historyRows: number;
+  historyLightRows?: number;
+  historyFiles?: {
+    full?: string;
+    light?: string;
+    lightRecentDays?: number;
+    lightFields?: string[];
+  };
   schemaVersion: string;
   signalEventsV4Rows?: number;
   indicatorSet?: string;
@@ -68,4 +76,18 @@ export interface DataManifest {
   maxTotalScoreV4?: number;
   activeIndicatorCountV6?: number;
   maxTotalScoreV6?: number;
+  dataHealth?: {
+    indicatorLagDays?: Record<string, number | null>;
+    staleIndicators?: unknown[];
+    inactiveIndicators?: unknown[];
+    fallbackModeV6?: string;
+    dataFreshnessScoreV6?: number;
+    signalConfidenceV6?: number;
+  };
+  schemaContract?: {
+    canonicalModel?: string;
+    historyRequiredFields?: string[];
+    missingCoreHistoryFields?: string[];
+    legacyCompatibility?: string[];
+  };
 }

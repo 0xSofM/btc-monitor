@@ -40,6 +40,7 @@ import {
 import './App.css';
 
 type DataSource = 'api' | 'static' | 'history';
+type HistoryMode = 'none' | 'light' | 'full';
 type IndicatorDateKey =
   | 'priceMa200w'
   | 'priceRealized'
@@ -152,6 +153,7 @@ function formatFallbackModeLabel(fallbackMode: string | undefined): string | nul
 function App() {
   const [latestData, setLatestData] = useState<LatestData | null>(null);
   const [historicalData, setHistoricalData] = useState<IndicatorData[]>([]);
+  const [historyMode, setHistoryMode] = useState<HistoryMode>('none');
   const deferredHistoricalData = useDeferredValue(historicalData);
   const [staticAlertDismissed, setStaticAlertDismissed] = useState(false);
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
@@ -163,8 +165,13 @@ function App() {
   const [dataSource, setDataSource] = useState<DataSource>('static');
   const { theme, setTheme } = useTheme();
 
-  const loadHistory = useCallback(async (forceRefresh = false) => {
-    if (!forceRefresh && historicalData.length > 0) {
+  const loadHistory = useCallback(async (forceRefresh = false, full = false) => {
+    const targetMode: HistoryMode = full ? 'full' : 'light';
+    if (
+      !forceRefresh
+      && historicalData.length > 0
+      && (historyMode === targetMode || historyMode === 'full')
+    ) {
       return historicalData;
     }
 
@@ -174,9 +181,10 @@ function App() {
 
     setIsHistoryLoading(true);
     try {
-      const data = await fetchHistoricalData({ forceRefresh });
+      const data = await fetchHistoricalData({ forceRefresh, full });
       if (data.length > 0) {
         setHistoricalData(data);
+        setHistoryMode(targetMode);
       }
       return data;
     } catch (err) {
@@ -185,7 +193,7 @@ function App() {
     } finally {
       setIsHistoryLoading(false);
     }
-  }, [historicalData, isHistoryLoading]);
+  }, [historicalData, historyMode, isHistoryLoading]);
 
   const loadManifest = useCallback(async () => {
     const manifest = await fetchDataManifest();
@@ -203,7 +211,7 @@ function App() {
       return historicalData;
     }
 
-    return loadHistory();
+    return loadHistory(false, false);
   }, [historicalData, loadHistory]);
 
   const applyLatestData = (data: LatestData, source: DataSource) => {
@@ -276,10 +284,13 @@ function App() {
 
   const handleTabChange = (value: string) => {
     setActiveTab(value as AppTab);
+    if (value === 'history') {
+      void loadHistory(false, true);
+    }
   };
 
   useEffect(() => {
-    void loadHistory();
+    void loadHistory(false, false);
   }, [loadHistory]);
 
   useEffect(() => {
@@ -806,7 +817,7 @@ function App() {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => void loadHistory()}
+                            onClick={() => void loadHistory(false, false)}
                             disabled={isHistoryLoading}
                           >
                             {isHistoryLoading ? (
@@ -825,14 +836,30 @@ function App() {
             </TabsContent>
 
             <TabsContent value="history" className="fade-up">
-              {historicalData.length > 0 ? (
+              {historyMode === 'full' && historicalData.length > 0 ? (
                 <Suspense fallback={<SectionLoader message="正在加载复盘工作区..." />}>
                   <HistoryReviewPanel data={deferredHistoricalData} />
                 </Suspense>
               ) : (
-                <div className="surface-card flex flex-col items-center justify-center py-12">
-                  <Loader2 className="mb-4 h-12 w-12 animate-spin text-orange-500" />
-                  <p className="text-muted-foreground">正在加载历史数据...</p>
+                <div className="surface-card flex flex-col items-center justify-center gap-3 py-12">
+                  {isHistoryLoading ? (
+                    <Loader2 className="h-12 w-12 animate-spin text-orange-500" />
+                  ) : (
+                    <History className="h-12 w-12 text-orange-500" />
+                  )}
+                  <p className="text-muted-foreground">
+                    {isHistoryLoading ? '正在加载完整复盘数据...' : '历史复盘需要完整历史数据。'}
+                  </p>
+                  {!isHistoryLoading && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => void loadHistory(false, true)}
+                    >
+                      <History className="mr-2 h-4 w-4" />
+                      加载完整复盘数据
+                    </Button>
+                  )}
                 </div>
               )}
             </TabsContent>

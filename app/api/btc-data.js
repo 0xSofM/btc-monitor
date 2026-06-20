@@ -16,6 +16,7 @@ const memoryCache = new Map();
 const MEMORY_CACHE_TTL_MS = 600_000; // 10 min
 const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
 const STATIC_HISTORY_PATH = '/btc_indicators_history.json';
+const STATIC_HISTORY_LIGHT_PATH = '/btc_indicators_history_light.json';
 const BLOCKCHAIN_INFO_STATS_URL = 'https://api.blockchain.info/stats';
 
 async function fetchBlockchainInfoSpotPrice() {
@@ -605,9 +606,15 @@ async function fetchStaticLatestSnapshot(request) {
 
 async function fetchStaticHistory(request) {
   try {
-    const url = new URL(STATIC_HISTORY_PATH, request.url);
-    const payload = await fetchJsonSafely(url.toString(), []);
-    return Array.isArray(payload) ? payload : [];
+    const lightUrl = new URL(STATIC_HISTORY_LIGHT_PATH, request.url);
+    const lightPayload = await fetchJsonSafely(lightUrl.toString(), null);
+    if (Array.isArray(lightPayload) && lightPayload.length > 0) {
+      return lightPayload;
+    }
+
+    const fullUrl = new URL(STATIC_HISTORY_PATH, request.url);
+    const fullPayload = await fetchJsonSafely(fullUrl.toString(), []);
+    return Array.isArray(fullPayload) ? fullPayload : [];
   } catch (error) {
     console.warn('Static history fetch failed:', error);
     return [];
@@ -1191,6 +1198,79 @@ function buildRuntimePayload({
       disableLagDays: FRESHNESS_LIMITS.nupl,
     });
   }
+  const scoreDrift = {
+    comparedWithStaticDate: asString(staticLatest?.date) ?? null,
+    sameDate: (asString(staticLatest?.date) ?? null) === latestDate,
+    totalScoreV6: totalScoreV6 - toNumber(staticLatest?.totalScoreV6, totalScoreV6),
+    signalCountV6: signalCountV6 - toNumber(staticLatest?.signalCountV6, signalCountV6),
+    signalConfidenceV6: round(signalConfidenceV6 - toNumber(staticLatest?.signalConfidenceV6, signalConfidenceV6), 4),
+  };
+  const signals = {
+    priceMa200w: signalPriceMa200w,
+    priceRealized: signalPriceRealized,
+    reserveRisk: signalReserveRisk,
+    sthSopr: signalSthSopr,
+    sthMvrv: signalSthMvrv,
+    sthGroup: signalSthGroup,
+    puell: signalPuell,
+  };
+  const signalsV4 = {
+    priceMa200w: signalPriceMa200w,
+    priceRealized: signalPriceRealized,
+    reserveRisk: signalReserveRiskV4,
+    mvrvZscore: signalMvrvZscoreCore,
+    sthMvrv: signalSthMvrv,
+    lthMvrv: signalLthMvrv,
+    lthSopr: signalLthSopr,
+    puell: signalPuell,
+    sthSoprTrigger: signalSthSoprAux,
+  };
+  const signalsV6 = {
+    priceMa200w: signalPriceMa200w,
+    priceRealized: signalPriceRealized,
+    mvrvZscore: signalMvrvZscoreCore,
+    nupl: signalNuplCore,
+    valuationBlend: signalValuationBlendV6,
+    sthMvrv: signalSthMvrv,
+    sthSoprTrigger: signalSthSoprAux,
+    lthMvrv: signalLthMvrv,
+    lthSopr: signalLthSopr,
+    puell: signalPuell,
+  };
+  const canonical = {
+    model: 'v6',
+    score: {
+      valuation: valuationScoreV6,
+      trigger: triggerScoreV6,
+      confirmation: confirmationScoreV6,
+      total: totalScoreV6,
+      maxTotal: maxTotalScoreV6,
+      band: signalBandV6,
+      confirmed3d: signalConfirmed3dV6,
+      confidence: signalConfidenceV6,
+    },
+    signals: signalsV6,
+    signalCount: signalCountV6,
+    activeIndicatorCount: activeIndicatorCountV6,
+    fallbackMode: valuationBlendActiveV6 ? 'none' : 'valuation_blend_inactive',
+  };
+  const legacy = {
+    v2: {
+      signalCount,
+      signalScore: signalScoreV2,
+      maxSignalScore: maxSignalScoreV2,
+      band: signalBandV2,
+      confirmed3d: signalConfirmed3d,
+    },
+    v4: {
+      signalCount: signalCountV4,
+      totalScore: totalScoreV4,
+      maxTotalScore: maxTotalScoreV4,
+      band: signalBandV4,
+      confirmed3d: signalConfirmed3dV4,
+      signals: signalsV4,
+    },
+  };
 
   return {
     date: latestDate,
@@ -1290,38 +1370,9 @@ function buildRuntimePayload({
     inactiveIndicators,
     staleIndicators,
     indicatorLagDays,
-    signals: {
-      priceMa200w: signalPriceMa200w,
-      priceRealized: signalPriceRealized,
-      reserveRisk: signalReserveRisk,
-      sthSopr: signalSthSopr,
-      sthMvrv: signalSthMvrv,
-      sthGroup: signalSthGroup,
-      puell: signalPuell,
-    },
-    signalsV4: {
-      priceMa200w: signalPriceMa200w,
-      priceRealized: signalPriceRealized,
-      reserveRisk: signalReserveRiskV4,
-      mvrvZscore: signalMvrvZscoreCore,
-      sthMvrv: signalSthMvrv,
-      lthMvrv: signalLthMvrv,
-      lthSopr: signalLthSopr,
-      puell: signalPuell,
-      sthSoprTrigger: signalSthSoprAux,
-    },
-    signalsV6: {
-      priceMa200w: signalPriceMa200w,
-      priceRealized: signalPriceRealized,
-      mvrvZscore: signalMvrvZscoreCore,
-      nupl: signalNuplCore,
-      valuationBlend: signalValuationBlendV6,
-      sthMvrv: signalSthMvrv,
-      sthSoprTrigger: signalSthSoprAux,
-      lthMvrv: signalLthMvrv,
-      lthSopr: signalLthSopr,
-      puell: signalPuell,
-    },
+    signals,
+    signalsV4,
+    signalsV6,
     indicatorDates: {
       ...indicatorDates,
       reserveRiskLegacy: reserveRiskEffectiveDateLegacy,
@@ -1333,6 +1384,17 @@ function buildRuntimePayload({
       ...(asRecord(staticLatest?.thresholds) ?? {}),
       ...thresholds,
     },
+    runtimeDiagnostics: {
+      scoringSource: 'edge_patch_from_static_pipeline_thresholds',
+      staticPipelineDate: asString(staticLatest?.date) ?? null,
+      staticHistoryRowsUsed: Array.isArray(staticHistory) ? staticHistory.length : 0,
+      staticHistoryMode: Array.isArray(staticHistory) && staticHistory.length > 0 && staticHistory.length < 2000
+        ? 'light'
+        : 'full_or_unknown',
+      scoreDrift,
+    },
+    canonical,
+    legacy,
     raw: {
       runtimeSource: 'bgeometrics_latest_v6',
       priceSource: points.btcPrice?.source ?? null,

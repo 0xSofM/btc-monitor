@@ -4,6 +4,7 @@ import {
   API_BASE_URL,
   PROXY_URL,
   STATIC_HISTORY_FULL_PATH,
+  STATIC_HISTORY_LIGHT_PATH,
   checkEndpoint,
   fetchRuntimeLatestRaw,
   fetchStaticHistoryRaw,
@@ -12,6 +13,7 @@ import {
 } from './apiClient';
 import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions } from './contracts';
 import { normalizeIndicatorData, normalizeLatestData, toFiniteNumber } from './normalizers';
+import { CORE8_COVERAGE_FIELDS, missingCoreHistoryFields } from './schema';
 import {
   INDICATOR_CONFIG,
   TIME_RANGE_LABELS,
@@ -40,6 +42,7 @@ const MANIFEST_CACHE_DURATION = 60 * 1000;
 type CacheState = {
   latest: LatestData | null;
   history: IndicatorData[];
+  historyMode: 'none' | 'light' | 'full';
   latestTimestamp: number;
   manifest: DataManifest | null;
   manifestTimestamp: number;
@@ -48,6 +51,7 @@ type CacheState = {
 const cache: CacheState = {
   latest: null,
   history: [],
+  historyMode: 'none',
   latestTimestamp: 0,
   manifest: null,
   manifestTimestamp: 0,
@@ -75,19 +79,8 @@ export function hasCore8Coverage(rows: IndicatorData[]): boolean {
   }
 
   const recent = rows.slice(-Math.min(rows.length, 365));
-  const required: Array<keyof IndicatorData> = [
-    'priceMa200wRatio',
-    'priceRealizedRatio',
-    'mvrvZscore',
-    'nupl',
-    'lthMvrv',
-    'lthSopr',
-    'sthSopr',
-    'sthMvrv',
-    'puellMultiple',
-  ];
 
-  return required.every((field) =>
+  return CORE8_COVERAGE_FIELDS.every((field) =>
     recent.some((row) => row[field] !== null && row[field] !== undefined),
   );
 }
@@ -109,6 +102,7 @@ function normalizeManifest(raw: unknown): DataManifest | null {
   const latestDate = typeof record.latestDate === 'string' ? record.latestDate : '';
   const lastUpdated = typeof record.lastUpdated === 'string' ? record.lastUpdated : '';
   const historyRows = toFiniteNumber(record.historyRows, 0);
+  const historyLightRows = toFiniteNumber(record.historyLightRows, Number.NaN);
   const schemaVersion = typeof record.schemaVersion === 'string' ? record.schemaVersion : 'unknown';
   const signalEventsV4Rows = toFiniteNumber(record.signalEventsV4Rows, 0);
   const indicatorSet = typeof record.indicatorSet === 'string' ? record.indicatorSet : undefined;
@@ -117,6 +111,29 @@ function normalizeManifest(raw: unknown): DataManifest | null {
   const maxTotalScoreV4 = toFiniteNumber(record.maxTotalScoreV4, Number.NaN);
   const activeIndicatorCountV6 = toFiniteNumber(record.activeIndicatorCountV6, Number.NaN);
   const maxTotalScoreV6 = toFiniteNumber(record.maxTotalScoreV6, Number.NaN);
+
+  const historyFilesPayload = record.historyFiles && typeof record.historyFiles === 'object'
+    ? record.historyFiles as Record<string, unknown>
+    : null;
+  const historyFiles = historyFilesPayload
+    ? {
+        full: typeof historyFilesPayload.full === 'string' ? historyFilesPayload.full : undefined,
+        light: typeof historyFilesPayload.light === 'string' ? historyFilesPayload.light : undefined,
+        lightRecentDays: toFiniteNumber(historyFilesPayload.lightRecentDays, Number.NaN),
+        lightFields: Array.isArray(historyFilesPayload.lightFields)
+          ? historyFilesPayload.lightFields.filter((item): item is string => typeof item === 'string')
+          : undefined,
+      }
+    : undefined;
+  const dataHealth = record.dataHealth && typeof record.dataHealth === 'object'
+    ? record.dataHealth as DataManifest['dataHealth']
+    : undefined;
+  const schemaContract = record.schemaContract && typeof record.schemaContract === 'object'
+    ? record.schemaContract as DataManifest['schemaContract']
+    : undefined;
+  const schemaContractMissingFields = missingCoreHistoryFields(
+    schemaContract?.historyRequiredFields ?? historyFiles?.lightFields,
+  );
 
   if (!generatedAt || !latestDate) {
     return null;
@@ -127,6 +144,15 @@ function normalizeManifest(raw: unknown): DataManifest | null {
     latestDate,
     lastUpdated,
     historyRows,
+    historyLightRows: Number.isNaN(historyLightRows) ? undefined : historyLightRows,
+    historyFiles: historyFiles
+      ? {
+          ...historyFiles,
+          lightRecentDays: Number.isNaN(historyFiles.lightRecentDays ?? Number.NaN)
+            ? undefined
+            : historyFiles.lightRecentDays,
+        }
+      : undefined,
     schemaVersion,
     signalEventsV4Rows: signalEventsV4Rows > 0 ? signalEventsV4Rows : undefined,
     indicatorSet,
@@ -135,6 +161,15 @@ function normalizeManifest(raw: unknown): DataManifest | null {
     maxTotalScoreV4: Number.isNaN(maxTotalScoreV4) ? undefined : maxTotalScoreV4,
     activeIndicatorCountV6: Number.isNaN(activeIndicatorCountV6) ? undefined : activeIndicatorCountV6,
     maxTotalScoreV6: Number.isNaN(maxTotalScoreV6) ? undefined : maxTotalScoreV6,
+    dataHealth,
+    schemaContract: schemaContract
+      ? {
+          ...schemaContract,
+          missingCoreHistoryFields: schemaContractMissingFields,
+        }
+      : {
+          missingCoreHistoryFields: schemaContractMissingFields,
+        },
   };
 }
 
@@ -162,24 +197,47 @@ export async function fetchDataManifest(forceRefresh = false): Promise<DataManif
 
 export async function fetchHistoricalData(options: FetchHistoricalOptions = {}): Promise<IndicatorData[]> {
   const forceRefresh = options.forceRefresh ?? false;
+  const full = options.full ?? false;
+  const requestedMode: CacheState['historyMode'] = full ? 'full' : 'light';
+  const historyPath = full ? STATIC_HISTORY_FULL_PATH : STATIC_HISTORY_LIGHT_PATH;
+  const timeoutMs = full ? 120000 : 30000;
 
-  if (!forceRefresh && cache.history.length > 0) {
+  if (
+    !forceRefresh
+    && cache.history.length > 0
+    && (cache.historyMode === requestedMode || cache.historyMode === 'full')
+  ) {
     return cache.history;
   }
 
   try {
-    const raw = await fetchStaticHistoryRaw(STATIC_HISTORY_FULL_PATH, 120000);
+    const raw = await fetchStaticHistoryRaw(historyPath, timeoutMs);
     const history = mergeCachedLatestIntoHistory(normalizeHistoryRows(raw));
     persistLocalData({ history });
     cache.history = history;
+    cache.historyMode = requestedMode;
     return history;
   } catch (error) {
-    console.error(`[DataService] Error fetching full historical data (${STATIC_HISTORY_FULL_PATH}):`, error);
+    console.error(`[DataService] Error fetching historical data (${historyPath}):`, error);
+
+    if (!full) {
+      try {
+        const raw = await fetchStaticHistoryRaw(STATIC_HISTORY_FULL_PATH, 120000);
+        const history = mergeCachedLatestIntoHistory(normalizeHistoryRows(raw));
+        persistLocalData({ history });
+        cache.history = history;
+        cache.historyMode = 'full';
+        return history;
+      } catch (fallbackError) {
+        console.error(`[DataService] Error fetching fallback full historical data (${STATIC_HISTORY_FULL_PATH}):`, fallbackError);
+      }
+    }
 
     const localHistory = readLocalData();
     if (localHistory.length > 0 && hasCore8Coverage(localHistory)) {
       const mergedLocalHistory = mergeCachedLatestIntoHistory(localHistory);
       cache.history = mergedLocalHistory;
+      cache.historyMode = 'light';
       return mergedLocalHistory;
     }
 
@@ -319,12 +377,14 @@ export async function checkDataSource(): Promise<{
   apiAvailable: boolean;
   proxyAvailable: boolean;
   historyAvailable: boolean;
+  historyLightAvailable: boolean;
   historyFullAvailable: boolean;
   localAvailable: boolean;
   manifestAvailable: boolean;
 }> {
-  const [apiAvailable, historyFullAvailable, manifestAvailable] = await Promise.all([
+  const [apiAvailable, historyLightAvailable, historyFullAvailable, manifestAvailable] = await Promise.all([
     checkEndpoint(`${API_BASE_URL}/v1/btc-price/1`),
+    checkEndpoint(STATIC_HISTORY_LIGHT_PATH),
     checkEndpoint(STATIC_HISTORY_FULL_PATH),
     checkEndpoint('/btc_indicators_manifest.json'),
   ]);
@@ -336,7 +396,8 @@ export async function checkDataSource(): Promise<{
   return {
     apiAvailable,
     proxyAvailable,
-    historyAvailable: historyFullAvailable,
+    historyAvailable: historyLightAvailable || historyFullAvailable,
+    historyLightAvailable,
     historyFullAvailable,
     localAvailable: !!readLocalLatestData(),
     manifestAvailable,

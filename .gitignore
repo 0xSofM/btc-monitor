@@ -11,5 +11,7 @@ __pycache__/
 .coverage
 .tmp/
 archive/
+.claude/
+tmp_*.html
 btc_indicators_from_files.csv
 btc_indicators_from_files.xlsx

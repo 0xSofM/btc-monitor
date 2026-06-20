@@ -2,6 +2,7 @@
 
 export const API_BASE_URL = 'https://bitcoin-data.com';
 export const STATIC_HISTORY_FULL_PATH = '/btc_indicators_history.json';
+export const STATIC_HISTORY_LIGHT_PATH = '/btc_indicators_history_light.json';
 export const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
 export const STATIC_MANIFEST_PATH = '/btc_indicators_manifest.json';
 

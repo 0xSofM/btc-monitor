@@ -272,6 +272,40 @@ export interface LatestData {
   };
   staleIndicators?: Array<string | { key?: string; lagDays?: number; maxLagDays?: number; sourceDate?: string }>;
   thresholds?: ThresholdMap;
+  canonical?: {
+    model?: string;
+    score?: {
+      valuation?: number;
+      trigger?: number;
+      confirmation?: number;
+      total?: number;
+      maxTotal?: number;
+      band?: string;
+      confirmed3d?: boolean;
+      confidence?: number;
+    };
+    signals?: LatestData['signalsV6'];
+    signalCount?: number;
+    activeIndicatorCount?: number;
+    fallbackMode?: string;
+  };
+  legacy?: {
+    v2?: {
+      signalCount?: number;
+      signalScore?: number;
+      maxSignalScore?: number;
+      band?: string;
+      confirmed3d?: boolean;
+    };
+    v4?: {
+      signalCount?: number;
+      totalScore?: number;
+      maxTotalScore?: number;
+      band?: string;
+      confirmed3d?: boolean;
+      signals?: LatestData['signalsV4'];
+    };
+  };
   // Legacy V1 compatibility fields
   mvrvZscore?: number;
   lthMvrv?: number;
