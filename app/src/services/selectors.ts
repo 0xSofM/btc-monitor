@@ -645,7 +645,7 @@ export function getIndicatorChartData(
 ): ChartDataPoint[] {
   const filteredData = filterDataByTimeRange(data, range);
 
-  return filteredData
+  const points = filteredData
     .map((item): ChartDataPoint | null => {
       let value: number | null = null;
       let triggerValue: number | null = null;
@@ -805,27 +805,32 @@ export function getIndicatorChartData(
       };
     })
     .filter((item): item is ChartDataPoint => item !== null);
+
+  const firstObservedIndex = points.findIndex((point) => point.value !== null);
+  return firstObservedIndex > 0 ? points.slice(firstObservedIndex) : points;
 }
 
 export function getMA200ChartData(
   data: IndicatorData[],
   range: TimeRange,
-): { date: string; price: number; ma200: number; signal: boolean }[] {
+): { date: string; price: number; ma200: number | null; signal: boolean }[] {
   return filterDataByTimeRange(data, range)
-    .filter((item) => hasUsableValue(item.btcPrice) && (hasUsableValue(item.ma200w) || hasUsableValue(item.priceMa200wRatio)))
+    .filter((item) => hasUsableValue(item.btcPrice))
     .map((item) => {
       const price = toNumericPrice(item.btcPrice);
-      let ma200 = item.ma200w;
+      let ma200: number | null = hasUsableValue(item.ma200w) ? toFiniteNumber(item.ma200w, 0) : null;
 
       if ((!ma200 || ma200 <= 0) && item.priceMa200wRatio && item.priceMa200wRatio > 0) {
         ma200 = price / item.priceMa200wRatio;
       }
 
+      const hasMa200 = typeof ma200 === 'number' && Number.isFinite(ma200) && ma200 > 0;
+
       return {
         date: item.d,
         price,
-        ma200: toFiniteNumber(ma200, 0),
-        signal: item.signalPriceMa200w ?? item.signalPriceMa ?? false,
+        ma200: hasMa200 ? ma200 : null,
+        signal: hasMa200 ? (item.signalPriceMa200w ?? item.signalPriceMa ?? false) : false,
       };
     });
 }

@@ -37,7 +37,7 @@ type MaSeriesPoint = {
   date: string;
   time?: number;
   price: number;
-  ma200: number;
+  ma200: number | null;
   signal: boolean;
 };
 
@@ -410,7 +410,7 @@ export function IndicatorCharts({
     const visible = series.slice(resolvedStartIndex, resolvedEndIndex + 1);
     const visibleValues = visible
       .flatMap((row) => [row.price, row.ma200])
-      .filter((value) => Number.isFinite(value) && value > 0);
+      .filter((value): value is number => typeof value === 'number' && Number.isFinite(value) && value > 0);
 
     const min = visibleValues.length ? Math.min(...visibleValues) : 0;
     const max = visibleValues.length ? Math.max(...visibleValues) : 0;

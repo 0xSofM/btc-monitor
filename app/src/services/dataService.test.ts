@@ -316,6 +316,36 @@ describe('dataService helpers', () => {
     expect(chartData[0].ma200).toBeCloseTo(50000, 6);
   });
 
+  it('getMA200ChartData keeps price history before the first valid MA200 value', () => {
+    const history = [
+      {
+        d: '2026-01-01',
+        btcPrice: 50000,
+      },
+      {
+        d: '2026-01-02',
+        btcPrice: 51000,
+        ma200w: 45000,
+        signalPriceMa200w: false,
+      },
+    ] as IndicatorData[];
+
+    const chartData = getMA200ChartData(history, 'all');
+
+    expect(chartData).toHaveLength(2);
+    expect(chartData[0]).toMatchObject({
+      date: '2026-01-01',
+      price: 50000,
+      ma200: null,
+      signal: false,
+    });
+    expect(chartData[1]).toMatchObject({
+      date: '2026-01-02',
+      price: 51000,
+      ma200: 45000,
+    });
+  });
+
   it('getIndicatorChartData builds the valuation blend display score', () => {
     const history = [
       {
@@ -405,6 +435,38 @@ describe('dataService helpers', () => {
     expect(chartData).toHaveLength(2);
     expect(chartData.map((point) => point.value)).toEqual([0.18, null]);
     expect(chartData.map((point) => point.triggerValue)).toEqual([0.15, 0.15]);
+  });
+
+  it('getIndicatorChartData starts full history at the first observed indicator value', () => {
+    const history = [
+      {
+        d: '2026-04-12',
+        btcPrice: 82000,
+        nupl: null,
+      },
+      {
+        d: '2026-04-13',
+        btcPrice: 82500,
+        nupl: undefined,
+      },
+      {
+        d: '2026-04-14',
+        btcPrice: 83000,
+        nupl: 0.18,
+        indicatorDates: { nupl: '2026-04-14' },
+      },
+      {
+        d: '2026-04-15',
+        btcPrice: 83500,
+        nupl: 0.18,
+        indicatorDates: { nupl: '2026-04-14' },
+      },
+    ] as IndicatorData[];
+
+    const chartData = getIndicatorChartData(history, 'nupl', 'all');
+
+    expect(chartData.map((point) => point.date)).toEqual(['2026-04-14', '2026-04-15']);
+    expect(chartData.map((point) => point.value)).toEqual([0.18, null]);
   });
 
   it('normalizeIndicatorData preserves compact indicatorDates for NUPL chart gaps', () => {
