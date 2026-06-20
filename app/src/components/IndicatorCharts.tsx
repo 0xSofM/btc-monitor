@@ -76,7 +76,7 @@ const SIGNAL_MARKER_INNER_FILL = '#065F46';
 const BTC_PRICE_COMPARE_COLOR = '#64748B';
 
 type SignalMarkerPlan = {
-  indexes: Set<number>;
+  keys: Set<string>;
   totalCount: number;
   compact: boolean;
 };
@@ -257,6 +257,7 @@ function buildSignalMarkerPlan<T>(
   startIndex: number,
   endIndex: number,
   isSignalPoint: (point: T) => boolean,
+  getKey: (point: T) => string,
 ): SignalMarkerPlan {
   const signalIndexes: number[] = [];
   const safeStartIndex = Math.max(0, startIndex);
@@ -273,16 +274,16 @@ function buildSignalMarkerPlan<T>(
   const markerLimit = getSignalMarkerLimit(visiblePointCount);
   const compact = signalIndexes.length > markerLimit;
   const step = compact ? Math.ceil(signalIndexes.length / markerLimit) : 1;
-  const indexes = new Set<number>();
+  const keys = new Set<string>();
 
   signalIndexes.forEach((index, signalIndex) => {
     if (!compact || signalIndex % step === 0 || signalIndex === signalIndexes.length - 1) {
-      indexes.add(index);
+      keys.add(getKey(series[index]));
     }
   });
 
   return {
-    indexes,
+    keys,
     totalCount: signalIndexes.length,
     compact,
   };
@@ -416,6 +417,7 @@ export function IndicatorCharts({
         resolvedStartIndex,
         resolvedEndIndex,
         (point) => point.signal,
+        (point) => point.date,
       );
     }
 
@@ -424,6 +426,7 @@ export function IndicatorCharts({
       resolvedStartIndex,
       resolvedEndIndex,
       (point) => point.signal && typeof point.value === 'number',
+      (point) => point.date,
     );
   }, [activeIndicator, detailSeries, resolvedEndIndex, resolvedStartIndex, totalPoints]);
 
@@ -573,6 +576,7 @@ export function IndicatorCharts({
       resolvedStartIndex,
       resolvedEndIndex,
       (point) => point.signal,
+      (point) => point.date,
     );
 
     return (
@@ -618,11 +622,12 @@ export function IndicatorCharts({
             strokeWidth={0}
             dot={(dotProps) => {
               const index = typeof dotProps.index === 'number' ? dotProps.index : -1;
+              const payload = dotProps.payload as { date?: string } | undefined;
               const cx = typeof dotProps.cx === 'number' ? dotProps.cx : 0;
               const cy = typeof dotProps.cy === 'number' ? dotProps.cy : 0;
-              const key = index >= 0 ? index : `${cx}-${cy}`;
+              const key = payload?.date ?? (index >= 0 ? String(index) : `${cx}-${cy}`);
 
-              if (!signalMarkerPlan.indexes.has(index)) {
+              if (!signalMarkerPlan.keys.has(key)) {
                 return renderHiddenSignalDot(`price-ma200-signal-hidden-${key}`, cx, cy);
               }
 
@@ -688,6 +693,7 @@ export function IndicatorCharts({
       resolvedStartIndex,
       resolvedEndIndex,
       (point) => point.signal && typeof point.value === 'number',
+      (point) => point.date,
     );
 
     return (
@@ -766,11 +772,12 @@ export function IndicatorCharts({
             connectNulls={false}
             dot={(dotProps) => {
               const index = typeof dotProps.index === 'number' ? dotProps.index : -1;
+              const payload = dotProps.payload as { date?: string } | undefined;
               const cx = typeof dotProps.cx === 'number' ? dotProps.cx : 0;
               const cy = typeof dotProps.cy === 'number' ? dotProps.cy : 0;
-              const key = index >= 0 ? index : `${cx}-${cy}`;
+              const key = payload?.date ?? (index >= 0 ? String(index) : `${cx}-${cy}`);
 
-              if (!signalMarkerPlan.indexes.has(index)) {
+              if (!signalMarkerPlan.keys.has(key)) {
                 return renderHiddenSignalDot(`indicator-signal-hidden-${key}`, cx, cy);
               }
 
