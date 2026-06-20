@@ -25,6 +25,7 @@ type IndicatorType = 'priceMa200w' | 'priceRealized' | 'valuationBlend' | 'puell
 
 type DetailSeriesPoint = {
   date: string;
+  time?: number;
   value: number | null;
   triggerValue?: number | null;
   deepValue?: number | null;
@@ -34,6 +35,7 @@ type DetailSeriesPoint = {
 
 type MaSeriesPoint = {
   date: string;
+  time?: number;
   price: number;
   ma200: number;
   signal: boolean;
@@ -88,6 +90,19 @@ function formatDate(value: string): string {
   }
 
   return value;
+}
+
+function parseDateMs(value: string): number {
+  const parsed = Date.parse(`${value}T00:00:00Z`);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function formatDateFromMs(value: number): string {
+  if (!Number.isFinite(value)) {
+    return '';
+  }
+
+  return formatDate(new Date(value).toISOString().slice(0, 10));
 }
 
 function formatNumber(value: number): string {
@@ -212,11 +227,14 @@ export function IndicatorCharts({
   const [brushKey, setBrushKey] = useState(0);
 
   const detailSeries = useMemo(() => {
+    const withTime = <T extends { date: string }>(points: T[]): Array<T & { time: number }> =>
+      points.map((point) => ({ ...point, time: parseDateMs(point.date) }));
+
     if (activeIndicator === 'priceMa200w') {
-      return getMA200ChartData(data, 'all') as MaSeriesPoint[];
+      return withTime(getMA200ChartData(data, 'all')) as MaSeriesPoint[];
     }
 
-    return getIndicatorChartData(data, activeIndicator, 'all') as DetailSeriesPoint[];
+    return withTime(getIndicatorChartData(data, activeIndicator, 'all')) as DetailSeriesPoint[];
   }, [activeIndicator, data]);
 
   const miniSeriesMap = useMemo(() => {
@@ -401,7 +419,15 @@ export function IndicatorCharts({
       <ResponsiveContainer width="100%" height={420}>
         <LineChart data={series} margin={{ top: 10, right: 24, left: 8, bottom: 30 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#d4d4d8" />
-          <XAxis dataKey="date" tickFormatter={formatDate} tick={{ fontSize: 11 }} interval="preserveStartEnd" />
+          <XAxis
+            dataKey="time"
+            type="number"
+            scale="time"
+            domain={['dataMin', 'dataMax']}
+            tickFormatter={formatDateFromMs}
+            tick={{ fontSize: 11 }}
+            interval="preserveStartEnd"
+          />
           <YAxis yAxisId="left" domain={[domainMin, domainMax]} tick={{ fontSize: 11 }} tickFormatter={formatPriceAxis} />
           <YAxis
             yAxisId="right"
@@ -470,7 +496,15 @@ export function IndicatorCharts({
       <ResponsiveContainer width="100%" height={420}>
         <LineChart data={series} margin={{ top: 10, right: 24, left: 8, bottom: 30 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#d4d4d8" />
-          <XAxis dataKey="date" tickFormatter={formatDate} tick={{ fontSize: 11 }} interval="preserveStartEnd" />
+          <XAxis
+            dataKey="time"
+            type="number"
+            scale="time"
+            domain={['dataMin', 'dataMax']}
+            tickFormatter={formatDateFromMs}
+            tick={{ fontSize: 11 }}
+            interval="preserveStartEnd"
+          />
           <YAxis tick={{ fontSize: 11 }} domain={[yMin, yMax]} tickFormatter={formatNumber} />
           <Tooltip content={<IndicatorTooltip />} />
 
