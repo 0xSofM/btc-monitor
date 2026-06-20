@@ -351,7 +351,7 @@ function App() {
   };
 
   useEffect(() => {
-    void loadHistory(false, false);
+    void loadHistory(false, true);
   }, [loadHistory]);
 
   useEffect(() => {
@@ -867,7 +867,7 @@ function App() {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => void loadHistory(false, false)}
+                            onClick={() => void loadHistory(false, true)}
                             disabled={isHistoryLoading}
                           >
                             {isHistoryLoading ? (
