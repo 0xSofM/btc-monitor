@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-05T07:36:51.931270+00:00",
-  "latestDate": "2026-06-05",
-  "lastUpdated": "2026-06-05T07:36:51.866529+00:00",
-  "historyRows": 5484,
+  "generatedAt": "2026-06-20T14:27:56.292029+00:00",
+  "latestDate": "2026-06-20",
+  "lastUpdated": "2026-06-20T14:27:56.256780+00:00",
+  "historyRows": 5499,
   "historyLightRows": 889,
   "historyFiles": {
     "full": "btc_indicators_history.json",
@@ -91,11 +91,11 @@
   "thresholdVersion": "v4_dynamic",
   "activeIndicatorCountV6": 8,
   "maxTotalScoreV6": 14,
-  "totalScoreV6": 3,
+  "totalScoreV6": 2,
   "dynamicThresholds": {
     "reserveRisk": {
-      "trigger": 0.00058803342,
-      "deep": 0.00054438239,
+      "trigger": 0.00058584792,
+      "deep": 0.0005401856099999999,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -103,8 +103,8 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.9943785932769996,
-      "deep": 0.9870266382328334,
+      "trigger": 0.994630502248,
+      "deep": 0.987704855225333,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -115,7 +115,7 @@
     },
     "sthMvrv": {
       "trigger": 0.92,
-      "deep": 0.859965,
+      "deep": 0.867895,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -123,8 +123,8 @@
       "deepQuantile": 0.135
     },
     "lthSopr": {
-      "trigger": 0.8525935660933527,
-      "deep": 0.6281384441766861,
+      "trigger": 0.8548141230666861,
+      "deep": 0.6335059407500192,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -140,7 +140,7 @@
   },
   "reserveRiskHealth": {
     "primaryStatus": "healthy",
-    "primaryLatestNonNullDate": "2026-06-04",
+    "primaryLatestNonNullDate": "2026-06-19",
     "primaryTrailingNullDays": 0,
     "sourceMode": null
   },
@@ -162,7 +162,7 @@
     "inactiveIndicators": [],
     "fallbackModeV6": "none",
     "dataFreshnessScoreV6": 0.8750000000000002,
-    "signalConfidenceV6": 0.4696
+    "signalConfidenceV6": 0.4339
   },
   "schemaContract": {
     "canonicalModel": "v6",
@@ -263,6 +263,6 @@
     "riskFlag": "normal",
     "isStale": false,
     "mstrTimestampUtc": "2026-06-18T20:00:00",
-    "btcTimestamp": "2026-06-20T13:25:00"
+    "btcTimestamp": "2026-06-20T14:27:00"
   }
 }
