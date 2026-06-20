@@ -70,12 +70,24 @@ const CHART_FLOOR_CONFIG: Record<IndicatorType, number> = {
   lthSopr: 0.75,
 };
 
+const SIGNAL_MARKER_FILL = '#ECFDF5';
+const SIGNAL_MARKER_STROKE = '#047857';
+const SIGNAL_MARKER_INNER_FILL = '#065F46';
+const BTC_PRICE_COMPARE_COLOR = '#64748B';
+
+type SignalMarkerPlan = {
+  indexes: Set<number>;
+  totalCount: number;
+  compact: boolean;
+};
+
 type TooltipEntry = {
   color?: string;
   name?: string;
   value?: number;
   payload?: {
     btcPrice?: number;
+    signal?: boolean;
   };
 };
 
@@ -188,6 +200,117 @@ function formatPriceAxis(value: number): string {
   return `$${value.toFixed(0)}`;
 }
 
+function formatPriceTooltip(value: number): string {
+  if (!Number.isFinite(value)) {
+    return '-';
+  }
+
+  return `$${value.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+}
+
+function formatTooltipValue(entry: TooltipEntry): string {
+  if (typeof entry.value !== 'number') {
+    return '-';
+  }
+
+  if (entry.name === 'BTC Price' || entry.name === '200W-MA') {
+    return formatPriceTooltip(entry.value);
+  }
+
+  return formatNumber(entry.value);
+}
+
+function getPaddedDomain(values: number[], paddingRatio: number, floor?: number): [number, number] {
+  if (values.length === 0) {
+    return [floor ?? 0, 1];
+  }
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const padding = (max - min) * paddingRatio || Math.max(Math.abs(max) * paddingRatio, 1);
+  const domainMin = min - padding;
+
+  return [
+    typeof floor === 'number' ? Math.max(floor, domainMin) : domainMin,
+    max + padding,
+  ];
+}
+
+function getSignalMarkerLimit(visiblePointCount: number): number {
+  if (visiblePointCount > 3000) {
+    return 42;
+  }
+
+  if (visiblePointCount > 1200) {
+    return 56;
+  }
+
+  if (visiblePointCount > 500) {
+    return 80;
+  }
+
+  return 140;
+}
+
+function buildSignalMarkerPlan<T>(
+  series: T[],
+  startIndex: number,
+  endIndex: number,
+  isSignalPoint: (point: T) => boolean,
+): SignalMarkerPlan {
+  const signalIndexes: number[] = [];
+  const safeStartIndex = Math.max(0, startIndex);
+  const safeEndIndex = Math.min(series.length - 1, endIndex);
+
+  for (let index = safeStartIndex; index <= safeEndIndex; index += 1) {
+    const point = series[index];
+    if (point && isSignalPoint(point)) {
+      signalIndexes.push(index);
+    }
+  }
+
+  const visiblePointCount = Math.max(0, safeEndIndex - safeStartIndex + 1);
+  const markerLimit = getSignalMarkerLimit(visiblePointCount);
+  const compact = signalIndexes.length > markerLimit;
+  const step = compact ? Math.ceil(signalIndexes.length / markerLimit) : 1;
+  const indexes = new Set<number>();
+
+  signalIndexes.forEach((index, signalIndex) => {
+    if (!compact || signalIndex % step === 0 || signalIndex === signalIndexes.length - 1) {
+      indexes.add(index);
+    }
+  });
+
+  return {
+    indexes,
+    totalCount: signalIndexes.length,
+    compact,
+  };
+}
+
+function renderHiddenSignalDot(key: string, cx: number, cy: number) {
+  return <circle key={key} cx={cx} cy={cy} r={0} fill="transparent" />;
+}
+
+function renderSignalMarker(key: string, cx: number, cy: number, compact: boolean) {
+  const outerRadius = compact ? 4 : 4.8;
+  const innerRadius = compact ? 1.7 : 2.15;
+
+  return (
+    <g key={key}>
+      <circle
+        cx={cx}
+        cy={cy}
+        r={outerRadius}
+        fill={SIGNAL_MARKER_FILL}
+        stroke={SIGNAL_MARKER_STROKE}
+        strokeWidth={1.4}
+      />
+      <circle cx={cx} cy={cy} r={innerRadius} fill={SIGNAL_MARKER_INNER_FILL} />
+    </g>
+  );
+}
+
 function IndicatorTooltip({
   active,
   payload,
@@ -201,17 +324,28 @@ function IndicatorTooltip({
     return null;
   }
 
+  const displayPayload = payload.filter((entry) => (
+    entry.name !== '信号点' && entry.name !== '跌破 200W-MA 信号点'
+  ));
+  const hasBtcPriceLine = displayPayload.some((entry) => entry.name === 'BTC Price');
+  const signalTriggered = payload.some((entry) => entry.payload?.signal);
+
   return (
     <div className="rounded-lg border bg-background/95 p-3 text-xs shadow-lg backdrop-blur">
       <p className="mb-1 text-sm font-semibold">{formatDate(label ?? '')}</p>
-      {payload.map((entry, index) => (
+      {displayPayload.map((entry, index) => (
         <p key={`${entry.name ?? 'line'}-${index}`} style={{ color: entry.color }}>
-          {entry.name}: {formatNumber(entry.value ?? 0)}
+          {entry.name}: {formatTooltipValue(entry)}
         </p>
       ))}
-      {payload[0]?.payload?.btcPrice && (
+      {payload[0]?.payload?.btcPrice && !hasBtcPriceLine && (
         <p className="mt-1 text-muted-foreground">
           BTC Price: ${Number(payload[0].payload.btcPrice).toLocaleString('en-US')}
+        </p>
+      )}
+      {signalTriggered && (
+        <p className="mt-1 font-medium" style={{ color: SIGNAL_MARKER_STROKE }}>
+          信号：触发
         </p>
       )}
     </div>
@@ -271,6 +405,27 @@ export function IndicatorCharts({
   const resolvedStartIndex = totalPoints > 0
     ? Math.min(brushStartIndex, resolvedEndIndex)
     : 0;
+  const signalMarkerSummary = useMemo(() => {
+    if (!totalPoints) {
+      return { totalCount: 0, compact: false };
+    }
+
+    if (activeIndicator === 'priceMa200w') {
+      return buildSignalMarkerPlan(
+        detailSeries as MaSeriesPoint[],
+        resolvedStartIndex,
+        resolvedEndIndex,
+        (point) => point.signal,
+      );
+    }
+
+    return buildSignalMarkerPlan(
+      detailSeries as DetailSeriesPoint[],
+      resolvedStartIndex,
+      resolvedEndIndex,
+      (point) => point.signal && typeof point.value === 'number',
+    );
+  }, [activeIndicator, detailSeries, resolvedEndIndex, resolvedStartIndex, totalPoints]);
 
   const activateIndicator = (indicator: IndicatorType) => {
     setActiveIndicator(indicator);
@@ -412,11 +567,13 @@ export function IndicatorCharts({
       .flatMap((row) => [row.price, row.ma200])
       .filter((value): value is number => typeof value === 'number' && Number.isFinite(value) && value > 0);
 
-    const min = visibleValues.length ? Math.min(...visibleValues) : 0;
-    const max = visibleValues.length ? Math.max(...visibleValues) : 0;
-    const padding = (max - min) * 0.06;
-    const domainMin = Math.max(0, min - padding);
-    const domainMax = max + padding;
+    const [domainMin, domainMax] = getPaddedDomain(visibleValues, 0.06, 0);
+    const signalMarkerPlan = buildSignalMarkerPlan(
+      series,
+      resolvedStartIndex,
+      resolvedEndIndex,
+      (point) => point.signal,
+    );
 
     return (
       <ResponsiveContainer width="100%" height={420}>
@@ -448,29 +605,35 @@ export function IndicatorCharts({
             name="BTC Price"
             stroke="#F7931A"
             strokeWidth={2}
+            dot={false}
+            activeDot={{ r: 6 }}
+            isAnimationActive={false}
+          />
+          <Line
+            yAxisId="left"
+            type="monotone"
+            dataKey="price"
+            name="跌破 200W-MA 信号点"
+            stroke="transparent"
+            strokeWidth={0}
             dot={(dotProps) => {
-              const payload = dotProps.payload as { signal?: boolean } | undefined;
+              const index = typeof dotProps.index === 'number' ? dotProps.index : -1;
               const cx = typeof dotProps.cx === 'number' ? dotProps.cx : 0;
               const cy = typeof dotProps.cy === 'number' ? dotProps.cy : 0;
-              const key = typeof dotProps.index === 'number' ? dotProps.index : `${cx}-${cy}`;
+              const key = index >= 0 ? index : `${cx}-${cy}`;
 
-              if (!payload?.signal) {
-                return <circle key={`price-ma200-neutral-${key}`} cx={cx} cy={cy} r={0} fill="transparent" />;
+              if (!signalMarkerPlan.indexes.has(index)) {
+                return renderHiddenSignalDot(`price-ma200-signal-hidden-${key}`, cx, cy);
               }
 
-              return (
-                <circle
-                  key={`price-ma200-signal-${key}`}
-                  cx={cx}
-                  cy={cy}
-                  r={3.5}
-                  fill="#10B981"
-                  stroke="#ffffff"
-                  strokeWidth={1.5}
-                />
+              return renderSignalMarker(
+                `price-ma200-signal-${key}`,
+                cx,
+                cy,
+                signalMarkerPlan.compact,
               );
             }}
-            activeDot={{ r: 6 }}
+            activeDot={false}
             isAnimationActive={false}
           />
           <Line
@@ -511,15 +674,25 @@ export function IndicatorCharts({
     const values = visible
       .flatMap((row) => [row.value, row.triggerValue])
       .filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
+    const priceValues = visible
+      .map((row) => row.btcPrice)
+      .filter((value): value is number => typeof value === 'number' && Number.isFinite(value) && value > 0);
     const dataMin = values.length ? Math.min(...values) : 0;
     const dataMax = values.length ? Math.max(...values) : 0;
     const padding = (dataMax - dataMin) * 0.12 || 0.5;
     const yMin = Math.min(dataMin - padding, CHART_FLOOR_CONFIG[activeIndicator]);
     const yMax = dataMax + padding;
+    const [priceYMin, priceYMax] = getPaddedDomain(priceValues, 0.06, 0);
+    const signalMarkerPlan = buildSignalMarkerPlan(
+      series,
+      resolvedStartIndex,
+      resolvedEndIndex,
+      (point) => point.signal && typeof point.value === 'number',
+    );
 
     return (
       <ResponsiveContainer width="100%" height={420}>
-        <LineChart data={series} margin={{ top: 10, right: 24, left: 8, bottom: 30 }}>
+        <LineChart data={series} margin={{ top: 10, right: 28, left: 8, bottom: 30 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#d4d4d8" />
           <XAxis
             dataKey="time"
@@ -530,11 +703,20 @@ export function IndicatorCharts({
             tick={{ fontSize: 11 }}
             interval="preserveStartEnd"
           />
-          <YAxis tick={{ fontSize: 11 }} domain={[yMin, yMax]} tickFormatter={formatNumber} />
+          <YAxis yAxisId="indicator" tick={{ fontSize: 11 }} domain={[yMin, yMax]} tickFormatter={formatNumber} />
+          <YAxis
+            yAxisId="price"
+            orientation="right"
+            domain={[priceYMin, priceYMax]}
+            tick={{ fontSize: 11, fill: BTC_PRICE_COMPARE_COLOR }}
+            tickFormatter={formatPriceAxis}
+            width={54}
+          />
           <Tooltip content={<IndicatorTooltip />} />
 
           {showThresholds && (
             <Line
+              yAxisId="indicator"
               type="monotone"
               dataKey="triggerValue"
               name="触发阈值"
@@ -548,35 +730,58 @@ export function IndicatorCharts({
           )}
 
           <Line
+            yAxisId="price"
+            type="monotone"
+            dataKey="btcPrice"
+            name="BTC Price"
+            stroke={BTC_PRICE_COMPARE_COLOR}
+            strokeWidth={1.5}
+            strokeDasharray="5 5"
+            strokeOpacity={0.72}
+            dot={false}
+            activeDot={{ r: 4, stroke: BTC_PRICE_COMPARE_COLOR, strokeWidth: 1.5 }}
+            connectNulls={false}
+            isAnimationActive={false}
+          />
+
+          <Line
+            yAxisId="indicator"
             type="monotone"
             dataKey="value"
             name={config.name}
             stroke={config.color}
             strokeWidth={2}
             connectNulls={false}
+            dot={false}
+            activeDot={{ r: 6 }}
+            isAnimationActive={false}
+          />
+          <Line
+            yAxisId="indicator"
+            type="monotone"
+            dataKey="value"
+            name="信号点"
+            stroke="transparent"
+            strokeWidth={0}
+            connectNulls={false}
             dot={(dotProps) => {
-              const payload = dotProps.payload as { signal?: boolean } | undefined;
+              const index = typeof dotProps.index === 'number' ? dotProps.index : -1;
               const cx = typeof dotProps.cx === 'number' ? dotProps.cx : 0;
               const cy = typeof dotProps.cy === 'number' ? dotProps.cy : 0;
-              const key = typeof dotProps.index === 'number' ? dotProps.index : `${cx}-${cy}`;
+              const key = index >= 0 ? index : `${cx}-${cy}`;
 
-              if (!payload?.signal) {
-                return <circle key={`indicator-neutral-${key}`} cx={cx} cy={cy} r={0} fill="transparent" />;
+              if (!signalMarkerPlan.indexes.has(index)) {
+                return renderHiddenSignalDot(`indicator-signal-hidden-${key}`, cx, cy);
               }
 
-              return (
-                <circle
-                  key={`indicator-signal-${key}`}
-                  cx={cx}
-                  cy={cy}
-                  r={3.5}
-                  fill="#10B981"
-                  stroke="#ffffff"
-                  strokeWidth={1.5}
-                />
+              return renderSignalMarker(
+                `indicator-signal-${key}`,
+                cx,
+                cy,
+                signalMarkerPlan.compact,
               );
             }}
-            activeDot={{ r: 6 }}
+            activeDot={false}
             isAnimationActive={false}
           />
 
@@ -705,12 +910,26 @@ export function IndicatorCharts({
                 <span>200W-MA</span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                <span
+                  className="h-3 w-3 rounded-full border"
+                  style={{
+                    backgroundColor: SIGNAL_MARKER_FILL,
+                    borderColor: SIGNAL_MARKER_STROKE,
+                    boxShadow: `inset 0 0 0 3px ${SIGNAL_MARKER_INNER_FILL}`,
+                  }}
+                />
                 <span>跌破 200W-MA 信号点</span>
               </div>
+              <span className="rounded-full bg-muted px-2 py-0.5">
+                {signalMarkerSummary.totalCount} 个信号
+              </span>
             </>
           ) : (
             <>
+              <div className="flex items-center gap-1">
+                <div className="h-0.5 w-4" style={{ borderTop: `2px dashed ${BTC_PRICE_COMPARE_COLOR}` }} />
+                <span>BTC Price（右轴）</span>
+              </div>
               {showThresholds && (
                 <div className="flex items-center gap-1">
                   <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #10B981' }} />
@@ -718,9 +937,19 @@ export function IndicatorCharts({
                 </div>
               )}
               <div className="flex items-center gap-1">
-                <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                <span
+                  className="h-3 w-3 rounded-full border"
+                  style={{
+                    backgroundColor: SIGNAL_MARKER_FILL,
+                    borderColor: SIGNAL_MARKER_STROKE,
+                    boxShadow: `inset 0 0 0 3px ${SIGNAL_MARKER_INNER_FILL}`,
+                  }}
+                />
                 <span>信号点</span>
               </div>
+              <span className="rounded-full bg-muted px-2 py-0.5">
+                {signalMarkerSummary.totalCount} 个信号
+              </span>
             </>
           )}
         </div>
