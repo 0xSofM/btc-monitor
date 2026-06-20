@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-06-20T16:38:56.845650+00:00",
+  "generatedAt": "2026-06-20T19:53:58.509674+00:00",
   "latestDate": "2026-06-20",
-  "lastUpdated": "2026-06-20T16:38:56.786172+00:00",
+  "lastUpdated": "2026-06-20T19:53:58.484245+00:00",
   "historyRows": 5499,
   "historyLightRows": 889,
   "historyFiles": {
@@ -265,5 +265,21 @@
     "latestLegacyField": "legacy"
   },
   "archivedSnapshot": null,
-  "archiveRoot": "archive/releases"
+  "archiveRoot": "archive/releases",
+  "auxiliaryDataFiles": {
+    "strategyMnavLatest": "strategy_mnav_latest.json",
+    "strategyMnavHistory": "strategy_mnav_history.json"
+  },
+  "strategyMnavHealth": {
+    "source": "strategy_official_api",
+    "formula": "enterpriseValueUsd / btcReserveUsd",
+    "latestDate": "2026-06-20",
+    "historyRows": 1,
+    "mnav": 1.1322,
+    "band": "low_premium",
+    "riskFlag": "normal",
+    "isStale": false,
+    "mstrTimestampUtc": "2026-06-18T20:00:00",
+    "btcTimestamp": "2026-06-20T19:53:00"
+  }
 }
