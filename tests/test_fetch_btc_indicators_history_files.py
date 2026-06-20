@@ -194,8 +194,24 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertTrue(bool(latest["signalsV4"]["lthMvrv"]))
         self.assertFalse(bool(latest["signalsV4"]["lthSopr"]))
         self.assertEqual(str(latest["indicatorDates"]["nupl"]), "2024-01-03")
-        self.assertEqual(str(latest["scoringModelVersion"]), "v6_core8_display_blend_sopr_refined")
+        self.assertEqual(str(latest["scoringModelVersion"]), "core8_independent_valuation_current")
         self.assertEqual(str(latest["legacyScoringModelVersion"]), "v3_no_lookahead_replacement")
+        self.assertEqual(str(latest["canonical"]["model"]), "core8_independent_valuation")
+        self.assertEqual(
+            latest["canonical"]["displayIndicators"],
+            [
+                "priceMa200w",
+                "mvrvZscore",
+                "nupl",
+                "puell",
+                "sthMvrv",
+                "sthSopr",
+                "lthMvrv",
+                "lthSopr",
+            ],
+        )
+        self.assertNotIn("priceRealized", latest["canonical"]["signals"])
+        self.assertNotIn("valuationBlend", latest["canonical"]["signals"])
         self.assertIn("reserveRiskDiagnostics", latest)
 
     def test_manifest_includes_light_history_and_data_health_contract(self) -> None:
@@ -215,7 +231,9 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         self.assertEqual(manifest["historyLightRows"], len(light))
         self.assertEqual(manifest["historyFiles"]["light"], "btc_indicators_history_light.json")
         self.assertIn("historyRequiredFields", manifest["schemaContract"])
-        self.assertEqual(manifest["schemaContract"]["canonicalModel"], "v6")
+        self.assertEqual(manifest["schemaContract"]["canonicalModel"], "core8_independent_valuation")
+        self.assertEqual(len(manifest["schemaContract"]["displayIndicators"]), 8)
+        self.assertIn("reserveRisk", manifest["schemaContract"]["compatibilityFields"])
         self.assertIn("indicatorLagDays", manifest["dataHealth"])
 
     def test_reserve_risk_auto_excluded_when_stale(self) -> None:

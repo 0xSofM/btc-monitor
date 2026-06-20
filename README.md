@@ -1,131 +1,102 @@
-# BTC Monitor
+# BTC Cycle Bottom Monitor
 
-A BTC indicator dashboard with a static-data pipeline designed for reliable deployment on GitHub + Vercel.
+基于链上指标的 BTC 大周期底部识别监测系统。项目包含数据抓取与校验管线、静态 JSON 数据产物、Vite + React 前端、Strategy 官方 mNAV 辅助观测，以及 GitHub Actions 自动更新流程。
 
-## What It Tracks (Core-8 V6)
+## 当前监控指标
 
-- `BTC Price / 200W-MA` (computed)
-- `BTC Price / Realized Price` (computed)
-- `Valuation Blend (MVRV Z-Score + NUPL)`
-- `Puell Multiple`
-- `STH-MVRV`
-- `STH-SOPR`
-- `LTH-MVRV`
-- `LTH-SOPR`
+核心评分使用 8 个指标，分为三层：
 
-Legacy compatibility indicator:
+- 估值层：`Price / 200W-MA`、`MVRV Z-Score`、`NUPL`、`Puell Multiple`
+- 触发层：`STH-MVRV`、`STH-SOPR`
+- 确认层：`LTH-MVRV`、`LTH-SOPR`
 
-- `Reserve Risk`
+评分规则：
 
-Auxiliary market-structure monitor:
+- 每个核心指标按 `0 / 1 / 2` 计分。
+- 估值层为四个指标独立加总，满分 8。
+- 触发层取 `STH-MVRV` 与 `STH-SOPR` 两者较高分，满分 2。
+- 确认层为 `LTH-MVRV + LTH-SOPR`，满分 4。
+- 总分上限为 14。
+- `STH-SOPR` 与 `LTH-SOPR` 使用 3 日均值降低单日噪声。
+- 部分阈值使用只基于历史数据的滚动分位数，避免未来函数。
+- 系统使用 3 日确认信号降低单日波动影响。
 
-- `MSTR mNAV` from Strategy's official API, using Strategy's own `Enterprise Value / BTC Reserve` definition. This is displayed as a BTC proxy premium/sentiment metric and is not included in the Core-8 bottom score.
+辅助观测：
 
-V6 scoring:
+- `MSTR mNAV` 来自 Strategy 官方 API，按 Strategy 官方定义使用 `Enterprise Value / BTC Reserve`。该指标仅用于观察 BTC 代理资产溢价与风险偏好，不参与 BTC 底部评分。
 
-- layered score: `valuationScoreV6 + triggerScoreV6 + confirmationScoreV6`
-- per-indicator score: `0 / 1 / 2`
-- display indicators: 8 frontend cards/charts; MVRV Z-Score and NUPL share one valuation blend slot
-- valuation layer: `Price / 200W-MA`, `Price / Realized Price`, `max(MVRV Z-Score core, NUPL core)`, and `Puell Multiple` (max 8)
-- trigger layer: `max(STH-MVRV, STH-SOPR)`
-- confirmation layer: `LTH-MVRV + LTH-SOPR`
-- SOPR smoothing: STH-SOPR and LTH-SOPR scores use 3-day moving averages; raw values remain available for diagnostics
-- dynamic thresholds: STH-SOPR uses rolling p27/p13.5, LTH-SOPR uses rolling p20/p10
-- signal count: `signalCountV6` counts the 8 frontend display indicators, while the trigger layer score still uses `max(STH-MVRV, STH-SOPR)`
-- total score: `totalScoreV6` with max score in `maxTotalScoreV6` (normally 14)
-- no-lookahead thresholds: rolling quantile thresholds are computed only from past data where used
-- confidence fields: `signalConfidenceV6`, `dataFreshnessScoreV6`, `fallbackModeV6`, `staleIndicators`
-- legacy rollback fields remain available: `signalScoreV2`, `totalScoreV4`, `signalBandV2`, `signalBandV4`
-- confirmation flags: `signalConfirmed3dV6`, `signalConfirmed3dV4`, and legacy `signalConfirmed3d`
+兼容字段：
 
-## Project Structure
+- 数据产物中仍保留 `Price / Realized Price`、`Reserve Risk`、旧版评分字段与相关诊断字段，用于历史兼容、回溯和数据质量诊断；它们不属于当前核心展示指标。
 
-- `fetch_btc_indicators_history_files.py`: data fetch + transform script
-- `validate_btc_data_quality.py`: JSON data quality gate
-- `app/public/btc_indicators_history.json`: full frontend historical dataset
-- `app/public/btc_indicators_latest.json`: frontend latest snapshot
-- `app/public/btc_indicators_manifest.json`: data manifest for observability
-- `app/public/btc_signal_events_v4.json`: event-level V4 backtest windows
-- `app/public/strategy_mnav_latest.json`: Strategy official mNAV latest snapshot
-- `app/public/strategy_mnav_history.json`: locally accumulated Strategy mNAV daily snapshots
-- `app/`: Vite + React frontend
-- `tests/`: Python unit tests for data pipeline logic
-- `.github/workflows/update-btc-data.yml`: scheduled auto-update workflow
+## 数据流
 
-## Data Flow
+1. `fetch_btc_indicators_history_files.py` 从 BGeometrics 与补充来源拉取历史指标。
+2. `pipeline/scoring.py` 计算指标分数、分层总分、数据新鲜度、确认信号和兼容字段。
+3. 脚本写入：
+   - `app/public/btc_indicators_history.json`
+   - `app/public/btc_indicators_history_light.json`
+   - `app/public/btc_indicators_latest.json`
+   - `app/public/btc_indicators_manifest.json`
+   - `app/public/btc_signal_events_v4.json`
+4. `validate_btc_data_quality.py` 校验历史数据、最新快照、指标日期、信号数量和评分一致性。
+5. `fetch_strategy_mnav.py` 独立更新 Strategy mNAV 数据。
+6. GitHub Actions 定时更新数据并在质量门禁通过后提交。
+7. Vercel 从仓库部署前端并提供静态 JSON 数据。
 
-1. Script fetches historical series from `charts.bgeometrics.com/files/*.json`.
-2. Script computes derived ratios plus parallel `V2 legacy`, `V4 layered`, and `V6 Core-8` signal fields.
-3. Script archives current JSON outputs before overwrite, then writes full history, latest snapshot, manifest, and event files.
-4. Data quality validator checks structural/incremental consistency.
-5. GitHub Actions runs on schedule and commits updated JSON.
-6. Vercel redeploys from GitHub and serves fresh data.
-7. Manual refresh can optionally hit the Vercel Edge proxy, which rebuilds a runtime `Core-8 V6` latest payload from BGeometrics latest points plus the current static thresholds/history tail.
-8. Strategy mNAV is fetched independently from Strategy's official `bitcoinKpis` and `mstrKpiData` APIs, written as auxiliary JSON, and surfaced without changing the Core-8 score.
+## 项目结构
 
-## Run Locally
+- `pipeline/`：数据抓取、评分、归档与回滚逻辑
+- `fetch_btc_indicators_history_files.py`：BTC 指标数据生成入口
+- `validate_btc_data_quality.py`：BTC 数据质量校验
+- `fetch_strategy_mnav.py`：Strategy mNAV 数据更新入口
+- `validate_strategy_mnav.py`：Strategy mNAV 数据质量校验
+- `app/`：Vite + React 前端
+- `app/api/btc-data.js`：Vercel Edge runtime 最新数据代理
+- `app/public/`：前端使用的静态 JSON 数据
+- `tests/`：Python 单元测试
+- `.github/workflows/`：CI 与定时数据更新工作流
 
-Install Python dependencies:
+## 本地运行
+
+安装 Python 依赖：
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Generate frontend JSON + tabular files:
-
-```bash
-python fetch_btc_indicators_history_files.py --output-dir . --file-prefix btc_indicators_from_files
-```
-
-Generate only frontend JSON (used in CI automation):
+生成前端 BTC 数据：
 
 ```bash
 python fetch_btc_indicators_history_files.py --skip-tabular
 ```
 
-Reserve Risk stale handling (recommended when upstream is stale):
+刷新 Strategy mNAV：
 
 ```bash
-python fetch_btc_indicators_history_files.py --skip-tabular --reserve-risk-disable-lag-days 30
+python fetch_strategy_mnav.py
 ```
 
-Archive current JSON outputs before release (default behavior):
-
-```bash
-python fetch_btc_indicators_history_files.py --skip-tabular --release-label v4_cutover
-```
-
-Rollback to an archived snapshot:
-
-```bash
-python fetch_btc_indicators_history_files.py --rollback-from archive/releases/<snapshot_dir>
-```
-
-Run data quality validation:
+运行数据质量校验：
 
 ```bash
 python validate_btc_data_quality.py \
   --current-history app/public/btc_indicators_history.json \
+  --current-history-light app/public/btc_indicators_history_light.json \
   --current-latest app/public/btc_indicators_latest.json \
+  --lookback-rows 30 \
   --max-indicator-lag-days 30
 ```
 
-Refresh and validate Strategy mNAV:
+运行 Strategy mNAV 校验：
 
 ```bash
-python fetch_strategy_mnav.py
 python validate_strategy_mnav.py \
   --current-latest app/public/strategy_mnav_latest.json \
   --current-history app/public/strategy_mnav_history.json
 ```
 
-Note:
-
-- When `reserveRisk` source-date lag exceeds `--reserve-risk-disable-lag-days` (default `30`), V4 first tries a reduced-score soft fallback from `MVRV Z-Score`; only when fallback is unavailable does it reduce active dimensions.
-- The pipeline archives existing JSON outputs to `archive/releases/` before overwrite unless `--skip-archive` is passed.
-- Release metadata and rollback hints are written into `btc_indicators_manifest.json`.
-
-Run frontend:
+运行前端：
 
 ```bash
 cd app
@@ -133,27 +104,31 @@ npm install
 npm run dev
 ```
 
-Run frontend tests:
+运行测试与构建：
 
 ```bash
+python -m unittest discover -s tests -v
+
 cd app
+npm run lint
 npm run test
-```
-
-Check the Edge proxy syntax locally:
-
-```bash
-cd app
+npm run build
 node --check api/btc-data.js
 ```
 
-## Automation
+## 自动更新
 
-The workflow `.github/workflows/update-btc-data.yml` runs every 6 hours and also supports manual trigger (`workflow_dispatch`).
+`.github/workflows/update-btc-data.yml` 每 6 小时运行一次，也支持手动触发。工作流会：
 
-It will:
+1. 安装依赖
+2. 生成 BTC 指标 JSON
+3. 更新 Strategy mNAV JSON
+4. 执行数据质量校验
+5. 在数据发生变化时自动提交并推送
+6. 失败时创建或更新 GitHub issue，恢复后自动关闭
 
-1. run the fetch script
-2. run quality checks
-3. update `app/public` JSON files
-4. auto-commit/push when data changes
+## 数据契约
+
+最新快照优先使用 `canonical` 字段表达当前模型。旧字段保留用于兼容和回溯，不应作为新功能的首选读取路径。
+
+当前模型的核心数据应以 `canonical.score`、`canonical.signals`、`canonical.signalCount`、`canonical.activeIndicatorCount` 为准。前端需要展示旧字段时，应明确标注为兼容或诊断数据。

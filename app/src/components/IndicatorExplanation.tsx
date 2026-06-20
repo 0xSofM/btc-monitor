@@ -16,33 +16,33 @@ const valuationIndicators: IndicatorItem[] = [
     id: 'price-ma200w',
     name: 'Price / 200W-MA',
     icon: TrendingDown,
-    target: '< 1（深度 < 0.85）',
-    description: '衡量现价相对 200 周均线的位置，是大周期趋势锚点之一。',
-    rationale: '用于识别价格相对长期均线的低位区域。',
+    target: '< 1；深度 < 0.85',
+    description: '衡量 BTC 现价相对 200 周均线的位置。',
+    rationale: '用于识别价格是否回到长期趋势基准附近。',
   },
   {
     id: 'mvrv-zscore',
     name: 'MVRV Z-Score',
     icon: TrendingDown,
-    target: '< 0（深度 < -0.50）',
-    description: '衡量市值相对链上实现价值的标准化偏离，识别市场是否进入历史低估区。',
-    rationale: '用于观察市场估值相对链上成本的极端偏离。',
+    target: '< 0；深度 < -0.50',
+    description: '衡量市值相对链上实现价值的标准化偏离。',
+    rationale: '用于观察市场估值相对链上成本的压缩程度。',
   },
   {
     id: 'nupl',
     name: 'NUPL',
     icon: TrendingDown,
-    target: '< 0.15（深度 < 0）',
-    description: '衡量全网净未实现盈亏状态，观察市场整体筹码是否接近亏损或低利润区。',
-    rationale: '用于补充观察持币者整体盈亏结构。',
+    target: '< 0.15；深度 < 0',
+    description: '衡量全网净未实现盈亏状态。',
+    rationale: '用于补充观察持币者整体盈亏结构是否接近低利润或亏损区。',
   },
   {
     id: 'puell',
     name: 'Puell Multiple',
     icon: TrendingDown,
-    target: '< 0.6（深度 < 0.5）',
-    description: '比较矿工收入与历史常态水平，评估供给侧压力。',
-    rationale: '用于观察矿工收入压力与供给侧变化。',
+    target: '< 0.6；深度 < 0.5',
+    description: '比较矿工收入与历史基准水平。',
+    rationale: '用于观察矿工收入压力和供给侧压力。',
   },
 ];
 
@@ -51,17 +51,17 @@ const triggerIndicators: IndicatorItem[] = [
     id: 'sth-mvrv',
     name: 'STH-MVRV',
     icon: AlertTriangle,
-    target: '< p27（深度 < p13.5）',
-    description: '衡量短期持有者未实现盈亏压力，观察恐慌是否扩散到短期筹码。',
-    rationale: '用于识别短期持有者成本压力是否进入低位区间。',
+    target: '< 滚动 p27；深度 < p13.5',
+    description: '衡量短期持有者的未实现盈亏压力。',
+    rationale: '用于识别短期筹码是否进入低位压力区间。',
   },
   {
     id: 'sth-sopr',
     name: 'STH-SOPR',
     icon: AlertTriangle,
-    target: '3日均值 < p27（深度 < p13.5）',
-    description: '衡量短期持有者是否在亏损兑现，阈值使用滚动分位数并以 3 日均值降噪。',
-    rationale: '与 STH-MVRV 共同构成触发层，系统取两者较高分数作为短期触发评分。',
+    target: '3 日均值 < 滚动 p27；深度 < p13.5',
+    description: '衡量短期持有者是否处于亏损兑现状态，使用 3 日均值降低单日噪声。',
+    rationale: '与 STH-MVRV 共同构成短期触发层，系统取两者较高分作为触发层评分。',
   },
 ];
 
@@ -70,16 +70,16 @@ const confirmationIndicators: IndicatorItem[] = [
     id: 'lth-mvrv',
     name: 'LTH-MVRV',
     icon: ShieldCheck,
-    target: '< 1（深度 < 0.90）',
-    description: '衡量长期持有者未实现盈亏，用来确认长期结构是否也在向底部靠拢。',
-    rationale: '用于确认长期持有者成本结构是否进入低位状态。',
+    target: '< 1；深度 < 0.90',
+    description: '衡量长期持有者的未实现盈亏状态。',
+    rationale: '用于确认长期持有者成本结构是否进入低估值区域。',
   },
   {
     id: 'lth-sopr',
     name: 'LTH-SOPR',
     icon: ShieldCheck,
-    target: '3日均值 < p20（深度 < p10）',
-    description: '衡量长期持有者已实现盈亏，使用滚动 p20/p10 与 3 日均值降低误触发。',
+    target: '3 日均值 < 滚动 p20；深度 < p10',
+    description: '衡量长期持有者的已实现盈亏状态，使用 3 日均值降低误触发。',
     rationale: '与 LTH-MVRV 互补，用于确认长期持有者是否出现亏损兑现压力。',
   },
 ];
@@ -135,11 +135,11 @@ export function IndicatorExplanation() {
             <div>
               <h3 className="font-semibold text-blue-800 dark:text-blue-200">分层评分框架</h3>
               <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
-                系统将 8 个核心指标分为“估值层 + 触发层 + 确认层”。
-                估值层包含 Price/200W-MA、MVRV Z-Score、NUPL、Puell，满分 8；
-                触发层取 STH-MVRV 与 STH-SOPR 的最大值，满分 2；
-                确认层 LTH-MVRV + LTH-SOPR 双指标独立计分，满分 4；
-                总分上限为 14。系统同时使用 3 日确认，降低单日波动对信号判断的影响。
+                系统跟踪 8 个核心指标，并按估值、短期触发、长期确认三层汇总。
+                估值层包含 Price / 200W-MA、MVRV Z-Score、NUPL 和 Puell Multiple，满分 8 分。
+                触发层取 STH-MVRV 与 STH-SOPR 的较高分，满分 2 分。
+                确认层由 LTH-MVRV 与 LTH-SOPR 独立计分，满分 4 分。
+                总分上限为 14 分，并使用 3 日确认规则降低单日波动对信号判断的影响。
               </p>
             </div>
           </div>
@@ -151,12 +151,13 @@ export function IndicatorExplanation() {
               <Building2 className="h-4 w-4" />
             </div>
             <div className="space-y-2">
-              <h3 className="font-semibold">MSTR mNAV 说明</h3>
+              <h3 className="font-semibold">MSTR mNAV</h3>
               <p className="text-sm text-muted-foreground">
-                mNAV 使用 Strategy 官方披露口径，衡量企业价值相对其 BTC 储备价值的倍数。数值高于 1 表示相对 BTC 储备存在溢价，低于 1 表示折价。
+                mNAV 使用 Strategy 官方数据，衡量企业价值相对其 BTC 储备价值的倍数。
+                数值高于 1 表示相对 BTC 储备存在溢价，低于 1 表示折价。
               </p>
               <p className="text-sm">
-                该指标用于观察 BTC 代理资产的相对溢价与风险偏好，不参与 BTC 大周期底部综合评分。
+                该指标用于观察 BTC 代理资产的相对溢价与市场风险偏好，不参与 BTC 大周期底部综合评分。
               </p>
             </div>
           </div>

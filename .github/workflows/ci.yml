@@ -30,6 +30,9 @@ jobs:
       - name: Run Python unit tests
         run: python -m unittest discover -s tests -v
 
+      - name: Check user-facing copy
+        run: python scripts/check_copy.py
+
       - name: Validate checked-in data quality
         run: |
           python validate_btc_data_quality.py \

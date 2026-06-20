@@ -39,6 +39,15 @@ function asBoolean(value: unknown): boolean | undefined {
   return undefined;
 }
 
+function asStringArray(value: unknown): string[] | undefined {
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+
+  const normalized = value.filter((item): item is string => typeof item === 'string');
+  return normalized.length > 0 ? normalized : undefined;
+}
+
 export function toFiniteNumber(value: unknown, fallback = 0): number {
   if (typeof value === 'number') {
     return Number.isFinite(value) ? value : fallback;
@@ -194,6 +203,8 @@ function normalizeCanonicalLatest(value: unknown): LatestData['canonical'] | und
   const score = asRecord(payload.score);
   return {
     model: asString(payload.model),
+    displayIndicators: asStringArray(payload.displayIndicators ?? payload.display_indicators),
+    compatibilityFields: asStringArray(payload.compatibilityFields ?? payload.compatibility_fields),
     score: score
       ? {
           valuation: toNumberOrNull(score.valuation) ?? undefined,

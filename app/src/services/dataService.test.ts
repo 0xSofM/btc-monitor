@@ -11,7 +11,7 @@ import {
   getMA200ChartData,
   mergeLatestIntoHistory,
 } from '@/services/dataService';
-import { normalizeIndicatorData } from '@/services/normalizers';
+import { normalizeIndicatorData, normalizeLatestData } from '@/services/normalizers';
 
 describe('dataService helpers', () => {
   it('fetchStrategyMnavData normalizes Strategy official mNAV payload', async () => {
@@ -431,6 +431,83 @@ describe('dataService helpers', () => {
     );
 
     expect(chartData.map((point) => point.value)).toEqual([0.1606, null]);
+  });
+
+  it('normalizeLatestData preserves canonical current-model contract fields', () => {
+    const latest = normalizeLatestData({
+      date: '2026-06-20',
+      btcPrice: 104000,
+      canonical: {
+        model: 'core8_independent_valuation',
+        display_indicators: [
+          'priceMa200w',
+          'mvrvZscore',
+          'nupl',
+          'puell',
+          'sthMvrv',
+          'sthSopr',
+          'lthMvrv',
+          'lthSopr',
+        ],
+        compatibility_fields: [
+          'priceRealized',
+          'reserveRisk',
+          'valuationBlendV6',
+          'v2',
+          'v4',
+        ],
+        score: {
+          valuation: '4',
+          trigger: 1,
+          confirmation: 2,
+          total: 7,
+          max_total: 14,
+          band: 'focus',
+          confirmed_3d: 'false',
+          confidence: '0.62',
+        },
+        signals: {
+          priceMa200w: true,
+          mvrvZscore: true,
+          nupl: false,
+          puell: true,
+          sthMvrv: true,
+          sthSoprTrigger: false,
+          lthMvrv: true,
+          lthSopr: false,
+        },
+        signal_count: 5,
+        active_indicator_count: 8,
+        fallback_mode: 'none',
+      },
+    });
+
+    expect(latest?.canonical?.model).toBe('core8_independent_valuation');
+    expect(latest?.canonical?.displayIndicators).toEqual([
+      'priceMa200w',
+      'mvrvZscore',
+      'nupl',
+      'puell',
+      'sthMvrv',
+      'sthSopr',
+      'lthMvrv',
+      'lthSopr',
+    ]);
+    expect(latest?.canonical?.compatibilityFields).toEqual([
+      'priceRealized',
+      'reserveRisk',
+      'valuationBlendV6',
+      'v2',
+      'v4',
+    ]);
+    expect(latest?.canonical?.score?.valuation).toBe(4);
+    expect(latest?.canonical?.score?.maxTotal).toBe(14);
+    expect(latest?.canonical?.score?.confirmed3d).toBe(false);
+    expect(latest?.canonical?.score?.confidence).toBe(0.62);
+    expect(latest?.canonical?.signals?.priceRealized).toBeUndefined();
+    expect(latest?.canonical?.signalCount).toBe(5);
+    expect(latest?.canonical?.activeIndicatorCount).toBe(8);
+    expect(latest?.canonical?.fallbackMode).toBe('none');
   });
 
 

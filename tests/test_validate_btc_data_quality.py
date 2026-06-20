@@ -229,7 +229,54 @@ class ValidateDataQualityTests(unittest.TestCase):
             "triggerScoreV6": 1,
             "confirmationScoreV6": 2,
             "totalScoreV6": 7,
+            "signalBandV6": "focus",
+            "signalConfirmed3dV6": False,
+            "signalConfidenceV6": 0.62,
+            "fallbackModeV6": "none",
             "maxTotalScoreV6": 14,
+            "canonical": {
+                "model": "core8_independent_valuation",
+                "displayIndicators": [
+                    "priceMa200w",
+                    "mvrvZscore",
+                    "nupl",
+                    "puell",
+                    "sthMvrv",
+                    "sthSopr",
+                    "lthMvrv",
+                    "lthSopr",
+                ],
+                "compatibilityFields": [
+                    "priceRealized",
+                    "reserveRisk",
+                    "valuationBlendV6",
+                    "v2",
+                    "v4",
+                ],
+                "score": {
+                    "valuation": 4,
+                    "trigger": 1,
+                    "confirmation": 2,
+                    "total": 7,
+                    "maxTotal": 14,
+                    "band": "focus",
+                    "confirmed3d": False,
+                    "confidence": 0.62,
+                },
+                "signals": {
+                    "priceMa200w": True,
+                    "mvrvZscore": True,
+                    "nupl": True,
+                    "puell": True,
+                    "sthMvrv": True,
+                    "sthSoprTrigger": True,
+                    "lthMvrv": True,
+                    "lthSopr": True,
+                },
+                "signalCount": 8,
+                "activeIndicatorCount": 8,
+                "fallbackMode": "none",
+            },
         }
 
     def test_validate_current_pair_passes_with_recent_indicator_dates(self):
@@ -345,6 +392,34 @@ class ValidateDataQualityTests(unittest.TestCase):
 
         self.assertTrue(ok)
         self.assertEqual(errors, [])
+
+    def test_validate_current_pair_rejects_invalid_canonical_signal_count(self):
+        latest = self.build_latest()
+        latest["canonical"]["signalCount"] = 7
+
+        ok, errors = validate_current_pair(
+            self.build_history(),
+            latest,
+            lookback_rows=30,
+            max_indicator_lag_days=7,
+        )
+
+        self.assertFalse(ok)
+        self.assertTrue(any("Canonical signalCount mismatch" in error for error in errors))
+
+    def test_validate_current_pair_rejects_compatibility_signal_leak(self):
+        latest = self.build_latest()
+        latest["canonical"]["signals"]["priceRealized"] = True
+
+        ok, errors = validate_current_pair(
+            self.build_history(),
+            latest,
+            lookback_rows=30,
+            max_indicator_lag_days=7,
+        )
+
+        self.assertFalse(ok)
+        self.assertTrue(any("Canonical signal keys mismatch" in error for error in errors))
 
     def test_validate_light_history_requires_tail_alignment_and_recent_coverage(self):
         full_history = self.build_history()

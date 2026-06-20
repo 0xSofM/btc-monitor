@@ -102,6 +102,8 @@ export interface DataManifest {
   };
   schemaContract?: {
     canonicalModel?: string;
+    displayIndicators?: string[];
+    compatibilityFields?: string[];
     historyRequiredFields?: string[];
     missingCoreHistoryFields?: string[];
     legacyCompatibility?: string[];

@@ -23,7 +23,6 @@ from typing import Any, Dict, List, Tuple
 
 CRITICAL_FIELDS = [
     "priceMa200wRatio",
-    "priceRealizedRatio",
     "mvrvZscore",
     "nupl",
     "lthMvrv",
@@ -35,8 +34,6 @@ CRITICAL_FIELDS = [
 
 INDICATOR_DATE_FIELDS = {
     "priceMa200w": ("priceMa200w", "price_ma200w"),
-    "priceRealized": ("priceRealized", "price_realized"),
-    "reserveRisk": ("reserveRisk", "reserve_risk"),
     "mvrvZscore": ("mvrvZscore", "mvrv_zscore"),
     "nupl": ("nupl",),
     "lthMvrv": ("lthMvrv", "lth_mvrv"),
@@ -46,11 +43,36 @@ INDICATOR_DATE_FIELDS = {
     "puell": ("puell", "puell"),
 }
 
-INDICATOR_MAX_LAG_OVERRIDES = {
-    # Reserve Risk remains an observation metric in V6 and can be replaced by
-    # fresher compatibility sources when its primary source stalls.
-    "reserveRisk": 30,
-}
+INDICATOR_MAX_LAG_OVERRIDES = {}
+
+EXPECTED_CANONICAL_MODEL = "core8_independent_valuation"
+EXPECTED_DISPLAY_INDICATORS = [
+    "priceMa200w",
+    "mvrvZscore",
+    "nupl",
+    "puell",
+    "sthMvrv",
+    "sthSopr",
+    "lthMvrv",
+    "lthSopr",
+]
+EXPECTED_CANONICAL_SIGNAL_KEYS = [
+    "priceMa200w",
+    "mvrvZscore",
+    "nupl",
+    "puell",
+    "sthMvrv",
+    "sthSoprTrigger",
+    "lthMvrv",
+    "lthSopr",
+]
+EXPECTED_COMPATIBILITY_FIELDS = [
+    "priceRealized",
+    "reserveRisk",
+    "valuationBlendV6",
+    "v2",
+    "v4",
+]
 
 
 def load_json(path: Path) -> Any:
@@ -268,16 +290,11 @@ def compute_total_score_v4_from_latest(latest: Dict[str, Any]) -> int | None:
 def compute_signal_count_v6_from_row(row: Dict[str, Any]) -> int:
     signals_v6 = row.get("signalsV6")
     if isinstance(signals_v6, dict):
-        valuation_blend = (
-            signals_v6.get("valuationBlend")
-            if "valuationBlend" in signals_v6
-            else (signals_v6.get("mvrvZscore") or signals_v6.get("nupl"))
-        )
         return sum(
             [
                 bool(signals_v6.get("priceMa200w")),
-                bool(signals_v6.get("priceRealized")),
-                bool(valuation_blend),
+                bool(signals_v6.get("mvrvZscore")),
+                bool(signals_v6.get("nupl")),
                 bool(signals_v6.get("sthMvrv")),
                 bool(signals_v6.get("sthSoprTrigger")),
                 bool(signals_v6.get("lthMvrv")),
@@ -289,8 +306,8 @@ def compute_signal_count_v6_from_row(row: Dict[str, Any]) -> int:
     return sum(
         [
             bool(row.get("signalPriceMa200w") or row.get("signalPriceMa")),
-            bool(row.get("signalPriceRealized")),
-            bool(row.get("signalValuationBlendV6") or row.get("signalMvrvZscoreCore") or row.get("signalNuplCore") or row.get("signalNupl")),
+            bool(row.get("signalMvrvZscoreCore")),
+            bool(row.get("signalNuplCore") or row.get("signalNupl")),
             bool(row.get("signalSthMvrv")),
             bool(row.get("signalSthSoprTrigger") or row.get("signalSthSoprAux") or row.get("signalSthSopr")),
             bool(row.get("signalLthMvrv")),
@@ -305,16 +322,11 @@ def compute_signal_count_v6_from_latest(latest: Dict[str, Any]) -> int:
     if not isinstance(signals, dict):
         return -1
 
-    valuation_blend = (
-        signals.get("valuationBlend")
-        if "valuationBlend" in signals
-        else (signals.get("mvrvZscore") or signals.get("nupl"))
-    )
     return sum(
         [
             bool(signals.get("priceMa200w")),
-            bool(signals.get("priceRealized")),
-            bool(valuation_blend),
+            bool(signals.get("mvrvZscore")),
+            bool(signals.get("nupl")),
             bool(signals.get("sthMvrv")),
             bool(signals.get("sthSoprTrigger")),
             bool(signals.get("lthMvrv")),
@@ -350,6 +362,99 @@ def compute_total_score_v6_from_latest(latest: Dict[str, Any]) -> int | None:
             _as_int(latest.get("confirmationScoreV6")),
         ]
     )
+
+
+def validate_canonical_contract(latest: Dict[str, Any], errors: List[str]) -> None:
+    canonical = latest.get("canonical")
+    if not isinstance(canonical, dict):
+        errors.append("Latest payload missing canonical current-model contract.")
+        return
+
+    model = canonical.get("model")
+    if model != EXPECTED_CANONICAL_MODEL:
+        errors.append(
+            f"Canonical model mismatch: expected {EXPECTED_CANONICAL_MODEL}, got {model}."
+        )
+
+    display_indicators = canonical.get("displayIndicators")
+    if display_indicators != EXPECTED_DISPLAY_INDICATORS:
+        errors.append(
+            "Canonical displayIndicators mismatch: "
+            f"expected {EXPECTED_DISPLAY_INDICATORS}, got {display_indicators}."
+        )
+
+    compatibility_fields = canonical.get("compatibilityFields")
+    if compatibility_fields != EXPECTED_COMPATIBILITY_FIELDS:
+        errors.append(
+            "Canonical compatibilityFields mismatch: "
+            f"expected {EXPECTED_COMPATIBILITY_FIELDS}, got {compatibility_fields}."
+        )
+
+    signals = canonical.get("signals")
+    if not isinstance(signals, dict):
+        errors.append("Canonical contract missing signals object.")
+        return
+
+    signal_keys = list(signals.keys())
+    if signal_keys != EXPECTED_CANONICAL_SIGNAL_KEYS:
+        errors.append(
+            "Canonical signal keys mismatch: "
+            f"expected {EXPECTED_CANONICAL_SIGNAL_KEYS}, got {signal_keys}."
+        )
+
+    forbidden_core_signals = {"priceRealized", "reserveRisk", "valuationBlend"}
+    leaked_signals = sorted(forbidden_core_signals.intersection(signals.keys()))
+    if leaked_signals:
+        errors.append(
+            f"Canonical signals contain compatibility-only fields: {leaked_signals}."
+        )
+
+    expected_signal_count = sum(bool(signals.get(key)) for key in EXPECTED_CANONICAL_SIGNAL_KEYS)
+    actual_signal_count = canonical.get("signalCount")
+    if actual_signal_count is None or int(actual_signal_count) != expected_signal_count:
+        errors.append(
+            "Canonical signalCount mismatch: "
+            f"expected {expected_signal_count}, got {actual_signal_count}."
+        )
+
+    active_count = canonical.get("activeIndicatorCount")
+    if active_count is None or int(active_count) != len(EXPECTED_DISPLAY_INDICATORS):
+        errors.append(
+            "Canonical activeIndicatorCount mismatch: "
+            f"expected {len(EXPECTED_DISPLAY_INDICATORS)}, got {active_count}."
+        )
+
+    score = canonical.get("score")
+    if not isinstance(score, dict):
+        errors.append("Canonical contract missing score object.")
+        return
+
+    score_pairs = [
+        ("valuation", "valuationScoreV6"),
+        ("trigger", "triggerScoreV6"),
+        ("confirmation", "confirmationScoreV6"),
+        ("total", "totalScoreV6"),
+        ("maxTotal", "maxTotalScoreV6"),
+        ("band", "signalBandV6"),
+        ("confirmed3d", "signalConfirmed3dV6"),
+        ("confidence", "signalConfidenceV6"),
+    ]
+    for canonical_key, latest_key in score_pairs:
+        latest_value = latest.get(latest_key)
+        if latest_value is None:
+            continue
+        if score.get(canonical_key) != latest_value:
+            errors.append(
+                f"Canonical score.{canonical_key} mismatch: "
+                f"expected latest {latest_key}={latest_value}, got {score.get(canonical_key)}."
+            )
+
+    fallback_mode = latest.get("fallbackModeV6")
+    if fallback_mode is not None and canonical.get("fallbackMode") != fallback_mode:
+        errors.append(
+            "Canonical fallbackMode mismatch: "
+            f"expected latest fallbackModeV6={fallback_mode}, got {canonical.get('fallbackMode')}."
+        )
 
 
 def validate_history_structure(history: List[Dict[str, Any]], errors: List[str]) -> None:
@@ -664,9 +769,6 @@ def validate_indicator_staleness(
     for indicator_key in INDICATOR_DATE_FIELDS:
         if indicator_key in inactive_indicators:
             continue
-        if indicator_key == "reserveRisk" and latest.get("reserveRiskActive") is False:
-            continue
-
         indicator_date_raw = get_latest_indicator_date(latest, indicator_key)
         if not indicator_date_raw:
             indicator_date_raw = get_history_tail_indicator_date(history, indicator_key)
@@ -705,6 +807,7 @@ def validate_current_pair(
     validate_history_structure(history, errors)
     validate_recent_non_null(history, lookback_rows, errors)
     validate_signal_consistency(history, latest, errors)
+    validate_canonical_contract(latest, errors)
     validate_indicator_staleness(history, latest, max_indicator_lag_days, errors)
 
     if history:

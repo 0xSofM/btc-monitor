@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-06-20T14:27:56.292029+00:00",
+  "generatedAt": "2026-06-20T16:38:56.845650+00:00",
   "latestDate": "2026-06-20",
-  "lastUpdated": "2026-06-20T14:27:56.256780+00:00",
+  "lastUpdated": "2026-06-20T16:38:56.786172+00:00",
   "historyRows": 5499,
   "historyLightRows": 889,
   "historyFiles": {
@@ -84,9 +84,9 @@
     ]
   },
   "signalEventsV4Rows": 18,
-  "schemaVersion": "v6",
-  "indicatorSet": "core8_bottom_v6_display_blend_sopr_refined",
-  "scoringModelVersion": "v6_core8_display_blend_sopr_refined",
+  "schemaVersion": "current",
+  "indicatorSet": "core8_bottom_independent_valuation_current",
+  "scoringModelVersion": "core8_independent_valuation_current",
   "legacyScoringModelVersion": "v3_no_lookahead_replacement",
   "thresholdVersion": "v4_dynamic",
   "activeIndicatorCountV6": 8,
@@ -165,7 +165,24 @@
     "signalConfidenceV6": 0.4339
   },
   "schemaContract": {
-    "canonicalModel": "v6",
+    "canonicalModel": "core8_independent_valuation",
+    "displayIndicators": [
+      "priceMa200w",
+      "mvrvZscore",
+      "nupl",
+      "puell",
+      "sthMvrv",
+      "sthSopr",
+      "lthMvrv",
+      "lthSopr"
+    ],
+    "compatibilityFields": [
+      "priceRealized",
+      "reserveRisk",
+      "valuationBlendV6",
+      "v2",
+      "v4"
+    ],
     "historyRequiredFields": [
       "d",
       "unixTs",
@@ -248,21 +265,5 @@
     "latestLegacyField": "legacy"
   },
   "archivedSnapshot": null,
-  "archiveRoot": "archive/releases",
-  "auxiliaryDataFiles": {
-    "strategyMnavLatest": "strategy_mnav_latest.json",
-    "strategyMnavHistory": "strategy_mnav_history.json"
-  },
-  "strategyMnavHealth": {
-    "source": "strategy_official_api",
-    "formula": "enterpriseValueUsd / btcReserveUsd",
-    "latestDate": "2026-06-20",
-    "historyRows": 1,
-    "mnav": 1.1425,
-    "band": "low_premium",
-    "riskFlag": "normal",
-    "isStale": false,
-    "mstrTimestampUtc": "2026-06-18T20:00:00",
-    "btcTimestamp": "2026-06-20T14:27:00"
-  }
+  "archiveRoot": "archive/releases"
 }

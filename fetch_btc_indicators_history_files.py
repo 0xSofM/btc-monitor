@@ -137,6 +137,25 @@ HISTORY_LIGHT_FIELDS = [
     "scoringModelVersion",
 ]
 
+CANONICAL_MODEL = "core8_independent_valuation"
+DISPLAY_INDICATORS = [
+    "priceMa200w",
+    "mvrvZscore",
+    "nupl",
+    "puell",
+    "sthMvrv",
+    "sthSopr",
+    "lthMvrv",
+    "lthSopr",
+]
+COMPATIBILITY_FIELDS = [
+    "priceRealized",
+    "reserveRisk",
+    "valuationBlendV6",
+    "v2",
+    "v4",
+]
+
 
 def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
     """Prepare human-readable table used for CSV/XLSX exports."""
@@ -840,8 +859,20 @@ def build_latest_json(
         "legacyScoringModelVersion": LEGACY_SCORING_MODEL_VERSION,
         "lastUpdated": datetime.now(timezone.utc).isoformat(),
     }
+    canonical_signals = {
+        "priceMa200w": latest_payload["signalsV6"]["priceMa200w"],
+        "mvrvZscore": latest_payload["signalsV6"]["mvrvZscore"],
+        "nupl": latest_payload["signalsV6"]["nupl"],
+        "puell": latest_payload["signalsV6"]["puell"],
+        "sthMvrv": latest_payload["signalsV6"]["sthMvrv"],
+        "sthSoprTrigger": latest_payload["signalsV6"]["sthSoprTrigger"],
+        "lthMvrv": latest_payload["signalsV6"]["lthMvrv"],
+        "lthSopr": latest_payload["signalsV6"]["lthSopr"],
+    }
     latest_payload["canonical"] = {
-        "model": "v6",
+        "model": CANONICAL_MODEL,
+        "displayIndicators": DISPLAY_INDICATORS,
+        "compatibilityFields": COMPATIBILITY_FIELDS,
         "score": {
             "valuation": latest_payload["valuationScoreV6"],
             "trigger": latest_payload["triggerScoreV6"],
@@ -852,7 +883,7 @@ def build_latest_json(
             "confirmed3d": latest_payload["signalConfirmed3dV6"],
             "confidence": latest_payload["signalConfidenceV6"],
         },
-        "signals": latest_payload["signalsV6"],
+        "signals": canonical_signals,
         "signalCount": latest_payload["signalCountV6"],
         "activeIndicatorCount": latest_payload["activeIndicatorCountV6"],
         "fallbackMode": latest_payload["fallbackModeV6"],
@@ -968,7 +999,9 @@ def build_manifest_json(
             "signalConfidenceV6": latest_json.get("signalConfidenceV6"),
         },
         "schemaContract": {
-            "canonicalModel": "v6",
+            "canonicalModel": CANONICAL_MODEL,
+            "displayIndicators": DISPLAY_INDICATORS,
+            "compatibilityFields": COMPATIBILITY_FIELDS,
             "historyRequiredFields": HISTORY_LIGHT_FIELDS,
             "legacyCompatibility": ["v2", "v4"],
             "latestCanonicalField": "canonical",

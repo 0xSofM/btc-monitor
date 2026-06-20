@@ -1,11 +1,11 @@
 {
   "date": "2026-06-20",
   "unixTs": 1781913600,
-  "btcPrice": 63333.4,
-  "ma200w": 62171.260417332924,
+  "btcPrice": 64038.81,
+  "ma200w": 62171.76428161865,
   "realizedPrice": 52966.57,
-  "priceMa200wRatio": 1.018692553036018,
-  "priceRealizedRatio": 1.1957240198865058,
+  "priceMa200wRatio": 1.0300304445266217,
+  "priceRealizedRatio": 1.209042042933873,
   "reserveRisk": 0.0005142922,
   "mvrvZscore": 0.333,
   "nupl": 0.1669,
@@ -174,9 +174,9 @@
     "sthMvrv": "2026-06-19",
     "puell": "2026-06-19"
   },
-  "indicatorSet": "core8_bottom_v6_display_blend_sopr_refined",
-  "coreIndicatorSet": "core8_bottom_v6_display_blend_sopr_refined",
-  "schemaVersion": "v6",
+  "indicatorSet": "core8_bottom_independent_valuation_current",
+  "coreIndicatorSet": "core8_bottom_independent_valuation_current",
+  "schemaVersion": "current",
   "thresholds": {
     "priceMa200wRatio": {
       "trigger": 1.0,
@@ -369,11 +369,28 @@
     "latestDateGapDays": 0,
     "status": "same_day_comparable"
   },
-  "scoringModelVersion": "v6_core8_display_blend_sopr_refined",
+  "scoringModelVersion": "core8_independent_valuation_current",
   "legacyScoringModelVersion": "v3_no_lookahead_replacement",
-  "lastUpdated": "2026-06-20T14:27:56.256780+00:00",
+  "lastUpdated": "2026-06-20T16:38:56.786172+00:00",
   "canonical": {
-    "model": "v6",
+    "model": "core8_independent_valuation",
+    "displayIndicators": [
+      "priceMa200w",
+      "mvrvZscore",
+      "nupl",
+      "puell",
+      "sthMvrv",
+      "sthSopr",
+      "lthMvrv",
+      "lthSopr"
+    ],
+    "compatibilityFields": [
+      "priceRealized",
+      "reserveRisk",
+      "valuationBlendV6",
+      "v2",
+      "v4"
+    ],
     "score": {
       "valuation": 0,
       "trigger": 1,
@@ -386,15 +403,13 @@
     },
     "signals": {
       "priceMa200w": false,
-      "priceRealized": false,
       "mvrvZscore": false,
       "nupl": false,
-      "valuationBlend": false,
+      "puell": false,
       "sthMvrv": true,
       "sthSoprTrigger": true,
       "lthMvrv": false,
-      "lthSopr": true,
-      "puell": false
+      "lthSopr": true
     },
     "signalCount": 3,
     "activeIndicatorCount": 8,

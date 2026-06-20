@@ -274,6 +274,8 @@ export interface LatestData {
   thresholds?: ThresholdMap;
   canonical?: {
     model?: string;
+    displayIndicators?: string[];
+    compatibilityFields?: string[];
     score?: {
       valuation?: number;
       trigger?: number;
