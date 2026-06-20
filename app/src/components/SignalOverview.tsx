@@ -62,7 +62,7 @@ function getSignalStatus(score: number, signalCount: number, maxScore: number): 
 
   if (score >= thresholds.accumulate) {
     return {
-      label: '分批配置',
+      label: '信号增强',
       toneClass: 'text-emerald-700 dark:text-emerald-300',
       iconToneClass: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
     };
@@ -70,7 +70,7 @@ function getSignalStatus(score: number, signalCount: number, maxScore: number): 
 
   if (score >= thresholds.focus) {
     return {
-      label: '重点关注',
+      label: '重点观察',
       toneClass: 'text-amber-700 dark:text-amber-300',
       iconToneClass: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
     };
@@ -94,20 +94,20 @@ function getSignalStatus(score: number, signalCount: number, maxScore: number): 
 function getSourceBadge(source: SignalOverviewProps['dataSource']) {
   if (source === 'api') {
     return {
-      label: '实时 API',
+      label: '实时数据',
       className: 'border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300',
     };
   }
 
   if (source === 'history') {
     return {
-      label: '历史回退',
+      label: '历史数据',
       className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-300',
     };
   }
 
   return {
-    label: '静态快照',
+    label: '本地数据',
     className: 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300',
   };
 }
@@ -170,7 +170,6 @@ export function SignalOverview({
   oldestIndicatorDate,
 }: SignalOverviewProps) {
   const hasLayeredScore = totalScoreV6 !== undefined || totalScoreV4 !== undefined;
-  const modelLabel = totalScoreV6 !== undefined ? 'Core-8' : totalScoreV4 !== undefined ? '分层模型' : '加权模型';
   const effectiveScore = totalScoreV6 ?? totalScoreV4 ?? signalScoreV2;
   const effectiveMaxScore = maxTotalScoreV6 ?? maxTotalScoreV4 ?? maxSignalScoreV2;
   const thresholds = resolveScoreThresholds(effectiveMaxScore);
@@ -183,9 +182,9 @@ export function SignalOverview({
   const confidencePercent = signalConfidence === undefined ? null : Math.round(signalConfidence * 100);
   const isConfirmed = signalConfirmed3dV6 || signalConfirmed3dV4 || signalConfirmed3d;
   const fallbackLabel = fallbackMode === 'valuation_metrics_inactive' || fallbackMode === 'valuation_blend_inactive'
-    ? 'MVRV Z / NUPL 暂时不计入综合总分'
+    ? 'MVRV Z / NUPL 当前未参与评分'
     : fallbackMode === 'mvrv_zscore_inactive'
-      ? 'MVRV Z-Score 暂时不计入综合总分'
+      ? 'MVRV Z-Score 当前未参与评分'
       : null;
 
   return (
@@ -195,7 +194,7 @@ export function SignalOverview({
           <div>
             <CardTitle className="text-lg font-semibold">信号总览</CardTitle>
             <p className="mt-1 text-sm text-muted-foreground">
-              基于 Core-8 分层模型，分别追踪估值、触发与确认三层状态。
+              基于分层指标体系，追踪估值、触发与确认三类底部识别信号。
             </p>
           </div>
 
@@ -213,7 +212,7 @@ export function SignalOverview({
               链上：{onchainFreshnessBadge.label}
             </Badge>
             <Badge variant="outline" className="text-xs">
-              快照更新：{dataTimestampLabel}
+              数据更新：{dataTimestampLabel}
             </Badge>
           </div>
         </div>
@@ -239,7 +238,7 @@ export function SignalOverview({
               <span className="ml-1 text-sm font-normal text-muted-foreground">/ {totalIndicators}</span>
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              {hasLayeredScore ? `${modelLabel} 总分：${effectiveScore}/${effectiveMaxScore}` : `加权评分：${signalScoreV2}/${maxSignalScoreV2}`}
+              {hasLayeredScore ? `总分：${effectiveScore}/${effectiveMaxScore}` : `加权评分：${signalScoreV2}/${maxSignalScoreV2}`}
             </p>
           </article>
 
@@ -248,7 +247,7 @@ export function SignalOverview({
               <span className={`rounded-full p-1 ${status.iconToneClass}`}>
                 {effectiveScore >= thresholds.accumulate ? <CheckCircle2 className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}
               </span>
-              市场状态
+              信号状态
             </div>
             <p className={`text-2xl font-bold ${status.toneClass}`}>{status.label}</p>
             <p className={`mt-1 text-xs ${isConfirmed ? 'text-emerald-600 dark:text-emerald-300' : 'text-muted-foreground'}`}>
@@ -278,20 +277,20 @@ export function SignalOverview({
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-1">
               <Clock3 className="h-4 w-4" />
-              快照记录：{latestDataDate}
+              记录日期：{latestDataDate}
             </span>
             {hasLaggingIndicators && oldestIndicatorDate && (
-              <span>核心指标日期：{oldestIndicatorDate}</span>
+              <span>指标日期：{oldestIndicatorDate}</span>
             )}
           </div>
 
           {hasLaggingIndicators ? (
             <p className="mt-2 text-sm text-amber-700 dark:text-amber-300">
-              延迟指标：{laggingIndicators.join('、')}
+              数据滞后指标：{laggingIndicators.join('、')}
             </p>
           ) : (
             <p className="mt-2 text-sm text-emerald-700 dark:text-emerald-300">
-              {totalIndicators} 个核心指标均已对齐到快照记录日期。
+              {totalIndicators} 个核心指标均与记录日期一致。
             </p>
           )}
 
@@ -309,14 +308,14 @@ export function SignalOverview({
 
         <section>
           <div className="mb-2 flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">{hasLayeredScore ? `${modelLabel} 评分强度` : '加权评分强度'}</span>
+            <span className="text-muted-foreground">{hasLayeredScore ? '分层评分强度' : '加权评分强度'}</span>
             <span className="font-semibold">{scoreProgress.toFixed(0)}%</span>
           </div>
           <Progress value={scoreProgress} className="h-2.5" />
           <div className="mt-2 flex justify-between text-xs text-muted-foreground">
             <span>0-{Math.max(0, thresholds.focus - 1)} 观察</span>
             <span>{thresholds.focus}-{Math.max(thresholds.focus, thresholds.accumulate - 1)} 关注</span>
-            <span>{thresholds.accumulate}-{Math.max(thresholds.accumulate, thresholds.extreme - 1)} 分批</span>
+            <span>{thresholds.accumulate}-{Math.max(thresholds.accumulate, thresholds.extreme - 1)} 增强</span>
             <span>{thresholds.extreme}-{effectiveMaxScore} 极端</span>
           </div>
         </section>

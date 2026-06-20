@@ -601,17 +601,17 @@ export function IndicatorCharts({
       <CardHeader>
         <div className="space-y-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle className="text-lg font-semibold">Core-8 历史图表</CardTitle>
+            <CardTitle className="text-lg font-semibold">核心指标历史图表</CardTitle>
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-                完整历史
+                历史数据
               </span>
               <span className="rounded-full bg-muted px-2.5 py-1 text-muted-foreground">
                 {historyStartDate} 至 {historyEndDate} · {data.length.toLocaleString('en-US')} 条
               </span>
               {isHistoryLoading && (
                 <span className="rounded-full bg-blue-100 px-2.5 py-1 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
-                  正在刷新历史
+                  正在更新数据
                 </span>
               )}
             </div>

@@ -24,12 +24,12 @@ function formatTimestamp(value: string | undefined): string {
 }
 
 function bandLabel(band: string | undefined): string {
-  if (band === 'discount') return 'Discount';
-  if (band === 'low_premium') return 'Low premium';
-  if (band === 'normal_premium') return 'Normal premium';
-  if (band === 'elevated_premium') return 'Elevated';
-  if (band === 'overheated') return 'Overheated';
-  return 'Unknown';
+  if (band === 'discount') return '折价';
+  if (band === 'low_premium') return '低溢价';
+  if (band === 'normal_premium') return '常规溢价';
+  if (band === 'elevated_premium') return '较高溢价';
+  if (band === 'overheated') return '高溢价';
+  return '未知';
 }
 
 function bandClass(band: string | undefined): string {
@@ -56,7 +56,7 @@ export function StrategyMnavCard({ data }: { data: StrategyMnavData }) {
               MSTR mNAV
             </CardTitle>
             <p className="mt-1 text-sm text-muted-foreground">
-              Strategy 官方企业价值 / BTC 储备价值，仅作为外部溢价观察项。
+              Strategy 官方企业价值 / BTC 储备价值，用于观察 BTC 代理资产溢价。
             </p>
           </div>
           <Badge variant="outline" className={bandClass(data.mnav.band)}>
@@ -76,45 +76,45 @@ export function StrategyMnavCard({ data }: { data: StrategyMnavData }) {
           <div className="flex items-center gap-2">
             <ChangeIcon className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-xs font-medium text-muted-foreground">Daily change</p>
+              <p className="text-xs font-medium text-muted-foreground">日变化</p>
               <p className="mt-1 font-semibold">{changeLabel}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Landmark className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-xs font-medium text-muted-foreground">Enterprise value</p>
+              <p className="text-xs font-medium text-muted-foreground">企业价值</p>
               <p className="mt-1 font-semibold">{formatUsdM(data.mstr.enterpriseValueUsdM)}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <CircleDollarSign className="h-4 w-4 text-muted-foreground" />
             <div>
-              <p className="text-xs font-medium text-muted-foreground">BTC reserve</p>
+              <p className="text-xs font-medium text-muted-foreground">BTC 储备价值</p>
               <p className="mt-1 font-semibold">{formatUsdM(data.btcReserve.btcReserveUsdM)}</p>
             </div>
           </div>
         </div>
 
         <div className="rounded-md border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
-          mNAV 大于 1 表示 MSTR 相对其 BTC 储备存在溢价，小于 1 表示折价。它能辅助观察市场对 BTC 代理资产的风险偏好，但不参与本系统的 BTC 底部评分。
+          mNAV 大于 1 表示 MSTR 相对其 BTC 储备存在溢价，小于 1 表示折价。该指标用于外部风险偏好观察，不参与 BTC 底部评分。
         </div>
 
         <div className="grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
           <div>
-            <p className="text-muted-foreground">BTC holdings</p>
+            <p className="text-muted-foreground">BTC 持仓</p>
             <p className="font-medium">{formatNumber(data.btcReserve.btcHoldings, 0)} BTC</p>
           </div>
           <div>
-            <p className="text-muted-foreground">MSTR price</p>
+            <p className="text-muted-foreground">MSTR 价格</p>
             <p className="font-medium">${formatNumber(data.mstr.price)}</p>
           </div>
           <div>
-            <p className="text-muted-foreground">BTC price</p>
+            <p className="text-muted-foreground">BTC 价格</p>
             <p className="font-medium">${formatNumber(data.btcReserve.btcPriceUsd, 0)}</p>
           </div>
           <div>
-            <p className="text-muted-foreground">Equity premium</p>
+            <p className="text-muted-foreground">股权溢价</p>
             <p className="font-medium">
               {data.mnav.equityPremium === undefined ? '-' : `${data.mnav.equityPremium.toFixed(2)}x`}
             </p>
@@ -123,11 +123,11 @@ export function StrategyMnavCard({ data }: { data: StrategyMnavData }) {
 
         <div className="flex flex-wrap items-center gap-2 border-t pt-3 text-xs text-muted-foreground">
           <Database className="h-3.5 w-3.5" />
-          <span>MSTR close: {formatTimestamp(data.mstr.timestampUtc)}</span>
+          <span>MSTR 时间：{formatTimestamp(data.mstr.timestampUtc)}</span>
           <span>|</span>
-          <span>BTC: {formatTimestamp(data.btcReserve.timestamp)}</span>
+          <span>BTC 时间：{formatTimestamp(data.btcReserve.timestamp)}</span>
           <span>|</span>
-          <span>Formula: {data.formula ?? 'enterpriseValueUsd / btcReserveUsd'}</span>
+          <span>计算口径：企业价值 / BTC 储备价值</span>
         </div>
       </CardContent>
     </Card>

@@ -18,7 +18,7 @@ const valuationIndicators: IndicatorItem[] = [
     icon: TrendingDown,
     target: '< 1（深度 < 0.85）',
     description: '衡量现价相对 200 周均线的位置，是大周期趋势锚点之一。',
-    rationale: '价格跌破 200 周均线通常发生在恐慌阶段，长期风险回报比更优。',
+    rationale: '用于识别价格相对长期均线的低位区域。',
   },
   {
     id: 'mvrv-zscore',
@@ -26,7 +26,7 @@ const valuationIndicators: IndicatorItem[] = [
     icon: TrendingDown,
     target: '< 0（深度 < -0.50）',
     description: '衡量市值相对链上实现价值的标准化偏离，识别市场是否进入历史低估区。',
-    rationale: '它对极端低估更敏感，适合作为估值层的强压力锚点，而不是与 NUPL 合并后只保留一个槽位。',
+    rationale: '用于观察市场估值相对链上成本的极端偏离。',
   },
   {
     id: 'nupl',
@@ -34,7 +34,7 @@ const valuationIndicators: IndicatorItem[] = [
     icon: TrendingDown,
     target: '< 0.15（深度 < 0）',
     description: '衡量全网净未实现盈亏状态，观察市场整体筹码是否接近亏损或低利润区。',
-    rationale: '它比 MVRV Z 更直接反映持币者盈亏结构，独立保留能减少单一估值指标失真的风险。',
+    rationale: '用于补充观察持币者整体盈亏结构。',
   },
   {
     id: 'puell',
@@ -42,7 +42,7 @@ const valuationIndicators: IndicatorItem[] = [
     icon: TrendingDown,
     target: '< 0.6（深度 < 0.5）',
     description: '比较矿工收入与历史常态水平，评估供给侧压力。',
-    rationale: 'Puell 处于低位常见于矿工压力释放后的后半阶段。',
+    rationale: '用于观察矿工收入压力与供给侧变化。',
   },
 ];
 
@@ -53,7 +53,7 @@ const triggerIndicators: IndicatorItem[] = [
     icon: AlertTriangle,
     target: '< p27（深度 < p13.5）',
     description: '衡量短期持有者未实现盈亏压力，观察恐慌是否扩散到短期筹码。',
-    rationale: '它更适合回答“底部区域是否开始进入可执行窗口”。',
+    rationale: '用于识别短期持有者成本压力是否进入低位区间。',
   },
   {
     id: 'sth-sopr',
@@ -61,7 +61,7 @@ const triggerIndicators: IndicatorItem[] = [
     icon: AlertTriangle,
     target: '3日均值 < p27（深度 < p13.5）',
     description: '衡量短期持有者是否在亏损兑现，阈值使用滚动分位数并以 3 日均值降噪。',
-    rationale: '它与 STH-MVRV 组成复合触发信号，触发层取两者分数最大值，避免短期噪声重复抬分。',
+    rationale: '与 STH-MVRV 共同构成触发层，系统取两者较高分数作为短期触发评分。',
   },
 ];
 
@@ -72,7 +72,7 @@ const confirmationIndicators: IndicatorItem[] = [
     icon: ShieldCheck,
     target: '< 1（深度 < 0.90）',
     description: '衡量长期持有者未实现盈亏，用来确认长期结构是否也在向底部靠拢。',
-    rationale: '它比短期指标更慢，但对大周期抄底更重要。',
+    rationale: '用于确认长期持有者成本结构是否进入低位状态。',
   },
   {
     id: 'lth-sopr',
@@ -80,7 +80,7 @@ const confirmationIndicators: IndicatorItem[] = [
     icon: ShieldCheck,
     target: '3日均值 < p20（深度 < p10）',
     description: '衡量长期持有者已实现盈亏，使用滚动 p20/p10 与 3 日均值降低误触发。',
-    rationale: '它与 LTH-MVRV 互补，用来确认长期持有者也进入较深的亏损兑现状态。',
+    rationale: '与 LTH-MVRV 互补，用于确认长期持有者是否出现亏损兑现压力。',
   },
 ];
 
@@ -120,7 +120,7 @@ export function IndicatorExplanation() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <BookOpen className="h-5 w-5" />
-          Core-8 指标说明
+          核心指标说明
         </CardTitle>
       </CardHeader>
 
@@ -135,11 +135,11 @@ export function IndicatorExplanation() {
             <div>
               <h3 className="font-semibold text-blue-800 dark:text-blue-200">分层评分框架</h3>
               <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
-                Core-8 将 8 个核心指标拆为“估值层 + 触发层（复合）+ 确认层（双指标）”。
+                系统将 8 个核心指标分为“估值层 + 触发层 + 确认层”。
                 估值层包含 Price/200W-MA、MVRV Z-Score、NUPL、Puell，满分 8；
                 触发层取 STH-MVRV 与 STH-SOPR 的最大值，满分 2；
                 确认层 LTH-MVRV + LTH-SOPR 双指标独立计分，满分 4；
-                总分上限仍为 14。同时保留 3 日确认和旧版兼容字段，便于归档、对照与回滚。
+                总分上限为 14。系统同时使用 3 日确认，降低单日波动对信号判断的影响。
               </p>
             </div>
           </div>
@@ -153,10 +153,10 @@ export function IndicatorExplanation() {
             <div className="space-y-2">
               <h3 className="font-semibold">MSTR mNAV 说明</h3>
               <p className="text-sm text-muted-foreground">
-                mNAV 使用 Strategy 官方披露口径，近似衡量企业价值相对其 BTC 储备价值的倍数。数值高于 1 表示市场愿意为 MSTR 的 BTC 敞口、融资能力和公司结构支付溢价；低于 1 则表示折价。
+                mNAV 使用 Strategy 官方披露口径，衡量企业价值相对其 BTC 储备价值的倍数。数值高于 1 表示相对 BTC 储备存在溢价，低于 1 表示折价。
               </p>
               <p className="text-sm">
-                该指标只作为外部情绪与相对溢价观察项，不参与 BTC 大周期底部综合评分。它适合回答“市场是否在追捧或回避 MSTR 这类 BTC 代理资产”，不适合作为 BTC 链上底部触发条件。
+                该指标用于观察 BTC 代理资产的相对溢价与风险偏好，不参与 BTC 大周期底部综合评分。
               </p>
             </div>
           </div>

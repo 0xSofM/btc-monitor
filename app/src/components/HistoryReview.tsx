@@ -141,7 +141,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Calendar className="h-5 w-5" />
-          历史复盘（Core-8 分层模型）
+          历史信号记录
         </CardTitle>
       </CardHeader>
 

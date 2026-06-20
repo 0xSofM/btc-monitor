@@ -958,18 +958,18 @@ export const INDICATOR_CONFIG = {
     description: '现价相对 200 周均线的位置。',
   },
   priceRealized: {
-    name: 'Legacy realized-price ratio',
+    name: 'Realized Price Ratio',
     unit: '',
     targetValue: 1,
     color: '#0EA5E9',
-    description: '旧版兼容字段，不属于当前 Core-8 产品展示指标。',
+    description: '现价相对实现价格的位置，当前不属于核心展示指标。',
   },
   valuationBlend: {
-    name: 'Legacy valuation blend',
+    name: 'Valuation Blend',
     unit: '',
     targetValue: 1,
     color: '#14B8A6',
-    description: '旧版兼容字段；当前 Core-8 已改为 MVRV Z-Score 与 NUPL 独立指标。',
+    description: '估值层组合数据，当前核心展示使用 MVRV Z-Score 与 NUPL 独立指标。',
   },
   mvrvZscore: {
     name: 'MVRV Z-Score',
@@ -986,11 +986,11 @@ export const INDICATOR_CONFIG = {
     description: '全网净未实现盈亏状态，估值层。',
   },
   reserveRisk: {
-    name: 'Legacy reserve risk',
+    name: 'Reserve Risk',
     unit: '',
     targetValue: 0.0016,
     color: '#10B981',
-    description: '旧版兼容字段，不在当前产品界面展示。',
+    description: '长期持有信心与价格风险相关数据，当前不属于核心展示指标。',
   },
   lthMvrv: {
     name: 'LTH-MVRV',
