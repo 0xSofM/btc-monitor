@@ -8,152 +8,44 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import type { IndicatorData } from '@/types';
+import {
+  DEFAULT_MIN_SIGNALS,
+  filterHistoryRows,
+  formatPrice,
+  getDateRange,
+  getHistoryRowDisplay,
+  getMaxSignalCount,
+  getThresholdOptions,
+  indexHistoryRows,
+} from './historyReviewSelectors';
 
 interface HistoryReviewProps {
   data: IndicatorData[];
 }
 
-type IndexedHistoryRow = {
-  row: IndicatorData;
-  time: number;
-  price: number;
-  signalCount: number;
-};
-
-type FilteredHistoryResult = {
-  rows: IndicatorData[];
-  minPrice: number;
-  maxPrice: number;
-  avgPrice: number;
-};
-
-const EMPTY_FILTERED_HISTORY: FilteredHistoryResult = {
-  rows: [],
-  minPrice: 0,
-  maxPrice: 0,
-  avgPrice: 0,
-};
-
-function parsePrice(value: number | string | undefined): number {
-  if (typeof value === 'number') {
-    return Number.isFinite(value) ? value : 0;
-  }
-
-  if (typeof value === 'string') {
-    const parsed = Number.parseFloat(value);
-    return Number.isFinite(parsed) ? parsed : 0;
-  }
-
-  return 0;
-}
-
-function formatPrice(value: number): string {
-  return `$${value.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
-
-function getSignalBadges(item: IndicatorData): string[] {
-  const signals: string[] = [];
-
-  if (item.signalPriceMa200w || item.signalPriceMa) signals.push('Price / 200W-MA');
-  if (item.signalsV6?.mvrvZscore ?? item.signalMvrvZscoreCore) signals.push('MVRV Z-Score');
-  if (item.signalsV6?.nupl ?? item.signalNuplCore ?? item.signalNupl) signals.push('NUPL');
-  if (item.signalsV6?.puell ?? item.signalPuell) signals.push('Puell Multiple');
-  if (item.signalsV6?.sthMvrv ?? item.signalSthMvrv) signals.push('STH-MVRV');
-  if (item.signalsV6?.sthSoprTrigger ?? item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr) signals.push('STH-SOPR');
-  if (item.signalsV6?.lthMvrv ?? item.signalLthMvrv) signals.push('LTH-MVRV');
-  if (item.signalsV6?.lthSopr ?? item.signalLthSopr) signals.push('LTH-SOPR');
-
-  return signals;
-}
-
 export function HistoryReview({ data }: HistoryReviewProps) {
-  const [minSignals, setMinSignals] = useState(4);
+  const [minSignals, setMinSignals] = useState(DEFAULT_MIN_SIGNALS);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const indexedData = useMemo<IndexedHistoryRow[]>(() => data.map((row) => ({
-    row,
-    time: Date.parse(`${row.d}T00:00:00Z`),
-    price: parsePrice(row.btcPrice),
-    signalCount: row.signalCountV6 ?? row.signalCountV4 ?? row.signalCount ?? 0,
-  })), [data]);
-  const maxSignalCount = useMemo(
-    () => indexedData.reduce(
-      (max, row) => Math.max(
-        max,
-        row.row.activeIndicatorCountV6 ?? row.row.activeIndicatorCountV4 ?? row.row.activeIndicatorCount ?? 0,
-        row.signalCount,
-      ),
-      8,
-    ),
-    [indexedData],
-  );
+  const indexedData = useMemo(() => indexHistoryRows(data), [data]);
+  const maxSignalCount = useMemo(() => getMaxSignalCount(indexedData), [indexedData]);
   const strongSignalThreshold = Math.max(1, maxSignalCount - 1);
-  const thresholdOptions = useMemo(() => {
-    const start = Math.max(1, maxSignalCount - 2);
-    return Array.from({ length: maxSignalCount - start + 1 }, (_, index) => start + index);
-  }, [maxSignalCount]);
-
-  const dateRange = useMemo(() => {
-    if (!indexedData.length) {
-      return { min: '', max: '' };
-    }
-
-    return {
-      min: indexedData[0]?.row.d ?? '',
-      max: indexedData[indexedData.length - 1]?.row.d ?? '',
-    };
-  }, [indexedData]);
-
-  const filteredHistory = useMemo<FilteredHistoryResult>(() => {
-    const startAt = startDate ? Date.parse(`${startDate}T00:00:00Z`) : null;
-    const endAt = endDate ? Date.parse(`${endDate}T23:59:59Z`) : null;
-    const rows: IndicatorData[] = [];
-    let minPrice = Number.POSITIVE_INFINITY;
-    let maxPrice = Number.NEGATIVE_INFINITY;
-    let totalPrice = 0;
-
-    for (let index = indexedData.length - 1; index >= 0; index -= 1) {
-      const item = indexedData[index];
-      if (!item || item.signalCount < minSignals) {
-        continue;
-      }
-
-      if (startAt && item.time < startAt) {
-        continue;
-      }
-
-      if (endAt && item.time > endAt) {
-        continue;
-      }
-
-      rows.push(item.row);
-      minPrice = Math.min(minPrice, item.price);
-      maxPrice = Math.max(maxPrice, item.price);
-      totalPrice += item.price;
-    }
-
-    if (!rows.length) {
-      return EMPTY_FILTERED_HISTORY;
-    }
-
-    return {
-      rows,
-      minPrice,
-      maxPrice,
-      avgPrice: totalPrice / rows.length,
-    };
-  }, [endDate, indexedData, minSignals, startDate]);
+  const thresholdOptions = useMemo(() => getThresholdOptions(maxSignalCount), [maxSignalCount]);
+  const dateRange = useMemo(() => getDateRange(indexedData), [indexedData]);
+  const filteredHistory = useMemo(() => filterHistoryRows({
+    indexedData,
+    minSignals,
+    startDate,
+    endDate,
+  }), [endDate, indexedData, minSignals, startDate]);
   const filteredData = filteredHistory.rows;
 
-  const hasActiveFilters = Boolean(startDate || endDate || minSignals !== 4);
+  const hasActiveFilters = Boolean(startDate || endDate || minSignals !== DEFAULT_MIN_SIGNALS);
 
   const clearFilters = () => {
     setStartDate('');
     setEndDate('');
-    setMinSignals(4);
+    setMinSignals(DEFAULT_MIN_SIGNALS);
   };
 
   return (
@@ -266,41 +158,36 @@ export function HistoryReview({ data }: HistoryReviewProps) {
               </TableHeader>
 
               <TableBody>
-                {filteredData.slice(0, 120).map((item) => (
-                  <TableRow key={`${item.d}-${item.signalCountV6 ?? item.signalCountV4 ?? item.signalCount ?? 0}`}>
-                    <TableCell>{item.d}</TableCell>
-                    <TableCell className="font-medium">{formatPrice(parsePrice(item.btcPrice))}</TableCell>
-                    <TableCell>
-                      {(() => {
-                        const rowTotalSignals = item.activeIndicatorCountV6 ?? item.activeIndicatorCountV4 ?? item.activeIndicatorCount ?? maxSignalCount;
-                        const rowSignalCount = item.signalCountV6 ?? item.signalCountV4 ?? item.signalCount ?? 0;
-                        const rowStrong = rowSignalCount >= Math.max(1, rowTotalSignals - 1);
-                        return (
-                          <Badge
-                            variant={rowStrong ? 'default' : 'secondary'}
-                            className={rowStrong ? 'bg-emerald-600 text-white hover:bg-emerald-600' : ''}
-                          >
-                            {rowSignalCount} / {rowTotalSignals}
-                          </Badge>
-                        );
-                      })()}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">
-                        {item.totalScoreV6 ?? item.totalScoreV4 ?? item.signalScoreV2 ?? '-'} / {item.maxTotalScoreV6 ?? item.maxTotalScoreV4 ?? item.maxSignalScoreV2 ?? ((item.activeIndicatorCountV6 ?? item.activeIndicatorCountV4 ?? item.activeIndicatorCount ?? maxSignalCount) * 2)}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {getSignalBadges(item).map((signal) => (
-                          <Badge key={`${item.d}-${signal}`} variant="outline" className="text-xs">
-                            {signal}
-                          </Badge>
-                        ))}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {filteredData.slice(0, 120).map((item) => {
+                  const rowDisplay = getHistoryRowDisplay(item, maxSignalCount);
+
+                  return (
+                    <TableRow key={`${item.d}-${rowDisplay.signalCount}`}>
+                      <TableCell>{item.d}</TableCell>
+                      <TableCell className="font-medium">{rowDisplay.priceLabel}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={rowDisplay.isStrongSignal ? 'default' : 'secondary'}
+                          className={rowDisplay.isStrongSignal ? 'bg-emerald-600 text-white hover:bg-emerald-600' : ''}
+                        >
+                          {rowDisplay.signalCount} / {rowDisplay.totalSignals}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{rowDisplay.scoreLabel}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-wrap gap-1">
+                          {rowDisplay.signalBadges.map((signal) => (
+                            <Badge key={`${item.d}-${signal}`} variant="outline" className="text-xs">
+                              {signal}
+                            </Badge>
+                          ))}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
 
