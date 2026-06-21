@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-interface IndicatorCardProps {
+export interface IndicatorCardProps {
   name: string;
   description: string;
   currentValue: number;
