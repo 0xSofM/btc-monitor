@@ -492,7 +492,7 @@ export function IndicatorCharts({
   };
 
   const renderMiniCards = () => (
-    <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+    <div className="mb-5 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
       {INDICATOR_ORDER.map((indicatorKey) => {
         const indicatorConfig = INDICATOR_CONFIG[indicatorKey];
         const points = miniSeriesMap[indicatorKey];
@@ -528,7 +528,7 @@ export function IndicatorCharts({
               {latest && typeof latest.value === 'number' ? formatNumber(latest.value) : '-'}
             </div>
 
-            <div className="h-16">
+            <div className="h-12">
               {points.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={points}>
@@ -896,8 +896,18 @@ export function IndicatorCharts({
         {renderMiniCards()}
 
         {!isDetailExpanded ? (
-          <div className="rounded-lg border bg-muted/30 px-3 py-4 text-sm text-muted-foreground">
-            点击任一指标小图表后展开完整历史大图表。
+          <div className="rounded-lg border border-orange-200 bg-orange-50 px-4 py-3 text-orange-900 shadow-sm dark:border-orange-900/70 dark:bg-orange-950/40 dark:text-orange-100">
+            <div className="flex flex-col gap-1 border-l-4 border-orange-500 pl-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-semibold">点击上方任一指标小图表</p>
+                <p className="text-xs text-orange-700 dark:text-orange-200">
+                  即可展开完整历史大图表，查看全周期趋势与信号点。
+                </p>
+              </div>
+              <span className="text-xs font-medium text-orange-700 dark:text-orange-200">
+                按需加载完整历史
+              </span>
+            </div>
           </div>
         ) : (
           <>
