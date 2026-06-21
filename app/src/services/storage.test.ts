@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { IndicatorData, LatestData } from '@/types';
 import { getLocalData, getLocalLatestData, saveLocalData } from '@/services/storage';
+import { buildHistoryPayloads } from '@/services/storageHistoryPayload';
 
 class QuotaStorage implements Storage {
   private values = new Map<string, string>();
@@ -367,5 +368,46 @@ describe('storage quota handling', () => {
 
     expect(getLocalLatestData()).toBeNull();
     expect(storage.getItem('btc_indicators_latest')).toBeNull();
+  });
+});
+
+describe('storage history payloads', () => {
+  it('caps persisted history payloads to the recent fallback window', () => {
+    const history = createHistoryRows(1500);
+    const [payload] = buildHistoryPayloads(history);
+
+    const storedHistory = JSON.parse(payload ?? '{}') as {
+      storedRows?: number;
+      truncated?: boolean;
+      data?: IndicatorData[];
+    };
+
+    expect(storedHistory.storedRows).toBe(900);
+    expect(storedHistory.truncated).toBe(true);
+    expect(storedHistory.data).toHaveLength(900);
+    expect(storedHistory.data?.[0]?.d).toBe(history[600]?.d);
+    expect(storedHistory.data?.at(-1)?.d).toBe(history.at(-1)?.d);
+  });
+
+  it('compacts history rows to core non-null fields', () => {
+    const rowWithEmptyValues = {
+      d: '2026-04-16',
+      btcPrice: 84000,
+      nupl: null,
+      lthMvrv: undefined,
+      priceMa200wRatio: 1.2,
+    } as unknown as IndicatorData;
+
+    const [payload] = buildHistoryPayloads([rowWithEmptyValues]);
+
+    const storedHistory = JSON.parse(payload ?? '{}') as {
+      data?: Array<Record<string, unknown>>;
+    };
+
+    expect(storedHistory.data?.[0]).toEqual({
+      d: '2026-04-16',
+      btcPrice: 84000,
+      priceMa200wRatio: 1.2,
+    });
   });
 });

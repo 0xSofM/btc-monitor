@@ -1,7 +1,6 @@
 import type { IndicatorData, LatestData } from '@/types';
 
 import { normalizeIndicatorData, normalizeLatestData } from './normalizers';
-import { CORE_HISTORY_FIELDS } from './schema';
 import { enrichLatestDataWithHistory, getLatestFromHistory } from './selectors';
 import {
   asRecord,
@@ -11,10 +10,10 @@ import {
   removeStoredValue,
   writeStoredValue,
 } from './storageEnvelope';
+import { buildHistoryPayloads } from './storageHistoryPayload';
 
 const HISTORY_KEY = 'btc_indicators_history';
 const LATEST_KEY = 'btc_indicators_latest';
-const MAX_PERSISTED_HISTORY_ROWS = 900;
 
 const storageWarnings = {
   latestQuota: false,
@@ -41,46 +40,6 @@ function warnStorageOnce(
   }
 
   console.warn(message, error);
-}
-
-function compactHistoryRow(row: IndicatorData): IndicatorData {
-  const compact: IndicatorData = { d: row.d };
-  const compactRecord = compact as unknown as Record<string, unknown>;
-
-  for (const field of CORE_HISTORY_FIELDS) {
-    const value = row[field];
-    if (value !== undefined && value !== null) {
-      compactRecord[field] = value;
-    }
-  }
-
-  return compact;
-}
-
-function buildHistoryRowLimits(totalRows: number): number[] {
-  if (totalRows <= 0) {
-    return [];
-  }
-
-  // Keep local history as a recent fallback; full history remains in memory after loading.
-  const targetRows = Math.min(totalRows, MAX_PERSISTED_HISTORY_ROWS);
-  const limits = new Set<number>([targetRows]);
-  let current = targetRows;
-
-  while (current > 365) {
-    current = Math.floor(current / 2);
-    if (current > 365) {
-      limits.add(current);
-    }
-  }
-
-  [365, 180, 90, 30].forEach((limit) => {
-    limits.add(Math.min(totalRows, limit));
-  });
-
-  return Array.from(limits)
-    .filter((limit) => limit > 0)
-    .sort((left, right) => right - left);
 }
 
 function persistLatest(storage: Storage, latest: LatestData): void {
@@ -121,15 +80,7 @@ function persistHistory(storage: Storage, history: IndicatorData[]): void {
     return;
   }
 
-  const limits = buildHistoryRowLimits(history.length);
-
-  for (const limit of limits) {
-    const rows = history.slice(-limit).map(compactHistoryRow);
-    const payload = JSON.stringify(buildStoredEnvelope(rows, {
-      storedRows: rows.length,
-      truncated: rows.length < history.length,
-    }));
-
+  for (const payload of buildHistoryPayloads(history)) {
     const result = writeStoredValue(storage, HISTORY_KEY, payload);
     if (result.ok) {
       return;
