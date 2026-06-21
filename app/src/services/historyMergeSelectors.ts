@@ -40,17 +40,32 @@ function getLatestHistoryMetricFields(
   };
 }
 
-export function latestDataToHistoryRow(
+function getLatestHistorySignalFields(
   latest: LatestData,
-  existingRow?: IndicatorData,
-): IndicatorData {
+  existingRow: IndicatorData | undefined,
+): Pick<
+  IndicatorData,
+  | 'signalPriceMa200w'
+  | 'signalPriceRealized'
+  | 'signalReserveRisk'
+  | 'signalReserveRiskV4'
+  | 'signalMvrvZscoreCore'
+  | 'signalNupl'
+  | 'signalNuplCore'
+  | 'signalValuationBlendV6'
+  | 'signalSthSopr'
+  | 'signalSthMvrv'
+  | 'signalSthGroup'
+  | 'signalLthMvrv'
+  | 'signalLthSopr'
+  | 'signalSthSoprTrigger'
+  | 'signalSthSoprAux'
+  | 'signalPuell'
+> {
   const signalsV4 = latest.signalsV4;
   const signalsV6 = latest.signalsV6;
 
   return {
-    ...existingRow,
-    d: latest.date,
-    ...getLatestHistoryMetricFields(latest, existingRow),
     signalPriceMa200w: signalsV4?.priceMa200w ?? latest.signals.priceMa200w,
     signalPriceRealized: signalsV4?.priceRealized ?? latest.signals.priceRealized,
     signalReserveRisk: latest.signals.reserveRisk,
@@ -71,6 +86,18 @@ export function latestDataToHistoryRow(
     signalSthSoprTrigger: signalsV6?.sthSoprTrigger ?? signalsV4?.sthSoprTrigger ?? existingRow?.signalSthSoprTrigger,
     signalSthSoprAux: existingRow?.signalSthSoprAux,
     signalPuell: signalsV6?.puell ?? signalsV4?.puell ?? latest.signals.puell,
+  };
+}
+
+export function latestDataToHistoryRow(
+  latest: LatestData,
+  existingRow?: IndicatorData,
+): IndicatorData {
+  return {
+    ...existingRow,
+    d: latest.date,
+    ...getLatestHistoryMetricFields(latest, existingRow),
+    ...getLatestHistorySignalFields(latest, existingRow),
     signalCount: latest.signalCount,
     signalCountV4: latest.signalCountV4 ?? existingRow?.signalCountV4,
     signalCountV6: latest.signalCountV6 ?? existingRow?.signalCountV6,
