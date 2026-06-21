@@ -82,6 +82,16 @@ function rememberLatestData(latest: LatestData, timestamp = Date.now()): LatestD
   return latest;
 }
 
+function rememberHistoryData(
+  history: IndicatorData[],
+  mode: Exclude<HistoryMode, 'none'>,
+): IndicatorData[] {
+  persistLocalData({ history });
+  cache.history = history;
+  cache.historyMode = mode;
+  return history;
+}
+
 export function hasCore8Coverage(rows: IndicatorData[]): boolean {
   if (!rows.length) {
     return false;
@@ -129,20 +139,14 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
       return cache.history;
     }
 
-    persistLocalData({ history });
-    cache.history = history;
-    cache.historyMode = loaded.mode;
-    return history;
+    return rememberHistoryData(history, loaded.mode);
   } catch (error) {
     console.error(`[DataService] Error fetching historical data (${plan.primaryPath}):`, error);
 
     try {
       const loaded = await fetchHistoryRows(plan.fallbackPath, plan.fallbackTimeoutMs, 'full');
       const history = mergeCachedLatestIntoHistory(loaded.rows);
-      persistLocalData({ history });
-      cache.history = history;
-      cache.historyMode = loaded.mode;
-      return history;
+      return rememberHistoryData(history, loaded.mode);
     } catch (fallbackError) {
       console.error(`[DataService] Error fetching fallback historical data (${plan.fallbackPath}):`, fallbackError);
     }
@@ -151,10 +155,7 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
       try {
         const loaded = await fetchHistoryRows(plan.legacyFullPath, plan.legacyFullTimeoutMs, 'full');
         const history = mergeCachedLatestIntoHistory(loaded.rows);
-        persistLocalData({ history });
-        cache.history = history;
-        cache.historyMode = loaded.mode;
-        return history;
+        return rememberHistoryData(history, loaded.mode);
       } catch (fallbackError) {
         console.error(`[DataService] Error fetching fallback full historical data (${plan.legacyFullPath}):`, fallbackError);
       }
