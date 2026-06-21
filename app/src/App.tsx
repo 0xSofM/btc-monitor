@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import { useTheme } from 'next-themes';
 
@@ -18,7 +18,7 @@ import { SectionLoader } from '@/components/SectionLoader';
 import { SignalOverview } from '@/components/SignalOverview';
 import { StatusStrip } from '@/components/StatusStrip';
 import { StrategyMnavCard } from '@/components/StrategyMnavCard';
-import type { LatestData, StrategyMnavData } from '@/types';
+import type { LatestData } from '@/types';
 import { buildDashboardDisplay } from './appDashboardSelectors';
 import type { AppTab, DataSource } from './appDisplay';
 import {
@@ -28,8 +28,8 @@ import {
 } from './appDisplay';
 import { loadDashboardLatestData } from './appLatestLoader';
 import { useDashboardHistory } from './useDashboardHistory';
+import { useStrategyMnavData } from './useStrategyMnavData';
 import {
-  fetchStrategyMnavData,
   mergeLatestIntoHistory,
 } from '@/services/dataService';
 
@@ -52,7 +52,6 @@ const IndicatorExplanationPanel = lazy(async () => {
 
 function App() {
   const [latestData, setLatestData] = useState<LatestData | null>(null);
-  const [strategyMnavData, setStrategyMnavData] = useState<StrategyMnavData | null>(null);
   const {
     historicalData,
     setHistoricalData,
@@ -63,6 +62,7 @@ function App() {
     loadHistory,
     loadHistoryFallback,
   } = useDashboardHistory();
+  const { strategyMnavData, loadStrategyMnav } = useStrategyMnavData();
   const [staticAlertDismissed, setStaticAlertDismissed] = useState(false);
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const [loading, setLoading] = useState(true);
@@ -70,18 +70,6 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [dataSource, setDataSource] = useState<DataSource>('static');
   const { theme, setTheme } = useTheme();
-
-  const loadStrategyMnav = useCallback(async (forceRefresh = false) => {
-    const data = await fetchStrategyMnavData(forceRefresh);
-    if (data) {
-      setStrategyMnavData(data);
-    }
-    return data;
-  }, []);
-
-  useEffect(() => {
-    void loadStrategyMnav(false);
-  }, [loadStrategyMnav]);
 
   const applyLatestData = (data: LatestData, source: DataSource) => {
     setLatestData(data);
