@@ -25,6 +25,7 @@ import {
   loadRuntimeLatestData,
   loadStaticLatestData,
 } from './latestDataLoader';
+import { loadLocalLatestFallback } from './latestFallbackLoader';
 import { loadDataManifest, loadStrategyMnavData } from './metadataDataLoader';
 import { CORE8_COVERAGE_FIELDS } from './schema';
 import {
@@ -166,18 +167,11 @@ export async function fetchStaticLatestData(options: FetchStaticLatestOptions = 
     return rememberLatestData(latest, now);
   } catch (error) {
     console.error('[DataService] Error fetching latest static data:', error);
-
-    const localLatest = readLocalLatestData();
-    if (!localLatest) {
-      return null;
-    }
-
-    if (!enrichWithHistory) {
-      return localLatest;
-    }
-
-    const localHistory = readLocalData();
-    return enrichLatestWithOptionalHistory(localLatest, localHistory);
+    return loadLocalLatestFallback({
+      enrichWithHistory,
+      readLocalLatest: readLocalLatestData,
+      readLocalHistory: readLocalData,
+    });
   }
 }
 
