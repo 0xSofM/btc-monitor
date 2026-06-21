@@ -28,6 +28,17 @@ function getThresholdRange(
   };
 }
 
+function getObservedValue(
+  value: number | null | undefined,
+  observedDate: string | undefined,
+  rowDate: string,
+): number | null {
+  const hasObservedDate = typeof observedDate === 'string' && observedDate.length > 0;
+  return hasObservedDate
+    ? (observedDate === rowDate ? (value ?? null) : null)
+    : (value ?? null);
+}
+
 export function filterDataByTimeRange(data: IndicatorData[], range: TimeRange): IndicatorData[] {
   if (range === 'all') {
     return data;
@@ -73,11 +84,7 @@ export function getIndicatorChartData(
           DEFAULT_THRESHOLDS.reserveRisk,
           DEFAULT_DEEP_THRESHOLDS.reserveRisk,
         );
-        const observedDate = item.indicatorDates?.reserveRisk;
-        const hasObservedDate = typeof observedDate === 'string' && observedDate.length > 0;
-        value = hasObservedDate
-          ? (observedDate === item.d ? (item.reserveRisk ?? null) : null)
-          : (item.reserveRisk ?? null);
+        value = getObservedValue(item.reserveRisk, item.indicatorDates?.reserveRisk, item.d);
         triggerValue = threshold.trigger;
         deepValue = threshold.deep;
         signal = item.signalReserveRisk ?? item.signalReserveRiskV4 ?? false;
@@ -103,11 +110,7 @@ export function getIndicatorChartData(
           DEFAULT_THRESHOLDS.mvrvZscore,
           DEFAULT_DEEP_THRESHOLDS.mvrvZscore,
         );
-        const observedDate = item.indicatorDates?.mvrvZscore;
-        const hasObservedDate = typeof observedDate === 'string' && observedDate.length > 0;
-        value = hasObservedDate
-          ? (observedDate === item.d ? (item.mvrvZscore ?? null) : null)
-          : (item.mvrvZscore ?? null);
+        value = getObservedValue(item.mvrvZscore, item.indicatorDates?.mvrvZscore, item.d);
         triggerValue = threshold.trigger;
         deepValue = threshold.deep;
         signal = item.signalMvrvZscoreCore ?? item.signalReserveRiskV4 ?? item.signalMvrvZ ?? false;
@@ -121,11 +124,7 @@ export function getIndicatorChartData(
           DEFAULT_THRESHOLDS.nupl,
           DEFAULT_DEEP_THRESHOLDS.nupl,
         );
-        const observedDate = item.indicatorDates?.nupl;
-        const hasObservedDate = typeof observedDate === 'string' && observedDate.length > 0;
-        value = hasObservedDate
-          ? (observedDate === item.d ? (item.nupl ?? null) : null)
-          : (item.nupl ?? null);
+        value = getObservedValue(item.nupl, item.indicatorDates?.nupl, item.d);
         triggerValue = threshold.trigger;
         deepValue = threshold.deep;
         signal = item.signalNuplCore ?? item.signalNupl ?? false;
