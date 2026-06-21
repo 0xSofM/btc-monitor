@@ -45,3 +45,35 @@ export function getCachedDataStatus(now = Date.now()): {
     lastUpdate: cache.latest?.date ?? null,
   };
 }
+
+export async function loadCachedResource<T>({
+  forceRefresh,
+  cachedValue,
+  cachedTimestamp,
+  durationMs,
+  load,
+  remember,
+  onError,
+}: {
+  forceRefresh: boolean;
+  cachedValue: T | null;
+  cachedTimestamp: number;
+  durationMs: number;
+  load: () => Promise<T>;
+  remember: (value: T, timestamp: number) => void;
+  onError: (error: unknown) => void;
+}): Promise<T | null> {
+  const now = Date.now();
+  if (!forceRefresh && cachedValue && isTimestampFresh(cachedTimestamp, now, durationMs)) {
+    return cachedValue;
+  }
+
+  try {
+    const value = await load();
+    remember(value, now);
+    return value;
+  } catch (error) {
+    onError(error);
+    return cachedValue;
+  }
+}

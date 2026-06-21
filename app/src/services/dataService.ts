@@ -10,6 +10,7 @@ import {
   cache,
   getCachedDataStatus,
   isTimestampFresh,
+  loadCachedResource,
 } from './dataCache';
 import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions, HistoryMode } from './contracts';
 import { checkRemoteDataSources } from './dataSourceHealth';
@@ -84,20 +85,20 @@ export function hasCore8Coverage(rows: IndicatorData[]): boolean {
 }
 
 export async function fetchDataManifest(forceRefresh = false): Promise<DataManifest | null> {
-  const now = Date.now();
-  if (!forceRefresh && cache.manifest && isTimestampFresh(cache.manifestTimestamp, now, MANIFEST_CACHE_DURATION)) {
-    return cache.manifest;
-  }
-
-  try {
-    const manifest = await loadDataManifest();
-    cache.manifest = manifest;
-    cache.manifestTimestamp = now;
-    return manifest;
-  } catch (error) {
-    console.error('[DataService] Error fetching manifest:', error);
-    return cache.manifest;
-  }
+  return loadCachedResource({
+    forceRefresh,
+    cachedValue: cache.manifest,
+    cachedTimestamp: cache.manifestTimestamp,
+    durationMs: MANIFEST_CACHE_DURATION,
+    load: loadDataManifest,
+    remember: (manifest, timestamp) => {
+      cache.manifest = manifest;
+      cache.manifestTimestamp = timestamp;
+    },
+    onError: (error) => {
+      console.error('[DataService] Error fetching manifest:', error);
+    },
+  });
 }
 
 export async function fetchHistoricalData(options: FetchHistoricalOptions = {}): Promise<IndicatorData[]> {
@@ -134,20 +135,20 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
 }
 
 export async function fetchStrategyMnavData(forceRefresh = false): Promise<StrategyMnavData | null> {
-  const now = Date.now();
-  if (!forceRefresh && cache.strategyMnav && isTimestampFresh(cache.strategyMnavTimestamp, now, MANIFEST_CACHE_DURATION)) {
-    return cache.strategyMnav;
-  }
-
-  try {
-    const data = await loadStrategyMnavData();
-    cache.strategyMnav = data;
-    cache.strategyMnavTimestamp = now;
-    return data;
-  } catch (error) {
-    console.error('[DataService] Error fetching Strategy mNAV data:', error);
-    return cache.strategyMnav;
-  }
+  return loadCachedResource({
+    forceRefresh,
+    cachedValue: cache.strategyMnav,
+    cachedTimestamp: cache.strategyMnavTimestamp,
+    durationMs: MANIFEST_CACHE_DURATION,
+    load: loadStrategyMnavData,
+    remember: (data, timestamp) => {
+      cache.strategyMnav = data;
+      cache.strategyMnavTimestamp = timestamp;
+    },
+    onError: (error) => {
+      console.error('[DataService] Error fetching Strategy mNAV data:', error);
+    },
+  });
 }
 
 export async function fetchStaticLatestData(options: FetchStaticLatestOptions = {}): Promise<LatestData | null> {
