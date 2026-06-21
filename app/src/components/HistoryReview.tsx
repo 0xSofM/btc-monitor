@@ -6,10 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import type { IndicatorData } from '@/types';
 import { HistoryReviewFilters } from './HistoryReviewFilters';
+import { HistoryReviewSummary } from './HistoryReviewSummary';
 import {
   DEFAULT_MIN_SIGNALS,
   filterHistoryRows,
-  formatPrice,
   getDateRange,
   getHistoryRowDisplay,
   getMaxSignalCount,
@@ -84,27 +84,7 @@ export function HistoryReview({ data }: HistoryReviewProps) {
           </section>
         )}
 
-        <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <article className="rounded-xl border bg-background/70 p-4">
-            <p className="text-sm text-muted-foreground">命中天数</p>
-            <p className="text-2xl font-bold">{filteredData.length}</p>
-          </article>
-
-          <article className="rounded-xl border bg-background/70 p-4">
-            <p className="text-sm text-muted-foreground">最低价格</p>
-            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(filteredHistory.minPrice) : '-'}</p>
-          </article>
-
-          <article className="rounded-xl border bg-background/70 p-4">
-            <p className="text-sm text-muted-foreground">最高价格</p>
-            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(filteredHistory.maxPrice) : '-'}</p>
-          </article>
-
-          <article className="rounded-xl border bg-background/70 p-4">
-            <p className="text-sm text-muted-foreground">平均价格</p>
-            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(filteredHistory.avgPrice) : '-'}</p>
-          </article>
-        </section>
+        <HistoryReviewSummary filteredHistory={filteredHistory} />
 
         {filteredData.length > 0 ? (
           <section className="overflow-x-auto rounded-xl border">
