@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import type { IndicatorData } from '@/types';
 import { INDICATOR_CONFIG, getIndicatorChartData, getMA200ChartData } from '@/services/dataService';
 import type { DetailSeriesPoint, IndicatorType, MaSeriesPoint, SignalMarkerPlan } from './indicatorChartUtils';
+import { IndicatorChartLegend } from './IndicatorChartLegend';
 import { IndicatorChartsHeader } from './IndicatorChartsHeader';
 import { FullHistoryPrompt } from './FullHistoryPrompt';
 import { IndicatorTooltip } from './IndicatorChartOverlay';
@@ -24,9 +25,6 @@ import {
   CHART_FLOOR_CONFIG,
   INDICATOR_ORDER,
   RANGE_DAYS,
-  SIGNAL_MARKER_FILL,
-  SIGNAL_MARKER_INNER_FILL,
-  SIGNAL_MARKER_STROKE,
   TIME_RANGES,
   buildSignalMarkerPlan,
   buildThresholdDescription,
@@ -523,62 +521,14 @@ export function IndicatorCharts({
 
                 {activeIndicator === 'priceMa200w' ? renderPriceChart() : renderIndicatorChart()}
 
-                <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <div className="h-3 w-3 rounded-full" style={{ backgroundColor: config.color }} />
-                    <span>{config.name}</span>
-                  </div>
-
-                  {activeIndicator === 'priceMa200w' ? (
-                    <>
-                      <div className="flex items-center gap-1">
-                        <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #3B82F6' }} />
-                        <span>200W-MA</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span
-                          className="h-3 w-3 rounded-full border"
-                          style={{
-                            backgroundColor: SIGNAL_MARKER_FILL,
-                            borderColor: SIGNAL_MARKER_STROKE,
-                            boxShadow: `inset 0 0 0 3px ${SIGNAL_MARKER_INNER_FILL}`,
-                          }}
-                        />
-                        <span>跌破 200W-MA 信号点</span>
-                      </div>
-                      <span className="rounded-full bg-muted px-2 py-0.5">
-                        {signalMarkerPlan.totalCount} 个信号
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex items-center gap-1">
-                        <div className="h-0.5 w-4" style={{ borderTop: `2px dashed ${BTC_PRICE_COMPARE_COLOR}` }} />
-                        <span>BTC Price（右轴）</span>
-                      </div>
-                      {showThresholds && (
-                        <div className="flex items-center gap-1">
-                          <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #10B981' }} />
-                          <span>触发阈值线（{thresholdDescription}）</span>
-                        </div>
-                      )}
-                      <div className="flex items-center gap-1">
-                        <span
-                          className="h-3 w-3 rounded-full border"
-                          style={{
-                            backgroundColor: SIGNAL_MARKER_FILL,
-                            borderColor: SIGNAL_MARKER_STROKE,
-                            boxShadow: `inset 0 0 0 3px ${SIGNAL_MARKER_INNER_FILL}`,
-                          }}
-                        />
-                        <span>信号点</span>
-                      </div>
-                      <span className="rounded-full bg-muted px-2 py-0.5">
-                        {signalMarkerPlan.totalCount} 个信号
-                      </span>
-                    </>
-                  )}
-                </div>
+                <IndicatorChartLegend
+                  activeIndicator={activeIndicator}
+                  indicatorName={config.name}
+                  indicatorColor={config.color}
+                  showThresholds={showThresholds}
+                  signalCount={signalMarkerPlan.totalCount}
+                  thresholdDescription={thresholdDescription}
+                />
               </>
             )}
           </>
