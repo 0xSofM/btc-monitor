@@ -30,6 +30,7 @@ type DetailSeriesPoint = {
   date: string;
   time?: number;
   value: number | null;
+  signalValue?: number | null;
   triggerValue?: number | null;
   deepValue?: number | null;
   signal: boolean;
@@ -40,6 +41,7 @@ type MaSeriesPoint = {
   date: string;
   time?: number;
   price: number;
+  signalValue?: number | null;
   ma200: number | null;
   signal: boolean;
 };
@@ -292,10 +294,6 @@ function buildSignalMarkerPlan<T>(
   };
 }
 
-function renderHiddenSignalDot(key: string, cx: number, cy: number) {
-  return <circle key={key} cx={cx} cy={cy} r={0} fill="transparent" />;
-}
-
 function renderSignalMarker(key: string, cx: number, cy: number, compact: boolean) {
   const outerRadius = compact ? 4 : 4.8;
   const innerRadius = compact ? 1.7 : 2.15;
@@ -313,6 +311,10 @@ function renderSignalMarker(key: string, cx: number, cy: number, compact: boolea
       <circle cx={cx} cy={cy} r={innerRadius} fill={SIGNAL_MARKER_INNER_FILL} />
     </g>
   );
+}
+
+function renderSkippedSignalMarker(key: string) {
+  return <g key={key} />;
 }
 
 function IndicatorTooltip({
@@ -373,14 +375,19 @@ export function IndicatorCharts({
   const [brushKey, setBrushKey] = useState(0);
 
   const detailSeries = useMemo(() => {
-    const withTime = <T extends { date: string }>(points: T[]): Array<T & { time: number }> =>
-      points.map((point) => ({ ...point, time: parseDateMs(point.date) }));
-
     if (activeIndicator === 'priceMa200w') {
-      return withTime(getMA200ChartData(data, 'all')) as MaSeriesPoint[];
+      return getMA200ChartData(data, 'all').map((point) => ({
+        ...point,
+        time: parseDateMs(point.date),
+        signalValue: point.signal ? point.price : null,
+      })) as MaSeriesPoint[];
     }
 
-    return withTime(getIndicatorChartData(data, activeIndicator, 'all')) as DetailSeriesPoint[];
+    return getIndicatorChartData(data, activeIndicator, 'all').map((point) => ({
+      ...point,
+      time: parseDateMs(point.date),
+      signalValue: point.signal && typeof point.value === 'number' ? point.value : null,
+    })) as DetailSeriesPoint[];
   }, [activeIndicator, data]);
 
   const miniSeriesMap = useMemo(() => {
@@ -414,9 +421,44 @@ export function IndicatorCharts({
   const resolvedStartIndex = totalPoints > 0
     ? Math.min(brushStartIndex, resolvedEndIndex)
     : 0;
-  const signalMarkerSummary = useMemo(() => {
+  const visibleDetailSeries = useMemo(() => (
+    totalPoints > 0 ? detailSeries.slice(resolvedStartIndex, resolvedEndIndex + 1) : []
+  ), [detailSeries, resolvedEndIndex, resolvedStartIndex, totalPoints]);
+  const chartDomains = useMemo(() => {
+    if (activeIndicator === 'priceMa200w') {
+      const visibleValues = (visibleDetailSeries as MaSeriesPoint[])
+        .flatMap((row) => [row.price, row.ma200])
+        .filter((value): value is number => typeof value === 'number' && Number.isFinite(value) && value > 0);
+      const valueDomain = getPaddedDomain(visibleValues, 0.06, 0);
+
+      return {
+        valueDomain,
+        priceDomain: valueDomain,
+      };
+    }
+
+    const visibleIndicatorSeries = visibleDetailSeries as DetailSeriesPoint[];
+    const values = visibleIndicatorSeries
+      .flatMap((row) => [row.value, row.triggerValue])
+      .filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
+    const priceValues = visibleIndicatorSeries
+      .map((row) => row.btcPrice)
+      .filter((value): value is number => typeof value === 'number' && Number.isFinite(value) && value > 0);
+    const dataMin = values.length ? Math.min(...values) : 0;
+    const dataMax = values.length ? Math.max(...values) : 0;
+    const padding = (dataMax - dataMin) * 0.12 || 0.5;
+
+    return {
+      valueDomain: [
+        Math.min(dataMin - padding, CHART_FLOOR_CONFIG[activeIndicator]),
+        dataMax + padding,
+      ] as [number, number],
+      priceDomain: getPaddedDomain(priceValues, 0.06, 0),
+    };
+  }, [activeIndicator, visibleDetailSeries]);
+  const signalMarkerPlan = useMemo<SignalMarkerPlan>(() => {
     if (!totalPoints) {
-      return { totalCount: 0, compact: false };
+      return { keys: new Set<string>(), totalCount: 0, compact: false };
     }
 
     if (activeIndicator === 'priceMa200w') {
@@ -583,19 +625,7 @@ export function IndicatorCharts({
       return <div className="flex h-[420px] items-center justify-center text-muted-foreground">暂无 MA200 数据</div>;
     }
 
-    const visible = series.slice(resolvedStartIndex, resolvedEndIndex + 1);
-    const visibleValues = visible
-      .flatMap((row) => [row.price, row.ma200])
-      .filter((value): value is number => typeof value === 'number' && Number.isFinite(value) && value > 0);
-
-    const [domainMin, domainMax] = getPaddedDomain(visibleValues, 0.06, 0);
-    const signalMarkerPlan = buildSignalMarkerPlan(
-      series,
-      resolvedStartIndex,
-      resolvedEndIndex,
-      (point) => point.signal,
-      (point) => point.date,
-    );
+    const [domainMin, domainMax] = chartDomains.valueDomain;
 
     return (
       <ResponsiveContainer width="100%" height={420}>
@@ -634,7 +664,7 @@ export function IndicatorCharts({
           <Line
             yAxisId="left"
             type="monotone"
-            dataKey="price"
+            dataKey="signalValue"
             name="跌破 200W-MA 信号点"
             stroke="transparent"
             strokeWidth={0}
@@ -646,7 +676,7 @@ export function IndicatorCharts({
               const key = payload?.date ?? (index >= 0 ? String(index) : `${cx}-${cy}`);
 
               if (!signalMarkerPlan.keys.has(key)) {
-                return renderHiddenSignalDot(`price-ma200-signal-hidden-${key}`, cx, cy);
+                return renderSkippedSignalMarker(`price-ma200-signal-hidden-${key}`);
               }
 
               return renderSignalMarker(
@@ -693,26 +723,8 @@ export function IndicatorCharts({
       return <div className="flex h-[420px] items-center justify-center text-muted-foreground">暂无指标数据</div>;
     }
 
-    const visible = series.slice(resolvedStartIndex, resolvedEndIndex + 1);
-    const values = visible
-      .flatMap((row) => [row.value, row.triggerValue])
-      .filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
-    const priceValues = visible
-      .map((row) => row.btcPrice)
-      .filter((value): value is number => typeof value === 'number' && Number.isFinite(value) && value > 0);
-    const dataMin = values.length ? Math.min(...values) : 0;
-    const dataMax = values.length ? Math.max(...values) : 0;
-    const padding = (dataMax - dataMin) * 0.12 || 0.5;
-    const yMin = Math.min(dataMin - padding, CHART_FLOOR_CONFIG[activeIndicator]);
-    const yMax = dataMax + padding;
-    const [priceYMin, priceYMax] = getPaddedDomain(priceValues, 0.06, 0);
-    const signalMarkerPlan = buildSignalMarkerPlan(
-      series,
-      resolvedStartIndex,
-      resolvedEndIndex,
-      (point) => point.signal && typeof point.value === 'number',
-      (point) => point.date,
-    );
+    const [yMin, yMax] = chartDomains.valueDomain;
+    const [priceYMin, priceYMax] = chartDomains.priceDomain;
 
     return (
       <ResponsiveContainer width="100%" height={420}>
@@ -783,7 +795,7 @@ export function IndicatorCharts({
           <Line
             yAxisId="indicator"
             type="monotone"
-            dataKey="value"
+            dataKey="signalValue"
             name="信号点"
             stroke="transparent"
             strokeWidth={0}
@@ -796,7 +808,7 @@ export function IndicatorCharts({
               const key = payload?.date ?? (index >= 0 ? String(index) : `${cx}-${cy}`);
 
               if (!signalMarkerPlan.keys.has(key)) {
-                return renderHiddenSignalDot(`indicator-signal-hidden-${key}`, cx, cy);
+                return renderSkippedSignalMarker(`indicator-signal-hidden-${key}`);
               }
 
               return renderSignalMarker(
@@ -985,7 +997,7 @@ export function IndicatorCharts({
                         <span>跌破 200W-MA 信号点</span>
                       </div>
                       <span className="rounded-full bg-muted px-2 py-0.5">
-                        {signalMarkerSummary.totalCount} 个信号
+                        {signalMarkerPlan.totalCount} 个信号
                       </span>
                     </>
                   ) : (
@@ -1012,7 +1024,7 @@ export function IndicatorCharts({
                         <span>信号点</span>
                       </div>
                       <span className="rounded-full bg-muted px-2 py-0.5">
-                        {signalMarkerSummary.totalCount} 个信号
+                        {signalMarkerPlan.totalCount} 个信号
                       </span>
                     </>
                   )}
