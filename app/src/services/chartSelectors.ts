@@ -1,32 +1,9 @@
-import type { ChartDataPoint, IndicatorData, LatestData, TimeRange } from '@/types';
+import type { ChartDataPoint, IndicatorData, TimeRange } from '@/types';
 
 import type { IndicatorKey } from './contracts';
 import { DEFAULT_DEEP_THRESHOLDS, DEFAULT_THRESHOLDS, TIME_RANGE_MS } from './indicatorConfig';
 import { hasUsableValue, toFiniteNumber } from './normalizers';
-
-function toNumericPrice(value: number | string | undefined): number {
-  return toFiniteNumber(value, 0);
-}
-
-function getThresholdRange(
-  thresholds: LatestData['thresholds'] | IndicatorData['thresholds'],
-  key: string,
-  fallbackTrigger: number,
-  fallbackDeep: number,
-): { trigger: number; deep: number } {
-  const threshold = thresholds?.[key];
-
-  return {
-    trigger:
-      typeof threshold?.trigger === 'number' && Number.isFinite(threshold.trigger)
-        ? threshold.trigger
-        : fallbackTrigger,
-    deep:
-      typeof threshold?.deep === 'number' && Number.isFinite(threshold.deep)
-        ? threshold.deep
-        : fallbackDeep,
-  };
-}
+import { getThresholdRange, toNumericPrice } from './thresholdSelectors';
 
 function getObservedValue(
   value: number | null | undefined,

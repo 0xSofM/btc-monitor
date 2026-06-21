@@ -1,34 +1,12 @@
-import type { IndicatorData, LatestData } from '@/types';
+import type { IndicatorData } from '@/types';
 
 import {
   DEFAULT_DEEP_THRESHOLDS,
   DEFAULT_THRESHOLDS,
 } from './indicatorConfig';
-import { toFiniteNumber } from './normalizers';
+import { getThresholdRange, toNumericPrice } from './thresholdSelectors';
 
-export function toNumericPrice(value: number | string | undefined): number {
-  return toFiniteNumber(value, 0);
-}
-
-function getThresholdRange(
-  thresholds: LatestData['thresholds'] | IndicatorData['thresholds'],
-  key: string,
-  fallbackTrigger: number,
-  fallbackDeep: number,
-): { trigger: number; deep: number } {
-  const threshold = thresholds?.[key];
-
-  return {
-    trigger:
-      typeof threshold?.trigger === 'number' && Number.isFinite(threshold.trigger)
-        ? threshold.trigger
-        : fallbackTrigger,
-    deep:
-      typeof threshold?.deep === 'number' && Number.isFinite(threshold.deep)
-        ? threshold.deep
-        : fallbackDeep,
-  };
-}
+export { toNumericPrice };
 
 export function getLatestHistoryThresholds(thresholds: IndicatorData['thresholds']) {
   return {
