@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AppFooter } from '@/components/AppFooter';
 import { AppHeader } from '@/components/AppHeader';
+import { DataModeAlerts } from '@/components/DataModeAlerts';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { MarketAssessmentCard } from '@/components/MarketAssessmentCard';
 import { SignalOverview } from '@/components/SignalOverview';
@@ -474,32 +475,12 @@ function App() {
                 </Alert>
               )}
 
-              {dataSource === 'static' && latestData && !staticAlertDismissed && (
-                <Alert className="relative border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
-                  <AlertTriangle className="h-4 w-4 text-blue-600" />
-                  <AlertTitle className="text-blue-800 dark:text-blue-200">本地数据模式</AlertTitle>
-                  <AlertDescription className="text-blue-700 dark:text-blue-300">
-                    当前展示本地数据文件中的最新记录。
-                  </AlertDescription>
-                  <button
-                    onClick={() => setStaticAlertDismissed(true)}
-                    className="absolute right-3 top-3 text-blue-500 hover:text-blue-700"
-                    aria-label="关闭"
-                  >
-                    ×
-                  </button>
-                </Alert>
-              )}
-
-              {dataSource === 'history' && latestData && (
-                <Alert className="border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950">
-                  <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                  <AlertTitle className="text-yellow-800 dark:text-yellow-200">历史数据模式</AlertTitle>
-                  <AlertDescription className="text-yellow-700 dark:text-yellow-300">
-                    当前展示历史数据中的最新记录。
-                  </AlertDescription>
-                </Alert>
-              )}
+              <DataModeAlerts
+                dataSource={dataSource}
+                hasLatestData={Boolean(latestData)}
+                staticAlertDismissed={staticAlertDismissed}
+                onDismissStaticAlert={() => setStaticAlertDismissed(true)}
+              />
 
               {loading && !latestData && (
                 <div className="surface-card flex flex-col items-center justify-center py-14">
