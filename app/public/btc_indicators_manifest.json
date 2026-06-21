@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-06-21T14:30:57.962434+00:00",
+  "generatedAt": "2026-06-21T19:59:37.449389+00:00",
   "latestDate": "2026-06-21",
-  "lastUpdated": "2026-06-21T14:30:57.936584+00:00",
+  "lastUpdated": "2026-06-21T19:59:37.422203+00:00",
   "historyRows": 5500,
   "historyLightRows": 889,
   "historyFiles": {
@@ -162,6 +162,96 @@
     "primaryTrailingNullDays": 0,
     "sourceMode": null
   },
+  "sourceHealth": {
+    "btc_price": {
+      "source": "https://charts.bgeometrics.com/files/moving_average_price.json + live (blockchain_info_stats)",
+      "rows": 5500,
+      "nonNullRows": 5076,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "realized_price": {
+      "source": "https://charts.bgeometrics.com/files/realized_price.json",
+      "rows": 5500,
+      "nonNullRows": 5488,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-20",
+      "status": "healthy"
+    },
+    "lth_mvrv": {
+      "source": "https://charts.bgeometrics.com/files/lth_mvrv.json",
+      "rows": 5500,
+      "nonNullRows": 5274,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-20",
+      "status": "healthy"
+    },
+    "mvrv_zscore": {
+      "source": "https://charts.bgeometrics.com/files/mvrv_zscore_data.json",
+      "rows": 5500,
+      "nonNullRows": 5273,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-20",
+      "status": "healthy"
+    },
+    "nupl": {
+      "source": "https://charts.bgeometrics.com/files/nupl_data.json + https://bitcoin-data.com/v1/nupl + https://bitcoin-data.com/v1/nupl/1",
+      "rows": 5500,
+      "nonNullRows": 4919,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-20",
+      "status": "healthy"
+    },
+    "sth_sopr": {
+      "source": "https://charts.bgeometrics.com/files/sth_sopr.json",
+      "rows": 5500,
+      "nonNullRows": 5270,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-20",
+      "status": "healthy"
+    },
+    "sth_mvrv": {
+      "source": "https://charts.bgeometrics.com/files/sth_mvrv.json",
+      "rows": 5500,
+      "nonNullRows": 4907,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-20",
+      "status": "healthy"
+    },
+    "lth_sopr": {
+      "source": "https://charts.bgeometrics.com/files/lth_sopr.json",
+      "rows": 5500,
+      "nonNullRows": 5270,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-20",
+      "status": "healthy"
+    },
+    "puell_multiple": {
+      "source": "https://charts.bgeometrics.com/files/puell_multiple_data.json",
+      "rows": 5500,
+      "nonNullRows": 5140,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-20",
+      "status": "healthy"
+    },
+    "ma200w": {
+      "source": "self_computed_from_btc_price",
+      "rows": 5500,
+      "nonNullRows": 4712,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "reserve_risk": {
+      "source": "https://bitcoin-data.com/v1/reserve-risk + legacy_bridge(https://charts.bgeometrics.com/files/reserve_risk.json < 2022-06-21)",
+      "rows": 5500,
+      "nonNullRows": 5285,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-20",
+      "status": "healthy"
+    }
+  },
   "dataHealth": {
     "indicatorLagDays": {
       "btcPrice": 0.0,
@@ -293,101 +383,11 @@
     "formula": "enterpriseValueUsd / btcReserveUsd",
     "latestDate": "2026-06-21",
     "historyRows": 2,
-    "mnav": 1.1306,
+    "mnav": 1.1271,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
     "mstrTimestampUtc": "2026-06-18T20:00:00",
-    "btcTimestamp": "2026-06-21T14:30:00"
-  },
-  "sourceHealth": {
-    "btc_price": {
-      "source": null,
-      "rows": 5500,
-      "nonNullRows": 5086,
-      "latestDate": "2026-06-21",
-      "latestNonNullDate": "2026-06-21",
-      "status": "healthy"
-    },
-    "ma200w": {
-      "source": null,
-      "rows": 5500,
-      "nonNullRows": 4722,
-      "latestDate": "2026-06-21",
-      "latestNonNullDate": "2026-06-21",
-      "status": "healthy"
-    },
-    "realized_price": {
-      "source": null,
-      "rows": 5500,
-      "nonNullRows": 5500,
-      "latestDate": "2026-06-21",
-      "latestNonNullDate": "2026-06-21",
-      "status": "healthy"
-    },
-    "reserve_risk": {
-      "source": null,
-      "rows": 5500,
-      "nonNullRows": 5286,
-      "latestDate": "2026-06-21",
-      "latestNonNullDate": "2026-06-21",
-      "status": "healthy"
-    },
-    "lth_mvrv": {
-      "source": null,
-      "rows": 5500,
-      "nonNullRows": 5286,
-      "latestDate": "2026-06-21",
-      "latestNonNullDate": "2026-06-21",
-      "status": "healthy"
-    },
-    "lth_sopr": {
-      "source": null,
-      "rows": 5500,
-      "nonNullRows": 5286,
-      "latestDate": "2026-06-21",
-      "latestNonNullDate": "2026-06-21",
-      "status": "healthy"
-    },
-    "mvrv_zscore": {
-      "source": null,
-      "rows": 5500,
-      "nonNullRows": 5286,
-      "latestDate": "2026-06-21",
-      "latestNonNullDate": "2026-06-21",
-      "status": "healthy"
-    },
-    "nupl": {
-      "source": null,
-      "rows": 5500,
-      "nonNullRows": 4920,
-      "latestDate": "2026-06-21",
-      "latestNonNullDate": "2026-06-21",
-      "status": "healthy"
-    },
-    "sth_sopr": {
-      "source": null,
-      "rows": 5500,
-      "nonNullRows": 5286,
-      "latestDate": "2026-06-21",
-      "latestNonNullDate": "2026-06-21",
-      "status": "healthy"
-    },
-    "sth_mvrv": {
-      "source": null,
-      "rows": 5500,
-      "nonNullRows": 4919,
-      "latestDate": "2026-06-21",
-      "latestNonNullDate": "2026-06-21",
-      "status": "healthy"
-    },
-    "puell_multiple": {
-      "source": null,
-      "rows": 5500,
-      "nonNullRows": 5151,
-      "latestDate": "2026-06-21",
-      "latestNonNullDate": "2026-06-21",
-      "status": "healthy"
-    }
+    "btcTimestamp": "2026-06-21T19:59:00"
   }
 }
