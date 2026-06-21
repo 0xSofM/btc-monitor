@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useDeferredValue, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import {
   AlertTriangle,
@@ -213,45 +213,69 @@ function App() {
   const [strategyMnavData, setStrategyMnavData] = useState<StrategyMnavData | null>(null);
   const [historicalData, setHistoricalData] = useState<IndicatorData[]>([]);
   const [historyMode, setHistoryMode] = useState<HistoryMode>('none');
+  const historyModeRef = useRef<HistoryMode>('none');
+  const historyLoadingModesRef = useRef<Set<HistoryMode>>(new Set());
   const deferredHistoricalData = useDeferredValue(historicalData);
   const [staticAlertDismissed, setStaticAlertDismissed] = useState(false);
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
-  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
+  const [historyLoadingModes, setHistoryLoadingModes] = useState<HistoryMode[]>([]);
   const [loading, setLoading] = useState(true);
   const [dataTimestampLabel, setDataTimestampLabel] = useState('-');
   const [error, setError] = useState<string | null>(null);
   const [dataSource, setDataSource] = useState<DataSource>('static');
   const { theme, setTheme } = useTheme();
+  const isHistoryLoading = historyLoadingModes.length > 0;
+  const isFullHistoryLoading = historyLoadingModes.includes('full');
+
+  useEffect(() => {
+    historyModeRef.current = historyMode;
+  }, [historyMode]);
+
+  const beginHistoryLoad = useCallback((mode: HistoryMode) => {
+    historyLoadingModesRef.current.add(mode);
+    setHistoryLoadingModes(Array.from(historyLoadingModesRef.current));
+  }, []);
+
+  const endHistoryLoad = useCallback((mode: HistoryMode) => {
+    historyLoadingModesRef.current.delete(mode);
+    setHistoryLoadingModes(Array.from(historyLoadingModesRef.current));
+  }, []);
 
   const loadHistory = useCallback(async (forceRefresh = false, full = false) => {
     const targetMode: HistoryMode = full ? 'full' : 'light';
     if (
       !forceRefresh
       && historicalData.length > 0
-      && (historyMode === targetMode || historyMode === 'full')
+      && (historyModeRef.current === targetMode || historyModeRef.current === 'full')
     ) {
       return historicalData;
     }
 
-    if (isHistoryLoading) {
+    if (
+      historyLoadingModesRef.current.has(targetMode)
+      || (targetMode === 'light' && historyLoadingModesRef.current.has('full'))
+    ) {
       return historicalData;
     }
 
-    setIsHistoryLoading(true);
+    beginHistoryLoad(targetMode);
     try {
       const data = await fetchHistoricalData({ forceRefresh, full });
       if (data.length > 0) {
-        setHistoricalData(data);
-        setHistoryMode(targetMode);
+        if (targetMode === 'full' || historyModeRef.current !== 'full') {
+          historyModeRef.current = targetMode;
+          setHistoricalData(data);
+          setHistoryMode(targetMode);
+        }
       }
       return data;
     } catch (err) {
       console.error('Error loading history:', err);
       return historicalData;
     } finally {
-      setIsHistoryLoading(false);
+      endHistoryLoad(targetMode);
     }
-  }, [historicalData, historyMode, isHistoryLoading]);
+  }, [beginHistoryLoad, endHistoryLoad, historicalData]);
 
   const loadStrategyMnav = useCallback(async (forceRefresh = false) => {
     const data = await fetchStrategyMnavData(forceRefresh);
@@ -351,7 +375,7 @@ function App() {
   };
 
   useEffect(() => {
-    void loadHistory(false, true);
+    void loadHistory(false, false);
   }, [loadHistory]);
 
   useEffect(() => {
@@ -854,7 +878,12 @@ function App() {
                     <Suspense fallback={<SectionLoader message="正在加载指标图表..." />}>
                       <IndicatorChartsPanel
                         data={deferredHistoricalData}
+                        historyMode={historyMode}
                         isHistoryLoading={isHistoryLoading}
+                        isFullHistoryLoading={isFullHistoryLoading}
+                        onRequestFullHistory={() => {
+                          void loadHistory(false, true);
+                        }}
                       />
                     </Suspense>
                   ) : (
@@ -867,7 +896,7 @@ function App() {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => void loadHistory(false, true)}
+                            onClick={() => void loadHistory(false, false)}
                             disabled={isHistoryLoading}
                           >
                             {isHistoryLoading ? (
@@ -875,7 +904,7 @@ function App() {
                             ) : (
                               <History className="mr-2 h-4 w-4" />
                             )}
-                            加载图表数据
+                            加载轻量图表数据
                           </Button>
                         </div>
                       </AlertDescription>
