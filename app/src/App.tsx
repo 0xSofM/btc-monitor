@@ -15,12 +15,12 @@ import {
 import { useTheme } from 'next-themes';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AppHeader } from '@/components/AppHeader';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { SignalOverview } from '@/components/SignalOverview';
+import { StatusStrip } from '@/components/StatusStrip';
 import { StrategyMnavCard } from '@/components/StrategyMnavCard';
 import type { IndicatorData, LatestData, StrategyMnavData } from '@/types';
 import type { AppTab, DataSource, HistoryMode, IndicatorDateKey } from './appDisplay';
@@ -445,25 +445,7 @@ function App() {
         />
 
         <main className="app-container py-6">
-          {latestData && (
-            <section className="status-strip fade-up mb-6">
-              {statusTiles.map((tile) => {
-                const Icon = tile.icon;
-                return (
-                  <article key={tile.label} className="status-chip">
-                    <div className="status-chip-header">
-                      <span className="status-icon">
-                        <Icon className="h-4 w-4" />
-                      </span>
-                      <p className="status-label">{tile.label}</p>
-                    </div>
-                    <p className="status-value">{tile.value}</p>
-                    <Badge variant="secondary" className="status-note">{tile.note}</Badge>
-                  </article>
-                );
-              })}
-            </section>
-          )}
+          {latestData && <StatusStrip tiles={statusTiles} />}
 
           <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
             <TabsList className="tab-shell grid w-full grid-cols-3 lg:w-auto">
