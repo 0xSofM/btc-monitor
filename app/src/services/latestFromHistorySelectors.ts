@@ -1,15 +1,8 @@
 import type { IndicatorData, LatestData } from '@/types';
 
-import {
-  DEFAULT_DEEP_THRESHOLDS,
-  DEFAULT_THRESHOLDS,
-} from './indicatorConfig';
 import { findIndicatorDates } from './indicatorDateSelectors';
+import { getLatestHistoryThresholds, toNumericPrice } from './latestFromHistoryThresholds';
 import { hasUsableValue, toFiniteNumber } from './normalizers';
-
-function toNumericPrice(value: number | string | undefined): number {
-  return toFiniteNumber(value, 0);
-}
 
 function resolveCore8Score(latest: Pick<
   LatestData,
@@ -46,26 +39,6 @@ function resolveCore8Score(latest: Pick<
   };
 }
 
-function getThresholdRange(
-  thresholds: LatestData['thresholds'] | IndicatorData['thresholds'],
-  key: string,
-  fallbackTrigger: number,
-  fallbackDeep: number,
-): { trigger: number; deep: number } {
-  const threshold = thresholds?.[key];
-
-  return {
-    trigger:
-      typeof threshold?.trigger === 'number' && Number.isFinite(threshold.trigger)
-        ? threshold.trigger
-        : fallbackTrigger,
-    deep:
-      typeof threshold?.deep === 'number' && Number.isFinite(threshold.deep)
-        ? threshold.deep
-        : fallbackDeep,
-  };
-}
-
 export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   if (!data.length) {
     return null;
@@ -90,96 +63,37 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   const lthSoprMa3 = latest.lthSoprMa3;
   const lthSoprValue = lthSoprRaw;
   const lthSoprSignalValue = toFiniteNumber(lthSoprMa3 ?? latest.lthSopr, 0);
-  const priceMa200wThreshold = getThresholdRange(
-    latest.thresholds,
-    'priceMa200wRatio',
-    DEFAULT_THRESHOLDS.priceMa200w,
-    DEFAULT_DEEP_THRESHOLDS.priceMa200w,
-  );
-  const priceRealizedThreshold = getThresholdRange(
-    latest.thresholds,
-    'priceRealizedRatio',
-    DEFAULT_THRESHOLDS.priceRealized,
-    DEFAULT_DEEP_THRESHOLDS.priceRealized,
-  );
-  const reserveRiskThreshold = getThresholdRange(
-    latest.thresholds,
-    'reserveRisk',
-    DEFAULT_THRESHOLDS.reserveRisk,
-    DEFAULT_DEEP_THRESHOLDS.reserveRisk,
-  );
-  const mvrvZscoreThreshold = getThresholdRange(
-    latest.thresholds,
-    'mvrvZscoreCore',
-    DEFAULT_THRESHOLDS.mvrvZscore,
-    DEFAULT_DEEP_THRESHOLDS.mvrvZscore,
-  );
-  const nuplThreshold = getThresholdRange(
-    latest.thresholds,
-    'nuplCore',
-    DEFAULT_THRESHOLDS.nupl,
-    DEFAULT_DEEP_THRESHOLDS.nupl,
-  );
-  const sthSoprThreshold = getThresholdRange(
-    latest.thresholds,
-    'sthSopr',
-    DEFAULT_THRESHOLDS.sthSopr,
-    DEFAULT_DEEP_THRESHOLDS.sthSopr,
-  );
-  const sthMvrvThreshold = getThresholdRange(
-    latest.thresholds,
-    'sthMvrv',
-    DEFAULT_THRESHOLDS.sthMvrv,
-    DEFAULT_DEEP_THRESHOLDS.sthMvrv,
-  );
-  const lthMvrvThreshold = getThresholdRange(
-    latest.thresholds,
-    'lthMvrv',
-    DEFAULT_THRESHOLDS.lthMvrv,
-    DEFAULT_DEEP_THRESHOLDS.lthMvrv,
-  );
-  const lthSoprThreshold = getThresholdRange(
-    latest.thresholds,
-    'lthSopr',
-    DEFAULT_THRESHOLDS.lthSopr,
-    DEFAULT_DEEP_THRESHOLDS.lthSopr,
-  );
-  const puellThreshold = getThresholdRange(
-    latest.thresholds,
-    'puellMultiple',
-    DEFAULT_THRESHOLDS.puell,
-    DEFAULT_DEEP_THRESHOLDS.puell,
-  );
+  const thresholds = getLatestHistoryThresholds(latest.thresholds);
   const signalMvrvZscoreCore = latest.signalMvrvZscoreCore
     ?? latest.signalReserveRiskV4
     ?? latest.signalMvrvZ
-    ?? (mvrvZscore < mvrvZscoreThreshold.trigger);
+    ?? (mvrvZscore < thresholds.mvrvZscore.trigger);
   const signalNuplCore = latest.signalNuplCore
     ?? latest.signalNupl
-    ?? (nupl < nuplThreshold.trigger);
+    ?? (nupl < thresholds.nupl.trigger);
   const signalValuationBlendV6 = latest.signalValuationBlendV6
     ?? latest.signalsV6?.valuationBlend
     ?? (signalMvrvZscoreCore || signalNuplCore);
 
   const signals = {
-    priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < priceMa200wThreshold.trigger,
-    priceRealized: latest.signalPriceRealized ?? priceRealizedRatio < priceRealizedThreshold.trigger,
-    reserveRisk: latest.signalReserveRisk ?? reserveRisk < reserveRiskThreshold.trigger,
-    sthSopr: latest.signalSthSopr ?? sthSoprSignalValue < sthSoprThreshold.trigger,
-    sthMvrv: latest.signalSthMvrv ?? sthMvrv < sthMvrvThreshold.trigger,
-    sthGroup: latest.signalSthGroup ?? ((latest.signalSthSopr ?? (sthSoprSignalValue < sthSoprThreshold.trigger)) || (latest.signalSthMvrv ?? (sthMvrv < sthMvrvThreshold.trigger))),
-    puell: latest.signalPuell ?? puellMultiple < puellThreshold.trigger,
+    priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < thresholds.priceMa200w.trigger,
+    priceRealized: latest.signalPriceRealized ?? priceRealizedRatio < thresholds.priceRealized.trigger,
+    reserveRisk: latest.signalReserveRisk ?? reserveRisk < thresholds.reserveRisk.trigger,
+    sthSopr: latest.signalSthSopr ?? sthSoprSignalValue < thresholds.sthSopr.trigger,
+    sthMvrv: latest.signalSthMvrv ?? sthMvrv < thresholds.sthMvrv.trigger,
+    sthGroup: latest.signalSthGroup ?? ((latest.signalSthSopr ?? (sthSoprSignalValue < thresholds.sthSopr.trigger)) || (latest.signalSthMvrv ?? (sthMvrv < thresholds.sthMvrv.trigger))),
+    puell: latest.signalPuell ?? puellMultiple < thresholds.puell.trigger,
   };
   const signalsV4 = {
-    priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < priceMa200wThreshold.trigger,
-    priceRealized: latest.signalPriceRealized ?? priceRealizedRatio < priceRealizedThreshold.trigger,
+    priceMa200w: latest.signalPriceMa200w ?? latest.signalPriceMa ?? priceMa200wRatio < thresholds.priceMa200w.trigger,
+    priceRealized: latest.signalPriceRealized ?? priceRealizedRatio < thresholds.priceRealized.trigger,
     reserveRisk: signalMvrvZscoreCore,
     mvrvZscore: signalMvrvZscoreCore,
-    sthMvrv: latest.signalSthMvrv ?? sthMvrv < sthMvrvThreshold.trigger,
-    lthMvrv: latest.signalLthMvrv ?? lthMvrv < lthMvrvThreshold.trigger,
-    lthSopr: latest.signalLthSopr ?? (lthSoprSignalValue < lthSoprThreshold.trigger),
-    puell: latest.signalPuell ?? puellMultiple < puellThreshold.trigger,
-    sthSoprTrigger: latest.signalSthSoprTrigger ?? latest.signalSthSoprAux ?? latest.signalSthSopr ?? (sthSoprSignalValue < sthSoprThreshold.trigger),
+    sthMvrv: latest.signalSthMvrv ?? sthMvrv < thresholds.sthMvrv.trigger,
+    lthMvrv: latest.signalLthMvrv ?? lthMvrv < thresholds.lthMvrv.trigger,
+    lthSopr: latest.signalLthSopr ?? (lthSoprSignalValue < thresholds.lthSopr.trigger),
+    puell: latest.signalPuell ?? puellMultiple < thresholds.puell.trigger,
+    sthSoprTrigger: latest.signalSthSoprTrigger ?? latest.signalSthSoprAux ?? latest.signalSthSopr ?? (sthSoprSignalValue < thresholds.sthSopr.trigger),
   };
   const signalsV6 = {
     priceMa200w: latest.signalsV6?.priceMa200w ?? signalsV4.priceMa200w,
