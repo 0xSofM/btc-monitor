@@ -1,4 +1,4 @@
-import type { IndicatorData, LatestData, SignalEvent } from '@/types';
+import type { IndicatorData, LatestData } from '@/types';
 
 import {
   DEFAULT_DEEP_THRESHOLDS,
@@ -10,6 +10,7 @@ import { hasUsableValue, toFiniteNumber } from './normalizers';
 
 export { filterDataByTimeRange, getIndicatorChartData, getMA200ChartData } from './chartSelectors';
 export { getDataFreshnessHours, getEffectiveDataDate, getOnchainFreshnessHours, getPriceFreshnessHours } from './freshnessSelectors';
+export { getSignalEvents } from './signalEventSelectors';
 export { INDICATOR_CONFIG, TIME_RANGE_LABELS };
 
 function asNonEmptyString(value: unknown): string | undefined {
@@ -587,40 +588,3 @@ export function mergeLatestIntoHistory(
   ];
 }
 
-export function getSignalEvents(data: IndicatorData[], minSignals = 4): SignalEvent[] {
-  return data
-    .filter((item) => ([
-      item.signalPriceMa200w || item.signalPriceMa,
-      item.signalsV6?.mvrvZscore ?? item.signalMvrvZscoreCore,
-      item.signalsV6?.nupl ?? item.signalNuplCore ?? item.signalNupl,
-      item.signalSthMvrv,
-      item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr,
-      item.signalLthMvrv,
-      item.signalLthSopr,
-      item.signalPuell,
-    ].filter(Boolean).length) >= minSignals)
-    .map((item) => ({
-      date: item.d,
-      btcPrice: toNumericPrice(item.btcPrice),
-      signalCount: [
-        item.signalPriceMa200w || item.signalPriceMa,
-        item.signalsV6?.mvrvZscore ?? item.signalMvrvZscoreCore,
-        item.signalsV6?.nupl ?? item.signalNuplCore ?? item.signalNupl,
-        item.signalSthMvrv,
-        item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr,
-        item.signalLthMvrv,
-        item.signalLthSopr,
-        item.signalPuell,
-      ].filter(Boolean).length,
-      triggeredIndicators: [
-        item.signalPriceMa200w || item.signalPriceMa ? 'Price / 200W-MA' : '',
-        (item.signalsV6?.mvrvZscore ?? item.signalMvrvZscoreCore) ? 'MVRV Z-Score' : '',
-        (item.signalsV6?.nupl ?? item.signalNuplCore ?? item.signalNupl) ? 'NUPL' : '',
-        item.signalSthMvrv ? 'STH-MVRV' : '',
-        (item.signalSthSoprTrigger ?? item.signalSthSoprAux ?? item.signalSthSopr) ? 'STH-SOPR' : '',
-        item.signalLthMvrv ? 'LTH-MVRV' : '',
-        item.signalLthSopr ? 'LTH-SOPR' : '',
-        item.signalPuell ? 'Puell Multiple' : '',
-      ].filter(Boolean),
-    }));
-}
