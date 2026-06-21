@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "current",
+  "canonicalModel": "core8_independent_valuation",
+  "scoringModelVersion": "core8_independent_valuation_current",
+  "legacyScoringModelVersion": "v3_no_lookahead_replacement",
+  "indicatorSet": "core8_bottom_independent_valuation_current",
+  "displayIndicators": [
+    "priceMa200w",
+    "mvrvZscore",
+    "nupl",
+    "puell",
+    "sthMvrv",
+    "sthSopr",
+    "lthMvrv",
+    "lthSopr"
+  ],
+  "canonicalSignalKeys": [
+    "priceMa200w",
+    "mvrvZscore",
+    "nupl",
+    "puell",
+    "sthMvrv",
+    "sthSoprTrigger",
+    "lthMvrv",
+    "lthSopr"
+  ],
+  "compatibilityFields": [
+    "priceRealized",
+    "reserveRisk",
+    "valuationBlendV6",
+    "v2",
+    "v4"
+  ],
+  "legacyCompatibility": [
+    "v2",
+    "v4"
+  ],
+  "latestCanonicalField": "canonical",
+  "latestLegacyField": "legacy",
+  "maxTotalScore": 14
+}

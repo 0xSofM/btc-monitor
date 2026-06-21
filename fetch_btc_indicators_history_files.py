@@ -33,6 +33,14 @@ from pipeline.config import (  # noqa: F401 — re-exported for backward compat
     SIGNAL_EVENTS_V4_JSON_PATH_DEFAULT,
     THRESHOLD_STATIC,
 )
+from pipeline.model_contract import (
+    CANONICAL_MODEL,
+    COMPATIBILITY_FIELDS,
+    DISPLAY_INDICATORS,
+    LATEST_CANONICAL_FIELD,
+    LATEST_LEGACY_FIELD,
+    LEGACY_COMPATIBILITY,
+)
 from pipeline.fetcher import (  # noqa: F401 — re-exported for backward compat
     _safe_float,
     _safe_iso_date,
@@ -136,26 +144,6 @@ HISTORY_LIGHT_FIELDS = [
     "coreIndicatorSet",
     "scoringModelVersion",
 ]
-
-CANONICAL_MODEL = "core8_independent_valuation"
-DISPLAY_INDICATORS = [
-    "priceMa200w",
-    "mvrvZscore",
-    "nupl",
-    "puell",
-    "sthMvrv",
-    "sthSopr",
-    "lthMvrv",
-    "lthSopr",
-]
-COMPATIBILITY_FIELDS = [
-    "priceRealized",
-    "reserveRisk",
-    "valuationBlendV6",
-    "v2",
-    "v4",
-]
-
 
 def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
     """Prepare human-readable table used for CSV/XLSX exports."""
@@ -343,9 +331,6 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                     getattr(row, "signal_confirmed_3d_v6")
                 ),
                 "signalBandV6": str(getattr(row, "signal_band_v6")),
-                "reserveRiskActive": bool(
-                    getattr(row, "reserve_risk_active")
-                ),
                 "signalConfidence": _safe_float(getattr(row, "signal_confidence")),
                 "signalConfidenceV6": _safe_float(
                     getattr(row, "signal_confidence_v6")
@@ -393,7 +378,6 @@ def dataframe_to_history_json(frontend_df: pd.DataFrame) -> List[Dict[str, objec
                     "lthSopr": bool(getattr(row, "signal_lth_sopr")),
                     "puell": bool(getattr(row, "signal_puell")),
                 },
-                "staleIndicators": getattr(row, "stale_indicators", []),
                 "reserveRiskActive": bool(
                     getattr(row, "reserve_risk_active")
                 ),
@@ -1003,9 +987,9 @@ def build_manifest_json(
             "displayIndicators": DISPLAY_INDICATORS,
             "compatibilityFields": COMPATIBILITY_FIELDS,
             "historyRequiredFields": HISTORY_LIGHT_FIELDS,
-            "legacyCompatibility": ["v2", "v4"],
-            "latestCanonicalField": "canonical",
-            "latestLegacyField": "legacy",
+            "legacyCompatibility": LEGACY_COMPATIBILITY,
+            "latestCanonicalField": LATEST_CANONICAL_FIELD,
+            "latestLegacyField": LATEST_LEGACY_FIELD,
         },
         "archivedSnapshot": archived_snapshot_path,
         "archiveRoot": archive_root or ARCHIVE_ROOT_DEFAULT,

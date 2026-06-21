@@ -39,10 +39,28 @@ const COINGECKO_SPOT_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bi
 const RESERVE_RISK_DISABLE_LAG_DAYS = 30;
 const SCORE_CONFIRM_RATIO = 7 / 12;
 const SOPR_SMOOTHING_DAYS = 3;
-const SCHEMA_VERSION = 'v6';
-const SCORING_MODEL_VERSION = 'core8_independent_mvrv_nupl_sopr_refined';
+const SCHEMA_VERSION = 'current';
+const CANONICAL_MODEL = 'core8_independent_valuation';
+const SCORING_MODEL_VERSION = 'core8_independent_valuation_current';
 const LEGACY_SCORING_MODEL_VERSION = 'v3_no_lookahead_replacement';
-const CORE_INDICATOR_SET = 'core8_bottom_independent_mvrv_nupl_sopr_refined';
+const CORE_INDICATOR_SET = 'core8_bottom_independent_valuation_current';
+const DISPLAY_INDICATORS = [
+  'priceMa200w',
+  'mvrvZscore',
+  'nupl',
+  'puell',
+  'sthMvrv',
+  'sthSopr',
+  'lthMvrv',
+  'lthSopr',
+];
+const COMPATIBILITY_FIELDS = [
+  'priceRealized',
+  'reserveRisk',
+  'valuationBlendV6',
+  'v2',
+  'v4',
+];
 
 const BGEOMETRICS_SERIES = {
   btcPrice: {
@@ -1236,7 +1254,13 @@ function buildRuntimePayload({
     puell: signalPuell,
   };
   const canonical = {
-    model: 'v6',
+    model: asString(staticLatest?.canonical?.model) ?? CANONICAL_MODEL,
+    displayIndicators: Array.isArray(staticLatest?.canonical?.displayIndicators)
+      ? staticLatest.canonical.displayIndicators
+      : DISPLAY_INDICATORS,
+    compatibilityFields: Array.isArray(staticLatest?.canonical?.compatibilityFields)
+      ? staticLatest.canonical.compatibilityFields
+      : COMPATIBILITY_FIELDS,
     score: {
       valuation: valuationScoreV6,
       trigger: triggerScoreV6,
@@ -1247,7 +1271,16 @@ function buildRuntimePayload({
       confirmed3d: signalConfirmed3dV6,
       confidence: signalConfidenceV6,
     },
-    signals: signalsV6,
+    signals: {
+      priceMa200w: signalsV6.priceMa200w,
+      mvrvZscore: signalsV6.mvrvZscore,
+      nupl: signalsV6.nupl,
+      puell: signalsV6.puell,
+      sthMvrv: signalsV6.sthMvrv,
+      sthSoprTrigger: signalsV6.sthSoprTrigger,
+      lthMvrv: signalsV6.lthMvrv,
+      lthSopr: signalsV6.lthSopr,
+    },
     signalCount: signalCountV6,
     activeIndicatorCount: activeIndicatorCountV6,
     fallbackMode: valuationBlendActiveV6 ? 'none' : 'valuation_metrics_inactive',

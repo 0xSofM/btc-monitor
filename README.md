@@ -104,6 +104,12 @@ npm install
 npm run dev
 ```
 
+Vercel 部署：
+
+- Vercel 项目的 Root Directory 应设置为 `app`。
+- 部署配置位于 `app/vercel.json`，不要在仓库根目录维护第二份 Vercel 配置。
+- 构建命令使用 `npm run build`，输出目录为 `dist`。
+
 运行测试与构建：
 
 ```bash

@@ -2,6 +2,13 @@
 
 from typing import Dict, List, Tuple
 
+from .model_contract import (
+    INDICATOR_SET,
+    LEGACY_SCORING_MODEL_VERSION,
+    SCHEMA_VERSION,
+    SCORING_MODEL_VERSION,
+)
+
 SERIES_CONFIG: Dict[str, Dict[str, object]] = {
     "btc_price": {
         "display_name": "BTC Price",
@@ -129,10 +136,6 @@ LEGACY_SCORING_INDICATOR_COUNT = 5
 SCORING_INDICATOR_COUNT_V4 = 7
 SCORE_CONFIRM_RATIO = 7 / 12
 DEFAULT_RESERVE_RISK_DISABLE_LAG_DAYS = 30
-LEGACY_SCORING_MODEL_VERSION = "v3_no_lookahead_replacement"
-SCORING_MODEL_VERSION = "core8_independent_valuation_current"
-SCHEMA_VERSION = "current"
-INDICATOR_SET = "core8_bottom_independent_valuation_current"
 ARCHIVE_ROOT_DEFAULT = "archive/releases"
 SIGNAL_EVENTS_V4_JSON_PATH_DEFAULT = "app/public/btc_signal_events_v4.json"
 ROLLBACK_METADATA_FILE = "release_metadata.json"

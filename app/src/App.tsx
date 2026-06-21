@@ -217,6 +217,7 @@ function App() {
   const historyLoadingModesRef = useRef<Set<HistoryMode>>(new Set());
   const deferredHistoricalData = useDeferredValue(historicalData);
   const [staticAlertDismissed, setStaticAlertDismissed] = useState(false);
+  const [chartsExpanded, setChartsExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const [historyLoadingModes, setHistoryLoadingModes] = useState<HistoryMode[]>([]);
   const [loading, setLoading] = useState(true);
@@ -297,6 +298,13 @@ function App() {
     return loadHistory(false, false);
   }, [historicalData, loadHistory]);
 
+  const showCharts = useCallback(() => {
+    setChartsExpanded(true);
+    if (historicalData.length === 0) {
+      void loadHistory(false, false);
+    }
+  }, [historicalData.length, loadHistory]);
+
   const applyLatestData = (data: LatestData, source: DataSource) => {
     setLatestData(data);
     setDataSource(source);
@@ -373,10 +381,6 @@ function App() {
       void loadHistory(false, true);
     }
   };
-
-  useEffect(() => {
-    void loadHistory(false, false);
-  }, [loadHistory]);
 
   useEffect(() => {
     void fetchLatestData('auto');
@@ -874,7 +878,7 @@ function App() {
                     ))}
                   </section>
 
-                  {historicalData.length > 0 ? (
+                  {chartsExpanded && historicalData.length > 0 ? (
                     <Suspense fallback={<SectionLoader message="正在加载指标图表..." />}>
                       <IndicatorChartsPanel
                         data={deferredHistoricalData}
@@ -886,6 +890,11 @@ function App() {
                         }}
                       />
                     </Suspense>
+                  ) : chartsExpanded && isHistoryLoading ? (
+                    <div className="surface-card flex flex-col items-center justify-center py-12">
+                      <Loader2 className="mb-3 h-8 w-8 animate-spin text-orange-500" />
+                      <p className="text-muted-foreground">正在加载轻量图表数据...</p>
+                    </div>
                   ) : (
                     <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
                       <AlertTriangle className="h-4 w-4 text-blue-600" />
@@ -896,7 +905,7 @@ function App() {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => void loadHistory(false, false)}
+                            onClick={showCharts}
                             disabled={isHistoryLoading}
                           >
                             {isHistoryLoading ? (
@@ -904,7 +913,7 @@ function App() {
                             ) : (
                               <History className="mr-2 h-4 w-4" />
                             )}
-                            加载轻量图表数据
+                            显示指标图表
                           </Button>
                         </div>
                       </AlertDescription>

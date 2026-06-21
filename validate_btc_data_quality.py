@@ -20,6 +20,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from pipeline.model_contract import (
+    CANONICAL_MODEL,
+    CANONICAL_SIGNAL_KEYS,
+    COMPATIBILITY_FIELDS,
+    DISPLAY_INDICATORS,
+)
+
 
 CRITICAL_FIELDS = [
     "priceMa200wRatio",
@@ -45,34 +52,10 @@ INDICATOR_DATE_FIELDS = {
 
 INDICATOR_MAX_LAG_OVERRIDES = {}
 
-EXPECTED_CANONICAL_MODEL = "core8_independent_valuation"
-EXPECTED_DISPLAY_INDICATORS = [
-    "priceMa200w",
-    "mvrvZscore",
-    "nupl",
-    "puell",
-    "sthMvrv",
-    "sthSopr",
-    "lthMvrv",
-    "lthSopr",
-]
-EXPECTED_CANONICAL_SIGNAL_KEYS = [
-    "priceMa200w",
-    "mvrvZscore",
-    "nupl",
-    "puell",
-    "sthMvrv",
-    "sthSoprTrigger",
-    "lthMvrv",
-    "lthSopr",
-]
-EXPECTED_COMPATIBILITY_FIELDS = [
-    "priceRealized",
-    "reserveRisk",
-    "valuationBlendV6",
-    "v2",
-    "v4",
-]
+EXPECTED_CANONICAL_MODEL = CANONICAL_MODEL
+EXPECTED_DISPLAY_INDICATORS = DISPLAY_INDICATORS
+EXPECTED_CANONICAL_SIGNAL_KEYS = CANONICAL_SIGNAL_KEYS
+EXPECTED_COMPATIBILITY_FIELDS = COMPATIBILITY_FIELDS
 
 
 def load_json(path: Path) -> Any:
