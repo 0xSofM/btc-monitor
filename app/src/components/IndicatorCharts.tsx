@@ -16,7 +16,9 @@ import { Maximize2, MousePointerClick } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { IndicatorData } from '@/types';
 import { INDICATOR_CONFIG, getIndicatorChartData, getMA200ChartData } from '@/services/dataService';
-import type { DetailSeriesPoint, IndicatorType, MaSeriesPoint, SignalMarkerPlan, TooltipEntry } from './indicatorChartUtils';
+import type { DetailSeriesPoint, IndicatorType, MaSeriesPoint, SignalMarkerPlan } from './indicatorChartUtils';
+import { IndicatorTooltip } from './IndicatorChartOverlay';
+import { renderSignalMarker, renderSkippedSignalMarker } from './indicatorChartMarkers';
 import {
   BTC_PRICE_COMPARE_COLOR,
   CHART_FLOOR_CONFIG,
@@ -34,7 +36,6 @@ import {
   formatDateFromMs,
   formatNumber,
   formatPriceAxis,
-  formatTooltipValue,
   getPaddedDomain,
   parseDateMs,
 } from './indicatorChartUtils';
@@ -45,70 +46,6 @@ interface IndicatorChartsProps {
   isHistoryLoading?: boolean;
   isFullHistoryLoading?: boolean;
   onRequestFullHistory?: () => Promise<void> | void;
-}
-
-function renderSignalMarker(key: string, cx: number, cy: number, compact: boolean) {
-  const outerRadius = compact ? 4 : 4.8;
-  const innerRadius = compact ? 1.7 : 2.15;
-
-  return (
-    <g key={key}>
-      <circle
-        cx={cx}
-        cy={cy}
-        r={outerRadius}
-        fill={SIGNAL_MARKER_FILL}
-        stroke={SIGNAL_MARKER_STROKE}
-        strokeWidth={1.4}
-      />
-      <circle cx={cx} cy={cy} r={innerRadius} fill={SIGNAL_MARKER_INNER_FILL} />
-    </g>
-  );
-}
-
-function renderSkippedSignalMarker(key: string) {
-  return <g key={key} />;
-}
-
-function IndicatorTooltip({
-  active,
-  payload,
-  label,
-}: {
-  active?: boolean;
-  payload?: TooltipEntry[];
-  label?: string | number;
-}) {
-  if (!active || !payload || payload.length === 0) {
-    return null;
-  }
-
-  const displayPayload = payload.filter((entry) => (
-    entry.name !== '信号点' && entry.name !== '跌破 200W-MA 信号点'
-  ));
-  const hasBtcPriceLine = displayPayload.some((entry) => entry.name === 'BTC Price');
-  const signalTriggered = payload.some((entry) => entry.payload?.signal);
-
-  return (
-    <div className="rounded-lg border bg-background/95 p-3 text-xs shadow-lg backdrop-blur">
-      <p className="mb-1 text-sm font-semibold">{formatDate(label ?? '')}</p>
-      {displayPayload.map((entry, index) => (
-        <p key={`${entry.name ?? 'line'}-${index}`} style={{ color: entry.color }}>
-          {entry.name}: {formatTooltipValue(entry)}
-        </p>
-      ))}
-      {payload[0]?.payload?.btcPrice && !hasBtcPriceLine && (
-        <p className="mt-1 text-muted-foreground">
-          BTC Price: ${Number(payload[0].payload.btcPrice).toLocaleString('en-US')}
-        </p>
-      )}
-      {signalTriggered && (
-        <p className="mt-1 font-medium" style={{ color: SIGNAL_MARKER_STROKE }}>
-          信号：触发
-        </p>
-      )}
-    </div>
-  );
 }
 
 export function IndicatorCharts({
