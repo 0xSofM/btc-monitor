@@ -4,17 +4,20 @@ import {
   API_BASE_URL,
   PROXY_URL,
   STATIC_HISTORY_FULL_LIGHT_PATH,
-  STATIC_HISTORY_FULL_PATH,
   STATIC_HISTORY_LIGHT_PATH,
   checkEndpoint,
   fetchRuntimeLatestRaw,
-  fetchStaticHistoryRaw,
   fetchStaticLatestRaw,
   fetchStaticManifestRaw,
   fetchStaticStrategyMnavRaw,
 } from './apiClient';
-import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions } from './contracts';
-import { normalizeIndicatorData, normalizeLatestData, normalizeManifestData, normalizeStrategyMnavData } from './normalizers';
+import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions, HistoryMode } from './contracts';
+import {
+  buildHistoryRequestPlan,
+  fetchHistoryRows,
+  hasUsableCachedHistory,
+} from './historyDataLoader';
+import { normalizeLatestData, normalizeManifestData, normalizeStrategyMnavData } from './normalizers';
 import { CORE8_COVERAGE_FIELDS } from './schema';
 import {
   INDICATOR_CONFIG,
@@ -44,7 +47,7 @@ const MANIFEST_CACHE_DURATION = 60 * 1000;
 type CacheState = {
   latest: LatestData | null;
   history: IndicatorData[];
-  historyMode: 'none' | 'light' | 'full';
+  historyMode: HistoryMode;
   latestTimestamp: number;
   manifest: DataManifest | null;
   manifestTimestamp: number;
@@ -91,13 +94,6 @@ export function hasCore8Coverage(rows: IndicatorData[]): boolean {
   );
 }
 
-function normalizeHistoryRows(rawRows: unknown[]): IndicatorData[] {
-  return rawRows
-    .map((item) => normalizeIndicatorData(item))
-    .filter((item): item is IndicatorData => item !== null)
-    .sort((left, right) => left.d.localeCompare(right.d));
-}
-
 export async function fetchDataManifest(forceRefresh = false): Promise<DataManifest | null> {
   const now = Date.now();
   if (!forceRefresh && cache.manifest && (now - cache.manifestTimestamp) < MANIFEST_CACHE_DURATION) {
@@ -122,55 +118,50 @@ export async function fetchDataManifest(forceRefresh = false): Promise<DataManif
 
 export async function fetchHistoricalData(options: FetchHistoricalOptions = {}): Promise<IndicatorData[]> {
   const forceRefresh = options.forceRefresh ?? false;
-  const full = options.full ?? false;
-  const requestedMode: CacheState['historyMode'] = full ? 'full' : 'light';
-  const historyPath = full ? STATIC_HISTORY_FULL_LIGHT_PATH : STATIC_HISTORY_LIGHT_PATH;
-  const fallbackHistoryPath = full ? STATIC_HISTORY_FULL_PATH : STATIC_HISTORY_FULL_LIGHT_PATH;
-  const timeoutMs = full ? 120000 : 30000;
+  const plan = buildHistoryRequestPlan(options.full ?? false);
 
   if (
     !forceRefresh
-    && cache.history.length > 0
-    && (cache.historyMode === requestedMode || cache.historyMode === 'full')
+    && hasUsableCachedHistory(cache.historyMode, plan.mode, cache.history.length)
   ) {
     return cache.history;
   }
 
   try {
-    const raw = await fetchStaticHistoryRaw(historyPath, timeoutMs);
-    const history = mergeCachedLatestIntoHistory(normalizeHistoryRows(raw));
-    if (requestedMode === 'light' && cache.historyMode === 'full') {
+    const loaded = await fetchHistoryRows(plan.primaryPath, plan.primaryTimeoutMs, plan.mode);
+    const history = mergeCachedLatestIntoHistory(loaded.rows);
+    if (plan.mode === 'light' && cache.historyMode === 'full') {
       return cache.history;
     }
 
     persistLocalData({ history });
     cache.history = history;
-    cache.historyMode = requestedMode;
+    cache.historyMode = loaded.mode;
     return history;
   } catch (error) {
-    console.error(`[DataService] Error fetching historical data (${historyPath}):`, error);
+    console.error(`[DataService] Error fetching historical data (${plan.primaryPath}):`, error);
 
     try {
-      const raw = await fetchStaticHistoryRaw(fallbackHistoryPath, full ? 120000 : 30000);
-      const history = mergeCachedLatestIntoHistory(normalizeHistoryRows(raw));
+      const loaded = await fetchHistoryRows(plan.fallbackPath, plan.fallbackTimeoutMs, 'full');
+      const history = mergeCachedLatestIntoHistory(loaded.rows);
       persistLocalData({ history });
       cache.history = history;
-      cache.historyMode = full || fallbackHistoryPath === STATIC_HISTORY_FULL_LIGHT_PATH ? 'full' : 'light';
+      cache.historyMode = loaded.mode;
       return history;
     } catch (fallbackError) {
-      console.error(`[DataService] Error fetching fallback historical data (${fallbackHistoryPath}):`, fallbackError);
+      console.error(`[DataService] Error fetching fallback historical data (${plan.fallbackPath}):`, fallbackError);
     }
 
-    if (!full) {
+    if (plan.legacyFullPath && plan.legacyFullTimeoutMs) {
       try {
-        const raw = await fetchStaticHistoryRaw(STATIC_HISTORY_FULL_PATH, 120000);
-        const history = mergeCachedLatestIntoHistory(normalizeHistoryRows(raw));
+        const loaded = await fetchHistoryRows(plan.legacyFullPath, plan.legacyFullTimeoutMs, 'full');
+        const history = mergeCachedLatestIntoHistory(loaded.rows);
         persistLocalData({ history });
         cache.history = history;
-        cache.historyMode = 'full';
+        cache.historyMode = loaded.mode;
         return history;
       } catch (fallbackError) {
-        console.error(`[DataService] Error fetching fallback full historical data (${STATIC_HISTORY_FULL_PATH}):`, fallbackError);
+        console.error(`[DataService] Error fetching fallback full historical data (${plan.legacyFullPath}):`, fallbackError);
       }
     }
 

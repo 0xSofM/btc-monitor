@@ -51,6 +51,8 @@ export type FetchHistoricalOptions = {
   full?: boolean;
 };
 
+export type HistoryMode = 'none' | 'light' | 'full';
+
 export type FetchStaticLatestOptions = {
   enrichWithHistory?: boolean;
   forceRefresh?: boolean;

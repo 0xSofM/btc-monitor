@@ -208,6 +208,66 @@ describe('dataService helpers', () => {
     vi.unstubAllGlobals();
   });
 
+  it('fetchHistoricalData treats full-light fallback as full history cache', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const fetchMock = vi.fn(async (url: RequestInfo | URL) => {
+      const path = String(url);
+      if (path.includes('btc_indicators_history_light.json')) {
+        return new Response('missing', { status: 404 });
+      }
+
+      return new Response(JSON.stringify([
+        {
+          d: '2026-04-13',
+          btcPrice: 82000,
+          priceMa200wRatio: 1.18,
+          priceRealizedRatio: 1.07,
+          mvrvZscore: 0.03,
+          nupl: 0.16,
+          lthMvrv: 1.06,
+          lthSopr: 0.96,
+          sthSopr: 0.99,
+          sthMvrv: 1.02,
+          puellMultiple: 0.68,
+        },
+        {
+          d: '2026-04-14',
+          btcPrice: 82500,
+          priceMa200wRatio: 1.19,
+          priceRealizedRatio: 1.08,
+          mvrvZscore: 0.05,
+          nupl: 0.17,
+          lthMvrv: 1.08,
+          lthSopr: 0.97,
+          sthSopr: 1.0,
+          sthMvrv: 1.03,
+          puellMultiple: 0.7,
+        },
+      ]), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const fallbackFullLight = await fetchHistoricalData({ forceRefresh: true });
+    const cachedFull = await fetchHistoricalData({ full: true });
+
+    expect(fetchMock.mock.calls.map((call) => call[0])).toEqual([
+      '/btc_indicators_history_light.json',
+      '/btc_indicators_history_full_light.json',
+    ]);
+    expect(fallbackFullLight).toHaveLength(2);
+    expect(cachedFull).toBe(fallbackFullLight);
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      expect.stringContaining('/btc_indicators_history_light.json'),
+      expect.any(Error),
+    );
+
+    consoleErrorSpy.mockRestore();
+    vi.unstubAllGlobals();
+  });
+
   it('normalizeManifestData preserves history file hints and reports missing core fields', () => {
     const manifest = normalizeManifestData({
       generatedAt: '2026-06-20T19:53:58Z',
