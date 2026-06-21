@@ -11,6 +11,7 @@ import {
   getCachedDataStatus,
   isTimestampFresh,
   loadCachedResource,
+  rememberLatestInCache,
 } from './dataCache';
 import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions, HistoryMode } from './contracts';
 import { checkRemoteDataSources } from './dataSourceHealth';
@@ -51,15 +52,11 @@ function mergeCachedLatestIntoHistory(rows: IndicatorData[]): IndicatorData[] {
 }
 
 function rememberLatestData(latest: LatestData, timestamp = Date.now()): LatestData {
-  cache.latest = latest;
-  cache.latestTimestamp = timestamp;
-
-  if (cache.history.length > 0) {
-    cache.history = mergeLatestIntoHistory(cache.history, latest);
-  }
-
-  persistLocalData({ latest });
-  return latest;
+  return rememberLatestInCache(latest, {
+    timestamp,
+    mergeLatestIntoHistory,
+    persistLatest: (value) => persistLocalData({ latest: value }),
+  });
 }
 
 function rememberHistoryData(
@@ -216,9 +213,7 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
     const historyData = await fetchHistoricalData();
     const latestFromHistory = getLatestFromHistory(historyData);
     if (latestFromHistory) {
-      cache.latest = latestFromHistory;
-      cache.latestTimestamp = now;
-      persistLocalData({ latest: latestFromHistory });
+      rememberLatestData(latestFromHistory, now);
     }
     return latestFromHistory;
   } catch (error) {

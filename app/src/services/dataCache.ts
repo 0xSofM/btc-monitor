@@ -77,3 +77,26 @@ export async function loadCachedResource<T>({
     return cachedValue;
   }
 }
+
+export function rememberLatestInCache(
+  latest: LatestData,
+  {
+    timestamp = Date.now(),
+    mergeLatestIntoHistory,
+    persistLatest,
+  }: {
+    timestamp?: number;
+    mergeLatestIntoHistory: (rows: IndicatorData[], latest: LatestData) => IndicatorData[];
+    persistLatest: (latest: LatestData) => void;
+  },
+): LatestData {
+  cache.latest = latest;
+  cache.latestTimestamp = timestamp;
+
+  if (cache.history.length > 0) {
+    cache.history = mergeLatestIntoHistory(cache.history, latest);
+  }
+
+  persistLatest(latest);
+  return latest;
+}
