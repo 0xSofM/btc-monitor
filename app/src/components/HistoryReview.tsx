@@ -1,13 +1,11 @@
 ﻿import { useMemo, useState } from 'react';
-import { Calendar, Search, X } from 'lucide-react';
+import { Calendar, Search } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import type { IndicatorData } from '@/types';
+import { HistoryReviewFilters } from './HistoryReviewFilters';
 import {
   DEFAULT_MIN_SIGNALS,
   filterHistoryRows,
@@ -62,56 +60,20 @@ export function HistoryReview({ data }: HistoryReviewProps) {
           数据范围：{dateRange.min || '-'} 至 {dateRange.max || '-'} | 共 {data.length} 条
         </section>
 
-        <section className="grid grid-cols-1 gap-4 md:grid-cols-4">
-          <div>
-            <Label htmlFor="min-signals">最少触发数</Label>
-            <select
-              id="min-signals"
-              value={minSignals}
-              onChange={(event) => setMinSignals(Number(event.target.value))}
-              className="mt-1 w-full rounded-md border bg-background p-2"
-            >
-              {thresholdOptions.map((value) => (
-                <option key={value} value={value}>
-                  {value}（{value >= maxSignalCount ? '极强' : value >= strongSignalThreshold ? '强' : '关注'}）
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <Label htmlFor="start-date">开始日期</Label>
-            <Input
-              id="start-date"
-              type="date"
-              min={dateRange.min}
-              max={dateRange.max}
-              value={startDate}
-              onChange={(event) => setStartDate(event.target.value)}
-              className="mt-1"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="end-date">结束日期</Label>
-            <Input
-              id="end-date"
-              type="date"
-              min={dateRange.min}
-              max={dateRange.max}
-              value={endDate}
-              onChange={(event) => setEndDate(event.target.value)}
-              className="mt-1"
-            />
-          </div>
-
-          <div className="flex items-end">
-            <Button variant="outline" onClick={clearFilters} disabled={!hasActiveFilters} className="w-full">
-              <X className="mr-2 h-4 w-4" />
-              清空筛选
-            </Button>
-          </div>
-        </section>
+        <HistoryReviewFilters
+          minSignals={minSignals}
+          startDate={startDate}
+          endDate={endDate}
+          maxSignalCount={maxSignalCount}
+          strongSignalThreshold={strongSignalThreshold}
+          thresholdOptions={thresholdOptions}
+          dateRange={dateRange}
+          hasActiveFilters={hasActiveFilters}
+          onMinSignalsChange={setMinSignals}
+          onStartDateChange={setStartDate}
+          onEndDateChange={setEndDate}
+          onClearFilters={clearFilters}
+        />
 
         {hasActiveFilters && (
           <section className="rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
