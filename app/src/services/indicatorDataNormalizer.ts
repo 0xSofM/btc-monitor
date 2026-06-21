@@ -93,33 +93,8 @@ function normalizeIndicatorSignalValues(record: Record<string, unknown>) {
   };
 }
 
-export function normalizeIndicatorData(item: unknown): IndicatorData | null {
-  const record = asRecord(item);
-  if (!record) {
-    return null;
-  }
-
-  const date = asString(record.d);
-  if (!date) {
-    return null;
-  }
-
-  const unixTsRaw = record.unixTs ?? record.unix_ts;
-  const unixTs = unixTsRaw === undefined || unixTsRaw === null
-    ? undefined
-    : toFiniteNumber(unixTsRaw, Number.NaN);
-
-  const rawIndicatorDates = record.indicatorDates
-    ?? record.indicator_dates
-    ?? record.apiDataDate
-    ?? record.api_data_date;
-  const indicatorDates = normalizeIndicatorDates(rawIndicatorDates, date);
-
+function normalizeIndicatorScoreValues(record: Record<string, unknown>) {
   return {
-    d: date,
-    unixTs: Number.isNaN(unixTs ?? Number.NaN) ? undefined : unixTs,
-    ...normalizeIndicatorMetricValues(record),
-    ...normalizeIndicatorSignalValues(record),
     signalCount: toNumberOrNull(record.signalCount ?? record.signal_count) ?? undefined,
     signalCountV4: toNumberOrNull(record.signalCountV4 ?? record.signal_count_v4) ?? undefined,
     signalCountV6: toNumberOrNull(record.signalCountV6 ?? record.signal_count_v6) ?? undefined,
@@ -176,6 +151,37 @@ export function normalizeIndicatorData(item: unknown): IndicatorData | null {
     dataFreshnessScoreV6: toNumberOrNull(record.dataFreshnessScoreV6 ?? record.data_freshness_score_v6) ?? undefined,
     fallbackMode: asString(record.fallbackMode ?? record.fallback_mode),
     fallbackModeV6: asString(record.fallbackModeV6 ?? record.fallback_mode_v6),
+  };
+}
+
+export function normalizeIndicatorData(item: unknown): IndicatorData | null {
+  const record = asRecord(item);
+  if (!record) {
+    return null;
+  }
+
+  const date = asString(record.d);
+  if (!date) {
+    return null;
+  }
+
+  const unixTsRaw = record.unixTs ?? record.unix_ts;
+  const unixTs = unixTsRaw === undefined || unixTsRaw === null
+    ? undefined
+    : toFiniteNumber(unixTsRaw, Number.NaN);
+
+  const rawIndicatorDates = record.indicatorDates
+    ?? record.indicator_dates
+    ?? record.apiDataDate
+    ?? record.api_data_date;
+  const indicatorDates = normalizeIndicatorDates(rawIndicatorDates, date);
+
+  return {
+    d: date,
+    unixTs: Number.isNaN(unixTs ?? Number.NaN) ? undefined : unixTs,
+    ...normalizeIndicatorMetricValues(record),
+    ...normalizeIndicatorSignalValues(record),
+    ...normalizeIndicatorScoreValues(record),
     staleIndicators: Array.isArray(record.staleIndicators ?? record.stale_indicators)
       ? ((record.staleIndicators ?? record.stale_indicators) as IndicatorData['staleIndicators'])
       : undefined,
