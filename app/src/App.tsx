@@ -17,6 +17,7 @@ import { useTheme } from 'next-themes';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AppFooter } from '@/components/AppFooter';
 import { AppHeader } from '@/components/AppHeader';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { SignalOverview } from '@/components/SignalOverview';
@@ -652,12 +653,7 @@ function App() {
           </Tabs>
         </main>
 
-        <footer className="footer-line mt-12">
-          <div className="app-container flex flex-col gap-2 py-6 text-left text-sm text-muted-foreground">
-            <p>数据来源：BGeometrics 链上指标 | Strategy 官方 mNAV | 实时 BTC 价格</p>
-            <p>数据时间：{dataTimestampLabel}</p>
-          </div>
-        </footer>
+        <AppFooter dataTimestampLabel={dataTimestampLabel} />
       </div>
     </div>
   );
