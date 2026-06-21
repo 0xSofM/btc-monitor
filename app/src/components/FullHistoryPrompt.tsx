@@ -1,4 +1,4 @@
-import { ArrowRight, Maximize2, MousePointerClick, Sparkles } from 'lucide-react';
+import { Maximize2, MousePointerClick, Sparkles } from 'lucide-react';
 
 export function FullHistoryPrompt() {
   return (
@@ -14,8 +14,8 @@ export function FullHistoryPrompt() {
             <MousePointerClick className="h-8 w-8 animate-pulse" aria-hidden="true" />
           </span>
 
-          <div className="min-w-0 flex-1">
-            <p className="mb-2 flex flex-wrap items-center gap-2 text-xs font-bold uppercase text-orange-700 dark:text-orange-300">
+          <div className="min-w-0 flex-1 space-y-3">
+            <p className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase text-orange-700 dark:text-orange-300">
               <span className="inline-flex items-center gap-1 rounded-full bg-orange-600 px-2.5 py-1 text-white shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
                 操作提示
@@ -25,24 +25,13 @@ export function FullHistoryPrompt() {
               </span>
             </p>
 
-            <div className="rounded-lg border-2 border-orange-300 bg-white/90 p-3 shadow-md shadow-orange-500/10 dark:border-orange-800 dark:bg-black/20">
-              <div className="flex flex-col gap-3 md:flex-row md:items-center">
-                <span className="inline-flex min-h-14 flex-1 items-center gap-3 text-xl font-black leading-tight text-orange-950 sm:text-2xl dark:text-orange-50">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-600 text-sm text-white shadow-md shadow-orange-600/25">
-                    1
-                  </span>
-                  点击任一指标小图表
-                </span>
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full bg-orange-600 text-white shadow-md shadow-orange-600/25 md:self-auto">
-                  <ArrowRight className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <span className="inline-flex min-h-14 flex-1 items-center gap-3 rounded-md bg-orange-600 px-4 py-3 text-xl font-black leading-tight text-white shadow-lg shadow-orange-600/25 ring-1 ring-orange-500 sm:text-2xl">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/20 text-sm">
-                    2
-                  </span>
-                  展开完整历史大图表
-                </span>
-              </div>
+            <div className="rounded-lg bg-orange-600 px-4 py-4 text-white shadow-lg shadow-orange-600/25 ring-2 ring-orange-400 dark:bg-orange-500 dark:ring-orange-300">
+              <p className="text-2xl font-black leading-tight sm:text-3xl">
+                点击任一指标小图表后展开完整历史大图表。
+              </p>
+              <p className="mt-2 text-sm font-semibold text-orange-50/90">
+                小图表用于快速预览，点击后再加载全量历史数据。
+              </p>
             </div>
           </div>
         </div>
