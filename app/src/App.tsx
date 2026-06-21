@@ -4,7 +4,6 @@ import {
   AlertTriangle,
   BookOpen,
   CheckCircle2,
-  Clock3,
   Database,
   History,
   LineChart,
@@ -15,11 +14,13 @@ import {
 import { useTheme } from 'next-themes';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AppFooter } from '@/components/AppFooter';
 import { AppHeader } from '@/components/AppHeader';
+import { ChainDataAlert } from '@/components/ChainDataAlert';
+import { ChartDataEmptyState } from '@/components/ChartDataEmptyState';
 import { DataModeAlerts } from '@/components/DataModeAlerts';
+import { HistoryEmptyState } from '@/components/HistoryEmptyState';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { MarketAssessmentCard } from '@/components/MarketAssessmentCard';
 import { SignalOverview } from '@/components/SignalOverview';
@@ -528,14 +529,7 @@ function App() {
                   )}
 
                   {laggingIndicators.length > 0 && (
-                    <Alert className="chain-data-alert border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
-                      <Clock3 className="h-4 w-4 text-blue-600" />
-                      <AlertTitle className="text-blue-800 dark:text-blue-200">链上数据说明</AlertTitle>
-                      <AlertDescription className="text-blue-700 dark:text-blue-300">
-                        BTC 价格来自实时行情数据；链上指标来自 BGeometrics 数据源，通常存在 1-3 天更新延迟。
-                        {oldestIndicatorDate && <>当前最早指标日期：{oldestIndicatorDate}。</>}
-                      </AlertDescription>
-                    </Alert>
+                    <ChainDataAlert oldestIndicatorDate={oldestIndicatorDate} />
                   )}
 
                   <section className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
@@ -557,28 +551,10 @@ function App() {
                       />
                     </Suspense>
                   ) : (
-                    <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
-                      <AlertTriangle className="h-4 w-4 text-blue-600" />
-                      <AlertTitle className="text-blue-800 dark:text-blue-200">图表按需加载</AlertTitle>
-                      <AlertDescription className="text-blue-700 dark:text-blue-300">
-                        当前优先展示最新信号状态，可按需加载指标图表数据。
-                        <div className="mt-3">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => void loadHistory(false, false)}
-                            disabled={isHistoryLoading}
-                          >
-                            {isHistoryLoading ? (
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            ) : (
-                              <History className="mr-2 h-4 w-4" />
-                            )}
-                            加载轻量图表数据
-                          </Button>
-                        </div>
-                      </AlertDescription>
-                    </Alert>
+                    <ChartDataEmptyState
+                      isLoading={isHistoryLoading}
+                      onLoadLightHistory={() => void loadHistory(false, false)}
+                    />
                   )}
                 </>
               )}
@@ -590,26 +566,10 @@ function App() {
                   <HistoryReviewPanel data={deferredHistoricalData} />
                 </Suspense>
               ) : (
-                <div className="surface-card flex flex-col items-center justify-center gap-3 py-12">
-                  {isHistoryLoading ? (
-                    <Loader2 className="h-12 w-12 animate-spin text-orange-500" />
-                  ) : (
-                    <History className="h-12 w-12 text-orange-500" />
-                  )}
-                  <p className="text-muted-foreground">
-                    {isHistoryLoading ? '正在加载完整历史数据...' : '加载完整历史数据后可查看历史信号记录。'}
-                  </p>
-                  {!isHistoryLoading && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => void loadHistory(false, true)}
-                    >
-                      <History className="mr-2 h-4 w-4" />
-                      加载完整历史数据
-                    </Button>
-                  )}
-                </div>
+                <HistoryEmptyState
+                  isLoading={isHistoryLoading}
+                  onLoadFullHistory={() => void loadHistory(false, true)}
+                />
               )}
             </TabsContent>
 
