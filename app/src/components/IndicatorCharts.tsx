@@ -528,7 +528,7 @@ export function IndicatorCharts({
               {latest && typeof latest.value === 'number' ? formatNumber(latest.value) : '-'}
             </div>
 
-            <div className="h-12">
+            <div className="h-16">
               {points.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={points}>

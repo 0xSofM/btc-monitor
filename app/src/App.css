@@ -141,12 +141,12 @@
 }
 
 .indicator-card-header {
-  min-height: 5.9rem;
+  min-height: 4.6rem;
 }
 
 .indicator-card-body {
   display: flex;
-  min-height: 14rem;
+  min-height: 11.5rem;
   flex-direction: column;
 }
 
@@ -156,11 +156,11 @@
 }
 
 .indicator-card-detail {
-  min-height: 3.75rem;
+  min-height: 3rem;
 }
 
 .indicator-card-trigger {
-  min-height: 2.5rem;
+  min-height: 2.15rem;
 }
 
 .chain-data-alert {

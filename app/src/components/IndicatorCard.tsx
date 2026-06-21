@@ -70,14 +70,14 @@ export function IndicatorCard({
   const targetText = targetLabel ?? `${targetOperator === 'lt' ? '<' : '>'} ${formatValue(targetValue)}`;
 
   return (
-    <Card className={`indicator-card surface-card relative overflow-hidden transition-all duration-300 ${triggered ? 'ring-1 ring-emerald-500/60' : ''}`}>
+    <Card className={`indicator-card surface-card relative gap-4 overflow-hidden py-4 transition-all duration-300 ${triggered ? 'ring-1 ring-emerald-500/60' : ''}`}>
       <div className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: color }} />
 
-      <CardHeader className="indicator-card-header pb-2">
+      <CardHeader className="indicator-card-header px-5 pb-1">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <CardTitle className="text-sm font-semibold tracking-tight">{name}</CardTitle>
-            <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+            <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{description}</p>
           </div>
 
           <Badge
@@ -99,14 +99,14 @@ export function IndicatorCard({
         </div>
       </CardHeader>
 
-      <CardContent className="indicator-card-body">
-        <p className="indicator-card-value text-2xl font-bold">{formatValue(currentValue)}</p>
+      <CardContent className="indicator-card-body px-5">
+        <p className="indicator-card-value text-xl font-bold">{formatValue(currentValue)}</p>
 
-        <div className="indicator-card-detail mt-2 rounded-md border bg-muted/30 px-2.5 py-1.5 text-xs text-muted-foreground">
+        <div className="indicator-card-detail mt-1.5 rounded-md border bg-muted/30 px-2.5 py-1 text-xs leading-snug text-muted-foreground">
           {detailValue ?? '当前指标使用固定阈值判断底部识别区间。'}
         </div>
 
-        <div className="mt-3 flex items-center gap-2 text-sm">
+        <div className="mt-2 flex items-center gap-2 text-sm">
           <span className="text-muted-foreground">触发阈值：</span>
           <span className={triggered ? 'font-semibold text-emerald-700 dark:text-emerald-300' : 'font-medium'}>
             {targetText}
@@ -114,13 +114,13 @@ export function IndicatorCard({
         </div>
 
         {dataDate && (
-          <div className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
+          <div className="mt-1.5 inline-flex items-center gap-1 text-xs text-muted-foreground">
             <Calendar className="h-3.5 w-3.5" />
             数据日期：{formatDate(dataDate)}
           </div>
         )}
 
-        <div className={`indicator-card-trigger mt-3 rounded-md border px-2.5 py-2 text-xs ${
+        <div className={`indicator-card-trigger mt-2 rounded-md border px-2.5 py-1.5 text-xs leading-snug ${
           triggered
             ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
             : 'border-transparent bg-muted/20 text-muted-foreground'
