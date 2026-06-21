@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
-import { Toaster, toast } from 'sonner';
+import { Toaster } from 'sonner';
 import { useTheme } from 'next-themes';
 
 import { Tabs, TabsContent } from '@/components/ui/tabs';
@@ -18,20 +18,15 @@ import { SectionLoader } from '@/components/SectionLoader';
 import { SignalOverview } from '@/components/SignalOverview';
 import { StatusStrip } from '@/components/StatusStrip';
 import { StrategyMnavCard } from '@/components/StrategyMnavCard';
-import type { LatestData } from '@/types';
 import { buildDashboardDisplay } from './appDashboardSelectors';
-import type { AppTab, DataSource } from './appDisplay';
+import type { AppTab } from './appDisplay';
 import {
   buildIndicatorCards,
-  buildDataTimestampLabel,
   resolveCore8Display,
 } from './appDisplay';
-import { loadDashboardLatestData } from './appLatestLoader';
 import { useDashboardHistory } from './useDashboardHistory';
+import { useDashboardLatestData } from './useDashboardLatestData';
 import { useStrategyMnavData } from './useStrategyMnavData';
-import {
-  mergeLatestIntoHistory,
-} from '@/services/dataService';
 
 import './App.css';
 
@@ -51,7 +46,6 @@ const IndicatorExplanationPanel = lazy(async () => {
 });
 
 function App() {
-  const [latestData, setLatestData] = useState<LatestData | null>(null);
   const {
     historicalData,
     setHistoricalData,
@@ -63,52 +57,21 @@ function App() {
     loadHistoryFallback,
   } = useDashboardHistory();
   const { strategyMnavData, loadStrategyMnav } = useStrategyMnavData();
+  const {
+    latestData,
+    loading,
+    error,
+    dataSource,
+    dataTimestampLabel,
+    refreshLatestData,
+  } = useDashboardLatestData({
+    loadHistoryFallback,
+    loadStrategyMnav,
+    setHistoricalData,
+  });
   const [staticAlertDismissed, setStaticAlertDismissed] = useState(false);
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
-  const [loading, setLoading] = useState(true);
-  const [dataTimestampLabel, setDataTimestampLabel] = useState('-');
-  const [error, setError] = useState<string | null>(null);
-  const [dataSource, setDataSource] = useState<DataSource>('static');
   const { theme, setTheme } = useTheme();
-
-  const applyLatestData = (data: LatestData, source: DataSource) => {
-    setLatestData(data);
-    setDataSource(source);
-    setDataTimestampLabel(buildDataTimestampLabel(data, source));
-    setHistoricalData((currentHistory) => (
-      currentHistory.length > 0
-        ? mergeLatestIntoHistory(currentHistory, data)
-        : currentHistory
-    ));
-  };
-
-  const fetchLatestData = async (mode: 'auto' | 'manual' = 'auto') => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      void loadStrategyMnav(mode === 'manual');
-
-      const latestResult = await loadDashboardLatestData(mode, loadHistoryFallback);
-      applyLatestData(latestResult.data, latestResult.source);
-      if (latestResult.toast?.type === 'success') {
-        toast.success(latestResult.toast.message, {
-          description: latestResult.toast.description,
-          duration: latestResult.toast.duration,
-        });
-      } else if (latestResult.toast) {
-        toast.info(latestResult.toast.message, {
-          description: latestResult.toast.description,
-          duration: latestResult.toast.duration,
-        });
-      }
-    } catch (err) {
-      console.error('Error fetching data:', err);
-      setError('数据加载失败，请检查连接后重试。');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleTabChange = (value: string) => {
     setActiveTab(value as AppTab);
@@ -122,17 +85,16 @@ function App() {
   }, [loadHistory]);
 
   useEffect(() => {
-    void fetchLatestData('auto');
+    void refreshLatestData('auto');
 
     // Refresh every 15 min — BGeometrics on-chain data updates ~daily,
     // so 5 min is wasteful and risks rate-limiting a free service.
     const interval = setInterval(() => {
-      void fetchLatestData('auto');
+      void refreshLatestData('auto');
     }, 15 * 60 * 1000);
 
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [refreshLatestData]);
 
   const core8Display = useMemo(() => resolveCore8Display(latestData), [latestData]);
   const dashboardDisplay = useMemo(
@@ -150,7 +112,7 @@ function App() {
           theme={theme}
           loading={loading}
           onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          onRefresh={() => void fetchLatestData('manual')}
+          onRefresh={() => void refreshLatestData('manual')}
         />
 
         <main className="app-container py-6">
