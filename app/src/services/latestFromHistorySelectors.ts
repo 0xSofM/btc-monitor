@@ -1,44 +1,10 @@
 import type { IndicatorData, LatestData } from '@/types';
 
 import { findIndicatorDates } from './indicatorDateSelectors';
+import { deriveLatestHistoryCounts, resolveCore8Score } from './latestFromHistoryScores';
 import { deriveLatestHistorySignals } from './latestFromHistorySignals';
 import { getLatestHistoryThresholds, toNumericPrice } from './latestFromHistoryThresholds';
-import { hasUsableValue, toFiniteNumber } from './normalizers';
-
-function resolveCore8Score(latest: Pick<
-  LatestData,
-  | 'scorePriceMa200w'
-  | 'scoreMvrvZscoreCore'
-  | 'scoreNuplCore'
-  | 'scorePuell'
-  | 'scoreSthMvrv'
-  | 'scoreSthSopr'
-  | 'scoreLthMvrv'
-  | 'scoreLthSopr'
->): {
-  valuationScore: number;
-  triggerScore: number;
-  confirmationScore: number;
-  totalScore: number;
-} {
-  const valuationScore = toFiniteNumber(latest.scorePriceMa200w, 0)
-    + toFiniteNumber(latest.scoreMvrvZscoreCore, 0)
-    + toFiniteNumber(latest.scoreNuplCore, 0)
-    + toFiniteNumber(latest.scorePuell, 0);
-  const triggerScore = Math.max(
-    toFiniteNumber(latest.scoreSthMvrv, 0),
-    toFiniteNumber(latest.scoreSthSopr, 0),
-  );
-  const confirmationScore = toFiniteNumber(latest.scoreLthMvrv, 0)
-    + toFiniteNumber(latest.scoreLthSopr, 0);
-
-  return {
-    valuationScore,
-    triggerScore,
-    confirmationScore,
-    totalScore: valuationScore + triggerScore + confirmationScore,
-  };
-}
+import { toFiniteNumber } from './normalizers';
 
 export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   if (!data.length) {
@@ -87,36 +53,15 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     thresholds,
   });
 
-  const groupedSignalCount = [
-    signals.priceMa200w,
-    signals.priceRealized,
-    signals.reserveRisk,
-    signals.sthGroup ?? (signals.sthSopr || signals.sthMvrv),
-    signals.puell,
-  ].filter(Boolean).length;
-  const activeIndicatorCount = latest.activeIndicatorCount ?? 5;
-  const maxSignalScoreV2 = latest.maxSignalScoreV2 ?? (activeIndicatorCount * 2);
-  const groupedSignalCountV4 = [
-    signalsV4.priceMa200w,
-    signalsV4.priceRealized,
-    signalsV4.mvrvZscore,
-    signalsV4.sthMvrv,
-    signalsV4.lthMvrv,
-    signalsV4.lthSopr,
-    signalsV4.puell,
-  ].filter(Boolean).length;
-  const activeIndicatorCountV4 = latest.activeIndicatorCountV4 ?? (hasUsableValue(latest.mvrvZscore) ? 7 : 6);
-  const groupedSignalCountV6 = [
-    signalsV6.priceMa200w,
-    signalsV6.mvrvZscore,
-    signalsV6.nupl,
-    signalsV6.sthMvrv,
-    signalsV6.sthSoprTrigger,
-    signalsV6.lthMvrv,
-    signalsV6.lthSopr,
-    signalsV6.puell,
-  ].filter(Boolean).length;
-  const activeIndicatorCountV6 = latest.activeIndicatorCountV6 ?? 8;
+  const {
+    groupedSignalCount,
+    activeIndicatorCount,
+    maxSignalScoreV2,
+    groupedSignalCountV4,
+    activeIndicatorCountV4,
+    groupedSignalCountV6,
+    activeIndicatorCountV6,
+  } = deriveLatestHistoryCounts(latest, { signals, signalsV4, signalsV6 });
   const derivedCore8Score = resolveCore8Score(latest);
   const maxValuationScoreV6 = 8;
   const maxTriggerScoreV6 = 2;
