@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-20T19:53:58.509674+00:00",
-  "latestDate": "2026-06-20",
-  "lastUpdated": "2026-06-20T19:53:58.484245+00:00",
-  "historyRows": 5499,
+  "generatedAt": "2026-06-21T14:30:57.962434+00:00",
+  "latestDate": "2026-06-21",
+  "lastUpdated": "2026-06-21T14:30:57.936584+00:00",
+  "historyRows": 5500,
   "historyLightRows": 889,
   "historyFiles": {
     "full": "btc_indicators_history.json",
@@ -94,8 +94,8 @@
   "totalScoreV6": 2,
   "dynamicThresholds": {
     "reserveRisk": {
-      "trigger": 0.00058584792,
-      "deep": 0.0005401856099999999,
+      "trigger": 0.00058559912,
+      "deep": 0.00054005183,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -103,8 +103,8 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.994630502248,
-      "deep": 0.987704855225333,
+      "trigger": 0.9946385936646666,
+      "deep": 0.9877117439561663,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -115,7 +115,7 @@
     },
     "sthMvrv": {
       "trigger": 0.92,
-      "deep": 0.867895,
+      "deep": 0.868,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -124,7 +124,7 @@
     },
     "lthSopr": {
       "trigger": 0.8548141230666861,
-      "deep": 0.6335059407500192,
+      "deep": 0.6382795033266859,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -140,7 +140,7 @@
   },
   "reserveRiskHealth": {
     "primaryStatus": "healthy",
-    "primaryLatestNonNullDate": "2026-06-19",
+    "primaryLatestNonNullDate": "2026-06-20",
     "primaryTrailingNullDays": 0,
     "sourceMode": null
   },
@@ -162,7 +162,7 @@
     "inactiveIndicators": [],
     "fallbackModeV6": "none",
     "dataFreshnessScoreV6": 0.8750000000000002,
-    "signalConfidenceV6": 0.4339
+    "signalConfidenceV6": 0.3839
   },
   "schemaContract": {
     "canonicalModel": "core8_independent_valuation",
@@ -273,13 +273,13 @@
   "strategyMnavHealth": {
     "source": "strategy_official_api",
     "formula": "enterpriseValueUsd / btcReserveUsd",
-    "latestDate": "2026-06-20",
-    "historyRows": 1,
-    "mnav": 1.1322,
+    "latestDate": "2026-06-21",
+    "historyRows": 2,
+    "mnav": 1.1306,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
     "mstrTimestampUtc": "2026-06-18T20:00:00",
-    "btcTimestamp": "2026-06-20T19:53:00"
+    "btcTimestamp": "2026-06-21T14:30:00"
   }
 }
