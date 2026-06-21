@@ -39,6 +39,8 @@ jobs:
           mkdir -p .tmp/previous
           cp app/public/btc_indicators_history.json .tmp/previous/btc_indicators_history.json || true
           cp app/public/btc_indicators_latest.json .tmp/previous/btc_indicators_latest.json || true
+          mkdir -p .tmp/previous/history
+          cp app/public/history/btc_indicators_history_*.json .tmp/previous/history/ 2>/dev/null || true
           cp app/public/strategy_mnav_history.json .tmp/previous/strategy_mnav_history.json || true
           cp app/public/strategy_mnav_latest.json .tmp/previous/strategy_mnav_latest.json || true
 
@@ -111,6 +113,7 @@ jobs:
           git add \
             app/public/btc_indicators_history.json \
             app/public/btc_indicators_history_light.json \
+            app/public/history \
             app/public/btc_indicators_latest.json \
             app/public/btc_indicators_manifest.json \
             app/public/strategy_mnav_latest.json \

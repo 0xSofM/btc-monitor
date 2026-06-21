@@ -16,11 +16,13 @@ Vite + React 前端，用于展示 BTC 大周期底部识别监测系统。
 - `btc_indicators_latest.json`
 - `btc_indicators_history_light.json`
 - `btc_indicators_history.json`
+- `history/btc_indicators_history_YYYY.json`
 - `btc_indicators_manifest.json`
 - `strategy_mnav_latest.json`
 - `strategy_mnav_history.json`
 
 最新快照优先消费 `canonical` 当前模型字段；历史兼容字段仅用于回溯、兜底和诊断。
+完整历史优先根据 manifest 中的年度分片按需加载，全量历史文件保留为兼容回退。
 
 ## 常用命令
 
@@ -30,6 +32,7 @@ npm run dev
 npm run lint
 npm run test
 npm run build
+npm run smoke
 node --check api/btc-data.js
 ```
 

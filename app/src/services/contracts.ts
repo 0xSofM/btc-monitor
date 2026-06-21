@@ -67,6 +67,7 @@ export interface DataManifest {
     light?: string;
     lightRecentDays?: number;
     lightFields?: string[];
+    yearly?: Record<string, string>;
   };
   schemaVersion: string;
   signalEventsV4Rows?: number;

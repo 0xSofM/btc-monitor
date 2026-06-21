@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "name": "btc-dca-monitor",
+  "name": "btc-cycle-bottom-monitor",
   "buildCommand": "npm run build",
   "installCommand": "npm ci",
   "outputDirectory": "dist",
@@ -53,6 +53,19 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=600, s-maxage=3600, stale-while-revalidate=21600"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "source": "/history/(.*).json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=1800, s-maxage=21600, stale-while-revalidate=43200"
         },
         {
           "key": "Access-Control-Allow-Origin",

@@ -2,6 +2,30 @@
  * Vercel Edge Function - BTC runtime Core-8 proxy.
  */
 
+import {
+  CANONICAL_MODEL,
+  COMPATIBILITY_FIELDS,
+  CORE_INDICATOR_SET,
+  DISPLAY_INDICATORS,
+  LEGACY_SCORING_MODEL_VERSION,
+  SCHEMA_VERSION,
+  SCORING_MODEL_VERSION,
+} from './generated-model-contract.js';
+import {
+  BGEOMETRICS_SERIES,
+  BLOCKCHAIN_INFO_STATS_URL,
+  COINBASE_SPOT_URL,
+  COINGECKO_SPOT_URL,
+  DEFAULT_THRESHOLDS,
+  FRESHNESS_LIMITS,
+  INDICATOR_ROUTE_MAP,
+  NUPL_BACKUP_URLS,
+  RESERVE_RISK_BACKUP_URLS,
+  RESERVE_RISK_DISABLE_LAG_DAYS,
+  SCORE_CONFIRM_RATIO,
+  SOPR_SMOOTHING_DAYS,
+} from './btc-data-config.js';
+
 export const config = {
   runtime: 'edge',
 };
@@ -17,7 +41,6 @@ const MEMORY_CACHE_TTL_MS = 600_000; // 10 min
 const STATIC_LATEST_PATH = '/btc_indicators_latest.json';
 const STATIC_HISTORY_PATH = '/btc_indicators_history.json';
 const STATIC_HISTORY_LIGHT_PATH = '/btc_indicators_history_light.json';
-const BLOCKCHAIN_INFO_STATS_URL = 'https://api.blockchain.info/stats';
 
 async function fetchBlockchainInfoSpotPrice() {
   const payload = await fetchJsonSafely(BLOCKCHAIN_INFO_STATS_URL, null, {
@@ -33,142 +56,6 @@ async function fetchBlockchainInfoSpotPrice() {
 
   return buildPoint(getTodayUtcDate(), price, 'blockchain_info');
 }
-
-const COINBASE_SPOT_URL = 'https://api.coinbase.com/v2/prices/BTC-USD/spot';
-const COINGECKO_SPOT_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd';
-const RESERVE_RISK_DISABLE_LAG_DAYS = 30;
-const SCORE_CONFIRM_RATIO = 7 / 12;
-const SOPR_SMOOTHING_DAYS = 3;
-const SCHEMA_VERSION = 'current';
-const CANONICAL_MODEL = 'core8_independent_valuation';
-const SCORING_MODEL_VERSION = 'core8_independent_valuation_current';
-const LEGACY_SCORING_MODEL_VERSION = 'v3_no_lookahead_replacement';
-const CORE_INDICATOR_SET = 'core8_bottom_independent_valuation_current';
-const DISPLAY_INDICATORS = [
-  'priceMa200w',
-  'mvrvZscore',
-  'nupl',
-  'puell',
-  'sthMvrv',
-  'sthSopr',
-  'lthMvrv',
-  'lthSopr',
-];
-const COMPATIBILITY_FIELDS = [
-  'priceRealized',
-  'reserveRisk',
-  'valuationBlendV6',
-  'v2',
-  'v4',
-];
-
-const BGEOMETRICS_SERIES = {
-  btcPrice: {
-    dataKey: 'btcPrice',
-    urls: ['https://charts.bgeometrics.com/files/moving_average_price.json'],
-  },
-  ma200w: {
-    dataKey: 'ma200w',
-    urls: ['https://charts.bgeometrics.com/files/200wma.json'],
-  },
-  realizedPrice: {
-    dataKey: 'realizedPrice',
-    urls: ['https://charts.bgeometrics.com/files/realized_price.json'],
-  },
-  reserveRisk: {
-    dataKey: 'reserveRisk',
-    urls: ['https://charts.bgeometrics.com/files/reserve_risk.json'],
-  },
-  lthMvrv: {
-    dataKey: 'lthMvrv',
-    urls: ['https://charts.bgeometrics.com/files/lth_mvrv.json'],
-  },
-  lthSopr: {
-    dataKey: 'lthSopr',
-    urls: ['https://charts.bgeometrics.com/files/lth_sopr.json'],
-  },
-  mvrvZscore: {
-    dataKey: 'mvrvZscore',
-    urls: ['https://charts.bgeometrics.com/files/mvrv_zscore_data.json'],
-  },
-  nupl: {
-    dataKey: 'nupl',
-    urls: ['https://charts.bgeometrics.com/files/nupl_data.json'],
-  },
-  sthSopr: {
-    dataKey: 'sthSopr',
-    urls: ['https://charts.bgeometrics.com/files/sth_sopr.json'],
-  },
-  sthMvrv: {
-    dataKey: 'sthMvrv',
-    urls: ['https://charts.bgeometrics.com/files/sth_mvrv.json'],
-  },
-  puellMultiple: {
-    dataKey: 'puellMultiple',
-    urls: [
-      'https://charts.bgeometrics.com/files/puell_multiple_data.json',
-      'https://charts.bgeometrics.com/files/puell_multiple_7dma.json',
-    ],
-  },
-};
-
-const RESERVE_RISK_BACKUP_URLS = [
-  'https://bitcoin-data.com/v1/reserve-risk/1',
-  'https://r.jina.ai/http://bitcoin-data.com/v1/reserve-risk/1',
-];
-
-const NUPL_BACKUP_URLS = [
-  'https://bitcoin-data.com/v1/nupl/1',
-  'https://r.jina.ai/http://bitcoin-data.com/v1/nupl/1',
-];
-
-const INDICATOR_ROUTE_MAP = {
-  '/btc-data/v1/mvrv-zscore/1': { seriesKey: 'mvrvZscore', dataKey: 'mvrvZscore', dateKey: 'mvrvZscore' },
-  '/btc-data/v1/nupl/1': { seriesKey: 'nupl', dataKey: 'nupl', dateKey: 'nupl' },
-  '/btc-data/v1/lth-mvrv/1': { seriesKey: 'lthMvrv', dataKey: 'lthMvrv', dateKey: 'lthMvrv' },
-  '/btc-data/v1/lth-sopr/1': { seriesKey: 'lthSopr', dataKey: 'lthSopr', dateKey: 'lthSopr' },
-  '/btc-data/v1/puell-multiple/1': { seriesKey: 'puellMultiple', dataKey: 'puellMultiple', dateKey: 'puell' },
-  '/btc-data/v1/reserve-risk/1': { seriesKey: 'reserveRisk', dataKey: 'reserveRisk', dateKey: 'reserveRisk' },
-  '/btc-data/v1/realized-price/1': { seriesKey: 'realizedPrice', dataKey: 'realizedPrice', dateKey: 'priceRealized' },
-  '/btc-data/v1/sth-sopr/1': { seriesKey: 'sthSopr', dataKey: 'sthSopr', dateKey: 'sthSopr' },
-  '/btc-data/v1/sth-mvrv/1': { seriesKey: 'sthMvrv', dataKey: 'sthMvrv', dateKey: 'sthMvrv' },
-  '/btc-data/v1/200wma/1': { seriesKey: 'ma200w', dataKey: 'ma200w', dateKey: 'priceMa200w' },
-};
-
-const DEFAULT_THRESHOLDS = {
-  priceMa200wRatio: { trigger: 1, deep: 0.85 },
-  priceRealizedRatio: { trigger: 1, deep: 0.9 },
-  reserveRisk: { trigger: 0.0016, deep: 0.0012 },
-  sthSopr: { trigger: 1, deep: 0.97 },
-  sthMvrv: { trigger: 1, deep: 0.85 },
-  puellMultiple: { trigger: 0.6, deep: 0.5 },
-  lthMvrv: { trigger: 1, deep: 0.9 },
-  lthSopr: { trigger: 0.9, deep: 0.75 },
-  mvrvZscore: { trigger: 0, deep: -0.5 },
-  mvrvZscoreCore: { trigger: 0, deep: -0.5, role: 'valuation_core_v4' },
-  nupl: { trigger: 0.15, deep: 0 },
-  nuplCore: { trigger: 0.15, deep: 0, role: 'valuation_core_v6' },
-  valuationBlendV6: {
-    method: 'max(mvrvZscoreCore,nuplCore)',
-    role: 'shared_valuation_slot_v6',
-    displayRole: 'legacy_compatibility_only',
-  },
-  reserveRiskV4Compatibility: { aliasOf: 'mvrvZscoreCore', deprecated: true },
-};
-
-const FRESHNESS_LIMITS = {
-  btcPrice: 2,
-  ma200w: 7,
-  realizedPrice: 7,
-  reserveRisk: RESERVE_RISK_DISABLE_LAG_DAYS,
-  lthMvrv: 7,
-  lthSopr: 7,
-  mvrvZscore: 7,
-  nupl: 7,
-  sthSopr: 7,
-  sthMvrv: 7,
-  puellMultiple: 7,
-};
 
 // SECTION: helpers
 function asRecord(value) {

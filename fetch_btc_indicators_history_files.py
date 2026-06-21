@@ -70,6 +70,7 @@ from pipeline.archiver import (  # noqa: F401 — re-exported for backward compa
 # =========================================================================
 
 HISTORY_LIGHT_RECENT_DAYS = 730
+HISTORY_YEARLY_PATH_TEMPLATE = "btc_indicators_history_{year}.json"
 HISTORY_LIGHT_FIELDS = [
     "d",
     "unixTs",
@@ -519,6 +520,67 @@ def build_light_history_json(
     return selected
 
 
+def build_yearly_history_json(
+    history_json: List[Dict[str, object]],
+) -> Dict[str, List[Dict[str, object]]]:
+    """Split full history rows into calendar-year files."""
+    yearly: Dict[str, List[Dict[str, object]]] = {}
+
+    for row in history_json:
+        date_raw = row.get("d")
+        if not isinstance(date_raw, str) or len(date_raw) < 4:
+            continue
+        year = date_raw[:4]
+        if not year.isdigit():
+            continue
+        yearly.setdefault(year, []).append(row)
+
+    return dict(sorted(yearly.items()))
+
+
+def build_source_health_summary(
+    base_df: pd.DataFrame,
+    sources: Dict[str, str],
+) -> Dict[str, Dict[str, object]]:
+    """Summarize source coverage for manifest diagnostics."""
+    health: Dict[str, Dict[str, object]] = {}
+
+    for column, source in sources.items():
+        if column not in base_df.columns:
+            health[column] = {
+                "source": source,
+                "rows": 0,
+                "nonNullRows": 0,
+                "latestDate": None,
+                "latestNonNullDate": None,
+                "status": "missing_column",
+            }
+            continue
+
+        series = base_df[column]
+        non_null = base_df.loc[series.notna(), ["date", column]]
+        latest_date = (
+            _safe_iso_date(base_df["date"].max())
+            if "date" in base_df.columns and not base_df.empty
+            else None
+        )
+        latest_non_null_date = (
+            _safe_iso_date(non_null["date"].max())
+            if not non_null.empty
+            else None
+        )
+        health[column] = {
+            "source": source,
+            "rows": int(len(base_df)),
+            "nonNullRows": int(series.notna().sum()),
+            "latestDate": latest_date,
+            "latestNonNullDate": latest_non_null_date,
+            "status": "healthy" if latest_non_null_date else "empty",
+        }
+
+    return health
+
+
 def build_latest_json(
     frontend_df: pd.DataFrame,
     thresholds: Dict[str, Dict[str, object]],
@@ -897,6 +959,8 @@ def build_manifest_json(
     history_rows: int,
     history_light_rows: int,
     thresholds: Dict[str, Dict[str, object]],
+    history_year_files: Dict[str, str] | None = None,
+    source_health: Dict[str, Dict[str, object]] | None = None,
     reserve_risk_diagnostics: Dict[str, object] | None = None,
     signal_events_rows: int = 0,
     archived_snapshot_path: str | None = None,
@@ -927,6 +991,7 @@ def build_manifest_json(
             "light": "btc_indicators_history_light.json",
             "lightRecentDays": HISTORY_LIGHT_RECENT_DAYS,
             "lightFields": HISTORY_LIGHT_FIELDS,
+            "yearly": history_year_files or {},
         },
         "signalEventsV4Rows": signal_events_rows,
         "schemaVersion": SCHEMA_VERSION,
@@ -968,6 +1033,7 @@ def build_manifest_json(
                 else None
             ),
         },
+        "sourceHealth": source_health or {},
         "dataHealth": {
             "indicatorLagDays": (
                 indicator_lag_days if isinstance(indicator_lag_days, dict) else {}
@@ -1190,6 +1256,16 @@ def main() -> int:
         help="Frontend light history JSON output path.",
     )
     parser.add_argument(
+        "--history-yearly-dir",
+        default="app/public/history",
+        help="Directory for calendar-year history JSON shards.",
+    )
+    parser.add_argument(
+        "--skip-history-yearly",
+        action="store_true",
+        help="Do not write calendar-year history JSON shards.",
+    )
+    parser.add_argument(
         "--latest-json-path",
         default="app/public/btc_indicators_latest.json",
         help="Frontend latest JSON output path.",
@@ -1242,6 +1318,7 @@ def main() -> int:
 
     history_path = Path(args.history_json_path)
     history_light_path = Path(args.history_light_json_path)
+    history_yearly_dir = Path(args.history_yearly_dir)
     latest_path = Path(args.latest_json_path)
     manifest_path = Path(args.manifest_json_path)
     signal_events_v4_path = Path(args.signal_events_v4_json_path)
@@ -1252,6 +1329,10 @@ def main() -> int:
         "manifest": manifest_path,
         "signalEventsV4": signal_events_v4_path,
     }
+
+    if not args.skip_history_yearly and history_yearly_dir.exists():
+        for shard_path in history_yearly_dir.glob("btc_indicators_history_*.json"):
+            output_paths[f"historyYear{shard_path.stem.rsplit('_', 1)[-1]}"] = shard_path
 
     rollback_from = args.rollback_from.strip()
     if rollback_from:
@@ -1292,6 +1373,16 @@ def main() -> int:
 
     history_json = dataframe_to_history_json(frontend_df)
     history_light_json = build_light_history_json(history_json)
+    history_yearly_json = (
+        build_yearly_history_json(history_json)
+        if not args.skip_history_yearly
+        else {}
+    )
+    history_year_files = {
+        year: f"history/{HISTORY_YEARLY_PATH_TEMPLATE.format(year=year)}"
+        for year in history_yearly_json
+    }
+    source_health = build_source_health_summary(base_df, sources)
     latest_json = build_latest_json(
         frontend_df, thresholds, reserve_risk_diagnostics=reserve_risk_diagnostics
     )
@@ -1301,12 +1392,25 @@ def main() -> int:
         history_rows=len(history_json),
         history_light_rows=len(history_light_json),
         thresholds=thresholds,
+        history_year_files=history_year_files,
+        source_health=source_health,
         reserve_risk_diagnostics=reserve_risk_diagnostics,
         signal_events_rows=len(signal_events_v4_json),
     )
 
     write_json(history_path, history_json)
     write_json(history_light_path, history_light_json)
+    if history_yearly_json:
+        history_yearly_dir.mkdir(parents=True, exist_ok=True)
+        stale_shards = set(history_yearly_dir.glob("btc_indicators_history_*.json"))
+        for year, rows in history_yearly_json.items():
+            shard_path = history_yearly_dir / HISTORY_YEARLY_PATH_TEMPLATE.format(
+                year=year
+            )
+            write_json(shard_path, rows)
+            stale_shards.discard(shard_path)
+        for stale_path in stale_shards:
+            stale_path.unlink()
     write_json(latest_path, latest_json)
     write_json(manifest_path, manifest_json)
     write_json(signal_events_v4_path, signal_events_v4_json)

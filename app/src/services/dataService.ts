@@ -7,6 +7,7 @@ import {
   STATIC_HISTORY_LIGHT_PATH,
   checkEndpoint,
   fetchRuntimeLatestRaw,
+  fetchStaticHistoryShardsRaw,
   fetchStaticHistoryRaw,
   fetchStaticLatestRaw,
   fetchStaticManifestRaw,
@@ -97,6 +98,32 @@ function normalizeHistoryRows(rawRows: unknown[]): IndicatorData[] {
     .sort((left, right) => left.d.localeCompare(right.d));
 }
 
+function getYearlyHistoryPaths(manifest: DataManifest | null): string[] {
+  const yearly = manifest?.historyFiles?.yearly;
+  if (!yearly) {
+    return [];
+  }
+
+  return Object.entries(yearly)
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([, path]) => path)
+    .filter((path) => path.trim().length > 0);
+}
+
+async function fetchFullHistoricalRaw(timeoutMs: number): Promise<unknown[]> {
+  const manifest = await fetchDataManifest();
+  const yearlyPaths = getYearlyHistoryPaths(manifest);
+  if (yearlyPaths.length > 0) {
+    try {
+      return await fetchStaticHistoryShardsRaw(yearlyPaths, timeoutMs);
+    } catch (error) {
+      console.error('[DataService] Error fetching yearly historical shards:', error);
+    }
+  }
+
+  return fetchStaticHistoryRaw(STATIC_HISTORY_FULL_PATH, timeoutMs);
+}
+
 function normalizeManifest(raw: unknown): DataManifest | null {
   if (!raw || typeof raw !== 'object') {
     return null;
@@ -127,6 +154,15 @@ function normalizeManifest(raw: unknown): DataManifest | null {
         lightRecentDays: toFiniteNumber(historyFilesPayload.lightRecentDays, Number.NaN),
         lightFields: Array.isArray(historyFilesPayload.lightFields)
           ? historyFilesPayload.lightFields.filter((item): item is string => typeof item === 'string')
+          : undefined,
+        yearly: historyFilesPayload.yearly && typeof historyFilesPayload.yearly === 'object'
+          ? Object.fromEntries(
+              Object.entries(historyFilesPayload.yearly as Record<string, unknown>)
+                .filter((entry): entry is [string, string] => (
+                  /^\d{4}$/.test(entry[0]) && typeof entry[1] === 'string' && entry[1].trim().length > 0
+                ))
+                .sort(([left], [right]) => left.localeCompare(right)),
+            )
           : undefined,
       }
     : undefined;
@@ -224,7 +260,9 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
   }
 
   try {
-    const raw = await fetchStaticHistoryRaw(historyPath, timeoutMs);
+    const raw = full
+      ? await fetchFullHistoricalRaw(timeoutMs)
+      : await fetchStaticHistoryRaw(historyPath, timeoutMs);
     const history = mergeCachedLatestIntoHistory(normalizeHistoryRows(raw));
     if (requestedMode === 'light' && cache.historyMode === 'full') {
       return cache.history;
@@ -239,7 +277,7 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
 
     if (!full) {
       try {
-        const raw = await fetchStaticHistoryRaw(STATIC_HISTORY_FULL_PATH, 120000);
+        const raw = await fetchFullHistoricalRaw(120000);
         const history = mergeCachedLatestIntoHistory(normalizeHistoryRows(raw));
         persistLocalData({ history });
         cache.history = history;

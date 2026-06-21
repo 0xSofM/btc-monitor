@@ -81,7 +81,25 @@
       "indicatorSet",
       "coreIndicatorSet",
       "scoringModelVersion"
-    ]
+    ],
+    "yearly": {
+      "2011": "history/btc_indicators_history_2011.json",
+      "2012": "history/btc_indicators_history_2012.json",
+      "2013": "history/btc_indicators_history_2013.json",
+      "2014": "history/btc_indicators_history_2014.json",
+      "2015": "history/btc_indicators_history_2015.json",
+      "2016": "history/btc_indicators_history_2016.json",
+      "2017": "history/btc_indicators_history_2017.json",
+      "2018": "history/btc_indicators_history_2018.json",
+      "2019": "history/btc_indicators_history_2019.json",
+      "2020": "history/btc_indicators_history_2020.json",
+      "2021": "history/btc_indicators_history_2021.json",
+      "2022": "history/btc_indicators_history_2022.json",
+      "2023": "history/btc_indicators_history_2023.json",
+      "2024": "history/btc_indicators_history_2024.json",
+      "2025": "history/btc_indicators_history_2025.json",
+      "2026": "history/btc_indicators_history_2026.json"
+    }
   },
   "signalEventsV4Rows": 18,
   "schemaVersion": "current",
@@ -281,5 +299,95 @@
     "isStale": false,
     "mstrTimestampUtc": "2026-06-18T20:00:00",
     "btcTimestamp": "2026-06-21T14:30:00"
+  },
+  "sourceHealth": {
+    "btc_price": {
+      "source": null,
+      "rows": 5500,
+      "nonNullRows": 5086,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "ma200w": {
+      "source": null,
+      "rows": 5500,
+      "nonNullRows": 4722,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "realized_price": {
+      "source": null,
+      "rows": 5500,
+      "nonNullRows": 5500,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "reserve_risk": {
+      "source": null,
+      "rows": 5500,
+      "nonNullRows": 5286,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "lth_mvrv": {
+      "source": null,
+      "rows": 5500,
+      "nonNullRows": 5286,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "lth_sopr": {
+      "source": null,
+      "rows": 5500,
+      "nonNullRows": 5286,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "mvrv_zscore": {
+      "source": null,
+      "rows": 5500,
+      "nonNullRows": 5286,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "nupl": {
+      "source": null,
+      "rows": 5500,
+      "nonNullRows": 4920,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "sth_sopr": {
+      "source": null,
+      "rows": 5500,
+      "nonNullRows": 5286,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "sth_mvrv": {
+      "source": null,
+      "rows": 5500,
+      "nonNullRows": 4919,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    },
+    "puell_multiple": {
+      "source": null,
+      "rows": 5500,
+      "nonNullRows": 5151,
+      "latestDate": "2026-06-21",
+      "latestNonNullDate": "2026-06-21",
+      "status": "healthy"
+    }
   }
 }

@@ -60,6 +60,26 @@ describe('dataService helpers', () => {
   it('fetchHistoricalData loads light history by default and full history on demand', async () => {
     const fetchMock = vi.fn(async (url: RequestInfo | URL) => {
       const path = String(url);
+      if (path.includes('btc_indicators_manifest.json')) {
+        return new Response(JSON.stringify({
+          generatedAt: '2026-04-15T00:00:00Z',
+          latestDate: '2026-04-15',
+          lastUpdated: '2026-04-15T00:00:00Z',
+          historyRows: 2,
+          schemaVersion: 'current',
+          historyFiles: {
+            light: 'btc_indicators_history_light.json',
+            full: 'btc_indicators_history.json',
+            yearly: {
+              '2026': 'history/btc_indicators_history_2026.json',
+            },
+          },
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
       const body = path.includes('btc_indicators_history_light.json')
         ? [
             {
@@ -76,7 +96,8 @@ describe('dataService helpers', () => {
               puellMultiple: 0.72,
             },
           ]
-        : [
+        : path.includes('history/btc_indicators_history_2026.json')
+          ? [
             {
               d: '2026-04-14',
               btcPrice: 82500,
@@ -103,7 +124,8 @@ describe('dataService helpers', () => {
               sthMvrv: 1.05,
               puellMultiple: 0.72,
             },
-          ];
+          ]
+          : [];
 
       return new Response(JSON.stringify(body), {
         status: 200,
@@ -116,7 +138,8 @@ describe('dataService helpers', () => {
     const full = await fetchHistoricalData({ forceRefresh: true, full: true });
 
     expect(fetchMock.mock.calls[0]?.[0]).toBe('/btc_indicators_history_light.json');
-    expect(fetchMock.mock.calls[1]?.[0]).toBe('/btc_indicators_history.json');
+    expect(fetchMock.mock.calls[1]?.[0]).toBe('/btc_indicators_manifest.json');
+    expect(fetchMock.mock.calls[2]?.[0]).toBe('/history/btc_indicators_history_2026.json');
     expect(light).toHaveLength(1);
     expect(full).toHaveLength(2);
 

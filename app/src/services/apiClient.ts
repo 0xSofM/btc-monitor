@@ -38,6 +38,19 @@ function buildApiUrl(endpoint: string): string {
   return `${API_BASE_URL}${endpoint}`;
 }
 
+function normalizeStaticPath(path: string): string {
+  const trimmed = path.trim();
+  if (!trimmed) {
+    return '';
+  }
+
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith('/')) {
+    return trimmed;
+  }
+
+  return `/${trimmed}`;
+}
+
 async function fetchMetricSeries(endpoint: string, metricName: string): Promise<ApiMetricPoint[]> {
   try {
     const response = await fetchWithTimeout(buildApiUrl(endpoint), 10000);
@@ -96,7 +109,7 @@ export async function fetchStaticLatestRaw(): Promise<unknown> {
 }
 
 export async function fetchStaticHistoryRaw(path: string, timeout: number): Promise<unknown[]> {
-  const response = await fetchWithTimeout(path, timeout);
+  const response = await fetchWithTimeout(normalizeStaticPath(path), timeout);
   if (!response.ok) {
     throw new Error(`Failed to fetch historical data from ${path}`);
   }
@@ -107,6 +120,18 @@ export async function fetchStaticHistoryRaw(path: string, timeout: number): Prom
   }
 
   return payload;
+}
+
+export async function fetchStaticHistoryShardsRaw(
+  paths: string[],
+  timeout: number,
+): Promise<unknown[]> {
+  if (paths.length === 0) {
+    return [];
+  }
+
+  const payloads = await Promise.all(paths.map((path) => fetchStaticHistoryRaw(path, timeout)));
+  return payloads.flat();
 }
 
 export async function fetchStaticManifestRaw(): Promise<unknown> {

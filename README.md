@@ -36,6 +36,7 @@
 3. 脚本写入：
    - `app/public/btc_indicators_history.json`
    - `app/public/btc_indicators_history_light.json`
+   - `app/public/history/btc_indicators_history_YYYY.json`
    - `app/public/btc_indicators_latest.json`
    - `app/public/btc_indicators_manifest.json`
    - `app/public/btc_signal_events_v4.json`
@@ -114,13 +115,25 @@ Vercel 部署：
 
 ```bash
 python -m unittest discover -s tests -v
+python scripts/generate_model_contract.py --check
+python -m pip install -r requirements-dev.txt
+python -m pip_audit -r requirements.txt --no-deps --disable-pip
 
 cd app
 npm run lint
 npm run test
 npm run build
+npm run smoke
 node --check api/btc-data.js
 ```
+
+模型契约以 `contracts/current_model.json` 为唯一来源。修改模型版本、核心指标或兼容字段后，运行：
+
+```bash
+python scripts/generate_model_contract.py
+```
+
+完整历史除保留 `btc_indicators_history.json` 外，也会按年份写入 `app/public/history/`。前端默认加载轻量历史，进入完整历史视图时优先按 manifest 中的年度分片并发加载，失败时才回退全量历史文件。
 
 ## 自动更新
 

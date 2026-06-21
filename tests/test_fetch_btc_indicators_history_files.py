@@ -13,6 +13,8 @@ from fetch_btc_indicators_history_files import (
     build_signal_events_v4_json,
     build_latest_json,
     dataframe_to_history_json,
+    build_source_health_summary,
+    build_yearly_history_json,
     enrich_for_frontend,
     merge_reserve_risk_history_sources,
     patch_reserve_risk_tail,
@@ -218,18 +220,31 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         enriched, thresholds = enrich_for_frontend(self.build_base_df())
         history = dataframe_to_history_json(enriched)
         light = build_light_history_json(history)
+        yearly = build_yearly_history_json(history)
         latest = build_latest_json(enriched, thresholds=thresholds)
+        source_health = build_source_health_summary(
+            self.build_base_df(),
+            {"btc_price": "test_source"},
+        )
 
         manifest = build_manifest_json(
             latest_json=latest,
             history_rows=len(history),
             history_light_rows=len(light),
             thresholds=thresholds,
+            history_year_files={
+                year: f"history/btc_indicators_history_{year}.json"
+                for year in yearly
+            },
+            source_health=source_health,
         )
 
         self.assertEqual(manifest["historyRows"], len(history))
         self.assertEqual(manifest["historyLightRows"], len(light))
         self.assertEqual(manifest["historyFiles"]["light"], "btc_indicators_history_light.json")
+        self.assertIn("2024", manifest["historyFiles"]["yearly"])
+        self.assertEqual(manifest["sourceHealth"]["btc_price"]["source"], "test_source")
+        self.assertEqual(manifest["sourceHealth"]["btc_price"]["status"], "healthy")
         self.assertIn("historyRequiredFields", manifest["schemaContract"])
         self.assertEqual(manifest["schemaContract"]["canonicalModel"], "core8_independent_valuation")
         self.assertEqual(len(manifest["schemaContract"]["displayIndicators"]), 8)
