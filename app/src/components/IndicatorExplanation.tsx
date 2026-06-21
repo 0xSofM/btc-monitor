@@ -1,6 +1,8 @@
-import { AlertTriangle, BookOpen, Building2, Info, ShieldCheck, TrendingDown } from 'lucide-react';
+import { AlertTriangle, BookOpen, ShieldCheck, TrendingDown } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { IndicatorScoringFramework } from './IndicatorScoringFramework';
+import { StrategyMnavExplanation } from './StrategyMnavExplanation';
 
 type IndicatorItem = {
   id: string;
@@ -129,39 +131,8 @@ export function IndicatorExplanation() {
         <IndicatorGrid title="触发层" items={triggerIndicators} />
         <IndicatorGrid title="确认层" items={confirmationIndicators} />
 
-        <section className="rounded-xl border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950">
-          <div className="flex items-start gap-3">
-            <Info className="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-300" />
-            <div>
-              <h3 className="font-semibold text-blue-800 dark:text-blue-200">分层评分框架</h3>
-              <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
-                系统跟踪 8 个核心指标，并按估值、短期触发、长期确认三层汇总。
-                估值层包含 Price / 200W-MA、MVRV Z-Score、NUPL 和 Puell Multiple，满分 8 分。
-                触发层取 STH-MVRV 与 STH-SOPR 的较高分，满分 2 分。
-                确认层由 LTH-MVRV 与 LTH-SOPR 独立计分，满分 4 分。
-                总分上限为 14 分，并使用 3 日确认规则降低单日波动对信号判断的影响。
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="rounded-xl border bg-background/70 p-4">
-          <div className="flex items-start gap-3">
-            <div className="rounded-full border bg-muted/50 p-2">
-              <Building2 className="h-4 w-4" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-semibold">MSTR mNAV</h3>
-              <p className="text-sm text-muted-foreground">
-                mNAV 使用 Strategy 官方数据，衡量企业价值相对其 BTC 储备价值的倍数。
-                数值高于 1 表示相对 BTC 储备存在溢价，低于 1 表示折价。
-              </p>
-              <p className="text-sm">
-                该指标用于观察 BTC 代理资产的相对溢价与市场风险偏好，不参与 BTC 大周期底部综合评分。
-              </p>
-            </div>
-          </div>
-        </section>
+        <IndicatorScoringFramework />
+        <StrategyMnavExplanation />
       </CardContent>
     </Card>
   );
