@@ -3,8 +3,15 @@ import type { IndicatorData, LatestData } from '@/types';
 import { normalizeIndicatorData, normalizeLatestData } from './normalizers';
 import { CORE_HISTORY_FIELDS } from './schema';
 import { enrichLatestDataWithHistory, getLatestFromHistory } from './selectors';
+import {
+  asRecord,
+  buildStoredEnvelope,
+  getStorage,
+  readStoredValue,
+  removeStoredValue,
+  writeStoredValue,
+} from './storageEnvelope';
 
-const DATA_VERSION = 'v1.5.1';
 const HISTORY_KEY = 'btc_indicators_history';
 const LATEST_KEY = 'btc_indicators_latest';
 const MAX_PERSISTED_HISTORY_ROWS = 900;
@@ -17,32 +24,6 @@ const storageWarnings = {
   historyParseFailure: false,
   latestParseFailure: false,
 };
-
-type StoredEnvelope<T> = {
-  version: string;
-  timestamp: number;
-  data: T;
-  truncated?: boolean;
-  storedRows?: number;
-};
-
-type WriteResult = {
-  ok: boolean;
-  quotaExceeded: boolean;
-  error?: unknown;
-};
-
-function getStorage(): Storage | null {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  try {
-    return window.localStorage;
-  } catch {
-    return null;
-  }
-}
 
 function warnStorageOnce(
   key: keyof typeof storageWarnings,
@@ -60,54 +41,6 @@ function warnStorageOnce(
   }
 
   console.warn(message, error);
-}
-
-function isQuotaExceededError(error: unknown): boolean {
-  if (!error || typeof error !== 'object') {
-    return false;
-  }
-
-  const name = 'name' in error && typeof error.name === 'string' ? error.name : '';
-  const message = 'message' in error && typeof error.message === 'string' ? error.message : '';
-  const code = 'code' in error && typeof error.code === 'number' ? error.code : 0;
-
-  return (
-    name === 'QuotaExceededError'
-    || name === 'NS_ERROR_DOM_QUOTA_REACHED'
-    || code === 22
-    || code === 1014
-    || /quota|storage.*full|exceeded the quota/i.test(message)
-  );
-}
-
-function removeStoredValue(storage: Storage, key: string): void {
-  try {
-    storage.removeItem(key);
-  } catch {
-    // Ignore storage cleanup failures; cache persistence is best-effort only.
-  }
-}
-
-function writeStoredValue(storage: Storage, key: string, value: string): WriteResult {
-  try {
-    storage.setItem(key, value);
-    return {
-      ok: true,
-      quotaExceeded: false,
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      quotaExceeded: isQuotaExceededError(error),
-      error,
-    };
-  }
-}
-
-function asRecord(value: unknown): Record<string, unknown> | null {
-  return value && typeof value === 'object'
-    ? value as Record<string, unknown>
-    : null;
 }
 
 function compactHistoryRow(row: IndicatorData): IndicatorData {
@@ -151,11 +84,7 @@ function buildHistoryRowLimits(totalRows: number): number[] {
 }
 
 function persistLatest(storage: Storage, latest: LatestData): void {
-  const payload = JSON.stringify({
-    version: DATA_VERSION,
-    timestamp: Date.now(),
-    data: latest,
-  } satisfies StoredEnvelope<LatestData>);
+  const payload = JSON.stringify(buildStoredEnvelope(latest));
 
   const initialWrite = writeStoredValue(storage, LATEST_KEY, payload);
   if (initialWrite.ok) {
@@ -196,13 +125,10 @@ function persistHistory(storage: Storage, history: IndicatorData[]): void {
 
   for (const limit of limits) {
     const rows = history.slice(-limit).map(compactHistoryRow);
-    const payload = JSON.stringify({
-      version: DATA_VERSION,
-      timestamp: Date.now(),
+    const payload = JSON.stringify(buildStoredEnvelope(rows, {
       storedRows: rows.length,
       truncated: rows.length < history.length,
-      data: rows,
-    } satisfies StoredEnvelope<IndicatorData[]>);
+    }));
 
     const result = writeStoredValue(storage, HISTORY_KEY, payload);
     if (result.ok) {
@@ -233,23 +159,8 @@ export function getLocalData(): IndicatorData[] {
   }
 
   try {
-    const raw = storage.getItem(HISTORY_KEY);
-    if (!raw) {
-      return [];
-    }
-
-    const parsed = JSON.parse(raw) as unknown;
-    const envelope = asRecord(parsed);
-    const storedVersion = typeof envelope?.version === 'string' ? envelope.version : undefined;
-
-    if (storedVersion && storedVersion !== DATA_VERSION) {
-      removeStoredValue(storage, HISTORY_KEY);
-      return [];
-    }
-
-    const candidate = envelope && 'data' in envelope
-      ? (Array.isArray(envelope.data) ? envelope.data as unknown[] : [])
-      : (Array.isArray(parsed) ? parsed : []);
+    const stored = readStoredValue(storage, HISTORY_KEY);
+    const candidate = Array.isArray(stored?.data) ? stored.data as unknown[] : [];
 
     return candidate
       .map((item) => normalizeIndicatorData(item))
@@ -271,22 +182,12 @@ export function getLocalLatestData(): LatestData | null {
   }
 
   try {
-    const raw = storage.getItem(LATEST_KEY);
-    if (!raw) {
+    const stored = readStoredValue(storage, LATEST_KEY);
+    if (!stored) {
       return null;
     }
 
-    const parsed = JSON.parse(raw) as unknown;
-    const envelope = asRecord(parsed);
-    const storedVersion = typeof envelope?.version === 'string' ? envelope.version : undefined;
-
-    if (storedVersion && storedVersion !== DATA_VERSION) {
-      removeStoredValue(storage, LATEST_KEY);
-      return null;
-    }
-
-    const envelopeData = envelope && 'data' in envelope ? envelope.data : undefined;
-    const candidate = asRecord(envelopeData) ?? parsed;
+    const candidate = asRecord(stored.data) ?? stored.parsed;
 
     const normalized = normalizeLatestData(candidate);
     if (!normalized) {
