@@ -8,8 +8,6 @@ import {
   checkEndpoint,
   fetchRuntimeLatestRaw,
   fetchStaticLatestRaw,
-  fetchStaticManifestRaw,
-  fetchStaticStrategyMnavRaw,
 } from './apiClient';
 import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions, HistoryMode } from './contracts';
 import {
@@ -17,7 +15,8 @@ import {
   fetchHistoryRows,
   hasUsableCachedHistory,
 } from './historyDataLoader';
-import { normalizeLatestData, normalizeManifestData, normalizeStrategyMnavData } from './normalizers';
+import { loadDataManifest, loadStrategyMnavData } from './metadataDataLoader';
+import { normalizeLatestData } from './normalizers';
 import { CORE8_COVERAGE_FIELDS } from './schema';
 import {
   INDICATOR_CONFIG,
@@ -101,12 +100,7 @@ export async function fetchDataManifest(forceRefresh = false): Promise<DataManif
   }
 
   try {
-    const raw = await fetchStaticManifestRaw();
-    const manifest = normalizeManifestData(raw);
-    if (!manifest) {
-      throw new Error('Invalid manifest format');
-    }
-
+    const manifest = await loadDataManifest();
     cache.manifest = manifest;
     cache.manifestTimestamp = now;
     return manifest;
@@ -184,12 +178,7 @@ export async function fetchStrategyMnavData(forceRefresh = false): Promise<Strat
   }
 
   try {
-    const raw = await fetchStaticStrategyMnavRaw();
-    const data = normalizeStrategyMnavData(raw);
-    if (!data) {
-      throw new Error('Invalid Strategy mNAV data format');
-    }
-
+    const data = await loadStrategyMnavData();
     cache.strategyMnav = data;
     cache.strategyMnavTimestamp = now;
     return data;
