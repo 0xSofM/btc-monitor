@@ -3,6 +3,14 @@ import type { IndicatorData, LatestData, StrategyMnavData } from '@/types';
 import {
   PROXY_URL,
 } from './apiClient';
+import {
+  CACHE_DURATION,
+  MANIFEST_CACHE_DURATION,
+  REFRESH_INTERVAL,
+  cache,
+  getCachedDataStatus,
+  isTimestampFresh,
+} from './dataCache';
 import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions, HistoryMode } from './contracts';
 import { checkRemoteDataSources } from './dataSourceHealth';
 import {
@@ -36,32 +44,6 @@ import {
   saveLocalData as persistLocalData,
   validateLocalDataConsistency,
 } from './storage';
-
-const REFRESH_INTERVAL = 5 * 60 * 1000;
-const CACHE_DURATION = 60 * 1000;
-const MANIFEST_CACHE_DURATION = 60 * 1000;
-
-type CacheState = {
-  latest: LatestData | null;
-  history: IndicatorData[];
-  historyMode: HistoryMode;
-  latestTimestamp: number;
-  manifest: DataManifest | null;
-  manifestTimestamp: number;
-  strategyMnav: StrategyMnavData | null;
-  strategyMnavTimestamp: number;
-};
-
-const cache: CacheState = {
-  latest: null,
-  history: [],
-  historyMode: 'none',
-  latestTimestamp: 0,
-  manifest: null,
-  manifestTimestamp: 0,
-  strategyMnav: null,
-  strategyMnavTimestamp: 0,
-};
 
 function mergeCachedLatestIntoHistory(rows: IndicatorData[]): IndicatorData[] {
   return cache.latest ? mergeLatestIntoHistory(rows, cache.latest) : rows;
@@ -103,7 +85,7 @@ export function hasCore8Coverage(rows: IndicatorData[]): boolean {
 
 export async function fetchDataManifest(forceRefresh = false): Promise<DataManifest | null> {
   const now = Date.now();
-  if (!forceRefresh && cache.manifest && (now - cache.manifestTimestamp) < MANIFEST_CACHE_DURATION) {
+  if (!forceRefresh && cache.manifest && isTimestampFresh(cache.manifestTimestamp, now, MANIFEST_CACHE_DURATION)) {
     return cache.manifest;
   }
 
@@ -172,7 +154,7 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
 
 export async function fetchStrategyMnavData(forceRefresh = false): Promise<StrategyMnavData | null> {
   const now = Date.now();
-  if (!forceRefresh && cache.strategyMnav && (now - cache.strategyMnavTimestamp) < MANIFEST_CACHE_DURATION) {
+  if (!forceRefresh && cache.strategyMnav && isTimestampFresh(cache.strategyMnavTimestamp, now, MANIFEST_CACHE_DURATION)) {
     return cache.strategyMnav;
   }
 
@@ -192,7 +174,7 @@ export async function fetchStaticLatestData(options: FetchStaticLatestOptions = 
   const enrichWithHistory = options.enrichWithHistory ?? false;
   const forceRefresh = options.forceRefresh ?? false;
 
-  if (!forceRefresh && cache.latest && (now - cache.latestTimestamp) < CACHE_DURATION) {
+  if (!forceRefresh && cache.latest && isTimestampFresh(cache.latestTimestamp, now, CACHE_DURATION)) {
     if (!enrichWithHistory) {
       return cache.latest;
     }
@@ -236,7 +218,7 @@ export async function fetchRuntimeLatestData(): Promise<LatestData | null> {
 
 export async function fetchAllLatestIndicators(useCache = true): Promise<LatestData | null> {
   const now = Date.now();
-  if (useCache && cache.latest && (now - cache.latestTimestamp) < CACHE_DURATION) {
+  if (useCache && cache.latest && isTimestampFresh(cache.latestTimestamp, now, CACHE_DURATION)) {
     return cache.latest;
   }
 
@@ -317,13 +299,7 @@ export function getDataStatus(): {
   cacheValid: boolean;
   lastUpdate: string | null;
 } {
-  const cacheAgeMs = Date.now() - cache.latestTimestamp;
-
-  return {
-    cacheAge: Math.floor(cacheAgeMs / 1000),
-    cacheValid: cache.latest !== null && cacheAgeMs < CACHE_DURATION,
-    lastUpdate: cache.latest?.date ?? null,
-  };
+  return getCachedDataStatus();
 }
 
 export const getLocalData = readLocalData;
