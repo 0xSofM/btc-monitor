@@ -3,8 +3,7 @@ import type { IndicatorData, LatestData } from '@/types';
 import { findIndicatorDates } from './indicatorDateSelectors';
 import { deriveLatestHistoryCounts, resolveCore8Score } from './latestFromHistoryScores';
 import { deriveLatestHistorySignals } from './latestFromHistorySignals';
-import { getLatestHistoryThresholds, toNumericPrice } from './latestFromHistoryThresholds';
-import { toFiniteNumber } from './normalizers';
+import { resolveLatestHistoryValues } from './latestFromHistoryValues';
 
 export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
   if (!data.length) {
@@ -13,24 +12,24 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
 
   const latest = data[data.length - 1];
 
-  const btcPrice = toNumericPrice(latest.btcPrice);
-  const priceMa200wRatio = toFiniteNumber(latest.priceMa200wRatio, 0);
-  const priceRealizedRatio = toFiniteNumber(latest.priceRealizedRatio, 0);
-  const reserveRisk = toFiniteNumber(latest.reserveRisk, 0);
-  const mvrvZscore = toFiniteNumber(latest.mvrvZscore, 0);
-  const nupl = toFiniteNumber(latest.nupl, 0);
-  const sthSoprRaw = toFiniteNumber(latest.sthSopr, 0);
-  const sthSoprMa3 = latest.sthSoprMa3;
-  const sthSopr = sthSoprRaw;
-  const sthSoprSignalValue = toFiniteNumber(sthSoprMa3 ?? latest.sthSopr, 0);
-  const sthMvrv = toFiniteNumber(latest.sthMvrv, 0);
-  const puellMultiple = toFiniteNumber(latest.puellMultiple, 0);
-  const lthMvrv = toFiniteNumber(latest.lthMvrv, 0);
-  const lthSoprRaw = toFiniteNumber(latest.lthSopr, 0);
-  const lthSoprMa3 = latest.lthSoprMa3;
-  const lthSoprValue = lthSoprRaw;
-  const lthSoprSignalValue = toFiniteNumber(lthSoprMa3 ?? latest.lthSopr, 0);
-  const thresholds = getLatestHistoryThresholds(latest.thresholds);
+  const {
+    btcPrice,
+    priceMa200wRatio,
+    priceRealizedRatio,
+    reserveRisk,
+    mvrvZscore,
+    nupl,
+    sthSopr,
+    sthSoprMa3,
+    sthSoprSignalValue,
+    sthMvrv,
+    puellMultiple,
+    lthMvrv,
+    lthSopr,
+    lthSoprMa3,
+    lthSoprSignalValue,
+    thresholds,
+  } = resolveLatestHistoryValues(latest);
   const {
     signals,
     signalsV4,
@@ -79,7 +78,7 @@ export function getLatestFromHistory(data: IndicatorData[]): LatestData | null {
     mvrvZscore,
     nupl,
     lthMvrv,
-    lthSopr: lthSoprValue,
+    lthSopr,
     lthSoprMa3,
     sthSopr,
     sthSoprMa3,
