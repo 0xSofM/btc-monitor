@@ -15,9 +15,9 @@ import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions, Hi
 import { checkRemoteDataSources } from './dataSourceHealth';
 import {
   buildHistoryRequestPlan,
-  fetchHistoryRows,
   hasUsableCachedHistory,
 } from './historyDataLoader';
+import { loadHistoryWithFallbacks } from './historyFallbackLoader';
 import {
   enrichLatestWithOptionalHistory,
   loadRuntimeLatestData,
@@ -111,45 +111,26 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
     return cache.history;
   }
 
-  try {
-    const loaded = await fetchHistoryRows(plan.primaryPath, plan.primaryTimeoutMs, plan.mode);
-    const history = mergeCachedLatestIntoHistory(loaded.rows);
-    if (plan.mode === 'light' && cache.historyMode === 'full') {
-      return cache.history;
-    }
-
-    return rememberHistoryData(history, loaded.mode);
-  } catch (error) {
-    console.error(`[DataService] Error fetching historical data (${plan.primaryPath}):`, error);
-
-    try {
-      const loaded = await fetchHistoryRows(plan.fallbackPath, plan.fallbackTimeoutMs, 'full');
-      const history = mergeCachedLatestIntoHistory(loaded.rows);
-      return rememberHistoryData(history, loaded.mode);
-    } catch (fallbackError) {
-      console.error(`[DataService] Error fetching fallback historical data (${plan.fallbackPath}):`, fallbackError);
-    }
-
-    if (plan.legacyFullPath && plan.legacyFullTimeoutMs) {
-      try {
-        const loaded = await fetchHistoryRows(plan.legacyFullPath, plan.legacyFullTimeoutMs, 'full');
-        const history = mergeCachedLatestIntoHistory(loaded.rows);
-        return rememberHistoryData(history, loaded.mode);
-      } catch (fallbackError) {
-        console.error(`[DataService] Error fetching fallback full historical data (${plan.legacyFullPath}):`, fallbackError);
-      }
-    }
-
-    const localHistory = readLocalData();
-    if (localHistory.length > 0 && hasCore8Coverage(localHistory)) {
-      const mergedLocalHistory = mergeCachedLatestIntoHistory(localHistory);
-      cache.history = mergedLocalHistory;
-      cache.historyMode = 'light';
-      return mergedLocalHistory;
-    }
-
-    return [];
+  const remoteHistory = await loadHistoryWithFallbacks({
+    plan,
+    cachedHistory: cache.history,
+    cacheHistoryMode: cache.historyMode,
+    mergeLatestIntoRows: mergeCachedLatestIntoHistory,
+    rememberHistory: rememberHistoryData,
+  });
+  if (remoteHistory.loaded) {
+    return remoteHistory.history;
   }
+
+  const localHistory = readLocalData();
+  if (localHistory.length > 0 && hasCore8Coverage(localHistory)) {
+    const mergedLocalHistory = mergeCachedLatestIntoHistory(localHistory);
+    cache.history = mergedLocalHistory;
+    cache.historyMode = 'light';
+    return mergedLocalHistory;
+  }
+
+  return [];
 }
 
 export async function fetchStrategyMnavData(forceRefresh = false): Promise<StrategyMnavData | null> {
