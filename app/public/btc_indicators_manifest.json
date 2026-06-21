@@ -1,11 +1,13 @@
 {
-  "generatedAt": "2026-06-20T19:53:58.509674+00:00",
-  "latestDate": "2026-06-20",
-  "lastUpdated": "2026-06-20T19:53:58.484245+00:00",
-  "historyRows": 5499,
+  "generatedAt": "2026-06-21T04:11:53.244708+00:00",
+  "latestDate": "2026-06-21",
+  "lastUpdated": "2026-06-21T04:11:53.213879+00:00",
+  "historyRows": 5500,
   "historyLightRows": 889,
+  "historyFullLightRows": 5500,
   "historyFiles": {
     "full": "btc_indicators_history.json",
+    "fullLight": "btc_indicators_history_full_light.json",
     "light": "btc_indicators_history_light.json",
     "lightRecentDays": 730,
     "lightFields": [
@@ -94,8 +96,8 @@
   "totalScoreV6": 2,
   "dynamicThresholds": {
     "reserveRisk": {
-      "trigger": 0.00058584792,
-      "deep": 0.0005401856099999999,
+      "trigger": 0.00058559912,
+      "deep": 0.00054005183,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -104,7 +106,7 @@
     },
     "sthSopr": {
       "trigger": 0.994630502248,
-      "deep": 0.987704855225333,
+      "deep": 0.9877117439561663,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -115,7 +117,7 @@
     },
     "sthMvrv": {
       "trigger": 0.92,
-      "deep": 0.867895,
+      "deep": 0.868,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -124,7 +126,7 @@
     },
     "lthSopr": {
       "trigger": 0.8548141230666861,
-      "deep": 0.6335059407500192,
+      "deep": 0.6382795033266859,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -140,7 +142,7 @@
   },
   "reserveRiskHealth": {
     "primaryStatus": "healthy",
-    "primaryLatestNonNullDate": "2026-06-19",
+    "primaryLatestNonNullDate": "2026-06-20",
     "primaryTrailingNullDays": 0,
     "sourceMode": null
   },
@@ -148,21 +150,21 @@
     "indicatorLagDays": {
       "btcPrice": 0.0,
       "ma200w": 0.0,
-      "realizedPrice": 1.0,
+      "realizedPrice": 2.0,
       "reserveRisk": 1.0,
-      "lthMvrv": 1.0,
-      "lthSopr": 1.0,
-      "mvrvZscore": 1.0,
+      "lthMvrv": 2.0,
+      "lthSopr": 2.0,
+      "mvrvZscore": 2.0,
       "nupl": 1.0,
-      "sthSopr": 1.0,
-      "sthMvrv": 1.0,
-      "puell": 1.0
+      "sthSopr": 2.0,
+      "sthMvrv": 2.0,
+      "puell": 2.0
     },
     "staleIndicators": [],
     "inactiveIndicators": [],
     "fallbackModeV6": "none",
-    "dataFreshnessScoreV6": 0.8750000000000002,
-    "signalConfidenceV6": 0.4339
+    "dataFreshnessScoreV6": 0.7678571428571429,
+    "signalConfidenceV6": 0.3518
   },
   "schemaContract": {
     "canonicalModel": "core8_independent_valuation",
@@ -273,13 +275,13 @@
   "strategyMnavHealth": {
     "source": "strategy_official_api",
     "formula": "enterpriseValueUsd / btcReserveUsd",
-    "latestDate": "2026-06-20",
-    "historyRows": 1,
-    "mnav": 1.1322,
+    "latestDate": "2026-06-21",
+    "historyRows": 2,
+    "mnav": 1.1237,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
     "mstrTimestampUtc": "2026-06-18T20:00:00",
-    "btcTimestamp": "2026-06-20T19:53:00"
+    "btcTimestamp": "2026-06-21T04:12:00"
   }
 }

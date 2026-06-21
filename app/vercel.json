@@ -61,6 +61,19 @@
       ]
     },
     {
+      "source": "/btc_indicators_history_full_light.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=1800, s-maxage=21600, stale-while-revalidate=43200"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    },
+    {
       "source": "/btc_signal_events_v4.json",
       "headers": [
         {

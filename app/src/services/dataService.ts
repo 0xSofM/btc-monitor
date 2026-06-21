@@ -3,6 +3,7 @@ import type { IndicatorData, LatestData, StrategyMnavData } from '@/types';
 import {
   API_BASE_URL,
   PROXY_URL,
+  STATIC_HISTORY_FULL_LIGHT_PATH,
   STATIC_HISTORY_FULL_PATH,
   STATIC_HISTORY_LIGHT_PATH,
   checkEndpoint,
@@ -123,7 +124,8 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
   const forceRefresh = options.forceRefresh ?? false;
   const full = options.full ?? false;
   const requestedMode: CacheState['historyMode'] = full ? 'full' : 'light';
-  const historyPath = full ? STATIC_HISTORY_FULL_PATH : STATIC_HISTORY_LIGHT_PATH;
+  const historyPath = full ? STATIC_HISTORY_FULL_LIGHT_PATH : STATIC_HISTORY_LIGHT_PATH;
+  const fallbackHistoryPath = full ? STATIC_HISTORY_FULL_PATH : STATIC_HISTORY_FULL_LIGHT_PATH;
   const timeoutMs = full ? 120000 : 30000;
 
   if (
@@ -147,6 +149,17 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
     return history;
   } catch (error) {
     console.error(`[DataService] Error fetching historical data (${historyPath}):`, error);
+
+    try {
+      const raw = await fetchStaticHistoryRaw(fallbackHistoryPath, full ? 120000 : 30000);
+      const history = mergeCachedLatestIntoHistory(normalizeHistoryRows(raw));
+      persistLocalData({ history });
+      cache.history = history;
+      cache.historyMode = full || fallbackHistoryPath === STATIC_HISTORY_FULL_LIGHT_PATH ? 'full' : 'light';
+      return history;
+    } catch (fallbackError) {
+      console.error(`[DataService] Error fetching fallback historical data (${fallbackHistoryPath}):`, fallbackError);
+    }
 
     if (!full) {
       try {
@@ -335,7 +348,7 @@ export async function checkDataSource(): Promise<{
   const [apiAvailable, historyLightAvailable, historyFullAvailable, manifestAvailable] = await Promise.all([
     checkEndpoint(`${API_BASE_URL}/v1/btc-price/1`),
     checkEndpoint(STATIC_HISTORY_LIGHT_PATH),
-    checkEndpoint(STATIC_HISTORY_FULL_PATH),
+    checkEndpoint(STATIC_HISTORY_FULL_LIGHT_PATH),
     checkEndpoint('/btc_indicators_manifest.json'),
   ]);
 

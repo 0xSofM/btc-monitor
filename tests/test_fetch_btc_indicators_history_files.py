@@ -7,6 +7,7 @@ import pandas as pd
 from fetch_btc_indicators_history_files import (
     _classify_score_band,
     archive_existing_outputs,
+    build_full_light_history_json,
     build_light_history_json,
     build_manifest_json,
     build_reserve_risk_source_diagnostics,
@@ -218,17 +219,21 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         enriched, thresholds = enrich_for_frontend(self.build_base_df())
         history = dataframe_to_history_json(enriched)
         light = build_light_history_json(history)
+        full_light = build_full_light_history_json(history)
         latest = build_latest_json(enriched, thresholds=thresholds)
 
         manifest = build_manifest_json(
             latest_json=latest,
             history_rows=len(history),
             history_light_rows=len(light),
+            history_full_light_rows=len(full_light),
             thresholds=thresholds,
         )
 
         self.assertEqual(manifest["historyRows"], len(history))
         self.assertEqual(manifest["historyLightRows"], len(light))
+        self.assertEqual(manifest["historyFullLightRows"], len(full_light))
+        self.assertEqual(manifest["historyFiles"]["fullLight"], "btc_indicators_history_full_light.json")
         self.assertEqual(manifest["historyFiles"]["light"], "btc_indicators_history_light.json")
         self.assertIn("historyRequiredFields", manifest["schemaContract"])
         self.assertEqual(manifest["schemaContract"]["canonicalModel"], "core8_independent_valuation")

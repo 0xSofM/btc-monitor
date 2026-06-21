@@ -48,6 +48,7 @@ jobs:
             --skip-tabular \
             --reserve-risk-disable-lag-days 30 \
             --history-json-path app/public/btc_indicators_history.json \
+            --history-full-light-json-path app/public/btc_indicators_history_full_light.json \
             --history-light-json-path app/public/btc_indicators_history_light.json \
             --latest-json-path app/public/btc_indicators_latest.json \
             --manifest-json-path app/public/btc_indicators_manifest.json
@@ -70,6 +71,7 @@ jobs:
           latest_path = Path("app/public/btc_indicators_latest.json")
           manifest_path = Path("app/public/btc_indicators_manifest.json")
           history_light_path = Path("app/public/btc_indicators_history_light.json")
+          history_full_light_path = Path("app/public/btc_indicators_history_full_light.json")
           history_path = Path("app/public/btc_indicators_history.json")
           signal_events_path = Path("app/public/btc_signal_events_v4.json")
           strategy_latest_path = Path("app/public/strategy_mnav_latest.json")
@@ -78,6 +80,7 @@ jobs:
           latest = json.loads(latest_path.read_text(encoding="utf-8"))
           manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
           history_light = json.loads(history_light_path.read_text(encoding="utf-8"))
+          history_full_light = json.loads(history_full_light_path.read_text(encoding="utf-8"))
           history = json.loads(history_path.read_text(encoding="utf-8"))
 
           latest_date = datetime.strptime(str(latest.get("date", "")), "%Y-%m-%d")
@@ -88,8 +91,10 @@ jobs:
 
           print(f"latest date: {latest.get('date')}")
           print(f"history rows: {len(history)}")
+          print(f"full light history rows: {len(history_full_light)}")
           print(f"light history rows: {len(history_light)}")
           print(f"manifest history rows: {manifest.get('historyRows')}")
+          print(f"manifest full light history rows: {manifest.get('historyFullLightRows')}")
           print(f"manifest light history rows: {manifest.get('historyLightRows')}")
           print(f"reserve risk mode: {latest.get('reserveRiskSourceMode')}")
           strategy_health = manifest.get("strategyMnavHealth") if isinstance(manifest.get("strategyMnavHealth"), dict) else {}
@@ -111,6 +116,7 @@ jobs:
               latest_path,
               manifest_path,
               history_light_path,
+              history_full_light_path,
               history_path,
               signal_events_path,
               strategy_latest_path,
@@ -132,6 +138,7 @@ jobs:
         run: |
           python validate_btc_data_quality.py \
             --current-history app/public/btc_indicators_history.json \
+            --current-history-full-light app/public/btc_indicators_history_full_light.json \
             --current-history-light app/public/btc_indicators_history_light.json \
             --current-latest app/public/btc_indicators_latest.json \
             --previous-history .tmp/previous/btc_indicators_history.json \
@@ -154,6 +161,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
             app/public/btc_indicators_history.json \
+            app/public/btc_indicators_history_full_light.json \
             app/public/btc_indicators_history_light.json \
             app/public/btc_indicators_latest.json \
             app/public/btc_indicators_manifest.json \

@@ -15,6 +15,7 @@ Vite + React 前端，用于展示 BTC 大周期底部识别监测系统。
 
 - `btc_indicators_latest.json`
 - `btc_indicators_history_light.json`
+- `btc_indicators_history_full_light.json`
 - `btc_indicators_history.json`
 - `btc_indicators_manifest.json`
 - `strategy_mnav_latest.json`

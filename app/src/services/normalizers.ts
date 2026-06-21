@@ -628,6 +628,7 @@ export function normalizeManifestData(raw: unknown): DataManifest | null {
   const lastUpdated = asString(record.lastUpdated) ?? '';
   const historyRows = toFiniteNumber(record.historyRows, 0);
   const historyLightRows = toFiniteNumber(record.historyLightRows, Number.NaN);
+  const historyFullLightRows = toFiniteNumber(record.historyFullLightRows, Number.NaN);
   const schemaVersion = asString(record.schemaVersion) ?? 'unknown';
   const signalEventsV4Rows = toFiniteNumber(record.signalEventsV4Rows, 0);
   const indicatorSet = asString(record.indicatorSet);
@@ -640,6 +641,7 @@ export function normalizeManifestData(raw: unknown): DataManifest | null {
   const historyFiles = historyFilesPayload
     ? {
         full: asString(historyFilesPayload.full),
+        fullLight: asString(historyFilesPayload.fullLight),
         light: asString(historyFilesPayload.light),
         lightRecentDays: toFiniteNumber(historyFilesPayload.lightRecentDays, Number.NaN),
         lightFields: asStringArray(historyFilesPayload.lightFields),
@@ -663,6 +665,7 @@ export function normalizeManifestData(raw: unknown): DataManifest | null {
     lastUpdated,
     historyRows,
     historyLightRows: Number.isNaN(historyLightRows) ? undefined : historyLightRows,
+    historyFullLightRows: Number.isNaN(historyFullLightRows) ? undefined : historyFullLightRows,
     historyFiles: historyFiles
       ? {
           ...historyFiles,

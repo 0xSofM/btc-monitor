@@ -65,6 +65,7 @@ from pipeline.archiver import (  # noqa: F401 — re-exported for backward compa
 # =========================================================================
 
 HISTORY_LIGHT_RECENT_DAYS = 730
+HISTORY_FULL_LIGHT_JSON_PATH_DEFAULT = "app/public/btc_indicators_history_full_light.json"
 HISTORY_LIGHT_FIELDS = [
     "d",
     "unixTs",
@@ -518,6 +519,24 @@ def build_light_history_json(
     return selected
 
 
+def build_full_light_history_json(
+    history_json: List[Dict[str, object]],
+) -> List[Dict[str, object]]:
+    """Build a full-range, frontend-friendly history file.
+
+    It keeps every daily row but only the fields used by charts and the
+    history review UI.
+    """
+    return [
+        {
+            key: row[key]
+            for key in HISTORY_LIGHT_FIELDS
+            if key in row and row[key] is not None
+        }
+        for row in history_json
+    ]
+
+
 def build_latest_json(
     frontend_df: pd.DataFrame,
     thresholds: Dict[str, Dict[str, object]],
@@ -895,6 +914,7 @@ def build_manifest_json(
     latest_json: Dict[str, object],
     history_rows: int,
     history_light_rows: int,
+    history_full_light_rows: int,
     thresholds: Dict[str, Dict[str, object]],
     reserve_risk_diagnostics: Dict[str, object] | None = None,
     signal_events_rows: int = 0,
@@ -921,8 +941,10 @@ def build_manifest_json(
         "lastUpdated": latest_json.get("lastUpdated"),
         "historyRows": history_rows,
         "historyLightRows": history_light_rows,
+        "historyFullLightRows": history_full_light_rows,
         "historyFiles": {
             "full": "btc_indicators_history.json",
+            "fullLight": "btc_indicators_history_full_light.json",
             "light": "btc_indicators_history_light.json",
             "lightRecentDays": HISTORY_LIGHT_RECENT_DAYS,
             "lightFields": HISTORY_LIGHT_FIELDS,
@@ -1078,10 +1100,12 @@ def print_summary(
     sources: Dict[str, str],
     reserve_risk_diagnostics: Dict[str, object],
     history_path: Path,
+    history_full_light_path: Path,
     history_light_path: Path,
     latest_path: Path,
     manifest_path: Path,
     history_rows: int,
+    history_full_light_rows: int,
     history_light_rows: int,
 ) -> None:
     """Print concise run summary."""
@@ -1144,6 +1168,10 @@ def print_summary(
     print()
     print("Output files:")
     print(f"  Full history : {history_path} ({history_rows} rows)")
+    print(
+        f"  Full light   : {history_full_light_path} "
+        f"({history_full_light_rows} rows)"
+    )
     print(f"  Light history: {history_light_path} ({history_light_rows} rows)")
     print(f"  Latest       : {latest_path}")
     print(f"  Manifest     : {manifest_path}")
@@ -1187,6 +1215,11 @@ def main() -> int:
         "--history-light-json-path",
         default="app/public/btc_indicators_history_light.json",
         help="Frontend light history JSON output path.",
+    )
+    parser.add_argument(
+        "--history-full-light-json-path",
+        default=HISTORY_FULL_LIGHT_JSON_PATH_DEFAULT,
+        help="Frontend full-range light-field history JSON output path.",
     )
     parser.add_argument(
         "--latest-json-path",
@@ -1241,12 +1274,14 @@ def main() -> int:
 
     history_path = Path(args.history_json_path)
     history_light_path = Path(args.history_light_json_path)
+    history_full_light_path = Path(args.history_full_light_json_path)
     latest_path = Path(args.latest_json_path)
     manifest_path = Path(args.manifest_json_path)
     signal_events_v4_path = Path(args.signal_events_v4_json_path)
     output_paths = {
         "history": history_path,
         "historyLight": history_light_path,
+        "historyFullLight": history_full_light_path,
         "latest": latest_path,
         "manifest": manifest_path,
         "signalEventsV4": signal_events_v4_path,
@@ -1290,6 +1325,7 @@ def main() -> int:
         tabular_df = build_tabular_view(frontend_df)
 
     history_json = dataframe_to_history_json(frontend_df)
+    history_full_light_json = build_full_light_history_json(history_json)
     history_light_json = build_light_history_json(history_json)
     latest_json = build_latest_json(
         frontend_df, thresholds, reserve_risk_diagnostics=reserve_risk_diagnostics
@@ -1299,12 +1335,14 @@ def main() -> int:
         latest_json=latest_json,
         history_rows=len(history_json),
         history_light_rows=len(history_light_json),
+        history_full_light_rows=len(history_full_light_json),
         thresholds=thresholds,
         reserve_risk_diagnostics=reserve_risk_diagnostics,
         signal_events_rows=len(signal_events_v4_json),
     )
 
     write_json(history_path, history_json)
+    write_json(history_full_light_path, history_full_light_json)
     write_json(history_light_path, history_light_json)
     write_json(latest_path, latest_json)
     write_json(manifest_path, manifest_json)
@@ -1315,10 +1353,12 @@ def main() -> int:
         sources,
         reserve_risk_diagnostics,
         history_path,
+        history_full_light_path,
         history_light_path,
         latest_path,
         manifest_path,
         len(history_json),
+        len(history_full_light_json),
         len(history_light_json),
     )
 

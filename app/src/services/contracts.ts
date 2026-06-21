@@ -62,8 +62,10 @@ export interface DataManifest {
   lastUpdated: string;
   historyRows: number;
   historyLightRows?: number;
+  historyFullLightRows?: number;
   historyFiles?: {
     full?: string;
+    fullLight?: string;
     light?: string;
     lightRecentDays?: number;
     lightFields?: string[];

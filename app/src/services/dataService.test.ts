@@ -76,6 +76,48 @@ describe('dataService helpers', () => {
               puellMultiple: 0.72,
             },
           ]
+        : path.includes('btc_indicators_history_full_light.json')
+          ? [
+              {
+                d: '2026-04-13',
+                btcPrice: 82000,
+                priceMa200wRatio: 1.18,
+                priceRealizedRatio: 1.07,
+                mvrvZscore: 0.03,
+                nupl: 0.16,
+                lthMvrv: 1.06,
+                lthSopr: 0.96,
+                sthSopr: 0.99,
+                sthMvrv: 1.02,
+                puellMultiple: 0.68,
+              },
+              {
+                d: '2026-04-14',
+                btcPrice: 82500,
+                priceMa200wRatio: 1.19,
+                priceRealizedRatio: 1.08,
+                mvrvZscore: 0.05,
+                nupl: 0.17,
+                lthMvrv: 1.08,
+                lthSopr: 0.97,
+                sthSopr: 1.0,
+                sthMvrv: 1.03,
+                puellMultiple: 0.7,
+              },
+              {
+                d: '2026-04-15',
+                btcPrice: 83000,
+                priceMa200wRatio: 1.2,
+                priceRealizedRatio: 1.1,
+                mvrvZscore: 0.1,
+                nupl: 0.18,
+                lthMvrv: 1.1,
+                lthSopr: 0.98,
+                sthSopr: 1.01,
+                sthMvrv: 1.05,
+                puellMultiple: 0.72,
+              },
+            ]
         : [
             {
               d: '2026-04-14',
@@ -116,10 +158,53 @@ describe('dataService helpers', () => {
     const full = await fetchHistoricalData({ forceRefresh: true, full: true });
 
     expect(fetchMock.mock.calls[0]?.[0]).toBe('/btc_indicators_history_light.json');
-    expect(fetchMock.mock.calls[1]?.[0]).toBe('/btc_indicators_history.json');
+    expect(fetchMock.mock.calls[1]?.[0]).toBe('/btc_indicators_history_full_light.json');
     expect(light).toHaveLength(1);
-    expect(full).toHaveLength(2);
+    expect(full).toHaveLength(3);
 
+    vi.unstubAllGlobals();
+  });
+
+  it('fetchHistoricalData falls back to legacy full history when full-light history is unavailable', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const fetchMock = vi.fn(async (url: RequestInfo | URL) => {
+      const path = String(url);
+      if (path.includes('btc_indicators_history_full_light.json')) {
+        return new Response('missing', { status: 404 });
+      }
+
+      return new Response(JSON.stringify([
+        {
+          d: '2026-04-14',
+          btcPrice: 82500,
+          priceMa200wRatio: 1.19,
+          priceRealizedRatio: 1.08,
+          mvrvZscore: 0.05,
+          nupl: 0.17,
+          lthMvrv: 1.08,
+          lthSopr: 0.97,
+          sthSopr: 1.0,
+          sthMvrv: 1.03,
+          puellMultiple: 0.7,
+        },
+      ]), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const full = await fetchHistoricalData({ forceRefresh: true, full: true });
+
+    expect(fetchMock.mock.calls[0]?.[0]).toBe('/btc_indicators_history_full_light.json');
+    expect(fetchMock.mock.calls[1]?.[0]).toBe('/btc_indicators_history.json');
+    expect(full).toHaveLength(1);
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      expect.stringContaining('/btc_indicators_history_full_light.json'),
+      expect.any(Error),
+    );
+
+    consoleErrorSpy.mockRestore();
     vi.unstubAllGlobals();
   });
 
@@ -130,8 +215,10 @@ describe('dataService helpers', () => {
       lastUpdated: '2026-06-20T19:53:58Z',
       historyRows: '5499',
       historyLightRows: 889,
+      historyFullLightRows: 5499,
       historyFiles: {
         full: 'btc_indicators_history.json',
+        fullLight: 'btc_indicators_history_full_light.json',
         light: 'btc_indicators_history_light.json',
         lightRecentDays: '730',
         lightFields: [
@@ -167,7 +254,9 @@ describe('dataService helpers', () => {
 
     expect(manifest?.historyRows).toBe(5499);
     expect(manifest?.historyLightRows).toBe(889);
+    expect(manifest?.historyFullLightRows).toBe(5499);
     expect(manifest?.historyFiles?.full).toBe('btc_indicators_history.json');
+    expect(manifest?.historyFiles?.fullLight).toBe('btc_indicators_history_full_light.json');
     expect(manifest?.historyFiles?.lightRecentDays).toBe(730);
     expect(manifest?.signalEventsV4Rows).toBe(18);
     expect(manifest?.strategyMnavHealth?.isStale).toBe(false);
