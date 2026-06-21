@@ -2,27 +2,26 @@ import { Suspense, lazy, useCallback, useDeferredValue, useEffect, useMemo, useR
 import { Toaster, toast } from 'sonner';
 import {
   AlertTriangle,
-  BookOpen,
   CheckCircle2,
   Database,
-  History,
-  LineChart,
-  Loader2,
   ShieldCheck,
   TrendingUp,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { AppFooter } from '@/components/AppFooter';
 import { AppHeader } from '@/components/AppHeader';
+import { AppTabsList } from '@/components/AppTabsList';
 import { ChainDataAlert } from '@/components/ChainDataAlert';
 import { ChartDataEmptyState } from '@/components/ChartDataEmptyState';
+import { DashboardLoadingState } from '@/components/DashboardLoadingState';
+import { DataErrorAlert } from '@/components/DataErrorAlert';
 import { DataModeAlerts } from '@/components/DataModeAlerts';
 import { HistoryEmptyState } from '@/components/HistoryEmptyState';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { MarketAssessmentCard } from '@/components/MarketAssessmentCard';
+import { SectionLoader } from '@/components/SectionLoader';
 import { SignalOverview } from '@/components/SignalOverview';
 import { StatusStrip } from '@/components/StatusStrip';
 import { StrategyMnavCard } from '@/components/StrategyMnavCard';
@@ -65,15 +64,6 @@ const IndicatorExplanationPanel = lazy(async () => {
   const module = await import('@/components/IndicatorExplanation');
   return { default: module.IndicatorExplanation };
 });
-
-function SectionLoader({ message }: { message: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
-      <Loader2 className="mb-3 h-8 w-8 animate-spin text-orange-500" />
-      <p>{message}</p>
-    </div>
-  );
-}
 
 function App() {
   const [latestData, setLatestData] = useState<LatestData | null>(null);
@@ -452,29 +442,10 @@ function App() {
           {latestData && <StatusStrip tiles={statusTiles} />}
 
           <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
-            <TabsList className="tab-shell grid w-full grid-cols-3 lg:w-auto">
-              <TabsTrigger value="dashboard" className="flex items-center gap-2">
-                <LineChart className="h-4 w-4" />
-                <span className="hidden sm:inline">仪表盘</span>
-              </TabsTrigger>
-              <TabsTrigger value="history" className="flex items-center gap-2">
-                <History className="h-4 w-4" />
-                <span className="hidden sm:inline">历史记录</span>
-              </TabsTrigger>
-              <TabsTrigger value="guide" className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4" />
-                <span className="hidden sm:inline">指标说明</span>
-              </TabsTrigger>
-            </TabsList>
+            <AppTabsList />
 
             <TabsContent value="dashboard" className="space-y-6 fade-up">
-              {error && (
-                <Alert variant="destructive">
-                  <AlertTriangle className="h-4 w-4" />
-                  <AlertTitle>数据获取失败</AlertTitle>
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
+              <DataErrorAlert message={error} />
 
               <DataModeAlerts
                 dataSource={dataSource}
@@ -483,12 +454,7 @@ function App() {
                 onDismissStaticAlert={() => setStaticAlertDismissed(true)}
               />
 
-              {loading && !latestData && (
-                <div className="surface-card flex flex-col items-center justify-center py-14">
-                  <Loader2 className="mb-4 h-12 w-12 animate-spin text-orange-500" />
-                  <p className="text-muted-foreground">正在加载最新市场状态...</p>
-                </div>
-              )}
+              <DashboardLoadingState show={loading && !latestData} />
 
               {latestData && (
                 <>
