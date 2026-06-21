@@ -1,9 +1,10 @@
-﻿import { AlertTriangle, CheckCircle2, Clock3, Database, DollarSign, TrendingUp } from 'lucide-react';
+import { Clock3 } from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { resolveScoreThresholds } from '@/appDisplay';
+import { SignalOverviewBadges } from './SignalOverviewBadges';
+import { SignalOverviewSummaryCards } from './SignalOverviewSummaryCards';
 import {
   formatFallbackLabel,
   formatPrice,
@@ -97,63 +98,29 @@ export function SignalOverview({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="outline" className={sourceBadge.className}>
-              <Database className="mr-1 h-3 w-3" />
-              {sourceBadge.label}
-            </Badge>
-            <Badge variant="outline" className={priceFreshnessBadge.className}>
-              <Clock3 className="mr-1 h-3 w-3" />
-              价格：{priceFreshnessBadge.label}
-            </Badge>
-            <Badge variant="outline" className={onchainFreshnessBadge.className}>
-              <Clock3 className="mr-1 h-3 w-3" />
-              链上：{onchainFreshnessBadge.label}
-            </Badge>
-            <Badge variant="outline" className="text-xs">
-              数据更新：{dataTimestampLabel}
-            </Badge>
-          </div>
+          <SignalOverviewBadges
+            sourceBadge={sourceBadge}
+            priceFreshnessBadge={priceFreshnessBadge}
+            onchainFreshnessBadge={onchainFreshnessBadge}
+            dataTimestampLabel={dataTimestampLabel}
+          />
         </div>
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <article className="rounded-xl border bg-background/70 p-4">
-            <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
-              <DollarSign className="h-4 w-4" />
-              BTC 价格
-            </div>
-            <p className="text-2xl font-bold">{formatPrice(btcPrice)}</p>
-          </article>
-
-          <article className="rounded-xl border bg-background/70 p-4">
-            <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
-              <TrendingUp className="h-4 w-4" />
-              触发数量
-            </div>
-            <p className="text-2xl font-bold">
-              {signalCount}
-              <span className="ml-1 text-sm font-normal text-muted-foreground">/ {totalIndicators}</span>
-            </p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              {hasLayeredScore ? `总分：${effectiveScore}/${effectiveMaxScore}` : `加权评分：${signalScoreV2}/${maxSignalScoreV2}`}
-            </p>
-          </article>
-
-          <article className="rounded-xl border bg-background/70 p-4">
-            <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
-              <span className={`rounded-full p-1 ${status.iconToneClass}`}>
-                {effectiveScore >= thresholds.accumulate ? <CheckCircle2 className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}
-              </span>
-              信号状态
-            </div>
-            <p className={`text-2xl font-bold ${status.toneClass}`}>{status.label}</p>
-            <p className={`mt-1 text-xs ${isConfirmed ? 'text-emerald-600 dark:text-emerald-300' : 'text-muted-foreground'}`}>
-              {isConfirmed ? '已满足 3 日确认' : '尚未满足 3 日确认'}
-            </p>
-          </article>
-        </section>
+        <SignalOverviewSummaryCards
+          btcPriceLabel={formatPrice(btcPrice)}
+          signalCount={signalCount}
+          totalIndicators={totalIndicators}
+          hasLayeredScore={hasLayeredScore}
+          signalScoreV2={signalScoreV2}
+          maxSignalScoreV2={maxSignalScoreV2}
+          effectiveScore={effectiveScore}
+          effectiveMaxScore={effectiveMaxScore}
+          accumulateThreshold={thresholds.accumulate}
+          status={status}
+          isConfirmed={isConfirmed}
+        />
 
         {hasLayeredScore && (
           <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
