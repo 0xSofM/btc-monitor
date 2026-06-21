@@ -13,8 +13,8 @@ import {
   fetchStaticStrategyMnavRaw,
 } from './apiClient';
 import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions } from './contracts';
-import { normalizeIndicatorData, normalizeLatestData, normalizeStrategyMnavData, toFiniteNumber } from './normalizers';
-import { CORE8_COVERAGE_FIELDS, missingCoreHistoryFields } from './schema';
+import { normalizeIndicatorData, normalizeLatestData, normalizeManifestData, normalizeStrategyMnavData } from './normalizers';
+import { CORE8_COVERAGE_FIELDS } from './schema';
 import {
   INDICATOR_CONFIG,
   TIME_RANGE_LABELS,
@@ -97,95 +97,6 @@ function normalizeHistoryRows(rawRows: unknown[]): IndicatorData[] {
     .sort((left, right) => left.d.localeCompare(right.d));
 }
 
-function normalizeManifest(raw: unknown): DataManifest | null {
-  if (!raw || typeof raw !== 'object') {
-    return null;
-  }
-
-  const record = raw as Record<string, unknown>;
-  const generatedAt = typeof record.generatedAt === 'string' ? record.generatedAt : '';
-  const latestDate = typeof record.latestDate === 'string' ? record.latestDate : '';
-  const lastUpdated = typeof record.lastUpdated === 'string' ? record.lastUpdated : '';
-  const historyRows = toFiniteNumber(record.historyRows, 0);
-  const historyLightRows = toFiniteNumber(record.historyLightRows, Number.NaN);
-  const schemaVersion = typeof record.schemaVersion === 'string' ? record.schemaVersion : 'unknown';
-  const signalEventsV4Rows = toFiniteNumber(record.signalEventsV4Rows, 0);
-  const indicatorSet = typeof record.indicatorSet === 'string' ? record.indicatorSet : undefined;
-  const scoringModelVersion = typeof record.scoringModelVersion === 'string' ? record.scoringModelVersion : undefined;
-  const activeIndicatorCountV4 = toFiniteNumber(record.activeIndicatorCountV4, Number.NaN);
-  const maxTotalScoreV4 = toFiniteNumber(record.maxTotalScoreV4, Number.NaN);
-  const activeIndicatorCountV6 = toFiniteNumber(record.activeIndicatorCountV6, Number.NaN);
-  const maxTotalScoreV6 = toFiniteNumber(record.maxTotalScoreV6, Number.NaN);
-
-  const historyFilesPayload = record.historyFiles && typeof record.historyFiles === 'object'
-    ? record.historyFiles as Record<string, unknown>
-    : null;
-  const historyFiles = historyFilesPayload
-    ? {
-        full: typeof historyFilesPayload.full === 'string' ? historyFilesPayload.full : undefined,
-        light: typeof historyFilesPayload.light === 'string' ? historyFilesPayload.light : undefined,
-        lightRecentDays: toFiniteNumber(historyFilesPayload.lightRecentDays, Number.NaN),
-        lightFields: Array.isArray(historyFilesPayload.lightFields)
-          ? historyFilesPayload.lightFields.filter((item): item is string => typeof item === 'string')
-          : undefined,
-      }
-    : undefined;
-  const dataHealth = record.dataHealth && typeof record.dataHealth === 'object'
-    ? record.dataHealth as DataManifest['dataHealth']
-    : undefined;
-  const auxiliaryDataFiles = record.auxiliaryDataFiles && typeof record.auxiliaryDataFiles === 'object'
-    ? record.auxiliaryDataFiles as DataManifest['auxiliaryDataFiles']
-    : undefined;
-  const strategyMnavHealth = record.strategyMnavHealth && typeof record.strategyMnavHealth === 'object'
-    ? record.strategyMnavHealth as DataManifest['strategyMnavHealth']
-    : undefined;
-  const schemaContract = record.schemaContract && typeof record.schemaContract === 'object'
-    ? record.schemaContract as DataManifest['schemaContract']
-    : undefined;
-  const schemaContractMissingFields = missingCoreHistoryFields(
-    schemaContract?.historyRequiredFields ?? historyFiles?.lightFields,
-  );
-
-  if (!generatedAt || !latestDate) {
-    return null;
-  }
-
-  return {
-    generatedAt,
-    latestDate,
-    lastUpdated,
-    historyRows,
-    historyLightRows: Number.isNaN(historyLightRows) ? undefined : historyLightRows,
-    historyFiles: historyFiles
-      ? {
-          ...historyFiles,
-          lightRecentDays: Number.isNaN(historyFiles.lightRecentDays ?? Number.NaN)
-            ? undefined
-            : historyFiles.lightRecentDays,
-        }
-      : undefined,
-    schemaVersion,
-    signalEventsV4Rows: signalEventsV4Rows > 0 ? signalEventsV4Rows : undefined,
-    indicatorSet,
-    scoringModelVersion,
-    activeIndicatorCountV4: Number.isNaN(activeIndicatorCountV4) ? undefined : activeIndicatorCountV4,
-    maxTotalScoreV4: Number.isNaN(maxTotalScoreV4) ? undefined : maxTotalScoreV4,
-    activeIndicatorCountV6: Number.isNaN(activeIndicatorCountV6) ? undefined : activeIndicatorCountV6,
-    maxTotalScoreV6: Number.isNaN(maxTotalScoreV6) ? undefined : maxTotalScoreV6,
-    dataHealth,
-    auxiliaryDataFiles,
-    strategyMnavHealth,
-    schemaContract: schemaContract
-      ? {
-          ...schemaContract,
-          missingCoreHistoryFields: schemaContractMissingFields,
-        }
-      : {
-          missingCoreHistoryFields: schemaContractMissingFields,
-        },
-  };
-}
-
 export async function fetchDataManifest(forceRefresh = false): Promise<DataManifest | null> {
   const now = Date.now();
   if (!forceRefresh && cache.manifest && (now - cache.manifestTimestamp) < MANIFEST_CACHE_DURATION) {
@@ -194,7 +105,7 @@ export async function fetchDataManifest(forceRefresh = false): Promise<DataManif
 
   try {
     const raw = await fetchStaticManifestRaw();
-    const manifest = normalizeManifest(raw);
+    const manifest = normalizeManifestData(raw);
     if (!manifest) {
       throw new Error('Invalid manifest format');
     }

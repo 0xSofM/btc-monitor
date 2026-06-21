@@ -11,7 +11,7 @@ import {
   getMA200ChartData,
   mergeLatestIntoHistory,
 } from '@/services/dataService';
-import { normalizeIndicatorData, normalizeLatestData } from '@/services/normalizers';
+import { normalizeIndicatorData, normalizeLatestData, normalizeManifestData } from '@/services/normalizers';
 
 describe('dataService helpers', () => {
   it('fetchStrategyMnavData normalizes Strategy official mNAV payload', async () => {
@@ -121,6 +121,62 @@ describe('dataService helpers', () => {
     expect(full).toHaveLength(2);
 
     vi.unstubAllGlobals();
+  });
+
+  it('normalizeManifestData preserves history file hints and reports missing core fields', () => {
+    const manifest = normalizeManifestData({
+      generatedAt: '2026-06-20T19:53:58Z',
+      latestDate: '2026-06-20',
+      lastUpdated: '2026-06-20T19:53:58Z',
+      historyRows: '5499',
+      historyLightRows: 889,
+      historyFiles: {
+        full: 'btc_indicators_history.json',
+        light: 'btc_indicators_history_light.json',
+        lightRecentDays: '730',
+        lightFields: [
+          'priceMa200wRatio',
+          'mvrvZscore',
+          'nupl',
+          'lthMvrv',
+          'lthSopr',
+          'sthSopr',
+          'sthMvrv',
+        ],
+      },
+      schemaVersion: 'current',
+      signalEventsV4Rows: 18,
+      schemaContract: {
+        canonicalModel: 'core8_independent_valuation',
+        historyRequiredFields: [
+          'priceMa200wRatio',
+          'mvrvZscore',
+          'nupl',
+          'lthMvrv',
+          'lthSopr',
+          'sthSopr',
+          'sthMvrv',
+        ],
+      },
+      strategyMnavHealth: {
+        latestDate: '2026-06-20',
+        historyRows: 1,
+        isStale: false,
+      },
+    });
+
+    expect(manifest?.historyRows).toBe(5499);
+    expect(manifest?.historyLightRows).toBe(889);
+    expect(manifest?.historyFiles?.full).toBe('btc_indicators_history.json');
+    expect(manifest?.historyFiles?.lightRecentDays).toBe(730);
+    expect(manifest?.signalEventsV4Rows).toBe(18);
+    expect(manifest?.strategyMnavHealth?.isStale).toBe(false);
+    expect(manifest?.schemaContract?.missingCoreHistoryFields).toEqual(['puellMultiple']);
+  });
+
+  it('normalizeManifestData rejects manifest payloads without required dates', () => {
+    expect(normalizeManifestData({ generatedAt: '2026-06-20T19:53:58Z' })).toBeNull();
+    expect(normalizeManifestData(null)).toBeNull();
   });
 
   it('getLatestFromHistory reads latest row and api_data_date fields', () => {
