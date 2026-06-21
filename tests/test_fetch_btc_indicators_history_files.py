@@ -451,6 +451,22 @@ class FetchHistoryPipelineTests(unittest.TestCase):
             self.assertIn("latest", restored)
             self.assertIn("2024-01-01", Path(restored["latest"]).read_text(encoding="utf-8"))
 
+    def test_write_json_compacts_large_arrays_only(self) -> None:
+        with TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            small_path = root / "small.json"
+            large_path = root / "large.json"
+
+            write_json(small_path, {"date": "2024-01-01", "value": 1})
+            write_json(large_path, [{"d": f"2024-01-{day:02d}", "value": day} for day in range(1, 101)])
+
+            small_raw = small_path.read_text(encoding="utf-8")
+            large_raw = large_path.read_text(encoding="utf-8")
+
+            self.assertIn('\n  "date"', small_raw)
+            self.assertNotIn('\n  {', large_raw)
+            self.assertTrue(large_raw.endswith("\n"))
+
 
 if __name__ == "__main__":
     unittest.main()
