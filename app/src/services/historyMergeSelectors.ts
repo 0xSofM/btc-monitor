@@ -1,15 +1,27 @@
 import type { IndicatorData, LatestData } from '@/types';
 
-export function latestDataToHistoryRow(
+function getLatestHistoryMetricFields(
   latest: LatestData,
-  existingRow?: IndicatorData,
-): IndicatorData {
-  const signalsV4 = latest.signalsV4;
-  const signalsV6 = latest.signalsV6;
-
+  existingRow: IndicatorData | undefined,
+): Pick<
+  IndicatorData,
+  | 'btcPrice'
+  | 'priceMa200wRatio'
+  | 'priceRealizedRatio'
+  | 'ma200w'
+  | 'realizedPrice'
+  | 'reserveRisk'
+  | 'mvrvZscore'
+  | 'nupl'
+  | 'lthMvrv'
+  | 'lthSopr'
+  | 'lthSoprMa3'
+  | 'sthSopr'
+  | 'sthSoprMa3'
+  | 'sthMvrv'
+  | 'puellMultiple'
+> {
   return {
-    ...existingRow,
-    d: latest.date,
     btcPrice: latest.btcPrice,
     priceMa200wRatio: latest.priceMa200wRatio,
     priceRealizedRatio: latest.priceRealizedRatio,
@@ -25,6 +37,20 @@ export function latestDataToHistoryRow(
     sthSoprMa3: latest.sthSoprMa3 ?? existingRow?.sthSoprMa3,
     sthMvrv: latest.sthMvrv,
     puellMultiple: latest.puellMultiple,
+  };
+}
+
+export function latestDataToHistoryRow(
+  latest: LatestData,
+  existingRow?: IndicatorData,
+): IndicatorData {
+  const signalsV4 = latest.signalsV4;
+  const signalsV6 = latest.signalsV6;
+
+  return {
+    ...existingRow,
+    d: latest.date,
+    ...getLatestHistoryMetricFields(latest, existingRow),
     signalPriceMa200w: signalsV4?.priceMa200w ?? latest.signals.priceMa200w,
     signalPriceRealized: signalsV4?.priceRealized ?? latest.signals.priceRealized,
     signalReserveRisk: latest.signals.reserveRisk,
