@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { resolveScoreThresholds } from '@/appDisplay';
 import { SignalOverviewBadges } from './SignalOverviewBadges';
+import { SignalOverviewLayerScores } from './SignalOverviewLayerScores';
 import { SignalOverviewSummaryCards } from './SignalOverviewSummaryCards';
 import {
   formatFallbackLabel,
@@ -123,20 +124,14 @@ export function SignalOverview({
         />
 
         {hasLayeredScore && (
-          <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <article className="rounded-xl border bg-background/70 p-4">
-              <p className="text-sm text-muted-foreground">估值层</p>
-              <p className="mt-1 text-xl font-semibold">{valuationScore}/{maxValuationScore}</p>
-            </article>
-            <article className="rounded-xl border bg-background/70 p-4">
-              <p className="text-sm text-muted-foreground">触发层</p>
-              <p className="mt-1 text-xl font-semibold">{triggerScore}/{maxTriggerScore}</p>
-            </article>
-            <article className="rounded-xl border bg-background/70 p-4">
-              <p className="text-sm text-muted-foreground">确认层</p>
-              <p className="mt-1 text-xl font-semibold">{confirmationScore}/{maxConfirmationScore}</p>
-            </article>
-          </section>
+          <SignalOverviewLayerScores
+            valuationScore={valuationScore}
+            maxValuationScore={maxValuationScore}
+            triggerScore={triggerScore}
+            maxTriggerScore={maxTriggerScore}
+            confirmationScore={confirmationScore}
+            maxConfirmationScore={maxConfirmationScore}
+          />
         )}
 
         <section className="rounded-xl border bg-muted/30 p-4">
