@@ -20,13 +20,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-from pipeline.config import (
-    CANONICAL_MODEL,
-    CANONICAL_SIGNAL_KEYS,
-    COMPATIBILITY_FIELDS,
-    DISPLAY_INDICATORS,
-)
-
 
 CRITICAL_FIELDS = [
     "priceMa200wRatio",
@@ -52,10 +45,34 @@ INDICATOR_DATE_FIELDS = {
 
 INDICATOR_MAX_LAG_OVERRIDES = {}
 
-EXPECTED_CANONICAL_MODEL = CANONICAL_MODEL
-EXPECTED_DISPLAY_INDICATORS = DISPLAY_INDICATORS
-EXPECTED_CANONICAL_SIGNAL_KEYS = CANONICAL_SIGNAL_KEYS
-EXPECTED_COMPATIBILITY_FIELDS = COMPATIBILITY_FIELDS
+EXPECTED_CANONICAL_MODEL = "core8_independent_valuation"
+EXPECTED_DISPLAY_INDICATORS = [
+    "priceMa200w",
+    "mvrvZscore",
+    "nupl",
+    "puell",
+    "sthMvrv",
+    "sthSopr",
+    "lthMvrv",
+    "lthSopr",
+]
+EXPECTED_CANONICAL_SIGNAL_KEYS = [
+    "priceMa200w",
+    "mvrvZscore",
+    "nupl",
+    "puell",
+    "sthMvrv",
+    "sthSoprTrigger",
+    "lthMvrv",
+    "lthSopr",
+]
+EXPECTED_COMPATIBILITY_FIELDS = [
+    "priceRealized",
+    "reserveRisk",
+    "valuationBlendV6",
+    "v2",
+    "v4",
+]
 
 
 def load_json(path: Path) -> Any:
@@ -481,12 +498,10 @@ def validate_light_history(
     light_history: List[Dict[str, Any]],
     latest: Dict[str, Any],
     errors: List[str],
-    label: str = "Light history",
-    require_all_rows: bool = False,
 ) -> None:
     light_errors: List[str] = []
     validate_history_structure(light_history, light_errors)
-    errors.extend(f"{label}: {error}" for error in light_errors)
+    errors.extend(f"Light history: {error}" for error in light_errors)
 
     if not full_history or not light_history:
         return
@@ -496,27 +511,23 @@ def validate_light_history(
     latest_date = str(latest.get("date", ""))
     if light_tail_date != full_tail_date:
         errors.append(
-            f"{label} tail date ({light_tail_date}) does not match full history tail date ({full_tail_date})."
+            f"Light history tail date ({light_tail_date}) does not match full history tail date ({full_tail_date})."
         )
     if latest_date and light_tail_date != latest_date:
         errors.append(
-            f"{label} tail date ({light_tail_date}) does not match latest date ({latest_date})."
+            f"Light history tail date ({light_tail_date}) does not match latest date ({latest_date})."
         )
 
     if len(light_history) > len(full_history):
         errors.append(
-            f"{label} has more rows than full history: light={len(light_history)}, full={len(full_history)}."
-        )
-    if require_all_rows and len(light_history) != len(full_history):
-        errors.append(
-            f"{label} row count ({len(light_history)}) does not match full history row count ({len(full_history)})."
+            f"Light history has more rows than full history: light={len(light_history)}, full={len(full_history)}."
         )
 
     recent = light_history[-min(len(light_history), 30):]
     for field in CRITICAL_FIELDS:
         if all(is_missing(row.get(field)) for row in recent):
             errors.append(
-                f"{label} critical field '{field}' is missing in all recent {len(recent)} rows."
+                f"Light history critical field '{field}' is missing in all recent {len(recent)} rows."
             )
 
 
@@ -841,7 +852,6 @@ def validate_against_previous(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate BTC indicator data quality.")
     parser.add_argument("--current-history", required=True, help="Path to current history JSON.")
-    parser.add_argument("--current-history-full-light", default="", help="Optional path to current full-range light-field history JSON.")
     parser.add_argument("--current-history-light", default="", help="Optional path to current light history JSON.")
     parser.add_argument("--current-latest", required=True, help="Path to current latest JSON.")
     parser.add_argument("--previous-history", default="", help="Path to previous history JSON.")
@@ -857,16 +867,10 @@ def main() -> int:
     args = parser.parse_args()
 
     current_history_path = Path(args.current_history)
-    current_history_full_light_path = Path(args.current_history_full_light) if args.current_history_full_light else None
     current_history_light_path = Path(args.current_history_light) if args.current_history_light else None
     current_latest_path = Path(args.current_latest)
     current_history = load_json(current_history_path)
     current_latest = load_json(current_latest_path)
-    current_history_full_light = (
-        load_json(current_history_full_light_path)
-        if current_history_full_light_path and current_history_full_light_path.exists()
-        else None
-    )
     current_history_light = (
         load_json(current_history_light_path)
         if current_history_light_path and current_history_light_path.exists()
@@ -879,9 +883,6 @@ def main() -> int:
     if not isinstance(current_latest, dict):
         print("ERROR: Current latest JSON must be an object.")
         return 1
-    if args.current_history_full_light and not isinstance(current_history_full_light, list):
-        print("ERROR: Current full-light history JSON must be an array.")
-        return 1
     if args.current_history_light and not isinstance(current_history_light, list):
         print("ERROR: Current light history JSON must be an array.")
         return 1
@@ -892,15 +893,6 @@ def main() -> int:
         args.lookback_rows,
         max(0, args.max_indicator_lag_days),
     )
-    if isinstance(current_history_full_light, list):
-        validate_light_history(
-            full_history=current_history,
-            light_history=current_history_full_light,
-            latest=current_latest,
-            errors=errors,
-            label="Full-light history",
-            require_all_rows=True,
-        )
     if isinstance(current_history_light, list):
         validate_light_history(
             full_history=current_history,
@@ -933,8 +925,6 @@ def main() -> int:
 
     print("Data quality validation passed.")
     print(f"- history rows: {len(current_history)}")
-    if isinstance(current_history_full_light, list):
-        print(f"- full light history rows: {len(current_history_full_light)}")
     if isinstance(current_history_light, list):
         print(f"- light history rows: {len(current_history_light)}")
     print(f"- latest date : {current_latest.get('date')}")

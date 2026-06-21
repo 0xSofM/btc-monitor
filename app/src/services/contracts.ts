@@ -51,8 +51,6 @@ export type FetchHistoricalOptions = {
   full?: boolean;
 };
 
-export type HistoryMode = 'none' | 'light' | 'full';
-
 export type FetchStaticLatestOptions = {
   enrichWithHistory?: boolean;
   forceRefresh?: boolean;
@@ -64,10 +62,8 @@ export interface DataManifest {
   lastUpdated: string;
   historyRows: number;
   historyLightRows?: number;
-  historyFullLightRows?: number;
   historyFiles?: {
     full?: string;
-    fullLight?: string;
     light?: string;
     lightRecentDays?: number;
     lightFields?: string[];

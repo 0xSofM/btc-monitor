@@ -39,28 +39,10 @@ const COINGECKO_SPOT_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=bi
 const RESERVE_RISK_DISABLE_LAG_DAYS = 30;
 const SCORE_CONFIRM_RATIO = 7 / 12;
 const SOPR_SMOOTHING_DAYS = 3;
-const SCHEMA_VERSION = 'current';
-const CANONICAL_MODEL = 'core8_independent_valuation';
-const DISPLAY_INDICATORS = [
-  'priceMa200w',
-  'mvrvZscore',
-  'nupl',
-  'puell',
-  'sthMvrv',
-  'sthSopr',
-  'lthMvrv',
-  'lthSopr',
-];
-const COMPATIBILITY_FIELDS = [
-  'priceRealized',
-  'reserveRisk',
-  'valuationBlendV6',
-  'v2',
-  'v4',
-];
-const SCORING_MODEL_VERSION = 'core8_independent_valuation_current';
+const SCHEMA_VERSION = 'v6';
+const SCORING_MODEL_VERSION = 'core8_independent_mvrv_nupl_sopr_refined';
 const LEGACY_SCORING_MODEL_VERSION = 'v3_no_lookahead_replacement';
-const CORE_INDICATOR_SET = 'core8_bottom_independent_valuation_current';
+const CORE_INDICATOR_SET = 'core8_bottom_independent_mvrv_nupl_sopr_refined';
 
 const BGEOMETRICS_SERIES = {
   btcPrice: {
@@ -827,7 +809,7 @@ async function fetchRuntimeInputs(request) {
   };
 }
 
-// SECTION: runtime payload builder
+// SECTION: V4 payload builder
 function buildRuntimePayload({
   staticLatest,
   staticHistory,
@@ -1253,15 +1235,8 @@ function buildRuntimePayload({
     lthSopr: signalLthSopr,
     puell: signalPuell,
   };
-  const staticCanonical = asRecord(staticLatest?.canonical);
   const canonical = {
-    model: asString(staticCanonical?.model) ?? CANONICAL_MODEL,
-    displayIndicators: Array.isArray(staticCanonical?.displayIndicators)
-      ? staticCanonical.displayIndicators.filter((item) => typeof item === 'string')
-      : DISPLAY_INDICATORS,
-    compatibilityFields: Array.isArray(staticCanonical?.compatibilityFields)
-      ? staticCanonical.compatibilityFields.filter((item) => typeof item === 'string')
-      : COMPATIBILITY_FIELDS,
+    model: 'v6',
     score: {
       valuation: valuationScoreV6,
       trigger: triggerScoreV6,
@@ -1419,7 +1394,7 @@ function buildRuntimePayload({
     canonical,
     legacy,
     raw: {
-      runtimeSource: 'bgeometrics_latest_current',
+      runtimeSource: 'bgeometrics_latest_v6',
       priceSource: points.btcPrice?.source ?? null,
       reserveRiskSource: points.reserveRisk?.source ?? null,
       reserveRiskV4Source: reserveRiskSourceModeV4,

@@ -35,7 +35,6 @@
 2. `pipeline/scoring.py` 计算指标分数、分层总分、数据新鲜度、确认信号和兼容字段。
 3. 脚本写入：
    - `app/public/btc_indicators_history.json`
-   - `app/public/btc_indicators_history_full_light.json`
    - `app/public/btc_indicators_history_light.json`
    - `app/public/btc_indicators_latest.json`
    - `app/public/btc_indicators_manifest.json`
@@ -83,7 +82,6 @@ python fetch_strategy_mnav.py
 ```bash
 python validate_btc_data_quality.py \
   --current-history app/public/btc_indicators_history.json \
-  --current-history-full-light app/public/btc_indicators_history_full_light.json \
   --current-history-light app/public/btc_indicators_history_light.json \
   --current-latest app/public/btc_indicators_latest.json \
   --lookback-rows 30 \

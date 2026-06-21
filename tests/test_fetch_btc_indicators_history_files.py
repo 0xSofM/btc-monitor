@@ -7,7 +7,6 @@ import pandas as pd
 from fetch_btc_indicators_history_files import (
     _classify_score_band,
     archive_existing_outputs,
-    build_full_light_history_json,
     build_light_history_json,
     build_manifest_json,
     build_reserve_risk_source_diagnostics,
@@ -219,21 +218,17 @@ class FetchHistoryPipelineTests(unittest.TestCase):
         enriched, thresholds = enrich_for_frontend(self.build_base_df())
         history = dataframe_to_history_json(enriched)
         light = build_light_history_json(history)
-        full_light = build_full_light_history_json(history)
         latest = build_latest_json(enriched, thresholds=thresholds)
 
         manifest = build_manifest_json(
             latest_json=latest,
             history_rows=len(history),
             history_light_rows=len(light),
-            history_full_light_rows=len(full_light),
             thresholds=thresholds,
         )
 
         self.assertEqual(manifest["historyRows"], len(history))
         self.assertEqual(manifest["historyLightRows"], len(light))
-        self.assertEqual(manifest["historyFullLightRows"], len(full_light))
-        self.assertEqual(manifest["historyFiles"]["fullLight"], "btc_indicators_history_full_light.json")
         self.assertEqual(manifest["historyFiles"]["light"], "btc_indicators_history_light.json")
         self.assertIn("historyRequiredFields", manifest["schemaContract"])
         self.assertEqual(manifest["schemaContract"]["canonicalModel"], "core8_independent_valuation")
@@ -450,22 +445,6 @@ class FetchHistoryPipelineTests(unittest.TestCase):
             restored = restore_outputs_from_archive(snapshot_dir, output_paths)
             self.assertIn("latest", restored)
             self.assertIn("2024-01-01", Path(restored["latest"]).read_text(encoding="utf-8"))
-
-    def test_write_json_compacts_large_arrays_only(self) -> None:
-        with TemporaryDirectory() as tmpdir:
-            root = Path(tmpdir)
-            small_path = root / "small.json"
-            large_path = root / "large.json"
-
-            write_json(small_path, {"date": "2024-01-01", "value": 1})
-            write_json(large_path, [{"d": f"2024-01-{day:02d}", "value": day} for day in range(1, 101)])
-
-            small_raw = small_path.read_text(encoding="utf-8")
-            large_raw = large_path.read_text(encoding="utf-8")
-
-            self.assertIn('\n  "date"', small_raw)
-            self.assertNotIn('\n  {', large_raw)
-            self.assertTrue(large_raw.endswith("\n"))
 
 
 if __name__ == "__main__":

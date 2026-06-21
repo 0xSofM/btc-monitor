@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { IndicatorData, LatestData } from '@/types';
 import { getLocalData, getLocalLatestData, saveLocalData } from '@/services/storage';
-import { buildHistoryPayloads } from '@/services/storageHistoryPayload';
 
 class QuotaStorage implements Storage {
   private values = new Map<string, string>();
@@ -305,29 +304,6 @@ describe('storage quota handling', () => {
     expect(console.error).not.toHaveBeenCalled();
   });
 
-  it('caps persisted full history to a recent local fallback window', () => {
-    const storage = new QuotaStorage(2_000_000);
-    installStorage(storage);
-
-    const history = createHistoryRows(1500);
-    saveLocalData({ history });
-
-    const storedHistoryRaw = storage.getItem('btc_indicators_history');
-    expect(storedHistoryRaw).not.toBeNull();
-
-    const storedHistory = JSON.parse(storedHistoryRaw ?? '{}') as {
-      storedRows?: number;
-      truncated?: boolean;
-      data?: IndicatorData[];
-    };
-
-    expect(storedHistory.storedRows).toBe(900);
-    expect(storedHistory.truncated).toBe(true);
-    expect(storedHistory.data?.[0]?.d).toBe(history[600]?.d);
-    expect(getLocalData()).toHaveLength(900);
-    expect(getLocalData().at(-1)?.d).toBe(history.at(-1)?.d);
-  });
-
   it('skips history persistence entirely when quota only fits latest data', () => {
     const storage = new QuotaStorage(3500);
     installStorage(storage);
@@ -368,46 +344,5 @@ describe('storage quota handling', () => {
 
     expect(getLocalLatestData()).toBeNull();
     expect(storage.getItem('btc_indicators_latest')).toBeNull();
-  });
-});
-
-describe('storage history payloads', () => {
-  it('caps persisted history payloads to the recent fallback window', () => {
-    const history = createHistoryRows(1500);
-    const [payload] = buildHistoryPayloads(history);
-
-    const storedHistory = JSON.parse(payload ?? '{}') as {
-      storedRows?: number;
-      truncated?: boolean;
-      data?: IndicatorData[];
-    };
-
-    expect(storedHistory.storedRows).toBe(900);
-    expect(storedHistory.truncated).toBe(true);
-    expect(storedHistory.data).toHaveLength(900);
-    expect(storedHistory.data?.[0]?.d).toBe(history[600]?.d);
-    expect(storedHistory.data?.at(-1)?.d).toBe(history.at(-1)?.d);
-  });
-
-  it('compacts history rows to core non-null fields', () => {
-    const rowWithEmptyValues = {
-      d: '2026-04-16',
-      btcPrice: 84000,
-      nupl: null,
-      lthMvrv: undefined,
-      priceMa200wRatio: 1.2,
-    } as unknown as IndicatorData;
-
-    const [payload] = buildHistoryPayloads([rowWithEmptyValues]);
-
-    const storedHistory = JSON.parse(payload ?? '{}') as {
-      data?: Array<Record<string, unknown>>;
-    };
-
-    expect(storedHistory.data?.[0]).toEqual({
-      d: '2026-04-16',
-      btcPrice: 84000,
-      priceMa200wRatio: 1.2,
-    });
   });
 });

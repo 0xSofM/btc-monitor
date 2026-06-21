@@ -48,76 +48,11 @@
       ]
     },
     {
-      "source": "/btc_indicators_history_light.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=1800, s-maxage=21600, stale-while-revalidate=43200"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    },
-    {
-      "source": "/btc_indicators_history_full_light.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=1800, s-maxage=21600, stale-while-revalidate=43200"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    },
-    {
-      "source": "/btc_signal_events_v4.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=1800, s-maxage=21600, stale-while-revalidate=43200"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    },
-    {
       "source": "/btc_indicators_manifest.json",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=60, s-maxage=300, stale-while-revalidate=600"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    },
-    {
-      "source": "/strategy_mnav_latest.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=60, s-maxage=300, stale-while-revalidate=600"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    },
-    {
-      "source": "/strategy_mnav_history.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=1800, s-maxage=21600, stale-while-revalidate=43200"
         },
         {
           "key": "Access-Control-Allow-Origin",

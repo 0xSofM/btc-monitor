@@ -8,22 +8,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict
 
-COMPACT_JSON_ARRAY_ROW_THRESHOLD = 100
 
-
-def should_write_compact_json(payload: object) -> bool:
-    return isinstance(payload, list) and len(payload) >= COMPACT_JSON_ARRAY_ROW_THRESHOLD
-
-
-def write_json(path: Path, payload: object, compact: bool | None = None) -> None:
+def write_json(path: Path, payload: object) -> None:
     """Write JSON with stable formatting and UTF-8 encoding."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    use_compact = should_write_compact_json(payload) if compact is None else compact
     with path.open("w", encoding="utf-8") as f:
-        if use_compact:
-            json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
-        else:
-            json.dump(payload, f, ensure_ascii=False, indent=2)
+        json.dump(payload, f, ensure_ascii=False, indent=2)
         f.write("\n")
 
 
