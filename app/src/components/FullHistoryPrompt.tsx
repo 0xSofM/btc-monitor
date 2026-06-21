@@ -25,22 +25,24 @@ export function FullHistoryPrompt() {
               </span>
             </p>
 
-            <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center">
-              <span className="inline-flex min-h-14 items-center gap-2 rounded-lg border border-orange-200 bg-white/80 px-3 py-2 text-lg font-black leading-tight text-orange-950 shadow-sm dark:border-orange-900 dark:bg-black/15 dark:text-orange-50">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100 text-sm text-orange-700 dark:bg-orange-950 dark:text-orange-200">
-                  1
+            <div className="rounded-lg border-2 border-orange-300 bg-white/90 p-3 shadow-md shadow-orange-500/10 dark:border-orange-800 dark:bg-black/20">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center">
+                <span className="inline-flex min-h-14 flex-1 items-center gap-3 text-xl font-black leading-tight text-orange-950 sm:text-2xl dark:text-orange-50">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-600 text-sm text-white shadow-md shadow-orange-600/25">
+                    1
+                  </span>
+                  点击任一指标小图表
                 </span>
-                点击任一指标小图表
-              </span>
-              <span className="hidden h-11 w-11 items-center justify-center rounded-full bg-orange-600 text-white shadow-md shadow-orange-600/25 md:inline-flex">
-                <ArrowRight className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <span className="inline-flex min-h-14 items-center gap-2 rounded-lg bg-orange-600 px-3 py-2 text-lg font-black leading-tight text-white shadow-lg shadow-orange-600/20 ring-1 ring-orange-500">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/20 text-sm">
-                  2
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full bg-orange-600 text-white shadow-md shadow-orange-600/25 md:self-auto">
+                  <ArrowRight className="h-5 w-5" aria-hidden="true" />
                 </span>
-                展开完整历史大图表
-              </span>
+                <span className="inline-flex min-h-14 flex-1 items-center gap-3 rounded-md bg-orange-600 px-4 py-3 text-xl font-black leading-tight text-white shadow-lg shadow-orange-600/25 ring-1 ring-orange-500 sm:text-2xl">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/20 text-sm">
+                    2
+                  </span>
+                  展开完整历史大图表
+                </span>
+              </div>
             </div>
           </div>
         </div>
