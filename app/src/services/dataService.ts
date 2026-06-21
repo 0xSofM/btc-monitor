@@ -6,8 +6,6 @@ import {
   STATIC_HISTORY_FULL_LIGHT_PATH,
   STATIC_HISTORY_LIGHT_PATH,
   checkEndpoint,
-  fetchRuntimeLatestRaw,
-  fetchStaticLatestRaw,
 } from './apiClient';
 import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions, HistoryMode } from './contracts';
 import {
@@ -15,13 +13,16 @@ import {
   fetchHistoryRows,
   hasUsableCachedHistory,
 } from './historyDataLoader';
+import {
+  enrichLatestWithOptionalHistory,
+  loadRuntimeLatestData,
+  loadStaticLatestData,
+} from './latestDataLoader';
 import { loadDataManifest, loadStrategyMnavData } from './metadataDataLoader';
-import { normalizeLatestData } from './normalizers';
 import { CORE8_COVERAGE_FIELDS } from './schema';
 import {
   INDICATOR_CONFIG,
   TIME_RANGE_LABELS,
-  enrichLatestDataWithHistory,
   getEffectiveDataDate,
   getDataFreshnessHours,
   getPriceFreshnessHours,
@@ -198,23 +199,11 @@ export async function fetchStaticLatestData(options: FetchStaticLatestOptions = 
       return cache.latest;
     }
 
-    return cache.history.length > 0
-      ? enrichLatestDataWithHistory(cache.latest, cache.history)
-      : cache.latest;
+    return enrichLatestWithOptionalHistory(cache.latest, cache.history);
   }
 
   try {
-    const raw = await fetchStaticLatestRaw();
-    const normalized = normalizeLatestData(raw);
-    if (!normalized) {
-      throw new Error('Invalid latest static data format');
-    }
-
-    let latest = normalized;
-    if (enrichWithHistory && cache.history.length > 0) {
-      latest = enrichLatestDataWithHistory(latest, cache.history);
-    }
-
+    const latest = await loadStaticLatestData(cache.history, enrichWithHistory);
     return rememberLatestData(latest, now);
   } catch (error) {
     console.error('[DataService] Error fetching latest static data:', error);
@@ -229,7 +218,7 @@ export async function fetchStaticLatestData(options: FetchStaticLatestOptions = 
     }
 
     const localHistory = readLocalData();
-    return enrichLatestDataWithHistory(localLatest, localHistory);
+    return enrichLatestWithOptionalHistory(localLatest, localHistory);
   }
 }
 
@@ -239,15 +228,7 @@ export async function fetchRuntimeLatestData(): Promise<LatestData | null> {
   }
 
   try {
-    const raw = await fetchRuntimeLatestRaw();
-    const normalized = normalizeLatestData(raw);
-    if (!normalized) {
-      throw new Error('Invalid runtime latest data format');
-    }
-
-    const latest = cache.history.length > 0
-      ? enrichLatestDataWithHistory(normalized, cache.history)
-      : normalized;
+    const latest = await loadRuntimeLatestData(cache.history);
     return rememberLatestData(latest);
   } catch (error) {
     console.error('[DataService] Error fetching runtime latest data:', error);
