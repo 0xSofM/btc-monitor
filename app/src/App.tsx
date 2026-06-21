@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AppFooter } from '@/components/AppFooter';
 import { AppHeader } from '@/components/AppHeader';
 import { IndicatorCard } from '@/components/IndicatorCard';
+import { MarketAssessmentCard } from '@/components/MarketAssessmentCard';
 import { SignalOverview } from '@/components/SignalOverview';
 import { StatusStrip } from '@/components/StatusStrip';
 import { StrategyMnavCard } from '@/components/StrategyMnavCard';
@@ -539,21 +540,7 @@ function App() {
                     oldestIndicatorDate={oldestIndicatorDate}
                   />
 
-                  {marketAssessment && (
-                    <section className={`surface-card rounded-lg border p-4 ${marketAssessment.boxClass}`}>
-                      <div className="flex items-start gap-3">
-                        <TrendingUp className={`mt-0.5 h-6 w-6 ${marketAssessment.iconClass}`} />
-                        <div>
-                          <h3 className={`font-semibold ${marketAssessment.titleClass}`}>
-                            {marketAssessment.title}
-                          </h3>
-                          <p className={`mt-1 text-sm ${marketAssessment.textClass}`}>
-                            {marketAssessment.description}
-                          </p>
-                        </div>
-                      </div>
-                    </section>
-                  )}
+                  <MarketAssessmentCard assessment={marketAssessment} />
 
                   {strategyMnavData && (
                     <StrategyMnavCard data={strategyMnavData} />
