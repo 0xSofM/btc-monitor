@@ -1,19 +1,19 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import type { IndicatorData } from '@/types';
 import { INDICATOR_CONFIG, getIndicatorChartData, getMA200ChartData } from '@/services/dataService';
-import type { DetailSeriesPoint, IndicatorType, MaSeriesPoint, SignalMarkerPlan } from './indicatorChartUtils';
+import type { DetailSeriesPoint, MaSeriesPoint, SignalMarkerPlan } from './indicatorChartUtils';
 import { IndicatorChartLegend } from './IndicatorChartLegend';
 import { IndicatorChartsHeader } from './IndicatorChartsHeader';
 import { IndicatorDetailChart } from './IndicatorDetailChart';
 import { FullHistoryPrompt } from './FullHistoryPrompt';
 import { IndicatorMiniCards } from './IndicatorMiniCards';
 import { PriceMa200Chart } from './PriceMa200Chart';
+import { useIndicatorChartState } from './useIndicatorChartState';
 import {
   CHART_FLOOR_CONFIG,
   INDICATOR_ORDER,
-  RANGE_DAYS,
   TIME_RANGES,
   buildSignalMarkerPlan,
   buildThresholdDescription,
@@ -37,14 +37,22 @@ export function IndicatorCharts({
   isFullHistoryLoading = false,
   onRequestFullHistory,
 }: IndicatorChartsProps) {
-  const [activeIndicator, setActiveIndicator] = useState<IndicatorType>('priceMa200w');
-  const [isDetailExpanded, setIsDetailExpanded] = useState(false);
-  const [hasRequestedFullHistory, setHasRequestedFullHistory] = useState(false);
-  const [showThresholds, setShowThresholds] = useState(true);
-  const [selectedRange, setSelectedRange] = useState<(typeof TIME_RANGES)[number]['key']>('all');
-  const [brushStartIndex, setBrushStartIndex] = useState(0);
-  const [brushEndIndex, setBrushEndIndex] = useState<number | undefined>(undefined);
-  const [brushKey, setBrushKey] = useState(0);
+  const {
+    activeIndicator,
+    isDetailExpanded,
+    hasRequestedFullHistory,
+    showThresholds,
+    selectedRange,
+    brushStartIndex,
+    brushEndIndex,
+    brushKey,
+    activateIndicator,
+    selectTimeRange,
+    resetRange,
+    handleBrushChange,
+    setShowThresholds,
+    setIsDetailExpanded,
+  } = useIndicatorChartState();
 
   const detailSeries = useMemo(() => {
     if (activeIndicator === 'priceMa200w') {
@@ -152,59 +160,6 @@ export function IndicatorCharts({
     );
   }, [activeIndicator, detailSeries, resolvedEndIndex, resolvedStartIndex, totalPoints]);
 
-  const activateIndicator = (indicator: IndicatorType, expandDetail = false) => {
-    setActiveIndicator(indicator);
-    setSelectedRange('all');
-    setBrushStartIndex(0);
-    setBrushEndIndex(undefined);
-    setBrushKey((prev) => prev + 1);
-
-    if (!expandDetail) {
-      return;
-    }
-
-    setIsDetailExpanded(true);
-    if (historyMode !== 'full') {
-      setHasRequestedFullHistory(true);
-      void onRequestFullHistory?.();
-    }
-  };
-
-  const handleTimeRangeSelect = (rangeKey: (typeof TIME_RANGES)[number]['key']) => {
-    if (!totalPoints) {
-      return;
-    }
-
-    const days = RANGE_DAYS[rangeKey];
-    const startIndex = rangeKey === 'all' ? 0 : Math.max(0, totalPoints - days);
-
-    setSelectedRange(rangeKey);
-    setBrushStartIndex(startIndex);
-    setBrushEndIndex(totalPoints - 1);
-    setBrushKey((prev) => prev + 1);
-  };
-
-  const resetView = () => {
-    setSelectedRange('all');
-    setBrushStartIndex(0);
-    setBrushEndIndex(undefined);
-    setBrushKey((prev) => prev + 1);
-  };
-
-  const handleBrushChange = (range: { startIndex?: number; endIndex?: number } | null | undefined) => {
-    if (!range) {
-      return;
-    }
-
-    if (typeof range.startIndex === 'number') {
-      setBrushStartIndex(range.startIndex);
-    }
-
-    if (typeof range.endIndex === 'number') {
-      setBrushEndIndex(range.endIndex);
-    }
-  };
-
   const renderPriceChart = () => {
     return (
       <PriceMa200Chart
@@ -250,8 +205,8 @@ export function IndicatorCharts({
           selectedRange={selectedRange}
           timeRanges={TIME_RANGES}
           showThresholds={showThresholds}
-          onSelectRange={handleTimeRangeSelect}
-          onResetView={resetView}
+          onSelectRange={(rangeKey) => selectTimeRange(rangeKey, totalPoints)}
+          onResetView={resetRange}
           onToggleThresholds={() => setShowThresholds((prev) => !prev)}
           onCollapseDetail={() => setIsDetailExpanded(false)}
         />
@@ -262,7 +217,11 @@ export function IndicatorCharts({
           activeIndicator={activeIndicator}
           miniSeriesMap={miniSeriesMap}
           showThresholds={showThresholds}
-          onActivateIndicator={(indicatorKey) => activateIndicator(indicatorKey, true)}
+          onActivateIndicator={(indicatorKey) => activateIndicator(indicatorKey, {
+            expandDetail: true,
+            shouldRequestFullHistory: historyMode !== 'full',
+            onRequestFullHistory,
+          })}
         />
 
         {!isDetailExpanded ? (
@@ -278,7 +237,11 @@ export function IndicatorCharts({
                   <button
                     key={indicatorKey}
                     type="button"
-                    onClick={() => activateIndicator(indicatorKey, historyMode !== 'full')}
+                    onClick={() => activateIndicator(indicatorKey, {
+                      expandDetail: historyMode !== 'full',
+                      shouldRequestFullHistory: historyMode !== 'full',
+                      onRequestFullHistory,
+                    })}
                     className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
                       isActive ? 'text-white' : 'bg-muted text-muted-foreground hover:bg-muted/80'
                     }`}
