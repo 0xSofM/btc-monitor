@@ -896,8 +896,18 @@ export function IndicatorCharts({
         {renderMiniCards()}
 
         {!isDetailExpanded ? (
-          <div className="rounded-lg border bg-muted/30 px-3 py-4 text-sm text-muted-foreground">
-            点击任一指标小图表后展开完整历史大图表。
+          <div className="rounded-lg border border-orange-200 bg-orange-50 px-4 py-4 text-sm shadow-sm dark:border-orange-900/70 dark:bg-orange-950/40">
+            <div className="flex flex-col gap-2 border-l-4 border-orange-500 pl-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="font-semibold text-orange-900 dark:text-orange-100">查看完整历史大图表</p>
+                <p className="mt-1 text-orange-700 dark:text-orange-200">
+                  点击上方任一指标小图表，即可展开完整历史并自动加载全量数据。
+                </p>
+              </div>
+              <span className="inline-flex w-fit rounded-md bg-orange-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm">
+                从小图表进入
+              </span>
+            </div>
           </div>
         ) : (
           <>
