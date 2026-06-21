@@ -18,7 +18,10 @@ import { INDICATOR_CONFIG, getIndicatorChartData, getMA200ChartData } from '@/se
 
 interface IndicatorChartsProps {
   data: IndicatorData[];
+  historyMode?: 'none' | 'light' | 'full';
   isHistoryLoading?: boolean;
+  isFullHistoryLoading?: boolean;
+  onRequestFullHistory?: () => Promise<void> | void;
 }
 
 type IndicatorType = 'priceMa200w' | 'mvrvZscore' | 'nupl' | 'puell' | 'sthMvrv' | 'sthSopr' | 'lthMvrv' | 'lthSopr';
@@ -355,9 +358,14 @@ function IndicatorTooltip({
 
 export function IndicatorCharts({
   data,
+  historyMode = 'light',
   isHistoryLoading = false,
+  isFullHistoryLoading = false,
+  onRequestFullHistory,
 }: IndicatorChartsProps) {
   const [activeIndicator, setActiveIndicator] = useState<IndicatorType>('priceMa200w');
+  const [isDetailExpanded, setIsDetailExpanded] = useState(false);
+  const [hasRequestedFullHistory, setHasRequestedFullHistory] = useState(false);
   const [showThresholds, setShowThresholds] = useState(true);
   const [selectedRange, setSelectedRange] = useState<(typeof TIME_RANGES)[number]['key']>('all');
   const [brushStartIndex, setBrushStartIndex] = useState(0);
@@ -430,12 +438,22 @@ export function IndicatorCharts({
     );
   }, [activeIndicator, detailSeries, resolvedEndIndex, resolvedStartIndex, totalPoints]);
 
-  const activateIndicator = (indicator: IndicatorType) => {
+  const activateIndicator = (indicator: IndicatorType, expandDetail = false) => {
     setActiveIndicator(indicator);
     setSelectedRange('all');
     setBrushStartIndex(0);
     setBrushEndIndex(undefined);
     setBrushKey((prev) => prev + 1);
+
+    if (!expandDetail) {
+      return;
+    }
+
+    setIsDetailExpanded(true);
+    if (historyMode !== 'full') {
+      setHasRequestedFullHistory(true);
+      void onRequestFullHistory?.();
+    }
   };
 
   const handleTimeRangeSelect = (rangeKey: (typeof TIME_RANGES)[number]['key']) => {
@@ -486,7 +504,7 @@ export function IndicatorCharts({
           <button
             key={indicatorKey}
             type="button"
-            onClick={() => activateIndicator(indicatorKey)}
+            onClick={() => activateIndicator(indicatorKey, true)}
             className={`rounded-xl border bg-card/80 p-3 text-left transition-all ${
               isActive
                 ? 'ring-1 ring-primary/60 shadow-sm'
@@ -816,7 +834,7 @@ export function IndicatorCharts({
             <CardTitle className="text-lg font-semibold">核心指标历史图表</CardTitle>
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-                历史数据
+                {historyMode === 'full' ? '完整历史' : '轻量历史'}
               </span>
               <span className="rounded-full bg-muted px-2.5 py-1 text-muted-foreground">
                 {historyStartDate} 至 {historyEndDate} · {data.length.toLocaleString('en-US')} 条
@@ -829,7 +847,8 @@ export function IndicatorCharts({
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          {isDetailExpanded && (
+            <div className="flex flex-wrap items-center gap-2">
             {TIME_RANGES.map((range) => (
               <button
                 key={range.key}
@@ -860,106 +879,138 @@ export function IndicatorCharts({
             >
               {showThresholds ? '隐藏阈值线' : '显示阈值线'}
             </button>
+
+            <button
+              type="button"
+              onClick={() => setIsDetailExpanded(false)}
+              className="rounded-md border px-2.5 py-1 text-xs transition-colors hover:bg-muted"
+            >
+              收起大图表
+            </button>
           </div>
+          )}
         </div>
       </CardHeader>
 
       <CardContent>
         {renderMiniCards()}
 
-        <div className="mb-4 flex flex-wrap gap-2">
-          {INDICATOR_ORDER.map((indicatorKey) => {
-            const indicator = INDICATOR_CONFIG[indicatorKey];
-            const isActive = indicatorKey === activeIndicator;
-
-            return (
-              <button
-                key={indicatorKey}
-                type="button"
-                onClick={() => activateIndicator(indicatorKey)}
-                className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
-                  isActive ? 'text-white' : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                }`}
-                style={{ backgroundColor: isActive ? indicator.color : undefined }}
-              >
-                {indicator.name}
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="mb-4 rounded-lg border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
-          <span className="font-medium" style={{ color: config.color }}>
-            {config.name}
-          </span>
-          <span className="mx-2">|</span>
-          <span>{config.description}</span>
-          {activeIndicator !== 'priceMa200w' && (
-            <>
-              <span className="mx-2">|</span>
-              <span>{thresholdDescription}</span>
-            </>
-          )}
-        </div>
-
-        {activeIndicator === 'priceMa200w' ? renderPriceChart() : renderIndicatorChart()}
-
-        <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-          <div className="flex items-center gap-1">
-            <div className="h-3 w-3 rounded-full" style={{ backgroundColor: config.color }} />
-            <span>{config.name}</span>
+        {!isDetailExpanded ? (
+          <div className="rounded-lg border bg-muted/30 px-3 py-4 text-sm text-muted-foreground">
+            点击任一指标小图表后展开完整历史大图表。
           </div>
+        ) : (
+          <>
+            <div className="mb-4 flex flex-wrap gap-2">
+              {INDICATOR_ORDER.map((indicatorKey) => {
+                const indicator = INDICATOR_CONFIG[indicatorKey];
+                const isActive = indicatorKey === activeIndicator;
 
-          {activeIndicator === 'priceMa200w' ? (
-            <>
-              <div className="flex items-center gap-1">
-                <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #3B82F6' }} />
-                <span>200W-MA</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span
-                  className="h-3 w-3 rounded-full border"
-                  style={{
-                    backgroundColor: SIGNAL_MARKER_FILL,
-                    borderColor: SIGNAL_MARKER_STROKE,
-                    boxShadow: `inset 0 0 0 3px ${SIGNAL_MARKER_INNER_FILL}`,
-                  }}
-                />
-                <span>跌破 200W-MA 信号点</span>
-              </div>
-              <span className="rounded-full bg-muted px-2 py-0.5">
-                {signalMarkerSummary.totalCount} 个信号
+                return (
+                  <button
+                    key={indicatorKey}
+                    type="button"
+                    onClick={() => activateIndicator(indicatorKey, historyMode !== 'full')}
+                    className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
+                      isActive ? 'text-white' : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                    }`}
+                    style={{ backgroundColor: isActive ? indicator.color : undefined }}
+                  >
+                    {indicator.name}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mb-4 rounded-lg border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
+              <span className="font-medium" style={{ color: config.color }}>
+                {config.name}
               </span>
-            </>
-          ) : (
-            <>
-              <div className="flex items-center gap-1">
-                <div className="h-0.5 w-4" style={{ borderTop: `2px dashed ${BTC_PRICE_COMPARE_COLOR}` }} />
-                <span>BTC Price（右轴）</span>
-              </div>
-              {showThresholds && (
-                <div className="flex items-center gap-1">
-                  <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #10B981' }} />
-                  <span>触发阈值线（{thresholdDescription}）</span>
-                </div>
+              <span className="mx-2">|</span>
+              <span>{config.description}</span>
+              {activeIndicator !== 'priceMa200w' && (
+                <>
+                  <span className="mx-2">|</span>
+                  <span>{thresholdDescription}</span>
+                </>
               )}
-              <div className="flex items-center gap-1">
-                <span
-                  className="h-3 w-3 rounded-full border"
-                  style={{
-                    backgroundColor: SIGNAL_MARKER_FILL,
-                    borderColor: SIGNAL_MARKER_STROKE,
-                    boxShadow: `inset 0 0 0 3px ${SIGNAL_MARKER_INNER_FILL}`,
-                  }}
-                />
-                <span>信号点</span>
+            </div>
+
+            {historyMode !== 'full' && isFullHistoryLoading ? (
+              <div className="flex h-[420px] flex-col items-center justify-center rounded-lg border bg-muted/20 text-muted-foreground">
+                <div className="mb-3 h-8 w-8 animate-spin rounded-full border-2 border-orange-500 border-t-transparent" />
+                <p>正在加载完整历史数据...</p>
               </div>
-              <span className="rounded-full bg-muted px-2 py-0.5">
-                {signalMarkerSummary.totalCount} 个信号
-              </span>
-            </>
-          )}
-        </div>
+            ) : (
+              <>
+                {historyMode !== 'full' && hasRequestedFullHistory && (
+                  <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                    完整历史暂不可用，当前使用轻量历史展示。
+                  </div>
+                )}
+
+                {activeIndicator === 'priceMa200w' ? renderPriceChart() : renderIndicatorChart()}
+
+                <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <div className="h-3 w-3 rounded-full" style={{ backgroundColor: config.color }} />
+                    <span>{config.name}</span>
+                  </div>
+
+                  {activeIndicator === 'priceMa200w' ? (
+                    <>
+                      <div className="flex items-center gap-1">
+                        <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #3B82F6' }} />
+                        <span>200W-MA</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span
+                          className="h-3 w-3 rounded-full border"
+                          style={{
+                            backgroundColor: SIGNAL_MARKER_FILL,
+                            borderColor: SIGNAL_MARKER_STROKE,
+                            boxShadow: `inset 0 0 0 3px ${SIGNAL_MARKER_INNER_FILL}`,
+                          }}
+                        />
+                        <span>跌破 200W-MA 信号点</span>
+                      </div>
+                      <span className="rounded-full bg-muted px-2 py-0.5">
+                        {signalMarkerSummary.totalCount} 个信号
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-1">
+                        <div className="h-0.5 w-4" style={{ borderTop: `2px dashed ${BTC_PRICE_COMPARE_COLOR}` }} />
+                        <span>BTC Price（右轴）</span>
+                      </div>
+                      {showThresholds && (
+                        <div className="flex items-center gap-1">
+                          <div className="h-0.5 w-4" style={{ borderTop: '2px dashed #10B981' }} />
+                          <span>触发阈值线（{thresholdDescription}）</span>
+                        </div>
+                      )}
+                      <div className="flex items-center gap-1">
+                        <span
+                          className="h-3 w-3 rounded-full border"
+                          style={{
+                            backgroundColor: SIGNAL_MARKER_FILL,
+                            borderColor: SIGNAL_MARKER_STROKE,
+                            boxShadow: `inset 0 0 0 3px ${SIGNAL_MARKER_INNER_FILL}`,
+                          }}
+                        />
+                        <span>信号点</span>
+                      </div>
+                      <span className="rounded-full bg-muted px-2 py-0.5">
+                        {signalMarkerSummary.totalCount} 个信号
+                      </span>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+          </>
+        )}
       </CardContent>
     </Card>
   );

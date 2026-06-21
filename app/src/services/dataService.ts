@@ -226,6 +226,10 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
   try {
     const raw = await fetchStaticHistoryRaw(historyPath, timeoutMs);
     const history = mergeCachedLatestIntoHistory(normalizeHistoryRows(raw));
+    if (requestedMode === 'light' && cache.historyMode === 'full') {
+      return cache.history;
+    }
+
     persistLocalData({ history });
     cache.history = history;
     cache.historyMode = requestedMode;
