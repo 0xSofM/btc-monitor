@@ -5,6 +5,10 @@ import { normalizeCanonicalLatest, normalizeLegacyLatest } from './latestContrac
 import { asBoolean, asRecord, asString, toFiniteNumber, toNumberOrNull } from './normalizerPrimitives';
 import { normalizeThresholdMap } from './thresholdNormalizers';
 
+function firstBoolean(...values: unknown[]): boolean | undefined {
+  return asBoolean(values.reduce<unknown>((selected, value) => selected ?? value, undefined));
+}
+
 export function normalizeLatestData(item: unknown): LatestData | null {
   const record = asRecord(item);
   if (!record) {
@@ -42,91 +46,158 @@ export function normalizeLatestData(item: unknown): LatestData | null {
   const lthSoprSignalValue = lthSoprMa3 ?? (toNumberOrNull(record.lthSopr ?? record.lth_sopr) ?? 0);
 
   const signals = {
-    priceMa200w: asBoolean(incomingSignals?.priceMa200w ?? record.signalPriceMa200w ?? record.signal_price_ma200w ?? record.signalPriceMa ?? record.signal_price_ma)
+    priceMa200w: firstBoolean(
+      incomingSignals?.priceMa200w,
+      record.signalPriceMa200w,
+      record.signal_price_ma200w,
+      record.signalPriceMa,
+      record.signal_price_ma,
+    )
       ?? (priceMa200wRatio < 1),
-    priceRealized: asBoolean(incomingSignals?.priceRealized ?? record.signalPriceRealized ?? record.signal_price_realized)
+    priceRealized: firstBoolean(
+      incomingSignals?.priceRealized,
+      record.signalPriceRealized,
+      record.signal_price_realized,
+    )
       ?? (priceRealizedRatio < 1),
-    reserveRisk: asBoolean(incomingSignals?.reserveRisk ?? record.signalReserveRisk ?? record.signal_reserve_risk)
+    reserveRisk: firstBoolean(
+      incomingSignals?.reserveRisk,
+      record.signalReserveRisk,
+      record.signal_reserve_risk,
+    )
       ?? (reserveRisk < 0.0016),
-    sthSopr: asBoolean(incomingSignals?.sthSopr ?? record.signalSthSopr ?? record.signal_sth_sopr)
+    sthSopr: firstBoolean(
+      incomingSignals?.sthSopr,
+      record.signalSthSopr,
+      record.signal_sth_sopr,
+    )
       ?? (sthSoprSignalValue < 1),
-    sthMvrv: asBoolean(incomingSignals?.sthMvrv ?? record.signalSthMvrv ?? record.signal_sth_mvrv)
+    sthMvrv: firstBoolean(
+      incomingSignals?.sthMvrv,
+      record.signalSthMvrv,
+      record.signal_sth_mvrv,
+    )
       ?? (sthMvrv < 1),
-    sthGroup: asBoolean(incomingSignals?.sthGroup ?? record.signalSthGroup ?? record.signal_sth_group)
+    sthGroup: firstBoolean(
+      incomingSignals?.sthGroup,
+      record.signalSthGroup,
+      record.signal_sth_group,
+    )
       ?? (sthSoprSignalValue < 1 || sthMvrv < 1),
-    puell: asBoolean(incomingSignals?.puell ?? record.signalPuell ?? record.signal_puell)
+    puell: firstBoolean(
+      incomingSignals?.puell,
+      record.signalPuell,
+      record.signal_puell,
+    )
       ?? (puellMultiple < 0.6),
   };
   const signalsV4 = incomingSignalsV4
     ? {
-        priceMa200w: asBoolean(incomingSignalsV4.priceMa200w) ?? signals.priceMa200w,
-        priceRealized: asBoolean(incomingSignalsV4.priceRealized) ?? signals.priceRealized,
-        reserveRisk: asBoolean(
-          incomingSignalsV4.reserveRisk
-          ?? incomingSignalsV4.mvrvZscore
-          ?? record.signalReserveRiskV4
-          ?? record.signal_reserve_risk_v4,
-        ) ?? (mvrvZscore < 0),
-        mvrvZscore: asBoolean(
-          incomingSignalsV4.mvrvZscore
-          ?? incomingSignalsV4.reserveRisk
-          ?? record.signalMvrvZscoreCore
-          ?? record.signal_mvrv_zscore_core
-          ?? record.signalReserveRiskV4
-          ?? record.signal_reserve_risk_v4
-          ?? record.signalMvrvZ
-          ?? record.signal_mvrv_z,
-        ) ?? (mvrvZscore < 0),
-        sthMvrv: asBoolean(incomingSignalsV4.sthMvrv ?? record.signalSthMvrv ?? record.signal_sth_mvrv) ?? signals.sthMvrv,
-        lthMvrv: asBoolean(incomingSignalsV4.lthMvrv ?? record.signalLthMvrv ?? record.signal_lth_mvrv)
-          ?? ((toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? 0) < 1),
-        puell: asBoolean(incomingSignalsV4.puell ?? record.signalPuell ?? record.signal_puell) ?? signals.puell,
-        lthSopr: asBoolean(incomingSignalsV4.lthSopr ?? record.signalLthSopr ?? record.signal_lth_sopr)
-          ?? (lthSoprSignalValue < 0.9),
-        sthSoprTrigger: asBoolean(
-          incomingSignalsV4.sthSoprTrigger ?? incomingSignalsV4.sthSoprAux
-          ?? record.signalSthSoprTrigger ?? record.signal_sth_sopr_trigger
-          ?? record.signalSthSoprAux ?? record.signal_sth_sopr_aux,
-        ) ?? signals.sthSopr,
-      }
+      priceMa200w: asBoolean(incomingSignalsV4.priceMa200w) ?? signals.priceMa200w,
+      priceRealized: asBoolean(incomingSignalsV4.priceRealized) ?? signals.priceRealized,
+      reserveRisk: firstBoolean(
+        incomingSignalsV4.reserveRisk,
+        incomingSignalsV4.mvrvZscore,
+        record.signalReserveRiskV4,
+        record.signal_reserve_risk_v4,
+      ) ?? (mvrvZscore < 0),
+      mvrvZscore: firstBoolean(
+        incomingSignalsV4.mvrvZscore,
+        incomingSignalsV4.reserveRisk,
+        record.signalMvrvZscoreCore,
+        record.signal_mvrv_zscore_core,
+        record.signalReserveRiskV4,
+        record.signal_reserve_risk_v4,
+        record.signalMvrvZ,
+        record.signal_mvrv_z,
+      ) ?? (mvrvZscore < 0),
+      sthMvrv: firstBoolean(
+        incomingSignalsV4.sthMvrv,
+        record.signalSthMvrv,
+        record.signal_sth_mvrv,
+      ) ?? signals.sthMvrv,
+      lthMvrv: firstBoolean(
+        incomingSignalsV4.lthMvrv,
+        record.signalLthMvrv,
+        record.signal_lth_mvrv,
+      )
+        ?? ((toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? 0) < 1),
+      puell: firstBoolean(
+        incomingSignalsV4.puell,
+        record.signalPuell,
+        record.signal_puell,
+      ) ?? signals.puell,
+      lthSopr: firstBoolean(
+        incomingSignalsV4.lthSopr,
+        record.signalLthSopr,
+        record.signal_lth_sopr,
+      )
+        ?? (lthSoprSignalValue < 0.9),
+      sthSoprTrigger: firstBoolean(
+        incomingSignalsV4.sthSoprTrigger,
+        incomingSignalsV4.sthSoprAux,
+        record.signalSthSoprTrigger,
+        record.signal_sth_sopr_trigger,
+        record.signalSthSoprAux,
+        record.signal_sth_sopr_aux,
+      ) ?? signals.sthSopr,
+    }
     : undefined;
   const signalsV6 = incomingSignalsV6
     ? {
-        priceMa200w: asBoolean(incomingSignalsV6.priceMa200w) ?? signals.priceMa200w,
-        priceRealized: asBoolean(incomingSignalsV6.priceRealized) ?? signals.priceRealized,
-        mvrvZscore: asBoolean(
-          incomingSignalsV6.mvrvZscore
-          ?? incomingSignalsV4?.mvrvZscore
-          ?? incomingSignalsV4?.reserveRisk
-          ?? record.signalMvrvZscoreCore
-          ?? record.signal_mvrv_zscore_core,
-        ) ?? (mvrvZscore < 0),
-        nupl: asBoolean(
-          incomingSignalsV6.nupl
-          ?? record.signalNuplCore
-          ?? record.signal_nupl_core
-          ?? record.signalNupl
-          ?? record.signal_nupl,
-        ) ?? ((nupl ?? 1) < 0.15),
-        valuationBlend: asBoolean(
-          incomingSignalsV6.valuationBlend
-          ?? record.signalValuationBlendV6
-          ?? record.signal_valuation_blend_v6,
-        ) ?? ((mvrvZscore < 0) || ((nupl ?? 1) < 0.15)),
-        sthMvrv: asBoolean(incomingSignalsV6.sthMvrv ?? record.signalSthMvrv ?? record.signal_sth_mvrv) ?? signals.sthMvrv,
-        lthMvrv: asBoolean(incomingSignalsV6.lthMvrv ?? record.signalLthMvrv ?? record.signal_lth_mvrv)
-          ?? ((toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? 0) < 1),
-        lthSopr: asBoolean(incomingSignalsV6.lthSopr ?? record.signalLthSopr ?? record.signal_lth_sopr)
-          ?? (lthSoprSignalValue < 0.9),
-        puell: asBoolean(incomingSignalsV6.puell ?? record.signalPuell ?? record.signal_puell) ?? signals.puell,
-        sthSoprTrigger: asBoolean(
-          incomingSignalsV6.sthSoprTrigger
-          ?? incomingSignalsV4?.sthSoprTrigger
-          ?? incomingSignalsV4?.sthSoprAux
-          ?? record.signalSthSoprTrigger ?? record.signal_sth_sopr_trigger
-          ?? record.signalSthSoprAux ?? record.signal_sth_sopr_aux,
-        ) ?? signals.sthSopr,
-      }
+      priceMa200w: asBoolean(incomingSignalsV6.priceMa200w) ?? signals.priceMa200w,
+      priceRealized: asBoolean(incomingSignalsV6.priceRealized) ?? signals.priceRealized,
+      mvrvZscore: firstBoolean(
+        incomingSignalsV6.mvrvZscore,
+        incomingSignalsV4?.mvrvZscore,
+        incomingSignalsV4?.reserveRisk,
+        record.signalMvrvZscoreCore,
+        record.signal_mvrv_zscore_core,
+      ) ?? (mvrvZscore < 0),
+      nupl: firstBoolean(
+        incomingSignalsV6.nupl,
+        record.signalNuplCore,
+        record.signal_nupl_core,
+        record.signalNupl,
+        record.signal_nupl,
+      ) ?? ((nupl ?? 1) < 0.15),
+      valuationBlend: firstBoolean(
+        incomingSignalsV6.valuationBlend,
+        record.signalValuationBlendV6,
+        record.signal_valuation_blend_v6,
+      ) ?? ((mvrvZscore < 0) || ((nupl ?? 1) < 0.15)),
+      sthMvrv: firstBoolean(
+        incomingSignalsV6.sthMvrv,
+        record.signalSthMvrv,
+        record.signal_sth_mvrv,
+      ) ?? signals.sthMvrv,
+      lthMvrv: firstBoolean(
+        incomingSignalsV6.lthMvrv,
+        record.signalLthMvrv,
+        record.signal_lth_mvrv,
+      )
+        ?? ((toNumberOrNull(record.lthMvrv ?? record.lth_mvrv) ?? 0) < 1),
+      lthSopr: firstBoolean(
+        incomingSignalsV6.lthSopr,
+        record.signalLthSopr,
+        record.signal_lth_sopr,
+      )
+        ?? (lthSoprSignalValue < 0.9),
+      puell: firstBoolean(
+        incomingSignalsV6.puell,
+        record.signalPuell,
+        record.signal_puell,
+      ) ?? signals.puell,
+      sthSoprTrigger: firstBoolean(
+        incomingSignalsV6.sthSoprTrigger,
+        incomingSignalsV4?.sthSoprTrigger,
+        incomingSignalsV4?.sthSoprAux,
+        record.signalSthSoprTrigger,
+        record.signal_sth_sopr_trigger,
+        record.signalSthSoprAux,
+        record.signal_sth_sopr_aux,
+      ) ?? signals.sthSopr,
+    }
     : undefined;
 
   const signalCountRaw = record.signalCount ?? record.signal_count;
