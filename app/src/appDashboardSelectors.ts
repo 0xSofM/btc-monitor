@@ -9,13 +9,14 @@ import {
 import type { MarketAssessment } from '@/components/MarketAssessmentCard';
 import type { StatusTile } from '@/components/StatusStrip';
 import type { LatestData } from '@/types';
-import type { Core8Display, DataSource, IndicatorDateKey } from './appDisplay';
+import type { Core8Display, DataSource } from './appDisplay';
 import {
   formatFallbackModeLabel,
   formatSignalBand,
   resolveScoreThresholds,
   sourceLabel,
 } from './appDisplay';
+import { buildLaggingIndicatorLabels } from './appIndicatorDateSelectors';
 import {
   getEffectiveDataDate,
   getOnchainFreshnessHours,
@@ -23,37 +24,6 @@ import {
 } from '@/services/dataService';
 
 const TOTAL_CORE_INDICATORS = 8;
-
-const indicatorDateLabels: Partial<Record<IndicatorDateKey, string>> = {
-  priceMa200w: 'Price / 200W-MA',
-  mvrvZscore: 'MVRV Z-Score',
-  nupl: 'NUPL',
-  lthMvrv: 'LTH-MVRV',
-  lthSopr: 'LTH-SOPR',
-  sthSopr: 'STH-SOPR',
-  sthMvrv: 'STH-MVRV',
-  puell: 'Puell Multiple',
-};
-
-function buildIndicatorDateEntries(latestData: LatestData) {
-  return ([
-    ['priceMa200w', latestData.indicatorDates?.priceMa200w],
-    ['mvrvZscore', latestData.indicatorDates?.mvrvZscore],
-    ['nupl', latestData.indicatorDates?.nupl],
-    ['puell', latestData.indicatorDates?.puell],
-    ['sthMvrv', latestData.indicatorDates?.sthMvrv],
-    ['sthSopr', latestData.indicatorDates?.sthSopr],
-    ['lthMvrv', latestData.indicatorDates?.lthMvrv],
-    ['lthSopr', latestData.indicatorDates?.lthSopr],
-  ] as Array<[IndicatorDateKey, string | undefined]>)
-    .filter((entry): entry is [IndicatorDateKey, string] => Boolean(entry[1]));
-}
-
-function buildLaggingIndicatorLabels(latestData: LatestData): string[] {
-  return buildIndicatorDateEntries(latestData)
-    .filter(([, value]) => value < latestData.date)
-    .map(([key]) => indicatorDateLabels[key] ?? key);
-}
 
 function buildMarketAssessment(
   effectiveScore: number,
