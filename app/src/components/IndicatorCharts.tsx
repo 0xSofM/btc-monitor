@@ -896,16 +896,19 @@ export function IndicatorCharts({
         {renderMiniCards()}
 
         {!isDetailExpanded ? (
-          <div className="rounded-lg border border-orange-200 bg-orange-50 px-4 py-3 text-orange-900 shadow-sm dark:border-orange-900/70 dark:bg-orange-950/40 dark:text-orange-100">
-            <div className="flex flex-col gap-1 border-l-4 border-orange-500 pl-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-sm font-semibold">点击上方任一指标小图表</p>
-                <p className="text-xs text-orange-700 dark:text-orange-200">
-                  即可展开完整历史大图表，查看全周期趋势与信号点。
-                </p>
+          <div className="rounded-lg border border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 px-4 py-3 text-orange-900 shadow-sm dark:border-orange-900/70 dark:from-orange-950/40 dark:to-amber-950/30 dark:text-orange-100">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-3">
+                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-orange-500 shadow-[0_0_0_4px_rgba(249,115,22,0.16)]" />
+                <div>
+                  <p className="text-sm font-semibold">完整历史图表已折叠</p>
+                  <p className="mt-0.5 text-xs text-orange-700 dark:text-orange-200">
+                    选择任一指标，即可展开全周期趋势与信号点。
+                  </p>
+                </div>
               </div>
-              <span className="text-xs font-medium text-orange-700 dark:text-orange-200">
-                按需加载完整历史
+              <span className="w-fit rounded-full border border-orange-200 bg-white/70 px-3 py-1 text-xs font-medium text-orange-700 dark:border-orange-800 dark:bg-orange-950/50 dark:text-orange-200">
+                点击图表展开
               </span>
             </div>
           </div>
