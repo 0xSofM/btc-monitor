@@ -62,19 +62,43 @@ jobs:
       - name: Print data freshness snapshot
         run: |
           python - <<'PY'
+          import gzip
           import json
           from datetime import datetime
           from pathlib import Path
 
-          latest = json.loads(Path("app/public/btc_indicators_latest.json").read_text(encoding="utf-8"))
-          history = json.loads(Path("app/public/btc_indicators_history.json").read_text(encoding="utf-8"))
+          latest_path = Path("app/public/btc_indicators_latest.json")
+          manifest_path = Path("app/public/btc_indicators_manifest.json")
+          history_light_path = Path("app/public/btc_indicators_history_light.json")
+          history_path = Path("app/public/btc_indicators_history.json")
+          signal_events_path = Path("app/public/btc_signal_events_v4.json")
+          strategy_latest_path = Path("app/public/strategy_mnav_latest.json")
+          strategy_history_path = Path("app/public/strategy_mnav_history.json")
+
+          latest = json.loads(latest_path.read_text(encoding="utf-8"))
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          history_light = json.loads(history_light_path.read_text(encoding="utf-8"))
+          history = json.loads(history_path.read_text(encoding="utf-8"))
 
           latest_date = datetime.strptime(str(latest.get("date", "")), "%Y-%m-%d")
           indicator_dates = latest.get("indicatorDates") if isinstance(latest.get("indicatorDates"), dict) else {}
 
+          def size_mb(num_bytes):
+              return num_bytes / (1024 * 1024)
+
           print(f"latest date: {latest.get('date')}")
           print(f"history rows: {len(history)}")
+          print(f"light history rows: {len(history_light)}")
+          print(f"manifest history rows: {manifest.get('historyRows')}")
+          print(f"manifest light history rows: {manifest.get('historyLightRows')}")
           print(f"reserve risk mode: {latest.get('reserveRiskSourceMode')}")
+          strategy_health = manifest.get("strategyMnavHealth") if isinstance(manifest.get("strategyMnavHealth"), dict) else {}
+          if strategy_health:
+              print("strategy mNAV:")
+              print(f"  - latest date: {strategy_health.get('latestDate')}")
+              print(f"  - history rows: {strategy_health.get('historyRows')}")
+              print(f"  - stale: {strategy_health.get('isStale')}")
+              print(f"  - risk flag: {strategy_health.get('riskFlag')}")
           print("indicator lags (days):")
           for key, value in indicator_dates.items():
               try:
@@ -82,6 +106,26 @@ jobs:
               except Exception:
                   lag = "?"
               print(f"  - {key}: {lag} (date={value})")
+          print("artifact sizes:")
+          for path in [
+              latest_path,
+              manifest_path,
+              history_light_path,
+              history_path,
+              signal_events_path,
+              strategy_latest_path,
+              strategy_history_path,
+          ]:
+              if not path.exists():
+                  print(f"  - {path.name}: missing")
+                  continue
+              raw = path.read_bytes()
+              compressed = gzip.compress(raw, compresslevel=9)
+              print(
+                  f"  - {path.name}: "
+                  f"raw={size_mb(len(raw)):.2f} MB "
+                  f"gzip={size_mb(len(compressed)):.2f} MB"
+              )
           PY
 
       - name: Validate data quality gate
