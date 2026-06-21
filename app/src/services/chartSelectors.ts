@@ -39,6 +39,145 @@ function getObservedValue(
     : (value ?? null);
 }
 
+type ThresholdIndicatorKey = keyof typeof DEFAULT_THRESHOLDS;
+
+type IndicatorChartFields = {
+  value: number | null;
+  triggerValue: number | null;
+  deepValue: number | null;
+  signal: boolean;
+  preserveGap: boolean;
+};
+
+function getIndicatorThresholdValues(
+  item: IndicatorData,
+  thresholdKey: string,
+  fallbackKey: ThresholdIndicatorKey,
+): Pick<IndicatorChartFields, 'triggerValue' | 'deepValue'> {
+  const threshold = getThresholdRange(
+    item.thresholds,
+    thresholdKey,
+    DEFAULT_THRESHOLDS[fallbackKey],
+    DEFAULT_DEEP_THRESHOLDS[fallbackKey],
+  );
+
+  return {
+    triggerValue: threshold.trigger,
+    deepValue: threshold.deep,
+  };
+}
+
+function resolveIndicatorChartFields(
+  item: IndicatorData,
+  indicator: IndicatorKey,
+): IndicatorChartFields {
+  switch (indicator) {
+    case 'priceMa200w':
+      return {
+        value: item.priceMa200wRatio ?? null,
+        triggerValue: DEFAULT_THRESHOLDS.priceMa200w,
+        deepValue: DEFAULT_DEEP_THRESHOLDS.priceMa200w,
+        signal: item.signalPriceMa200w ?? item.signalPriceMa ?? false,
+        preserveGap: false,
+      };
+
+    case 'priceRealized':
+      return {
+        value: item.priceRealizedRatio ?? null,
+        triggerValue: DEFAULT_THRESHOLDS.priceRealized,
+        deepValue: DEFAULT_DEEP_THRESHOLDS.priceRealized,
+        signal: item.signalPriceRealized ?? false,
+        preserveGap: false,
+      };
+
+    case 'reserveRisk':
+      return {
+        value: getObservedValue(item.reserveRisk, item.indicatorDates?.reserveRisk, item.d),
+        ...getIndicatorThresholdValues(item, 'reserveRisk', 'reserveRisk'),
+        signal: item.signalReserveRisk ?? item.signalReserveRiskV4 ?? false,
+        preserveGap: true,
+      };
+
+    case 'valuationBlend': {
+      const mvrvScore = toFiniteNumber(item.scoreMvrvZscoreCore, 0);
+      const nuplScore = toFiniteNumber(item.scoreNuplCore, 0);
+      const blendScore = item.valuationBlendScoreV6 ?? Math.max(mvrvScore, nuplScore);
+
+      return {
+        value: blendScore,
+        triggerValue: 0.5,
+        deepValue: 1.5,
+        signal: item.signalsV6?.valuationBlend
+          ?? item.signalValuationBlendV6
+          ?? (blendScore > 0),
+        preserveGap: false,
+      };
+    }
+
+    case 'mvrvZscore':
+      return {
+        value: getObservedValue(item.mvrvZscore, item.indicatorDates?.mvrvZscore, item.d),
+        ...getIndicatorThresholdValues(item, 'mvrvZscoreCore', 'mvrvZscore'),
+        signal: item.signalMvrvZscoreCore ?? item.signalReserveRiskV4 ?? item.signalMvrvZ ?? false,
+        preserveGap: true,
+      };
+
+    case 'nupl':
+      return {
+        value: getObservedValue(item.nupl, item.indicatorDates?.nupl, item.d),
+        ...getIndicatorThresholdValues(item, 'nuplCore', 'nupl'),
+        signal: item.signalNuplCore ?? item.signalNupl ?? false,
+        preserveGap: true,
+      };
+
+    case 'lthMvrv':
+      return {
+        value: item.lthMvrv ?? null,
+        triggerValue: DEFAULT_THRESHOLDS.lthMvrv,
+        deepValue: DEFAULT_DEEP_THRESHOLDS.lthMvrv,
+        signal: item.signalLthMvrv ?? false,
+        preserveGap: false,
+      };
+
+    case 'sthSopr':
+      return {
+        value: item.sthSoprMa3 ?? item.sthSopr ?? null,
+        ...getIndicatorThresholdValues(item, 'sthSopr', 'sthSopr'),
+        signal: item.signalsV6?.sthSoprTrigger
+          ?? item.signalSthSoprTrigger
+          ?? item.signalSthSoprAux
+          ?? item.signalSthSopr
+          ?? false,
+        preserveGap: false,
+      };
+
+    case 'sthMvrv':
+      return {
+        value: item.sthMvrv ?? null,
+        ...getIndicatorThresholdValues(item, 'sthMvrv', 'sthMvrv'),
+        signal: item.signalSthMvrv ?? false,
+        preserveGap: false,
+      };
+
+    case 'lthSopr':
+      return {
+        value: item.lthSoprMa3 ?? item.lthSopr ?? null,
+        ...getIndicatorThresholdValues(item, 'lthSopr', 'lthSopr'),
+        signal: item.signalsV6?.lthSopr ?? item.signalLthSopr ?? false,
+        preserveGap: false,
+      };
+
+    case 'puell':
+      return {
+        value: item.puellMultiple ?? null,
+        triggerValue: DEFAULT_THRESHOLDS.puell,
+        deepValue: DEFAULT_DEEP_THRESHOLDS.puell,
+        signal: item.signalPuell ?? false,
+        preserveGap: false,
+      };
+  }
+}
+
 export function filterDataByTimeRange(data: IndicatorData[], range: TimeRange): IndicatorData[] {
   if (range === 'all') {
     return data;
@@ -57,136 +196,10 @@ export function getIndicatorChartData(
 
   const points = filteredData
     .map((item): ChartDataPoint | null => {
-      let value: number | null = null;
-      let triggerValue: number | null = null;
-      let deepValue: number | null = null;
-      let signal = false;
-      let preserveGap = false;
-
-      if (indicator === 'priceMa200w') {
-        value = item.priceMa200wRatio ?? null;
-        triggerValue = DEFAULT_THRESHOLDS.priceMa200w;
-        deepValue = DEFAULT_DEEP_THRESHOLDS.priceMa200w;
-        signal = item.signalPriceMa200w ?? item.signalPriceMa ?? false;
-      }
-
-      if (indicator === 'priceRealized') {
-        value = item.priceRealizedRatio ?? null;
-        triggerValue = DEFAULT_THRESHOLDS.priceRealized;
-        deepValue = DEFAULT_DEEP_THRESHOLDS.priceRealized;
-        signal = item.signalPriceRealized ?? false;
-      }
-
-      if (indicator === 'reserveRisk') {
-        const threshold = getThresholdRange(
-          item.thresholds,
-          'reserveRisk',
-          DEFAULT_THRESHOLDS.reserveRisk,
-          DEFAULT_DEEP_THRESHOLDS.reserveRisk,
-        );
-        value = getObservedValue(item.reserveRisk, item.indicatorDates?.reserveRisk, item.d);
-        triggerValue = threshold.trigger;
-        deepValue = threshold.deep;
-        signal = item.signalReserveRisk ?? item.signalReserveRiskV4 ?? false;
-        preserveGap = true;
-      }
-
-      if (indicator === 'valuationBlend') {
-        const mvrvScore = toFiniteNumber(item.scoreMvrvZscoreCore, 0);
-        const nuplScore = toFiniteNumber(item.scoreNuplCore, 0);
-        const blendScore = item.valuationBlendScoreV6 ?? Math.max(mvrvScore, nuplScore);
-        value = blendScore;
-        triggerValue = 0.5;
-        deepValue = 1.5;
-        signal = item.signalsV6?.valuationBlend
-          ?? item.signalValuationBlendV6
-          ?? (blendScore > 0);
-      }
-
-      if (indicator === 'mvrvZscore') {
-        const threshold = getThresholdRange(
-          item.thresholds,
-          'mvrvZscoreCore',
-          DEFAULT_THRESHOLDS.mvrvZscore,
-          DEFAULT_DEEP_THRESHOLDS.mvrvZscore,
-        );
-        value = getObservedValue(item.mvrvZscore, item.indicatorDates?.mvrvZscore, item.d);
-        triggerValue = threshold.trigger;
-        deepValue = threshold.deep;
-        signal = item.signalMvrvZscoreCore ?? item.signalReserveRiskV4 ?? item.signalMvrvZ ?? false;
-        preserveGap = true;
-      }
-
-      if (indicator === 'nupl') {
-        const threshold = getThresholdRange(
-          item.thresholds,
-          'nuplCore',
-          DEFAULT_THRESHOLDS.nupl,
-          DEFAULT_DEEP_THRESHOLDS.nupl,
-        );
-        value = getObservedValue(item.nupl, item.indicatorDates?.nupl, item.d);
-        triggerValue = threshold.trigger;
-        deepValue = threshold.deep;
-        signal = item.signalNuplCore ?? item.signalNupl ?? false;
-        preserveGap = true;
-      }
-
-      if (indicator === 'lthMvrv') {
-        value = item.lthMvrv ?? null;
-        triggerValue = DEFAULT_THRESHOLDS.lthMvrv;
-        deepValue = DEFAULT_DEEP_THRESHOLDS.lthMvrv;
-        signal = item.signalLthMvrv ?? false;
-      }
-
-      if (indicator === 'sthSopr') {
-        const threshold = getThresholdRange(
-          item.thresholds,
-          'sthSopr',
-          DEFAULT_THRESHOLDS.sthSopr,
-          DEFAULT_DEEP_THRESHOLDS.sthSopr,
-        );
-        value = item.sthSoprMa3 ?? item.sthSopr ?? null;
-        triggerValue = threshold.trigger;
-        deepValue = threshold.deep;
-        signal = item.signalsV6?.sthSoprTrigger
-          ?? item.signalSthSoprTrigger
-          ?? item.signalSthSoprAux
-          ?? item.signalSthSopr
-          ?? false;
-      }
-
-      if (indicator === 'sthMvrv') {
-        const threshold = getThresholdRange(
-          item.thresholds,
-          'sthMvrv',
-          DEFAULT_THRESHOLDS.sthMvrv,
-          DEFAULT_DEEP_THRESHOLDS.sthMvrv,
-        );
-        value = item.sthMvrv ?? null;
-        triggerValue = threshold.trigger;
-        deepValue = threshold.deep;
-        signal = item.signalSthMvrv ?? false;
-      }
-
-      if (indicator === 'lthSopr') {
-        const threshold = getThresholdRange(
-          item.thresholds,
-          'lthSopr',
-          DEFAULT_THRESHOLDS.lthSopr,
-          DEFAULT_DEEP_THRESHOLDS.lthSopr,
-        );
-        value = item.lthSoprMa3 ?? item.lthSopr ?? null;
-        triggerValue = threshold.trigger;
-        deepValue = threshold.deep;
-        signal = item.signalsV6?.lthSopr ?? item.signalLthSopr ?? false;
-      }
-
-      if (indicator === 'puell') {
-        value = item.puellMultiple ?? null;
-        triggerValue = DEFAULT_THRESHOLDS.puell;
-        deepValue = DEFAULT_DEEP_THRESHOLDS.puell;
-        signal = item.signalPuell ?? false;
-      }
+      const { value, triggerValue, deepValue, signal, preserveGap } = resolveIndicatorChartFields(
+        item,
+        indicator,
+      );
 
       const btcPrice = toNumericPrice(item.btcPrice);
       if ((value === null && !preserveGap) || (value === 0 && btcPrice === 0)) {
