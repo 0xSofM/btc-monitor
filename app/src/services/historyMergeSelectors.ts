@@ -89,15 +89,69 @@ function getLatestHistorySignalFields(
   };
 }
 
-export function latestDataToHistoryRow(
+function getLatestHistoryScoreFields(
   latest: LatestData,
-  existingRow?: IndicatorData,
-): IndicatorData {
+  existingRow: IndicatorData | undefined,
+): Pick<
+  IndicatorData,
+  | 'signalCount'
+  | 'signalCountV4'
+  | 'signalCountV6'
+  | 'activeIndicatorCount'
+  | 'activeIndicatorCountV4'
+  | 'activeIndicatorCountV6'
+  | 'maxSignalScoreV2'
+  | 'scorePriceMa200w'
+  | 'scorePriceRealized'
+  | 'scoreReserveRisk'
+  | 'scoreReserveRiskV4'
+  | 'scoreMvrvZscore'
+  | 'scoreMvrvZscoreCore'
+  | 'scoreNupl'
+  | 'scoreNuplCore'
+  | 'valuationBlendScoreV6'
+  | 'scoreLthMvrv'
+  | 'scoreLthSopr'
+  | 'scoreSthSopr'
+  | 'scoreSthMvrv'
+  | 'scoreSthGroup'
+  | 'scorePuell'
+  | 'signalScoreV2'
+  | 'signalScoreV2Min3d'
+  | 'signalConfirmed3d'
+  | 'signalBandV2'
+  | 'valuationScore'
+  | 'maxValuationScore'
+  | 'triggerScore'
+  | 'maxTriggerScore'
+  | 'confirmationScore'
+  | 'maxConfirmationScore'
+  | 'auxiliaryScore'
+  | 'maxAuxiliaryScore'
+  | 'totalScoreV4'
+  | 'maxTotalScoreV4'
+  | 'totalScoreV4Min3d'
+  | 'signalConfirmed3dV4'
+  | 'signalBandV4'
+  | 'valuationScoreV6'
+  | 'maxValuationScoreV6'
+  | 'triggerScoreV6'
+  | 'maxTriggerScoreV6'
+  | 'confirmationScoreV6'
+  | 'maxConfirmationScoreV6'
+  | 'totalScoreV6'
+  | 'maxTotalScoreV6'
+  | 'totalScoreV6Min3d'
+  | 'signalConfirmed3dV6'
+  | 'signalBandV6'
+  | 'signalConfidence'
+  | 'signalConfidenceV6'
+  | 'dataFreshnessScore'
+  | 'dataFreshnessScoreV6'
+  | 'fallbackMode'
+  | 'fallbackModeV6'
+> {
   return {
-    ...existingRow,
-    d: latest.date,
-    ...getLatestHistoryMetricFields(latest, existingRow),
-    ...getLatestHistorySignalFields(latest, existingRow),
     signalCount: latest.signalCount,
     signalCountV4: latest.signalCountV4 ?? existingRow?.signalCountV4,
     signalCountV6: latest.signalCountV6 ?? existingRow?.signalCountV6,
@@ -154,6 +208,19 @@ export function latestDataToHistoryRow(
     dataFreshnessScoreV6: latest.dataFreshnessScoreV6 ?? existingRow?.dataFreshnessScoreV6,
     fallbackMode: latest.fallbackMode ?? existingRow?.fallbackMode,
     fallbackModeV6: latest.fallbackModeV6 ?? existingRow?.fallbackModeV6,
+  };
+}
+
+export function latestDataToHistoryRow(
+  latest: LatestData,
+  existingRow?: IndicatorData,
+): IndicatorData {
+  return {
+    ...existingRow,
+    d: latest.date,
+    ...getLatestHistoryMetricFields(latest, existingRow),
+    ...getLatestHistorySignalFields(latest, existingRow),
+    ...getLatestHistoryScoreFields(latest, existingRow),
     staleIndicators: latest.staleIndicators ?? existingRow?.staleIndicators,
     coreIndicatorSet: latest.coreIndicatorSet ?? existingRow?.coreIndicatorSet,
     scoringModelVersion: latest.scoringModelVersion ?? existingRow?.scoringModelVersion,
