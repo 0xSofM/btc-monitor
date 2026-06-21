@@ -13,6 +13,27 @@ interface HistoryReviewProps {
   data: IndicatorData[];
 }
 
+type IndexedHistoryRow = {
+  row: IndicatorData;
+  time: number;
+  price: number;
+  signalCount: number;
+};
+
+type FilteredHistoryResult = {
+  rows: IndicatorData[];
+  minPrice: number;
+  maxPrice: number;
+  avgPrice: number;
+};
+
+const EMPTY_FILTERED_HISTORY: FilteredHistoryResult = {
+  rows: [],
+  minPrice: 0,
+  maxPrice: 0,
+  avgPrice: 0,
+};
+
 function parsePrice(value: number | string | undefined): number {
   if (typeof value === 'number') {
     return Number.isFinite(value) ? value : 0;
@@ -52,16 +73,22 @@ export function HistoryReview({ data }: HistoryReviewProps) {
   const [minSignals, setMinSignals] = useState(4);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const indexedData = useMemo<IndexedHistoryRow[]>(() => data.map((row) => ({
+    row,
+    time: Date.parse(`${row.d}T00:00:00Z`),
+    price: parsePrice(row.btcPrice),
+    signalCount: row.signalCountV6 ?? row.signalCountV4 ?? row.signalCount ?? 0,
+  })), [data]);
   const maxSignalCount = useMemo(
-    () => data.reduce(
+    () => indexedData.reduce(
       (max, row) => Math.max(
         max,
-        row.activeIndicatorCountV6 ?? row.activeIndicatorCountV4 ?? row.activeIndicatorCount ?? 0,
-        row.signalCountV6 ?? row.signalCountV4 ?? row.signalCount ?? 0,
+        row.row.activeIndicatorCountV6 ?? row.row.activeIndicatorCountV4 ?? row.row.activeIndicatorCount ?? 0,
+        row.signalCount,
       ),
       8,
     ),
-    [data],
+    [indexedData],
   );
   const strongSignalThreshold = Math.max(1, maxSignalCount - 1);
   const thresholdOptions = useMemo(() => {
@@ -70,63 +97,56 @@ export function HistoryReview({ data }: HistoryReviewProps) {
   }, [maxSignalCount]);
 
   const dateRange = useMemo(() => {
-    if (!data.length) {
+    if (!indexedData.length) {
       return { min: '', max: '' };
     }
 
-    const dates = data.map((row) => row.d).sort();
     return {
-      min: dates[0],
-      max: dates[dates.length - 1],
+      min: indexedData[0]?.row.d ?? '',
+      max: indexedData[indexedData.length - 1]?.row.d ?? '',
     };
-  }, [data]);
+  }, [indexedData]);
 
-  const filteredData = useMemo(() => {
+  const filteredHistory = useMemo<FilteredHistoryResult>(() => {
     const startAt = startDate ? Date.parse(`${startDate}T00:00:00Z`) : null;
     const endAt = endDate ? Date.parse(`${endDate}T23:59:59Z`) : null;
+    const rows: IndicatorData[] = [];
+    let minPrice = Number.POSITIVE_INFINITY;
+    let maxPrice = Number.NEGATIVE_INFINITY;
+    let totalPrice = 0;
 
-    return data
-      .filter((item) => {
-        const signalCount = item.signalCountV6 ?? item.signalCountV4 ?? item.signalCount ?? 0;
-        if (signalCount < minSignals) {
-          return false;
-        }
+    for (let index = indexedData.length - 1; index >= 0; index -= 1) {
+      const item = indexedData[index];
+      if (!item || item.signalCount < minSignals) {
+        continue;
+      }
 
-        const itemTime = Date.parse(`${item.d}T00:00:00Z`);
-        if (startAt && itemTime < startAt) {
-          return false;
-        }
+      if (startAt && item.time < startAt) {
+        continue;
+      }
 
-        if (endAt && itemTime > endAt) {
-          return false;
-        }
+      if (endAt && item.time > endAt) {
+        continue;
+      }
 
-        return true;
-      })
-      .slice()
-      .sort((left, right) => right.d.localeCompare(left.d));
-  }, [data, endDate, minSignals, startDate]);
-
-  const summary = useMemo(() => {
-    if (!filteredData.length) {
-      return {
-        minPrice: 0,
-        maxPrice: 0,
-        avgPrice: 0,
-      };
+      rows.push(item.row);
+      minPrice = Math.min(minPrice, item.price);
+      maxPrice = Math.max(maxPrice, item.price);
+      totalPrice += item.price;
     }
 
-    const prices = filteredData.map((row) => parsePrice(row.btcPrice));
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
-    const avgPrice = prices.reduce((acc, price) => acc + price, 0) / prices.length;
+    if (!rows.length) {
+      return EMPTY_FILTERED_HISTORY;
+    }
 
     return {
+      rows,
       minPrice,
       maxPrice,
-      avgPrice,
+      avgPrice: totalPrice / rows.length,
     };
-  }, [filteredData]);
+  }, [endDate, indexedData, minSignals, startDate]);
+  const filteredData = filteredHistory.rows;
 
   const hasActiveFilters = Boolean(startDate || endDate || minSignals !== 4);
 
@@ -218,17 +238,17 @@ export function HistoryReview({ data }: HistoryReviewProps) {
 
           <article className="rounded-xl border bg-background/70 p-4">
             <p className="text-sm text-muted-foreground">最低价格</p>
-            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(summary.minPrice) : '-'}</p>
+            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(filteredHistory.minPrice) : '-'}</p>
           </article>
 
           <article className="rounded-xl border bg-background/70 p-4">
             <p className="text-sm text-muted-foreground">最高价格</p>
-            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(summary.maxPrice) : '-'}</p>
+            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(filteredHistory.maxPrice) : '-'}</p>
           </article>
 
           <article className="rounded-xl border bg-background/70 p-4">
             <p className="text-sm text-muted-foreground">平均价格</p>
-            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(summary.avgPrice) : '-'}</p>
+            <p className="text-xl font-semibold">{filteredData.length ? formatPrice(filteredHistory.avgPrice) : '-'}</p>
           </article>
         </section>
 
