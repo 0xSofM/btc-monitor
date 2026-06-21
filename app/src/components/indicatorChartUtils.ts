@@ -1,3 +1,5 @@
+import { formatNumber } from './indicatorChartFormatters';
+
 export type IndicatorType = 'priceMa200w' | 'mvrvZscore' | 'nupl' | 'puell' | 'sthMvrv' | 'sthSopr' | 'lthMvrv' | 'lthSopr';
 
 export type DetailSeriesPoint = {
@@ -21,22 +23,6 @@ export type MaSeriesPoint = {
 };
 
 export const INDICATOR_ORDER: IndicatorType[] = ['priceMa200w', 'mvrvZscore', 'nupl', 'puell', 'sthMvrv', 'sthSopr', 'lthMvrv', 'lthSopr'];
-
-export const TIME_RANGES = [
-  { key: 'all', label: '全部' },
-  { key: '1y', label: '1年' },
-  { key: '6m', label: '6月' },
-  { key: '1m', label: '1月' },
-  { key: '1w', label: '1周' },
-] as const;
-
-export const RANGE_DAYS: Record<(typeof TIME_RANGES)[number]['key'], number> = {
-  all: 0,
-  '1y': 365,
-  '6m': 180,
-  '1m': 30,
-  '1w': 7,
-};
 
 export const CHART_FLOOR_CONFIG: Record<IndicatorType, number> = {
   priceMa200w: 0,
@@ -69,55 +55,6 @@ export type TooltipEntry = {
     signal?: boolean;
   };
 };
-
-export function formatDate(value: string | number | null | undefined): string {
-  if (!value) {
-    return '';
-  }
-
-  const dateText = typeof value === 'number'
-    ? new Date(value).toISOString().slice(0, 10)
-    : value;
-  const parts = dateText.split('-');
-  if (parts.length === 3) {
-    return `${parts[0].slice(2)}/${parts[1]}/${parts[2]}`;
-  }
-
-  return dateText;
-}
-
-export function parseDateMs(value: string): number {
-  const parsed = Date.parse(`${value}T00:00:00Z`);
-  return Number.isFinite(parsed) ? parsed : 0;
-}
-
-export function formatDateFromMs(value: number): string {
-  if (!Number.isFinite(value)) {
-    return '';
-  }
-
-  return formatDate(new Date(value).toISOString().slice(0, 10));
-}
-
-export function formatNumber(value: number): string {
-  if (!Number.isFinite(value)) {
-    return '-';
-  }
-
-  if (Math.abs(value) >= 1000) {
-    return value.toLocaleString('en-US', { maximumFractionDigits: 0 });
-  }
-
-  if (Math.abs(value) >= 10) {
-    return value.toFixed(2);
-  }
-
-  if (Math.abs(value) >= 1) {
-    return value.toFixed(3);
-  }
-
-  return value.toFixed(4);
-}
 
 export function findLatestObservedPoint(points: DetailSeriesPoint[]): DetailSeriesPoint | null {
   for (let index = points.length - 1; index >= 0; index -= 1) {
@@ -167,38 +104,6 @@ export function buildThresholdDescription(indicator: IndicatorType, point: Detai
   }
 }
 
-export function formatPriceAxis(value: number): string {
-  if (!Number.isFinite(value)) {
-    return '-';
-  }
-
-  if (value >= 1000) {
-    return `$${(value / 1000).toFixed(0)}K`;
-  }
-
-  return `$${value.toFixed(0)}`;
-}
-
-export function formatPriceTooltip(value: number): string {
-  if (!Number.isFinite(value)) {
-    return '-';
-  }
-
-  return `$${value.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
-}
-
-export function formatTooltipValue(entry: TooltipEntry): string {
-  if (typeof entry.value !== 'number') {
-    return '-';
-  }
-
-  if (entry.name === 'BTC Price' || entry.name === '200W-MA') {
-    return formatPriceTooltip(entry.value);
-  }
-
-  return formatNumber(entry.value);
-}
-
 export function getPaddedDomain(values: number[], paddingRatio: number, floor?: number): [number, number] {
   if (values.length === 0) {
     return [floor ?? 0, 1];
@@ -215,55 +120,14 @@ export function getPaddedDomain(values: number[], paddingRatio: number, floor?: 
   ];
 }
 
-function getSignalMarkerLimit(visiblePointCount: number): number {
-  if (visiblePointCount > 3000) {
-    return 42;
-  }
-
-  if (visiblePointCount > 1200) {
-    return 56;
-  }
-
-  if (visiblePointCount > 500) {
-    return 80;
-  }
-
-  return 140;
-}
-
-export function buildSignalMarkerPlan<T>(
-  series: T[],
-  startIndex: number,
-  endIndex: number,
-  isSignalPoint: (point: T) => boolean,
-  getKey: (point: T) => string,
-): SignalMarkerPlan {
-  const signalIndexes: number[] = [];
-  const safeStartIndex = Math.max(0, startIndex);
-  const safeEndIndex = Math.min(series.length - 1, endIndex);
-
-  for (let index = safeStartIndex; index <= safeEndIndex; index += 1) {
-    const point = series[index];
-    if (point && isSignalPoint(point)) {
-      signalIndexes.push(index);
-    }
-  }
-
-  const visiblePointCount = Math.max(0, safeEndIndex - safeStartIndex + 1);
-  const markerLimit = getSignalMarkerLimit(visiblePointCount);
-  const compact = signalIndexes.length > markerLimit;
-  const step = compact ? Math.ceil(signalIndexes.length / markerLimit) : 1;
-  const keys = new Set<string>();
-
-  signalIndexes.forEach((index, signalIndex) => {
-    if (!compact || signalIndex % step === 0 || signalIndex === signalIndexes.length - 1) {
-      keys.add(getKey(series[index]));
-    }
-  });
-
-  return {
-    keys,
-    totalCount: signalIndexes.length,
-    compact,
-  };
-}
+export { TIME_RANGES, RANGE_DAYS } from './indicatorChartRanges';
+export {
+  formatDate,
+  formatDateFromMs,
+  formatNumber,
+  formatPriceAxis,
+  formatPriceTooltip,
+  formatTooltipValue,
+  parseDateMs,
+} from './indicatorChartFormatters';
+export { buildSignalMarkerPlan } from './indicatorSignalMarkerPlan';
