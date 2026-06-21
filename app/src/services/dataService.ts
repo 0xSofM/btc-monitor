@@ -19,7 +19,11 @@ import {
   buildHistoryRequestPlan,
   hasUsableCachedHistory,
 } from './historyDataLoader';
-import { loadHistoryWithFallbacks } from './historyFallbackLoader';
+import {
+  hasCore8Coverage as hasHistoryCore8Coverage,
+  loadHistoryWithFallbacks,
+  loadLocalHistoryFallback,
+} from './historyFallbackLoader';
 import {
   enrichLatestWithOptionalHistory,
   loadRuntimeLatestData,
@@ -27,7 +31,6 @@ import {
 } from './latestDataLoader';
 import { loadLatestFromHistoryFallback, loadLocalLatestFallback } from './latestFallbackLoader';
 import { loadDataManifest, loadStrategyMnavData } from './metadataDataLoader';
-import { CORE8_COVERAGE_FIELDS } from './schema';
 import {
   INDICATOR_CONFIG,
   TIME_RANGE_LABELS,
@@ -71,15 +74,7 @@ function rememberHistoryData(
 }
 
 export function hasCore8Coverage(rows: IndicatorData[]): boolean {
-  if (!rows.length) {
-    return false;
-  }
-
-  const recent = rows.slice(-Math.min(rows.length, 365));
-
-  return CORE8_COVERAGE_FIELDS.every((field) =>
-    recent.some((row) => row[field] !== null && row[field] !== undefined),
-  );
+  return hasHistoryCore8Coverage(rows);
 }
 
 export async function fetchDataManifest(forceRefresh = false): Promise<DataManifest | null> {
@@ -121,15 +116,11 @@ export async function fetchHistoricalData(options: FetchHistoricalOptions = {}):
     return remoteHistory.history;
   }
 
-  const localHistory = readLocalData();
-  if (localHistory.length > 0 && hasCore8Coverage(localHistory)) {
-    const mergedLocalHistory = mergeCachedLatestIntoHistory(localHistory);
-    cache.history = mergedLocalHistory;
-    cache.historyMode = 'light';
-    return mergedLocalHistory;
-  }
-
-  return [];
+  return loadLocalHistoryFallback({
+    readLocalHistory: readLocalData,
+    mergeLatestIntoRows: mergeCachedLatestIntoHistory,
+    rememberHistory: rememberHistoryData,
+  });
 }
 
 export async function fetchStrategyMnavData(forceRefresh = false): Promise<StrategyMnavData | null> {

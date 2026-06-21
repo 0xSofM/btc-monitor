@@ -3,6 +3,7 @@ import type { IndicatorData } from '@/types';
 import type { HistoryMode } from './contracts';
 import type { HistoryRequestPlan, LoadedHistoryRows } from './historyDataLoader';
 import { fetchHistoryRows } from './historyDataLoader';
+import { CORE8_COVERAGE_FIELDS } from './schema';
 
 type HistoryFallbackLoaderOptions = {
   plan: HistoryRequestPlan;
@@ -19,6 +20,38 @@ export type HistoryFallbackResult = {
   history: IndicatorData[];
   loaded: boolean;
 };
+
+export function hasCore8Coverage(rows: IndicatorData[]): boolean {
+  if (!rows.length) {
+    return false;
+  }
+
+  const recent = rows.slice(-Math.min(rows.length, 365));
+
+  return CORE8_COVERAGE_FIELDS.every((field) =>
+    recent.some((row) => row[field] !== null && row[field] !== undefined),
+  );
+}
+
+export function loadLocalHistoryFallback({
+  readLocalHistory,
+  mergeLatestIntoRows,
+  rememberHistory,
+}: {
+  readLocalHistory: () => IndicatorData[];
+  mergeLatestIntoRows: (rows: IndicatorData[]) => IndicatorData[];
+  rememberHistory: (
+    history: IndicatorData[],
+    mode: Exclude<HistoryMode, 'none'>,
+  ) => IndicatorData[];
+}): IndicatorData[] {
+  const localHistory = readLocalHistory();
+  if (localHistory.length === 0 || !hasCore8Coverage(localHistory)) {
+    return [];
+  }
+
+  return rememberHistory(mergeLatestIntoRows(localHistory), 'light');
+}
 
 export async function loadHistoryWithFallbacks({
   plan,
