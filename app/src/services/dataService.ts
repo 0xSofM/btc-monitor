@@ -25,7 +25,7 @@ import {
   loadRuntimeLatestData,
   loadStaticLatestData,
 } from './latestDataLoader';
-import { loadLocalLatestFallback } from './latestFallbackLoader';
+import { loadLatestFromHistoryFallback, loadLocalLatestFallback } from './latestFallbackLoader';
 import { loadDataManifest, loadStrategyMnavData } from './metadataDataLoader';
 import { CORE8_COVERAGE_FIELDS } from './schema';
 import {
@@ -204,12 +204,12 @@ export async function fetchAllLatestIndicators(useCache = true): Promise<LatestD
       return staticLatest;
     }
 
-    const historyData = await fetchHistoricalData();
-    const latestFromHistory = getLatestFromHistory(historyData);
-    if (latestFromHistory) {
-      rememberLatestData(latestFromHistory, now);
-    }
-    return latestFromHistory;
+    return loadLatestFromHistoryFallback({
+      timestamp: now,
+      fetchHistory: fetchHistoricalData,
+      getLatestFromHistory,
+      rememberLatest: rememberLatestData,
+    });
   } catch (error) {
     console.error('[DataService] Error fetching latest indicators:', error);
     return readLocalLatestData();

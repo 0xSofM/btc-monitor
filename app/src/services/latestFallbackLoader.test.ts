@@ -1,7 +1,10 @@
 import type { IndicatorData, LatestData } from '@/types';
 import { describe, expect, it, vi } from 'vitest';
 
-import { loadLocalLatestFallback } from './latestFallbackLoader';
+import {
+  loadLatestFromHistoryFallback,
+  loadLocalLatestFallback,
+} from './latestFallbackLoader';
 
 const latest = {
   date: '2026-04-16',
@@ -58,5 +61,41 @@ describe('latest fallback loader', () => {
     expect(fallback?.indicatorDates?.nupl).toBe('2026-04-15');
     expect(readLocalLatest).toHaveBeenCalledTimes(1);
     expect(readLocalHistory).toHaveBeenCalledTimes(1);
+  });
+
+  it('derives and remembers latest data from history', async () => {
+    const history = [{ d: '2026-04-16', btcPrice: 84000 }] satisfies IndicatorData[];
+    const fetchHistory = vi.fn(async () => history);
+    const getLatestFromHistory = vi.fn(() => latest);
+    const rememberLatest = vi.fn((value: LatestData) => value);
+
+    const fallback = await loadLatestFromHistoryFallback({
+      timestamp: 1234,
+      fetchHistory,
+      getLatestFromHistory,
+      rememberLatest,
+    });
+
+    expect(fallback).toBe(latest);
+    expect(fetchHistory).toHaveBeenCalledTimes(1);
+    expect(getLatestFromHistory).toHaveBeenCalledWith(history);
+    expect(rememberLatest).toHaveBeenCalledWith(latest, 1234);
+  });
+
+  it('returns null when history cannot produce latest data', async () => {
+    const fetchHistory = vi.fn(async () => [] as IndicatorData[]);
+    const getLatestFromHistory = vi.fn(() => null);
+    const rememberLatest = vi.fn((value: LatestData) => value);
+
+    const fallback = await loadLatestFromHistoryFallback({
+      timestamp: 1234,
+      fetchHistory,
+      getLatestFromHistory,
+      rememberLatest,
+    });
+
+    expect(fallback).toBeNull();
+    expect(getLatestFromHistory).toHaveBeenCalledWith([]);
+    expect(rememberLatest).not.toHaveBeenCalled();
   });
 });
