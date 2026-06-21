@@ -26,12 +26,10 @@ import {
   buildDataTimestampLabel,
   resolveCore8Display,
 } from './appDisplay';
+import { loadDashboardLatestData } from './appLatestLoader';
 import {
   fetchHistoricalData,
-  fetchRuntimeLatestData,
-  fetchStaticLatestData,
   fetchStrategyMnavData,
-  getLatestFromHistory,
   mergeLatestIntoHistory,
 } from '@/services/dataService';
 
@@ -159,50 +157,19 @@ function App() {
     try {
       void loadStrategyMnav(mode === 'manual');
 
-      // Always try runtime first (Edge Function fetches live BGeometrics data).
-      // Falls back to static JSON silently on failure.
-      const runtimeData = await fetchRuntimeLatestData();
-      if (runtimeData) {
-        applyLatestData(runtimeData, 'api');
-
-        if (mode === 'manual') {
-          const score = runtimeData.totalScoreV6 ?? runtimeData.totalScoreV4 ?? runtimeData.signalScoreV2 ?? 0;
-          const maxScore = runtimeData.maxTotalScoreV6 ?? runtimeData.maxTotalScoreV4 ?? runtimeData.maxSignalScoreV2 ?? 10;
-          toast.success(`最新数据已刷新：${score}/${maxScore}`, {
-            description: `BTC 价格：$${runtimeData.btcPrice.toLocaleString()}`,
-            duration: 6000,
-          });
-        }
-        return;
+      const latestResult = await loadDashboardLatestData(mode, loadHistoryFallback);
+      applyLatestData(latestResult.data, latestResult.source);
+      if (latestResult.toast?.type === 'success') {
+        toast.success(latestResult.toast.message, {
+          description: latestResult.toast.description,
+          duration: latestResult.toast.duration,
+        });
+      } else if (latestResult.toast) {
+        toast.info(latestResult.toast.message, {
+          description: latestResult.toast.description,
+          duration: latestResult.toast.duration,
+        });
       }
-
-      const staticData = await fetchStaticLatestData({
-        enrichWithHistory: true,
-        forceRefresh: mode === 'manual',
-      });
-      if (staticData) {
-        applyLatestData(staticData, 'static');
-
-        if (mode === 'manual') {
-          toast.info('实时数据暂不可用，已展示本地数据。', {
-            description: `BTC 价格：$${staticData.btcPrice.toLocaleString()}`,
-            duration: 6000,
-          });
-        }
-        return;
-      }
-
-      const history = await loadHistoryFallback();
-      const backupData = getLatestFromHistory(history);
-      if (backupData) {
-        applyLatestData(backupData, 'history');
-        if (mode === 'manual') {
-          toast.info('最新数据暂不可用，已展示历史数据。');
-        }
-        return;
-      }
-
-      throw new Error('无可用最新数据');
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('数据加载失败，请检查连接后重试。');
