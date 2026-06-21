@@ -4,9 +4,10 @@ import { normalizeIndicatorData, normalizeLatestData } from './normalizers';
 import { CORE_HISTORY_FIELDS } from './schema';
 import { enrichLatestDataWithHistory, getLatestFromHistory } from './selectors';
 
-const DATA_VERSION = 'v1.5.0';
+const DATA_VERSION = 'v1.5.1';
 const HISTORY_KEY = 'btc_indicators_history';
 const LATEST_KEY = 'btc_indicators_latest';
+const MAX_PERSISTED_HISTORY_ROWS = 900;
 
 const storageWarnings = {
   latestQuota: false,
@@ -128,8 +129,10 @@ function buildHistoryRowLimits(totalRows: number): number[] {
     return [];
   }
 
-  const limits = new Set<number>([totalRows]);
-  let current = totalRows;
+  // Keep local history as a recent fallback; full history remains in memory after loading.
+  const targetRows = Math.min(totalRows, MAX_PERSISTED_HISTORY_ROWS);
+  const limits = new Set<number>([targetRows]);
+  let current = targetRows;
 
   while (current > 365) {
     current = Math.floor(current / 2);

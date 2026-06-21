@@ -304,6 +304,29 @@ describe('storage quota handling', () => {
     expect(console.error).not.toHaveBeenCalled();
   });
 
+  it('caps persisted full history to a recent local fallback window', () => {
+    const storage = new QuotaStorage(2_000_000);
+    installStorage(storage);
+
+    const history = createHistoryRows(1500);
+    saveLocalData({ history });
+
+    const storedHistoryRaw = storage.getItem('btc_indicators_history');
+    expect(storedHistoryRaw).not.toBeNull();
+
+    const storedHistory = JSON.parse(storedHistoryRaw ?? '{}') as {
+      storedRows?: number;
+      truncated?: boolean;
+      data?: IndicatorData[];
+    };
+
+    expect(storedHistory.storedRows).toBe(900);
+    expect(storedHistory.truncated).toBe(true);
+    expect(storedHistory.data?.[0]?.d).toBe(history[600]?.d);
+    expect(getLocalData()).toHaveLength(900);
+    expect(getLocalData().at(-1)?.d).toBe(history.at(-1)?.d);
+  });
+
   it('skips history persistence entirely when quota only fits latest data', () => {
     const storage = new QuotaStorage(3500);
     installStorage(storage);
