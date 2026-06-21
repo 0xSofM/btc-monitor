@@ -24,7 +24,10 @@ import pandas as pd
 # ---- pipeline imports ----------------------------------------------------
 from pipeline.config import (  # noqa: F401 — re-exported for backward compat
     ARCHIVE_ROOT_DEFAULT,
+    CANONICAL_MODEL,
+    COMPATIBILITY_FIELDS,
     DEFAULT_RESERVE_RISK_DISABLE_LAG_DAYS,
+    DISPLAY_INDICATORS,
     INDICATOR_SET,
     LEGACY_SCORING_MODEL_VERSION,
     ROLLBACK_METADATA_FILE,
@@ -136,26 +139,6 @@ HISTORY_LIGHT_FIELDS = [
     "coreIndicatorSet",
     "scoringModelVersion",
 ]
-
-CANONICAL_MODEL = "core8_independent_valuation"
-DISPLAY_INDICATORS = [
-    "priceMa200w",
-    "mvrvZscore",
-    "nupl",
-    "puell",
-    "sthMvrv",
-    "sthSopr",
-    "lthMvrv",
-    "lthSopr",
-]
-COMPATIBILITY_FIELDS = [
-    "priceRealized",
-    "reserveRisk",
-    "valuationBlendV6",
-    "v2",
-    "v4",
-]
-
 
 def build_tabular_view(frontend_df: pd.DataFrame) -> pd.DataFrame:
     """Prepare human-readable table used for CSV/XLSX exports."""

@@ -133,6 +133,34 @@ LEGACY_SCORING_MODEL_VERSION = "v3_no_lookahead_replacement"
 SCORING_MODEL_VERSION = "core8_independent_valuation_current"
 SCHEMA_VERSION = "current"
 INDICATOR_SET = "core8_bottom_independent_valuation_current"
+CANONICAL_MODEL = "core8_independent_valuation"
+DISPLAY_INDICATORS = [
+    "priceMa200w",
+    "mvrvZscore",
+    "nupl",
+    "puell",
+    "sthMvrv",
+    "sthSopr",
+    "lthMvrv",
+    "lthSopr",
+]
+CANONICAL_SIGNAL_KEYS = [
+    "priceMa200w",
+    "mvrvZscore",
+    "nupl",
+    "puell",
+    "sthMvrv",
+    "sthSoprTrigger",
+    "lthMvrv",
+    "lthSopr",
+]
+COMPATIBILITY_FIELDS = [
+    "priceRealized",
+    "reserveRisk",
+    "valuationBlendV6",
+    "v2",
+    "v4",
+]
 ARCHIVE_ROOT_DEFAULT = "archive/releases"
 SIGNAL_EVENTS_V4_JSON_PATH_DEFAULT = "app/public/btc_signal_events_v4.json"
 ROLLBACK_METADATA_FILE = "release_metadata.json"
