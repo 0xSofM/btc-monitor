@@ -11,6 +11,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import { Maximize2, MousePointerClick } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { IndicatorData } from '@/types';
@@ -908,16 +909,24 @@ export function IndicatorCharts({
         {renderMiniCards()}
 
         {!isDetailExpanded ? (
-          <div className="rounded-lg border border-orange-200 bg-orange-50 px-4 py-4 text-sm shadow-sm dark:border-orange-900/70 dark:bg-orange-950/40">
-            <div className="flex flex-col gap-2 border-l-4 border-orange-500 pl-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="font-semibold text-orange-900 dark:text-orange-100">查看完整历史大图表</p>
-                <p className="mt-1 text-orange-700 dark:text-orange-200">
-                  点击上方任一指标小图表，即可展开完整历史并自动加载全量数据。
-                </p>
+          <div className="rounded-lg border-2 border-orange-300 bg-gradient-to-r from-orange-50 via-amber-50 to-orange-100 px-4 py-4 text-sm shadow-md dark:border-orange-800/80 dark:from-orange-950/70 dark:via-amber-950/40 dark:to-orange-950/70">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-orange-600 text-white shadow-sm ring-4 ring-orange-200/70 dark:bg-orange-500 dark:ring-orange-900/60">
+                  <MousePointerClick className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-base font-bold text-orange-950 dark:text-orange-50">
+                    点击任一指标小图表后展开完整历史大图表
+                  </p>
+                  <p className="mt-1 text-orange-800 dark:text-orange-100">
+                    全量历史数据将在展开时自动加载，页面初始打开更轻量。
+                  </p>
+                </div>
               </div>
-              <span className="inline-flex w-fit rounded-md bg-orange-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm">
-                从小图表进入
+              <span className="inline-flex w-fit items-center gap-1.5 rounded-md bg-orange-600 px-3 py-2 text-xs font-semibold text-white shadow-sm dark:bg-orange-500">
+                <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
+                展开完整历史
               </span>
             </div>
           </div>
