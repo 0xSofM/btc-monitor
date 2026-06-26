@@ -1,11 +1,11 @@
 {
   "date": "2026-06-26",
   "unixTs": 1782432000,
-  "btcPrice": 60480.51,
-  "ma200w": 62333.82881747821,
+  "btcPrice": 59657.58,
+  "ma200w": 62333.24101033535,
   "realizedPrice": 52863.92,
-  "priceMa200wRatio": 0.9702678488930149,
-  "priceRealizedRatio": 1.1440791753619484,
+  "priceMa200wRatio": 0.9570748934763122,
+  "priceRealizedRatio": 1.1285122253514306,
   "reserveRisk": 0.0004825166,
   "mvrvZscore": 0.2678,
   "nupl": 0.1164,
@@ -371,7 +371,7 @@
   },
   "scoringModelVersion": "core8_independent_valuation_current",
   "legacyScoringModelVersion": "v3_no_lookahead_replacement",
-  "lastUpdated": "2026-06-26T09:50:03.200405+00:00",
+  "lastUpdated": "2026-06-26T14:45:31.369063+00:00",
   "canonical": {
     "model": "core8_independent_valuation",
     "displayIndicators": [
