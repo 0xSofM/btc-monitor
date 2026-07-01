@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-01T10:09:57.714494+00:00",
+  "generatedAt": "2026-07-01T15:10:32.132511+00:00",
   "latestDate": "2026-07-01",
-  "lastUpdated": "2026-07-01T10:09:57.682829+00:00",
+  "lastUpdated": "2026-07-01T15:10:32.101498+00:00",
   "historyRows": 5510,
   "historyLightRows": 889,
   "historyFiles": {
@@ -383,11 +383,11 @@
     "formula": "enterpriseValueUsd / btcReserveUsd",
     "latestDate": "2026-07-01",
     "historyRows": 12,
-    "mnav": 1.0432,
+    "mnav": 1.0955,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
-    "mstrTimestampUtc": "2026-06-30T20:00:00",
-    "btcTimestamp": "2026-07-01T10:09:00"
+    "mstrTimestampUtc": "2026-07-01T15:10:00",
+    "btcTimestamp": "2026-07-01T15:10:00"
   }
 }

@@ -1,6 +1,6 @@
 {
   "date": "2026-07-01",
-  "generatedAt": "2026-07-01T10:10:00.614827+00:00",
+  "generatedAt": "2026-07-01T15:10:34.803257+00:00",
   "source": "strategy_official_api",
   "sourceUrls": {
     "bitcoinKpis": "https://api.strategy.com/btc/bitcoinKpis",
@@ -8,36 +8,36 @@
   },
   "formula": "enterpriseValueUsd / btcReserveUsd",
   "mstr": {
-    "price": 86.93,
-    "marketCapUsdM": 32304.0,
-    "enterpriseValueUsdM": 51969.0,
-    "previousEnterpriseValueUsdM": 54106.0,
+    "price": 96.37,
+    "marketCapUsdM": 35811.0,
+    "enterpriseValueUsdM": 55476.0,
+    "previousEnterpriseValueUsdM": 51969.0,
     "debtUsdM": 6754.0,
     "preferredEquityUsdM": 15461.0,
-    "debtPreferredByMarketCapPct": 69.0,
-    "sharesVolume": 35209399,
-    "timestampUtc": "2026-06-30T20:00:00"
+    "debtPreferredByMarketCapPct": 62.0,
+    "sharesVolume": 13750751,
+    "timestampUtc": "2026-07-01T15:10:00"
   },
   "btcReserve": {
     "btcHoldings": 847363.0,
-    "btcPriceUsd": 58788.0,
-    "btcReserveUsdM": 49815.0,
+    "btcPriceUsd": 59760.0,
+    "btcReserveUsdM": 50638.0,
     "previousBtcReserveUsdM": 50080.0,
     "satsPerShare": 211157.1288,
-    "timestamp": "2026-07-01T10:09:00",
-    "msTimestamp": 1782900593168
+    "timestamp": "2026-07-01T15:10:00",
+    "msTimestamp": 1782918621383
   },
   "mnav": {
-    "value": 1.0432,
-    "previousValue": 1.0804,
-    "change": -0.0372,
+    "value": 1.0955,
+    "previousValue": 1.0377,
+    "change": 0.0578,
     "band": "low_premium",
     "riskFlag": "normal",
-    "equityPremium": 0.6485
+    "equityPremium": 0.7072
   },
   "dataHealth": {
     "isStale": false,
-    "mstrTimestampUtc": "2026-06-30T20:00:00",
-    "btcTimestamp": "2026-07-01T10:09:00"
+    "mstrTimestampUtc": "2026-07-01T15:10:00",
+    "btcTimestamp": "2026-07-01T15:10:00"
   }
 }
