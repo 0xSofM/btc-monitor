@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-04T13:55:53.047003+00:00",
+  "generatedAt": "2026-07-04T19:34:51.108031+00:00",
   "latestDate": "2026-07-04",
-  "lastUpdated": "2026-07-04T13:55:53.015505+00:00",
+  "lastUpdated": "2026-07-04T19:34:51.078105+00:00",
   "historyRows": 5513,
   "historyLightRows": 890,
   "historyFiles": {
@@ -109,7 +109,7 @@
   "thresholdVersion": "v4_dynamic",
   "activeIndicatorCountV6": 8,
   "maxTotalScoreV6": 14,
-  "totalScoreV6": 3,
+  "totalScoreV6": 2,
   "dynamicThresholds": {
     "reserveRisk": {
       "trigger": 0.0005838636399999999,
@@ -270,7 +270,7 @@
     "inactiveIndicators": [],
     "fallbackModeV6": "none",
     "dataFreshnessScoreV6": 0.7678571428571429,
-    "signalConfidenceV6": 0.3875
+    "signalConfidenceV6": 0.3518
   },
   "schemaContract": {
     "canonicalModel": "core8_independent_valuation",
@@ -383,11 +383,11 @@
     "formula": "enterpriseValueUsd / btcReserveUsd",
     "latestDate": "2026-07-04",
     "historyRows": 15,
-    "mnav": 1.0783,
+    "mnav": 1.0636,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
     "mstrTimestampUtc": "2026-07-02T20:00:00",
-    "btcTimestamp": "2026-07-04T13:55:00"
+    "btcTimestamp": "2026-07-04T19:34:00"
   }
 }
