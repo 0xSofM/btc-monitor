@@ -17393,7 +17393,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017338,
-        "deep": 0.0010688000000000002
+        "deep": 0.0010735
       },
       "sthSopr": {
         "trigger": 0.9798845667443334,
@@ -17518,7 +17518,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017022,
-        "deep": 0.00063185487
+        "deep": 0.0006331189900000001
       },
       "sthSopr": {
         "trigger": 0.9819274762196669,
@@ -18017,7 +18017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0009400583800000029,
+        "trigger": 0.0010096000000000003,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -18142,7 +18142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006805923799999999,
+        "trigger": 0.0006809375199999999,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -18267,7 +18267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066166478,
+        "trigger": 0.00066261866,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -18392,7 +18392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065875034,
+        "trigger": 0.00065915696,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -18517,7 +18517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064965618,
+        "trigger": 0.0006498777,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -18642,7 +18642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006320987,
+        "trigger": 0.00063239072,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -18767,7 +18767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -18892,7 +18892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -19017,7 +19017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -19142,7 +19142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -19267,7 +19267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -19392,7 +19392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -19517,7 +19517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -19642,7 +19642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -19767,7 +19767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -19819,131 +19819,6 @@
       "sthSopr": "2024-07-01",
       "sthMvrv": "2024-07-01",
       "puell": "2024-07-01"
-    },
-    "indicatorSet": "core8_bottom_independent_valuation_current",
-    "coreIndicatorSet": "core8_bottom_independent_valuation_current",
-    "scoringModelVersion": "core8_independent_valuation_current"
-  },
-  {
-    "d": "2024-07-10",
-    "unixTs": 1720569600,
-    "btcPrice": 57722.0113527177,
-    "ma200w": 36576.61028886815,
-    "realizedPrice": 30806.9011539234,
-    "priceMa200wRatio": 1.578112648953832,
-    "priceRealizedRatio": 1.873671456415425,
-    "reserveRisk": 0.0009401176,
-    "lthMvrv": 2.924,
-    "lthSopr": 2.9086237764,
-    "lthSoprMa3": 2.2468674471333525,
-    "mvrvZscore": 1.5674138162,
-    "nupl": 0.4672,
-    "sthSopr": 0.9983635621,
-    "sthSoprMa3": 0.9946854515666664,
-    "sthMvrv": 0.905,
-    "puellMultiple": 0.7211428571,
-    "signalPriceMa200w": false,
-    "signalPriceRealized": false,
-    "signalReserveRisk": false,
-    "signalReserveRiskV4": false,
-    "signalMvrvZscoreCore": false,
-    "signalNupl": false,
-    "signalNuplCore": false,
-    "signalValuationBlendV6": false,
-    "signalSthSopr": false,
-    "signalSthMvrv": true,
-    "signalSthGroup": true,
-    "signalLthMvrv": false,
-    "signalLthSopr": false,
-    "signalSthSoprTrigger": false,
-    "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 1,
-    "signalCountV4": 1,
-    "signalCountV6": 1,
-    "activeIndicatorCount": 5,
-    "activeIndicatorCountV4": 7,
-    "activeIndicatorCountV6": 8,
-    "signalScoreV2": 1,
-    "maxSignalScoreV2": 10,
-    "totalScoreV4": 1,
-    "maxTotalScoreV4": 14,
-    "totalScoreV4Min3d": 1.0,
-    "signalConfirmed3dV4": false,
-    "signalBandV4": "watch",
-    "valuationScoreV6": 0,
-    "triggerScoreV6": 1,
-    "confirmationScoreV6": 0,
-    "totalScoreV6": 1,
-    "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 1.0,
-    "signalConfirmed3dV6": false,
-    "signalBandV6": "watch",
-    "scoreMvrvZscoreCore": 0,
-    "scoreNuplCore": 0,
-    "valuationBlendScoreV6": 0,
-    "scoreSthSopr": 0,
-    "scoreSthMvrv": 1,
-    "scoreLthMvrv": 0,
-    "scoreLthSopr": 0,
-    "scorePuell": 0,
-    "signalConfidenceV6": 0.3357,
-    "dataFreshnessScoreV6": 1.0,
-    "fallbackModeV6": "none",
-    "thresholds": {
-      "reserveRisk": {
-        "trigger": 0.00061376944,
-        "deep": 0.0005479960700000001
-      },
-      "sthSopr": {
-        "trigger": 0.989069213687,
-        "deep": 0.9734467442493333
-      },
-      "sthMvrv": {
-        "trigger": 0.916,
-        "deep": 0.827
-      },
-      "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
-      },
-      "mvrvZscoreCore": {
-        "trigger": 0.0,
-        "deep": -0.5
-      },
-      "nuplCore": {
-        "trigger": 0.15,
-        "deep": 0.0
-      },
-      "nupl": {
-        "trigger": 0.15,
-        "deep": 0.0
-      }
-    },
-    "signalsV6": {
-      "priceMa200w": false,
-      "priceRealized": false,
-      "mvrvZscore": false,
-      "nupl": false,
-      "valuationBlend": false,
-      "sthMvrv": true,
-      "sthSoprTrigger": false,
-      "lthMvrv": false,
-      "lthSopr": false,
-      "puell": false
-    },
-    "staleIndicators": [],
-    "indicatorDates": {
-      "priceMa200w": "2024-07-10",
-      "priceRealized": "2024-07-10",
-      "reserveRisk": "2024-07-10",
-      "lthMvrv": "2024-07-10",
-      "lthSopr": "2024-07-10",
-      "mvrvZscore": "2024-07-10",
-      "nupl": "2024-07-10",
-      "sthSopr": "2024-07-10",
-      "sthMvrv": "2024-07-10",
-      "puell": "2024-07-10"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -20017,7 +19892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -20142,7 +20017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -20267,7 +20142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -20392,7 +20267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -20517,7 +20392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -20642,7 +20517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -20767,7 +20642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -20892,7 +20767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -21017,7 +20892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -21142,7 +21017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -21267,7 +21142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -21392,7 +21267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -21517,7 +21392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -21642,7 +21517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -21767,7 +21642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -21892,7 +21767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -22017,7 +21892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -22142,7 +22017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -22267,7 +22142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -22392,7 +22267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -22517,7 +22392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -22642,7 +22517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -22767,7 +22642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -22892,7 +22767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -23017,7 +22892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -23142,7 +23017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -23267,7 +23142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -23392,7 +23267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -23517,7 +23392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -23642,7 +23517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -23767,7 +23642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -23892,7 +23767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -24017,7 +23892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -24142,7 +24017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -24267,7 +24142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -24392,7 +24267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -24517,7 +24392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -24642,7 +24517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -24767,7 +24642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -24892,7 +24767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -25017,7 +24892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -25142,7 +25017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -25267,7 +25142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -25392,7 +25267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -25517,7 +25392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -25642,7 +25517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -25767,7 +25642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -25892,7 +25767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -26017,7 +25892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -26142,7 +26017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -26267,7 +26142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -26392,7 +26267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -26517,7 +26392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -26642,7 +26517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -26767,7 +26642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -26892,7 +26767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -27017,7 +26892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -27142,7 +27017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -27267,7 +27142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -27392,7 +27267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -27517,7 +27392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -27642,7 +27517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -27767,7 +27642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -27892,7 +27767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -28017,7 +27892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -28142,7 +28017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -28267,7 +28142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -28392,7 +28267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -28517,7 +28392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -28642,7 +28517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -28767,7 +28642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -28892,7 +28767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -29017,7 +28892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -29142,7 +29017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -29267,7 +29142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -29392,7 +29267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -29517,7 +29392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -29642,7 +29517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -29767,7 +29642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -29892,7 +29767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -30017,7 +29892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -30142,7 +30017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -30267,7 +30142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -30392,7 +30267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -30517,7 +30392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -30642,7 +30517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -30767,7 +30642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -30892,7 +30767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -31017,7 +30892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -31142,7 +31017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -31267,7 +31142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -31392,7 +31267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -31517,7 +31392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -31642,7 +31517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -31767,7 +31642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -31892,7 +31767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -32017,7 +31892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -32142,7 +32017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -32267,7 +32142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -32392,7 +32267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -32517,7 +32392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -32642,7 +32517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -32767,7 +32642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -32892,7 +32767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -33017,7 +32892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -33142,7 +33017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -33267,7 +33142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -33392,7 +33267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -33517,7 +33392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -33642,7 +33517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -33767,7 +33642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -33892,7 +33767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -34017,7 +33892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -34142,7 +34017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -34267,7 +34142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -34392,7 +34267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -34517,7 +34392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -34642,7 +34517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -34767,7 +34642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -34892,7 +34767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -35017,7 +34892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -35142,7 +35017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -35267,7 +35142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -35392,7 +35267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -35517,7 +35392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -35642,7 +35517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -35767,7 +35642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -35892,7 +35767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -36017,7 +35892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -36142,7 +36017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -36267,7 +36142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -36392,7 +36267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -36517,7 +36392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -36642,7 +36517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -36767,7 +36642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -36892,7 +36767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -37017,7 +36892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -37142,7 +37017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -37267,7 +37142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -37392,7 +37267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -37517,7 +37392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -37642,7 +37517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -37767,7 +37642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -37892,7 +37767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -38017,7 +37892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -38142,7 +38017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -38267,7 +38142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -38392,7 +38267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -38517,7 +38392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -38642,7 +38517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -38767,7 +38642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -38892,7 +38767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -39017,7 +38892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -39142,7 +39017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -39267,7 +39142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -39392,7 +39267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -39517,7 +39392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -39642,7 +39517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -39767,7 +39642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -39892,7 +39767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -40017,7 +39892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -40142,7 +40017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -40267,7 +40142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -40392,7 +40267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -40517,7 +40392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -40642,7 +40517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -40767,7 +40642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -40892,7 +40767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -41017,7 +40892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -41142,7 +41017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -41267,7 +41142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -41392,7 +41267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -41517,7 +41392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -41642,7 +41517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -41767,7 +41642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -41892,7 +41767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -42017,7 +41892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -42142,7 +42017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -42267,7 +42142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -42392,7 +42267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -42517,7 +42392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -42642,7 +42517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -42767,7 +42642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -42892,7 +42767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -43017,7 +42892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -43142,7 +43017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -43267,7 +43142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -43392,7 +43267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -43517,7 +43392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -43642,7 +43517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -43767,7 +43642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -43892,7 +43767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -44017,7 +43892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -44142,7 +44017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -44267,7 +44142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -44392,7 +44267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -44517,7 +44392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -44642,7 +44517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -44767,7 +44642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -44892,7 +44767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -45017,7 +44892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -45142,7 +45017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -45267,7 +45142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -45392,7 +45267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -45517,7 +45392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -45642,7 +45517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -45767,7 +45642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -45892,7 +45767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -46017,7 +45892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -46142,7 +46017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -46267,7 +46142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -46392,7 +46267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -46517,7 +46392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -46642,7 +46517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -46767,7 +46642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -46892,7 +46767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -47017,7 +46892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -47142,7 +47017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -47267,7 +47142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -47392,7 +47267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -47517,7 +47392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -47642,7 +47517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -47767,7 +47642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -47892,7 +47767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -48017,7 +47892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -48142,7 +48017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -48267,7 +48142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -48392,7 +48267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -48517,7 +48392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -48642,7 +48517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -48767,7 +48642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -48892,7 +48767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -49017,7 +48892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -49142,7 +49017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -49267,7 +49142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -49392,7 +49267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -49517,7 +49392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -49642,7 +49517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -49767,7 +49642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -49892,7 +49767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -50017,7 +49892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -50142,7 +50017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -50267,7 +50142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -50392,7 +50267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -50517,7 +50392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -50642,7 +50517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -50767,7 +50642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -50892,7 +50767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -51017,7 +50892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -51142,7 +51017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -51267,7 +51142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -51392,7 +51267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -51517,7 +51392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -51642,7 +51517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -51767,7 +51642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -51892,7 +51767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -52017,7 +51892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -52142,7 +52017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -52267,7 +52142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -52392,7 +52267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -52517,7 +52392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -52642,7 +52517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -52767,7 +52642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -52892,7 +52767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -53017,7 +52892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -53142,7 +53017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -53267,7 +53142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -53392,7 +53267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -53517,7 +53392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -53642,7 +53517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -53767,7 +53642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -53892,7 +53767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -54017,7 +53892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -54142,7 +54017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -54267,7 +54142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -54392,7 +54267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -54517,7 +54392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -54642,7 +54517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -54767,7 +54642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -54892,7 +54767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -55017,7 +54892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -55142,7 +55017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -55267,7 +55142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -55392,7 +55267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -55517,7 +55392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -55642,7 +55517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -55767,7 +55642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -55892,7 +55767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -56017,7 +55892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -56142,7 +56017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -56267,7 +56142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -56392,7 +56267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -56517,7 +56392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -56642,7 +56517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -56767,7 +56642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -56892,7 +56767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -57017,7 +56892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -57142,7 +57017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -57267,7 +57142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -57392,7 +57267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -57517,7 +57392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -57642,7 +57517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -57767,7 +57642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -57892,7 +57767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -58017,7 +57892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -58142,7 +58017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -58267,7 +58142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -58392,7 +58267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -58517,7 +58392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -58642,7 +58517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -58767,7 +58642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -58892,7 +58767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -59017,7 +58892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -59142,7 +59017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -59267,7 +59142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -59392,7 +59267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -59517,7 +59392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -59642,7 +59517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -59767,7 +59642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -59892,7 +59767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -60017,7 +59892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -60142,7 +60017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -60267,7 +60142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -60392,7 +60267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -60517,7 +60392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -60642,7 +60517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -60767,7 +60642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -60892,7 +60767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -61017,7 +60892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -61142,7 +61017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -61267,7 +61142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -61392,7 +61267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -61517,7 +61392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -61642,7 +61517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -61767,7 +61642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -61892,7 +61767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -62017,7 +61892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -62142,7 +62017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -62267,7 +62142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -62392,7 +62267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -62517,7 +62392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -62642,7 +62517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -62767,7 +62642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -62892,7 +62767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -63017,7 +62892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -63142,7 +63017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -63267,7 +63142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -63392,7 +63267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -63517,7 +63392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -63642,7 +63517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -63767,7 +63642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -63892,7 +63767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -64017,7 +63892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -64142,7 +64017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -64267,7 +64142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -64392,7 +64267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -64517,7 +64392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -64642,7 +64517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -64767,7 +64642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -64892,7 +64767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -65017,7 +64892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -65142,7 +65017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -65267,7 +65142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -65392,7 +65267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -65517,7 +65392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -65642,7 +65517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -65767,7 +65642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -65892,7 +65767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -66017,7 +65892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -66142,7 +66017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -66267,7 +66142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -66392,7 +66267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -66517,7 +66392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -66642,7 +66517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -66767,7 +66642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -66892,7 +66767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -67017,7 +66892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -67142,7 +67017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -67267,7 +67142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -67392,7 +67267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -67517,7 +67392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -67642,7 +67517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -67767,7 +67642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -67892,7 +67767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -68017,7 +67892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -68142,7 +68017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -68267,7 +68142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -68392,7 +68267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -68517,7 +68392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -68642,7 +68517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -68767,7 +68642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -68892,7 +68767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -69017,7 +68892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -69142,7 +69017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -69267,7 +69142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -69392,7 +69267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -69517,7 +69392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -69642,7 +69517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -69767,7 +69642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -69892,7 +69767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -70017,7 +69892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -70142,7 +70017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -70267,7 +70142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -70392,7 +70267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -70517,7 +70392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -70642,7 +70517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -70767,7 +70642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -70892,7 +70767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -71017,7 +70892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -71142,7 +71017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -71267,7 +71142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -71392,7 +71267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -71517,7 +71392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -71642,7 +71517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -71767,7 +71642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -71892,7 +71767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -72017,7 +71892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -72142,7 +72017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -72267,7 +72142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -72392,7 +72267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -72517,7 +72392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -72642,7 +72517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -72767,7 +72642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -72892,7 +72767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -73017,7 +72892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -73142,7 +73017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -73267,7 +73142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -73392,7 +73267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -73517,7 +73392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -73642,7 +73517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -73767,7 +73642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -73892,7 +73767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -74017,7 +73892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -74142,7 +74017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -74267,7 +74142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -74392,7 +74267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -74517,7 +74392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -74642,7 +74517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -74767,7 +74642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -74892,7 +74767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -75017,7 +74892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -75142,7 +75017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -75267,7 +75142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -75392,7 +75267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -75517,7 +75392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -75642,7 +75517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -75767,7 +75642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -75892,7 +75767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -76017,7 +75892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -76142,7 +76017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -76267,7 +76142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -76392,7 +76267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -76517,7 +76392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -76642,7 +76517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -76767,7 +76642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -76892,7 +76767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -77017,7 +76892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -77142,7 +77017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -77267,7 +77142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -77392,7 +77267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -77517,7 +77392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -77642,7 +77517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -77767,7 +77642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -77892,7 +77767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -78017,7 +77892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -78142,7 +78017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -78267,7 +78142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -78392,7 +78267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -78517,7 +78392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -78642,7 +78517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -78767,7 +78642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -78892,7 +78767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -79017,7 +78892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -79142,7 +79017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -79267,7 +79142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -79392,7 +79267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -79517,7 +79392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -79642,7 +79517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -79767,7 +79642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -79892,7 +79767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -80017,7 +79892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -80142,7 +80017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -80267,7 +80142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -80392,7 +80267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -80517,7 +80392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -80642,7 +80517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -80767,7 +80642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -80892,7 +80767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -81017,7 +80892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -81142,7 +81017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -81267,7 +81142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -81392,7 +81267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -81517,7 +81392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -81642,7 +81517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -81767,7 +81642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -81892,7 +81767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -82017,7 +81892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -82142,7 +82017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -82267,7 +82142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -82392,7 +82267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -82517,7 +82392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -82642,7 +82517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -82767,7 +82642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -82892,7 +82767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -83017,7 +82892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -83142,7 +83017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -83267,7 +83142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -83392,7 +83267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -83517,7 +83392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -83642,7 +83517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -83767,7 +83642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -83892,7 +83767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -84017,7 +83892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -84142,7 +84017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -84267,7 +84142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -84392,7 +84267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -84517,7 +84392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -84642,7 +84517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -84767,7 +84642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -84892,7 +84767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -85017,7 +84892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -85142,7 +85017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -85267,7 +85142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -85392,7 +85267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -85517,7 +85392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -85642,7 +85517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -85767,7 +85642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -85892,7 +85767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -86017,7 +85892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -86142,7 +86017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -86267,7 +86142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -86392,7 +86267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -86517,7 +86392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -86642,7 +86517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -86767,7 +86642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -86892,7 +86767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -87017,7 +86892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -87142,7 +87017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -87267,7 +87142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -87392,7 +87267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -87517,7 +87392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -87642,7 +87517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -87767,7 +87642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -87892,7 +87767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -88017,7 +87892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -88142,7 +88017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -88267,7 +88142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -88392,7 +88267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -88517,7 +88392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -88642,7 +88517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -88767,7 +88642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -88892,7 +88767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -89017,7 +88892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -89142,7 +89017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -89267,7 +89142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -89392,7 +89267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -89517,7 +89392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -89642,7 +89517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -89767,7 +89642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -89892,7 +89767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -90017,7 +89892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -90142,7 +90017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -90267,7 +90142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -90392,7 +90267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -90517,7 +90392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -90642,7 +90517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -90767,7 +90642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -90892,7 +90767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -91017,7 +90892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -91142,7 +91017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -91267,7 +91142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -91392,7 +91267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -91517,7 +91392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -91642,7 +91517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -91767,7 +91642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.0006149296200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -91892,7 +91767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006132116,
+        "trigger": 0.00061376944,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -92017,7 +91892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006132116,
+        "trigger": 0.00061376944,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -92142,7 +92017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006130516600000001,
+        "trigger": 0.0006132116,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -92267,7 +92142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006130516600000001,
+        "trigger": 0.0006132116,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -92392,7 +92267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006130516600000001,
+        "trigger": 0.0006132116,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -92517,7 +92392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061286928,
+        "trigger": 0.0006130516600000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -92642,7 +92517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061237324,
+        "trigger": 0.00061286928,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -92767,7 +92642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.000611973,
+        "trigger": 0.00061237324,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -92892,7 +92767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006112819800000001,
+        "trigger": 0.000611973,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -93017,7 +92892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061003666,
+        "trigger": 0.0006112819800000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -93142,7 +93017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060909886,
+        "trigger": 0.00061003666,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -93267,7 +93142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060896448,
+        "trigger": 0.00060909886,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -93392,7 +93267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060880658,
+        "trigger": 0.00060896448,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -93517,7 +93392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060867712,
+        "trigger": 0.00060880658,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -93642,7 +93517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060814218,
+        "trigger": 0.00060867712,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -93767,7 +93642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060760616,
+        "trigger": 0.00060814218,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -93892,7 +93767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006069341,
+        "trigger": 0.00060760616,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -94017,7 +93892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006063145,
+        "trigger": 0.0006069341,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -94142,7 +94017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006051888,
+        "trigger": 0.0006063145,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -94267,7 +94142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060492494,
+        "trigger": 0.0006051888,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -94392,7 +94267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006043361800000001,
+        "trigger": 0.00060492494,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -94517,7 +94392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006039748400000001,
+        "trigger": 0.0006043361800000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -94642,7 +94517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060368876,
+        "trigger": 0.0006039748400000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -94767,7 +94642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006027904399999999,
+        "trigger": 0.00060368876,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -94892,7 +94767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060228916,
+        "trigger": 0.0006027904399999999,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -95017,7 +94892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060145278,
+        "trigger": 0.00060228916,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -95142,7 +95017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006012817399999999,
+        "trigger": 0.00060145278,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -95267,7 +95142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006012817399999999,
+        "trigger": 0.00060145278,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -95392,7 +95267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006012817399999999,
+        "trigger": 0.00060145278,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -95517,7 +95392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060104516,
+        "trigger": 0.0006012817399999999,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -95642,7 +95517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.000600793,
+        "trigger": 0.00060104516,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -95767,7 +95642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060034314,
+        "trigger": 0.000600793,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -95892,7 +95767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059979976,
+        "trigger": 0.00060034314,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -96017,7 +95892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059979976,
+        "trigger": 0.00060034314,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -96142,7 +96017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059979976,
+        "trigger": 0.00060034314,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -96267,7 +96142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059979976,
+        "trigger": 0.00060034314,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -96392,7 +96267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059979976,
+        "trigger": 0.00060034314,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -96517,7 +96392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059979976,
+        "trigger": 0.00060034314,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -96642,7 +96517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059979976,
+        "trigger": 0.00060034314,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -96767,7 +96642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059979976,
+        "trigger": 0.00060034314,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -96892,7 +96767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059979976,
+        "trigger": 0.00060034314,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -97017,7 +96892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059979976,
+        "trigger": 0.00060034314,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -97142,7 +97017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059951724,
+        "trigger": 0.00059979976,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -97267,7 +97142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059951724,
+        "trigger": 0.00059979976,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -97392,7 +97267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059941904,
+        "trigger": 0.00059951724,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -97517,7 +97392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059914302,
+        "trigger": 0.00059941904,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -97642,7 +97517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059914302,
+        "trigger": 0.00059941904,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -97767,7 +97642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059914302,
+        "trigger": 0.00059941904,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -97892,7 +97767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059914302,
+        "trigger": 0.00059941904,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -98017,7 +97892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059900484,
+        "trigger": 0.00059914302,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -98142,7 +98017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059850314,
+        "trigger": 0.00059900484,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -98267,7 +98142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005983428200000001,
+        "trigger": 0.00059850314,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -98392,7 +98267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005979153000000001,
+        "trigger": 0.0005983428200000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -98517,7 +98392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059774986,
+        "trigger": 0.0005979153000000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -98642,7 +98517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059771174,
+        "trigger": 0.00059774986,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -98767,7 +98642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059747074,
+        "trigger": 0.00059771174,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -98892,7 +98767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005967069999999999,
+        "trigger": 0.00059747074,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -99017,7 +98892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005964049,
+        "trigger": 0.0005967069999999999,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -99142,7 +99017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005960112600000001,
+        "trigger": 0.0005964049,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -99267,7 +99142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059518128,
+        "trigger": 0.0005960112600000001,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -99392,7 +99267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -99517,7 +99392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -99642,7 +99517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -99767,7 +99642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -99892,7 +99767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -100017,7 +99892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -100142,7 +100017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -100267,7 +100142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -100392,7 +100267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -100517,7 +100392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -100642,7 +100517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -100767,7 +100642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -100892,7 +100767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -101017,7 +100892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -101142,7 +101017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -101267,7 +101142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -101392,7 +101267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -101517,7 +101392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -101642,7 +101517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -101767,7 +101642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -101892,7 +101767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -102017,7 +101892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -102142,7 +102017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -102267,7 +102142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -102392,7 +102267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -102517,7 +102392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -102642,7 +102517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -102767,7 +102642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -102892,7 +102767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -103017,7 +102892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -103142,7 +103017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -103267,7 +103142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -103392,7 +103267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -103517,7 +103392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -103642,7 +103517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -103767,7 +103642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -103892,7 +103767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -104017,7 +103892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -104142,7 +104017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -104267,7 +104142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -104392,7 +104267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -104517,7 +104392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -104642,7 +104517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -104767,7 +104642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -104892,7 +104767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -105017,7 +104892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -105142,7 +105017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -105267,7 +105142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -105392,7 +105267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -105517,7 +105392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -105642,7 +105517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -105767,7 +105642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -105892,7 +105767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -106017,7 +105892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -106142,7 +106017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -106267,7 +106142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
+        "trigger": 0.00059518128,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -106392,7 +106267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059369006,
+        "trigger": 0.00059442638,
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
@@ -106517,7 +106392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059301498,
+        "trigger": 0.00059369006,
         "deep": 0.00054715184
       },
       "sthSopr": {
@@ -106642,7 +106517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005928776600000001,
+        "trigger": 0.00059301498,
         "deep": 0.00054628818
       },
       "sthSopr": {
@@ -106767,7 +106642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005925189600000001,
+        "trigger": 0.0005928776600000001,
         "deep": 0.00054567443
       },
       "sthSopr": {
@@ -106892,7 +106767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059213954,
+        "trigger": 0.0005925189600000001,
         "deep": 0.00054528838
       },
       "sthSopr": {
@@ -107017,7 +106892,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059134876,
+        "trigger": 0.00059213954,
         "deep": 0.00054491101
       },
       "sthSopr": {
@@ -107142,7 +107017,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059113972,
+        "trigger": 0.00059134876,
         "deep": 0.00054470729
       },
       "sthSopr": {
@@ -107267,7 +107142,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059099064,
+        "trigger": 0.00059113972,
         "deep": 0.00054438239
       },
       "sthSopr": {
@@ -107392,7 +107267,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059093548,
+        "trigger": 0.00059099064,
         "deep": 0.00054406115
       },
       "sthSopr": {
@@ -107517,7 +107392,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059074748,
+        "trigger": 0.00059093548,
         "deep": 0.0005434863900000001
       },
       "sthSopr": {
@@ -107642,7 +107517,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005904677799999999,
+        "trigger": 0.00059074748,
         "deep": 0.00054274119
       },
       "sthSopr": {
@@ -107767,7 +107642,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059040132,
+        "trigger": 0.0005904677799999999,
         "deep": 0.0005426392900000001
       },
       "sthSopr": {
@@ -107892,7 +107767,7 @@
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005899636000000001,
+        "trigger": 0.00059017792,
         "deep": 0.0005422373100000001
       },
       "sthSopr": {
@@ -111077,17 +110952,17 @@
   {
     "d": "2026-07-10",
     "unixTs": 1783641600,
-    "btcPrice": 63763.86,
-    "ma200w": 62742.65678158269,
+    "btcPrice": 63189.3864307423,
+    "ma200w": 62711.41450415838,
     "realizedPrice": 52626.42,
-    "priceMa200wRatio": 1.0162760595550213,
-    "priceRealizedRatio": 1.2116321041788516,
-    "reserveRisk": 0.0005065853,
+    "priceMa200wRatio": 1.0076217691844955,
+    "priceRealizedRatio": 1.2007160363699887,
+    "reserveRisk": 0.0005135815,
     "lthMvrv": 1.28,
     "lthSopr": 0.695,
     "lthSoprMa3": 0.7052000000000196,
     "mvrvZscore": 0.3199,
-    "nupl": 0.168,
+    "nupl": 0.1804,
     "sthSopr": 1.0009,
     "sthSoprMa3": 0.9988333333333331,
     "sthMvrv": 0.92,
@@ -111137,8 +111012,8 @@
     "scoreLthMvrv": 0,
     "scoreLthSopr": 1,
     "scorePuell": 0,
-    "signalConfidenceV6": 0.3482,
-    "dataFreshnessScoreV6": 0.8750000000000002,
+    "signalConfidenceV6": 0.3348,
+    "dataFreshnessScoreV6": 0.830357142857143,
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
@@ -111184,13 +111059,138 @@
     },
     "staleIndicators": [],
     "indicatorDates": {
-      "priceMa200w": "2026-07-10",
+      "priceMa200w": "2026-07-09",
       "priceRealized": "2026-07-09",
-      "reserveRisk": "2026-07-09",
+      "reserveRisk": "2026-07-10",
       "lthMvrv": "2026-07-09",
       "lthSopr": "2026-07-09",
       "mvrvZscore": "2026-07-09",
-      "nupl": "2026-07-09",
+      "nupl": "2026-07-10",
+      "sthSopr": "2026-07-09",
+      "sthMvrv": "2026-07-09",
+      "puell": "2026-07-09"
+    },
+    "indicatorSet": "core8_bottom_independent_valuation_current",
+    "coreIndicatorSet": "core8_bottom_independent_valuation_current",
+    "scoringModelVersion": "core8_independent_valuation_current"
+  },
+  {
+    "d": "2026-07-11",
+    "unixTs": 1783728000,
+    "btcPrice": 64111.45,
+    "ma200w": 62742.905060154124,
+    "realizedPrice": 52626.42,
+    "priceMa200wRatio": 1.0218119473195224,
+    "priceRealizedRatio": 1.2182369615869748,
+    "reserveRisk": 0.0005135815,
+    "lthMvrv": 1.28,
+    "lthSopr": 0.695,
+    "lthSoprMa3": 0.695,
+    "mvrvZscore": 0.3199,
+    "nupl": 0.1804,
+    "sthSopr": 1.0009,
+    "sthSoprMa3": 1.0009,
+    "sthMvrv": 0.92,
+    "puellMultiple": 0.6525714286,
+    "signalPriceMa200w": false,
+    "signalPriceRealized": false,
+    "signalReserveRisk": true,
+    "signalReserveRiskV4": false,
+    "signalMvrvZscoreCore": false,
+    "signalNupl": false,
+    "signalNuplCore": false,
+    "signalValuationBlendV6": false,
+    "signalSthSopr": false,
+    "signalSthMvrv": false,
+    "signalSthGroup": false,
+    "signalLthMvrv": false,
+    "signalLthSopr": true,
+    "signalSthSoprTrigger": false,
+    "signalSthSoprAux": false,
+    "signalPuell": false,
+    "signalCount": 1,
+    "signalCountV4": 1,
+    "signalCountV6": 1,
+    "activeIndicatorCount": 5,
+    "activeIndicatorCountV4": 7,
+    "activeIndicatorCountV6": 8,
+    "signalScoreV2": 2,
+    "maxSignalScoreV2": 10,
+    "totalScoreV4": 1,
+    "maxTotalScoreV4": 14,
+    "totalScoreV4Min3d": 1.0,
+    "signalConfirmed3dV4": false,
+    "signalBandV4": "watch",
+    "valuationScoreV6": 0,
+    "triggerScoreV6": 0,
+    "confirmationScoreV6": 1,
+    "totalScoreV6": 1,
+    "maxTotalScoreV6": 14,
+    "totalScoreV6Min3d": 1.0,
+    "signalConfirmed3dV6": false,
+    "signalBandV6": "watch",
+    "scoreMvrvZscoreCore": 0,
+    "scoreNuplCore": 0,
+    "valuationBlendScoreV6": 0,
+    "scoreSthSopr": 0,
+    "scoreSthMvrv": 0,
+    "scoreLthMvrv": 0,
+    "scoreLthSopr": 1,
+    "scorePuell": 0,
+    "signalConfidenceV6": 0.3161,
+    "dataFreshnessScoreV6": 0.7678571428571429,
+    "fallbackModeV6": "none",
+    "thresholds": {
+      "reserveRisk": {
+        "trigger": 0.00058302154,
+        "deep": 0.0005308863299999999
+      },
+      "sthSopr": {
+        "trigger": 0.9949152833349997,
+        "deep": 0.9889243983923334
+      },
+      "sthMvrv": {
+        "trigger": 0.92,
+        "deep": 0.87
+      },
+      "lthSopr": {
+        "trigger": 0.8619351391933527,
+        "deep": 0.6589421331500193
+      },
+      "mvrvZscoreCore": {
+        "trigger": 0.0,
+        "deep": -0.5
+      },
+      "nuplCore": {
+        "trigger": 0.15,
+        "deep": 0.0
+      },
+      "nupl": {
+        "trigger": 0.15,
+        "deep": 0.0
+      }
+    },
+    "signalsV6": {
+      "priceMa200w": false,
+      "priceRealized": false,
+      "mvrvZscore": false,
+      "nupl": false,
+      "valuationBlend": false,
+      "sthMvrv": false,
+      "sthSoprTrigger": false,
+      "lthMvrv": false,
+      "lthSopr": true,
+      "puell": false
+    },
+    "staleIndicators": [],
+    "indicatorDates": {
+      "priceMa200w": "2026-07-11",
+      "priceRealized": "2026-07-09",
+      "reserveRisk": "2026-07-10",
+      "lthMvrv": "2026-07-09",
+      "lthSopr": "2026-07-09",
+      "mvrvZscore": "2026-07-09",
+      "nupl": "2026-07-10",
       "sthSopr": "2026-07-09",
       "sthMvrv": "2026-07-09",
       "puell": "2026-07-09"
