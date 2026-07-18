@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-18T03:27:40.899087+00:00",
+  "generatedAt": "2026-07-18T08:06:35.223107+00:00",
   "latestDate": "2026-07-18",
-  "lastUpdated": "2026-07-18T03:27:40.873913+00:00",
+  "lastUpdated": "2026-07-18T08:06:35.192643+00:00",
   "historyRows": 5527,
   "historyLightRows": 890,
   "historyFiles": {
@@ -166,7 +166,7 @@
     "btc_price": {
       "source": "https://charts.bgeometrics.com/files/moving_average_price.json + live (blockchain_info_stats)",
       "rows": 5527,
-      "nonNullRows": 5102,
+      "nonNullRows": 5103,
       "latestDate": "2026-07-18",
       "latestNonNullDate": "2026-07-18",
       "status": "healthy"
@@ -238,7 +238,7 @@
     "ma200w": {
       "source": "self_computed_from_btc_price",
       "rows": 5527,
-      "nonNullRows": 4738,
+      "nonNullRows": 4739,
       "latestDate": "2026-07-18",
       "latestNonNullDate": "2026-07-18",
       "status": "healthy"
@@ -383,11 +383,11 @@
     "formula": "enterpriseValueUsd / btcReserveUsd",
     "latestDate": "2026-07-18",
     "historyRows": 29,
-    "mnav": 1.0185,
+    "mnav": 1.0183,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
     "mstrTimestampUtc": "2026-07-17T20:00:00",
-    "btcTimestamp": "2026-07-18T03:27:00"
+    "btcTimestamp": "2026-07-18T08:06:00"
   }
 }
