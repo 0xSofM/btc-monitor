@@ -91,20 +91,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.992258713647,
-        "deep": 0.9810394981849998
+        "deep": 0.9809504844301667
       },
       "sthMvrv": {
         "trigger": 0.913,
-        "deep": 0.854965
+        "deep": 0.855
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -136,7 +136,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -197,
+    "reserveRiskPrimaryLagDays": -198,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -265,20 +265,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9922906191666666,
-        "deep": 0.9815679420169999
+        "deep": 0.9810394981849998
       },
       "sthMvrv": {
         "trigger": 0.913,
-        "deep": 0.854965
+        "deep": 0.855
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -310,7 +310,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -196,
+    "reserveRiskPrimaryLagDays": -197,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -439,7 +439,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -448,11 +448,11 @@
       },
       "sthMvrv": {
         "trigger": 0.913,
-        "deep": 0.854965
+        "deep": 0.855
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -484,7 +484,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -195,
+    "reserveRiskPrimaryLagDays": -196,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -613,7 +613,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -622,11 +622,11 @@
       },
       "sthMvrv": {
         "trigger": 0.913,
-        "deep": 0.854965
+        "deep": 0.855
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -658,7 +658,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -194,
+    "reserveRiskPrimaryLagDays": -195,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -787,7 +787,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -796,11 +796,11 @@
       },
       "sthMvrv": {
         "trigger": 0.91393,
-        "deep": 0.854965
+        "deep": 0.855
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -832,7 +832,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -193,
+    "reserveRiskPrimaryLagDays": -194,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -961,7 +961,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -973,8 +973,8 @@
         "deep": 0.855
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -1006,7 +1006,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -192,
+    "reserveRiskPrimaryLagDays": -193,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -1135,20 +1135,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.992465314419,
-        "deep": 0.9817902942223332
+        "deep": 0.9815679420169999
       },
       "sthMvrv": {
         "trigger": 0.914,
         "deep": 0.855965
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -1180,7 +1180,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -191,
+    "reserveRiskPrimaryLagDays": -192,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -1309,20 +1309,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9925373346069999,
-        "deep": 0.9819490339054999
+        "deep": 0.9817902942223332
       },
       "sthMvrv": {
         "trigger": 0.914,
         "deep": 0.856
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -1354,7 +1354,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -190,
+    "reserveRiskPrimaryLagDays": -191,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -1483,20 +1483,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9925454220953331,
-        "deep": 0.9820839642703334
+        "deep": 0.9819490339054999
       },
       "sthMvrv": {
         "trigger": 0.914,
         "deep": 0.856
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -1528,7 +1528,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -189,
+    "reserveRiskPrimaryLagDays": -190,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -1657,20 +1657,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.992560090313333,
-        "deep": 0.9821196793110002
+        "deep": 0.9820839642703334
       },
       "sthMvrv": {
         "trigger": 0.914,
         "deep": 0.856
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -1702,7 +1702,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -188,
+    "reserveRiskPrimaryLagDays": -189,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -1831,20 +1831,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9926688117796665,
-        "deep": 0.9821401987126668
+        "deep": 0.9821196793110002
       },
       "sthMvrv": {
         "trigger": 0.914,
         "deep": 0.856
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -1876,7 +1876,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -187,
+    "reserveRiskPrimaryLagDays": -188,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -2005,20 +2005,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9926898602399998,
-        "deep": 0.9821412495011667
+        "deep": 0.9821401987126668
       },
       "sthMvrv": {
         "trigger": 0.914,
         "deep": 0.856965
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -2050,7 +2050,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -186,
+    "reserveRiskPrimaryLagDays": -187,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -2179,20 +2179,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9927411551733333,
-        "deep": 0.9821489221734999
+        "deep": 0.9821412495011667
       },
       "sthMvrv": {
         "trigger": 0.914,
         "deep": 0.857965
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -2224,7 +2224,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -185,
+    "reserveRiskPrimaryLagDays": -186,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -2353,20 +2353,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.992815398944333,
-        "deep": 0.9821974062211667
+        "deep": 0.9821489221734999
       },
       "sthMvrv": {
         "trigger": 0.91493,
         "deep": 0.858
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -2398,7 +2398,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -184,
+    "reserveRiskPrimaryLagDays": -185,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -2527,7 +2527,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -2539,8 +2539,8 @@
         "deep": 0.858
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -2572,7 +2572,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -183,
+    "reserveRiskPrimaryLagDays": -184,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -2701,7 +2701,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -2713,8 +2713,8 @@
         "deep": 0.858965
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -2746,7 +2746,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -182,
+    "reserveRiskPrimaryLagDays": -183,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -2875,7 +2875,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -2887,8 +2887,8 @@
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -2920,7 +2920,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -181,
+    "reserveRiskPrimaryLagDays": -182,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -3049,20 +3049,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9929798180020001,
-        "deep": 0.9822162731613335
+        "deep": 0.9821974062211667
       },
       "sthMvrv": {
         "trigger": 0.91593,
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -3094,7 +3094,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -180,
+    "reserveRiskPrimaryLagDays": -181,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -3223,20 +3223,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.992994305790333,
-        "deep": 0.9822236798305
+        "deep": 0.9822162731613335
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -3268,7 +3268,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -179,
+    "reserveRiskPrimaryLagDays": -180,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -3397,20 +3397,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9930073639086665,
-        "deep": 0.9822271026011665
+        "deep": 0.9822236798305
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.859965
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -3442,7 +3442,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -178,
+    "reserveRiskPrimaryLagDays": -179,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -3571,20 +3571,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9930533948376664,
-        "deep": 0.9822714344091668
+        "deep": 0.9822271026011665
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.860965
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -3616,7 +3616,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -177,
+    "reserveRiskPrimaryLagDays": -178,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -3745,20 +3745,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9930533948376664,
-        "deep": 0.9823873736136666
+        "deep": 0.9822714344091668
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.861
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -3790,7 +3790,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -176,
+    "reserveRiskPrimaryLagDays": -177,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -3919,20 +3919,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9930533948376664,
-        "deep": 0.9825155349660001
+        "deep": 0.9823873736136666
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.861
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -3964,7 +3964,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -175,
+    "reserveRiskPrimaryLagDays": -176,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -4093,20 +4093,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9930533948376664,
-        "deep": 0.9825155349660001
+        "deep": 0.9823873736136666
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.861965
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -4138,7 +4138,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -174,
+    "reserveRiskPrimaryLagDays": -175,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -4267,20 +4267,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9930533948376664,
-        "deep": 0.9825155349660001
+        "deep": 0.9823873736136666
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.862965
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -4312,7 +4312,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -173,
+    "reserveRiskPrimaryLagDays": -174,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -4441,20 +4441,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9930533948376664,
-        "deep": 0.9825155349660001
+        "deep": 0.9823873736136666
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.863965
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -4486,7 +4486,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -172,
+    "reserveRiskPrimaryLagDays": -173,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -4615,20 +4615,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.993060227988333,
-        "deep": 0.9826373823683333
+        "deep": 0.9825155349660001
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.864
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -4660,7 +4660,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -171,
+    "reserveRiskPrimaryLagDays": -172,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -4789,20 +4789,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9932155837346665,
-        "deep": 0.9826950635078333
+        "deep": 0.9826373823683333
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.864
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -4834,7 +4834,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -170,
+    "reserveRiskPrimaryLagDays": -171,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -4963,20 +4963,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9932649870249998,
-        "deep": 0.9827108628781664
+        "deep": 0.9826950635078333
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.864965
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -5008,7 +5008,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -169,
+    "reserveRiskPrimaryLagDays": -170,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -5137,20 +5137,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9932896623366667,
-        "deep": 0.9828534770016667
+        "deep": 0.9827108628781664
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.865
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -5182,7 +5182,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -168,
+    "reserveRiskPrimaryLagDays": -169,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -5311,20 +5311,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9932896623366667,
-        "deep": 0.9828781201505
+        "deep": 0.9828534770016667
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.865
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -5356,7 +5356,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -167,
+    "reserveRiskPrimaryLagDays": -168,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -5485,20 +5485,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9932896623366667,
-        "deep": 0.9829122406396668
+        "deep": 0.9828781201505
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.865
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -5530,7 +5530,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -166,
+    "reserveRiskPrimaryLagDays": -167,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -5659,20 +5659,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9932896623366667,
-        "deep": 0.9831019352396666
+        "deep": 0.9829122406396668
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.865
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -5704,7 +5704,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -165,
+    "reserveRiskPrimaryLagDays": -166,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -5833,20 +5833,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9932896623366667,
-        "deep": 0.9832217738328335
+        "deep": 0.9831019352396666
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.865
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -5878,7 +5878,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -164,
+    "reserveRiskPrimaryLagDays": -165,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -6007,7 +6007,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -6019,8 +6019,8 @@
         "deep": 0.865
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -6052,7 +6052,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -163,
+    "reserveRiskPrimaryLagDays": -164,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -6181,20 +6181,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006241847000000001,
+        "trigger": 0.0006254086,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9932896623366667,
-        "deep": 0.9832217738328335
+        "deep": 0.9831019352396666
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.865
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -6226,7 +6226,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -162,
+    "reserveRiskPrimaryLagDays": -163,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -6355,20 +6355,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00062079764,
+        "trigger": 0.0006241847000000001,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9932896623366667,
-        "deep": 0.9832217738328335
+        "deep": 0.9831019352396666
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.865
       },
       "lthSopr": {
-        "trigger": 0.899796259226686,
-        "deep": 0.6281384441766861
+        "trigger": 0.9018873860533527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -6400,7 +6400,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -161,
+    "reserveRiskPrimaryLagDays": -162,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -6529,7 +6529,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006192250200000001,
+        "trigger": 0.00062079764,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -6541,8 +6541,8 @@
         "deep": 0.865
       },
       "lthSopr": {
-        "trigger": 0.8935012992933528,
-        "deep": 0.6281384441766861
+        "trigger": 0.899796259226686,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -6574,7 +6574,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -160,
+    "reserveRiskPrimaryLagDays": -161,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -6703,20 +6703,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061885386,
+        "trigger": 0.0006192250200000001,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932649870249998,
+        "trigger": 0.9932896623366667,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.864965
+        "deep": 0.865
       },
       "lthSopr": {
-        "trigger": 0.8935012992933528,
-        "deep": 0.6281384441766861
+        "trigger": 0.899796259226686,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -6748,7 +6748,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -159,
+    "reserveRiskPrimaryLagDays": -160,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -6877,20 +6877,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061786348,
+        "trigger": 0.00061885386,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932155837346665,
+        "trigger": 0.9932649870249998,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.864
+        "deep": 0.864965
       },
       "lthSopr": {
-        "trigger": 0.8935012992933528,
-        "deep": 0.6281384441766861
+        "trigger": 0.899796259226686,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -6922,7 +6922,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -158,
+    "reserveRiskPrimaryLagDays": -159,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -7051,11 +7051,11 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061735246,
+        "trigger": 0.00061786348,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.993060227988333,
+        "trigger": 0.9932155837346665,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
@@ -7063,8 +7063,8 @@
         "deep": 0.864
       },
       "lthSopr": {
-        "trigger": 0.8935012992933528,
-        "deep": 0.6281384441766861
+        "trigger": 0.899796259226686,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -7096,7 +7096,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -157,
+    "reserveRiskPrimaryLagDays": -158,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -7225,20 +7225,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061647988,
+        "trigger": 0.00061735246,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9930533948376664,
+        "trigger": 0.993060227988333,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.863965
+        "deep": 0.864
       },
       "lthSopr": {
-        "trigger": 0.8935012992933528,
-        "deep": 0.6281384441766861
+        "trigger": 0.899796259226686,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -7270,7 +7270,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -156,
+    "reserveRiskPrimaryLagDays": -157,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -7399,20 +7399,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061622972,
+        "trigger": 0.00061647988,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9930073639086665,
+        "trigger": 0.9930533948376664,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.862965
+        "deep": 0.863965
       },
       "lthSopr": {
-        "trigger": 0.8926583226733528,
-        "deep": 0.6281384441766861
+        "trigger": 0.8935012992933528,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -7444,7 +7444,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -155,
+    "reserveRiskPrimaryLagDays": -156,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -7573,20 +7573,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061558956,
+        "trigger": 0.00061622972,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.992994305790333,
+        "trigger": 0.9930073639086665,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.861965
+        "deep": 0.862965
       },
       "lthSopr": {
-        "trigger": 0.8918636421333526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8926583226733528,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -7618,7 +7618,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -154,
+    "reserveRiskPrimaryLagDays": -155,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -7747,20 +7747,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061508084,
+        "trigger": 0.00061558956,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9929798180020001,
+        "trigger": 0.992994305790333,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.861
+        "deep": 0.861965
       },
       "lthSopr": {
-        "trigger": 0.8907601346866861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8918636421333526,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -7792,7 +7792,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -153,
+    "reserveRiskPrimaryLagDays": -154,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -7921,7 +7921,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061450498,
+        "trigger": 0.00061508084,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -7930,11 +7930,11 @@
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.860965
+        "deep": 0.861
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -7966,7 +7966,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -152,
+    "reserveRiskPrimaryLagDays": -153,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -8095,20 +8095,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
+        "trigger": 0.00061450498,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9929798180020001,
+        "trigger": 0.992994305790333,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.859965
+        "deep": 0.860965
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -8140,7 +8140,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -151,
+    "reserveRiskPrimaryLagDays": -152,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -8269,20 +8269,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006132116,
+        "trigger": 0.00061376944,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9929798180020001,
+        "trigger": 0.992994305790333,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.859
+        "deep": 0.859965
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -8314,7 +8314,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -150,
+    "reserveRiskPrimaryLagDays": -151,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -8443,11 +8443,11 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006130516600000001,
+        "trigger": 0.0006132116,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9929232690173331,
+        "trigger": 0.9929798180020001,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
@@ -8455,8 +8455,8 @@
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -8488,7 +8488,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -149,
+    "reserveRiskPrimaryLagDays": -150,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -8617,11 +8617,11 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061286928,
+        "trigger": 0.0006130516600000001,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9929104728483332,
+        "trigger": 0.9929232690173331,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
@@ -8629,8 +8629,8 @@
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -8662,7 +8662,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -148,
+    "reserveRiskPrimaryLagDays": -149,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -8791,11 +8791,11 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061237324,
+        "trigger": 0.00061286928,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9928408302139997,
+        "trigger": 0.9929104728483332,
         "deep": 0.9829122406396668
       },
       "sthMvrv": {
@@ -8803,8 +8803,8 @@
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -8836,7 +8836,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -147,
+    "reserveRiskPrimaryLagDays": -148,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -8965,7 +8965,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.000611973,
+        "trigger": 0.00061237324,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -8977,8 +8977,8 @@
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -9010,7 +9010,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -146,
+    "reserveRiskPrimaryLagDays": -147,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -9139,7 +9139,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006112819800000001,
+        "trigger": 0.000611973,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -9151,8 +9151,8 @@
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -9184,7 +9184,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -145,
+    "reserveRiskPrimaryLagDays": -146,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -9313,20 +9313,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061003666,
+        "trigger": 0.0006112819800000001,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9929104728483332,
-        "deep": 0.9831019352396666
+        "deep": 0.9829122406396668
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -9358,7 +9358,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -144,
+    "reserveRiskPrimaryLagDays": -145,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -9487,20 +9487,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060909886,
+        "trigger": 0.00061003666,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9929104728483332,
-        "deep": 0.9832217738328335
+        "deep": 0.9831019352396666
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -9532,7 +9532,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -143,
+    "reserveRiskPrimaryLagDays": -144,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -9661,20 +9661,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060896448,
+        "trigger": 0.00060909886,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9929104728483332,
-        "deep": 0.9833188674866664
+        "deep": 0.9832217738328335
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -9706,7 +9706,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -142,
+    "reserveRiskPrimaryLagDays": -143,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -9835,20 +9835,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060880658,
+        "trigger": 0.00060896448,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9929104728483332,
-        "deep": 0.983362150129
+        "deep": 0.9833188674866664
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -9880,7 +9880,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -141,
+    "reserveRiskPrimaryLagDays": -142,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -10009,20 +10009,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060867712,
+        "trigger": 0.00060880658,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9929104728483332,
-        "deep": 0.9834608636825001
+        "deep": 0.983362150129
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -10054,7 +10054,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -140,
+    "reserveRiskPrimaryLagDays": -141,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -10183,20 +10183,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060814218,
+        "trigger": 0.00060867712,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9929232690173331,
-        "deep": 0.9835104867503333
+        "deep": 0.9834608636825
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8895321983933526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8907601346866861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -10228,7 +10228,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -139,
+    "reserveRiskPrimaryLagDays": -140,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -10357,20 +10357,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060760616,
+        "trigger": 0.00060814218,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9929798180020001,
-        "deep": 0.9838154558805001
+        "deep": 0.9835104867503333
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.888539833106686,
-        "deep": 0.6281384441766861
+        "trigger": 0.8895321983933526,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -10402,7 +10402,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -138,
+    "reserveRiskPrimaryLagDays": -139,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -10531,20 +10531,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006069341,
+        "trigger": 0.00060760616,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.992994305790333,
-        "deep": 0.9839755583213333
+        "deep": 0.9838154558805001
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.858965
+        "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8871287959733529,
-        "deep": 0.6281384441766861
+        "trigger": 0.888539833106686,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -10576,7 +10576,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -137,
+    "reserveRiskPrimaryLagDays": -138,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -10705,7 +10705,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006063145,
+        "trigger": 0.0006069341,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -10714,11 +10714,11 @@
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.858
+        "deep": 0.858965
       },
       "lthSopr": {
-        "trigger": 0.8852500126200195,
-        "deep": 0.6281384441766861
+        "trigger": 0.8871287959733529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -10750,7 +10750,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -136,
+    "reserveRiskPrimaryLagDays": -137,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -10879,11 +10879,11 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006051888,
+        "trigger": 0.0006063145,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9930073639086665,
+        "trigger": 0.9930533948376664,
         "deep": 0.9839755583213333
       },
       "sthMvrv": {
@@ -10891,8 +10891,8 @@
         "deep": 0.858
       },
       "lthSopr": {
-        "trigger": 0.883790672926686,
-        "deep": 0.6281384441766861
+        "trigger": 0.8852500126200195,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -10924,7 +10924,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -135,
+    "reserveRiskPrimaryLagDays": -136,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -11053,11 +11053,11 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006051888,
+        "trigger": 0.0006063145,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9930073639086665,
+        "trigger": 0.9930533948376664,
         "deep": 0.9839755583213333
       },
       "sthMvrv": {
@@ -11065,8 +11065,8 @@
         "deep": 0.858
       },
       "lthSopr": {
-        "trigger": 0.883790672926686,
-        "deep": 0.6281384441766861
+        "trigger": 0.8852500126200195,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -11098,7 +11098,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -134,
+    "reserveRiskPrimaryLagDays": -135,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -11227,11 +11227,11 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006051888,
+        "trigger": 0.0006063145,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9930073639086665,
+        "trigger": 0.9930533948376664,
         "deep": 0.9839755583213333
       },
       "sthMvrv": {
@@ -11239,8 +11239,8 @@
         "deep": 0.858
       },
       "lthSopr": {
-        "trigger": 0.883790672926686,
-        "deep": 0.6281384441766861
+        "trigger": 0.8852500126200195,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -11272,7 +11272,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -133,
+    "reserveRiskPrimaryLagDays": -134,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -11401,11 +11401,11 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060492494,
+        "trigger": 0.0006051888,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9930073639086665,
+        "trigger": 0.9930533948376664,
         "deep": 0.9839755583213333
       },
       "sthMvrv": {
@@ -11413,8 +11413,8 @@
         "deep": 0.858
       },
       "lthSopr": {
-        "trigger": 0.8829086518600195,
-        "deep": 0.6281384441766861
+        "trigger": 0.8839669919666859,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -11446,7 +11446,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -132,
+    "reserveRiskPrimaryLagDays": -133,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -11575,20 +11575,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006043361800000001,
+        "trigger": 0.00060492494,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9930533948376664,
-        "deep": 0.984008967829
+        "deep": 0.9839755583213333
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.858
       },
       "lthSopr": {
-        "trigger": 0.8817160663533529,
-        "deep": 0.6281384441766861
+        "trigger": 0.8829086518600195,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -11620,7 +11620,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -131,
+    "reserveRiskPrimaryLagDays": -132,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -11749,20 +11749,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006039748400000001,
+        "trigger": 0.0006043361800000001,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9930533948376664,
-        "deep": 0.9841550918665001
+        "deep": 0.984008967829
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.857965
+        "deep": 0.858
       },
       "lthSopr": {
-        "trigger": 0.8817160663533529,
-        "deep": 0.6281384441766861
+        "trigger": 0.8829086518600195,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -11794,7 +11794,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -130,
+    "reserveRiskPrimaryLagDays": -131,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -11923,20 +11923,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060368876,
+        "trigger": 0.0006039748400000001,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.993060227988333,
-        "deep": 0.9841701381010001
+        "deep": 0.9841550918665001
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.857965
       },
       "lthSopr": {
-        "trigger": 0.8817160663533529,
-        "deep": 0.6281384441766861
+        "trigger": 0.8829086518600195,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -11968,7 +11968,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -129,
+    "reserveRiskPrimaryLagDays": -130,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -12025,7 +12025,7 @@
     "puellMultiple": 0.691,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
-    "signalReserveRisk": false,
+    "signalReserveRisk": true,
     "signalSthSopr": false,
     "signalSthMvrv": true,
     "signalSthGroup": true,
@@ -12039,7 +12039,7 @@
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
     "signalPuell": false,
-    "signalCount": 1,
+    "signalCount": 2,
     "activeIndicatorCount": 5,
     "signalCountV4": 2,
     "activeIndicatorCountV4": 7,
@@ -12047,9 +12047,9 @@
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
-    "scoreReserveRisk": 0,
+    "scoreReserveRisk": 1,
     "scoreReserveRiskV4": 0,
-    "scoreReserveRiskPrimary": 0,
+    "scoreReserveRiskPrimary": 1,
     "scoreReserveRiskReplacement": 0,
     "scoreLthMvrv": 0,
     "scoreLthSopr": 1,
@@ -12062,9 +12062,9 @@
     "scoreSthMvrv": 2,
     "scoreSthGroup": 2,
     "scorePuell": 0,
-    "signalScoreV2": 2,
+    "signalScoreV2": 3,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 2.0,
+    "signalScoreV2Min3d": 3.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
     "valuationScore": 0,
@@ -12097,20 +12097,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006027904399999999,
+        "trigger": 0.00060368876,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9932155837346665,
-        "deep": 0.9841961359105001
+        "deep": 0.9841701381010001
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.857965
       },
       "lthSopr": {
-        "trigger": 0.8817160663533529,
-        "deep": 0.6281384441766861
+        "trigger": 0.8829086518600195,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -12142,7 +12142,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -128,
+    "reserveRiskPrimaryLagDays": -129,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -12271,7 +12271,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006027904399999999,
+        "trigger": 0.00060302844,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -12283,8 +12283,8 @@
         "deep": 0.857965
       },
       "lthSopr": {
-        "trigger": 0.8795590542733528,
-        "deep": 0.6281384441766861
+        "trigger": 0.8817160663533529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -12316,7 +12316,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -127,
+    "reserveRiskPrimaryLagDays": -128,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -12445,7 +12445,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006027904399999999,
+        "trigger": 0.00060302844,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -12457,8 +12457,8 @@
         "deep": 0.857965
       },
       "lthSopr": {
-        "trigger": 0.8782989108133529,
-        "deep": 0.6281384441766861
+        "trigger": 0.8795590542733528,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -12490,7 +12490,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -126,
+    "reserveRiskPrimaryLagDays": -127,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -12619,7 +12619,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006027904399999999,
+        "trigger": 0.00060302844,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
@@ -12631,8 +12631,8 @@
         "deep": 0.857965
       },
       "lthSopr": {
-        "trigger": 0.8762711262533526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8782989108133529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -12664,7 +12664,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -125,
+    "reserveRiskPrimaryLagDays": -126,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -12793,20 +12793,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006027904399999999,
+        "trigger": 0.00060302844,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9933063417656668,
-        "deep": 0.9843013765801669
+        "deep": 0.9841961359105001
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.857965
       },
       "lthSopr": {
-        "trigger": 0.8762711262533526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8782989108133529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -12838,7 +12838,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -124,
+    "reserveRiskPrimaryLagDays": -125,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -12967,20 +12967,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006027904399999999,
+        "trigger": 0.00060302844,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9933931559499999,
-        "deep": 0.9843767093413333
+        "deep": 0.9843013765801669
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.856965
+        "deep": 0.857965
       },
       "lthSopr": {
-        "trigger": 0.8762711262533526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8782989108133529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -13012,7 +13012,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -123,
+    "reserveRiskPrimaryLagDays": -124,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -13141,20 +13141,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006027904399999999,
+        "trigger": 0.00060302844,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9934207526226666,
-        "deep": 0.9844017889321667
+        "deep": 0.9843767093413333
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.856965
+        "deep": 0.857965
       },
       "lthSopr": {
-        "trigger": 0.8762711262533526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8782989108133529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -13186,7 +13186,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -122,
+    "reserveRiskPrimaryLagDays": -123,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -13315,20 +13315,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006027904399999999,
+        "trigger": 0.00060302844,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9934439076566666,
-        "deep": 0.9846041072413333
+        "deep": 0.9844017889321667
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.856965
+        "deep": 0.857965
       },
       "lthSopr": {
-        "trigger": 0.8762711262533526,
-        "deep": 0.6281384441766861
+        "trigger": 0.8782989108133529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -13360,7 +13360,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -121,
+    "reserveRiskPrimaryLagDays": -122,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -13489,20 +13489,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006027904399999999,
+        "trigger": 0.00060302844,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
         "trigger": 0.9934890366890001,
-        "deep": 0.9846998463676666
+        "deep": 0.9846041072413333
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.856
+        "deep": 0.856965
       },
       "lthSopr": {
-        "trigger": 0.8737324110400193,
-        "deep": 0.6281384441766861
+        "trigger": 0.8762711262533526,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -13534,7 +13534,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -120,
+    "reserveRiskPrimaryLagDays": -121,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -13591,7 +13591,7 @@
     "puellMultiple": 0.6612857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
-    "signalReserveRisk": false,
+    "signalReserveRisk": true,
     "signalSthSopr": false,
     "signalSthMvrv": true,
     "signalSthGroup": true,
@@ -13605,7 +13605,7 @@
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
     "signalPuell": false,
-    "signalCount": 1,
+    "signalCount": 2,
     "activeIndicatorCount": 5,
     "signalCountV4": 2,
     "activeIndicatorCountV4": 7,
@@ -13613,9 +13613,9 @@
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
-    "scoreReserveRisk": 0,
+    "scoreReserveRisk": 1,
     "scoreReserveRiskV4": 0,
-    "scoreReserveRiskPrimary": 0,
+    "scoreReserveRiskPrimary": 1,
     "scoreReserveRiskReplacement": 0,
     "scoreLthMvrv": 0,
     "scoreLthSopr": 1,
@@ -13628,7 +13628,7 @@
     "scoreSthMvrv": 2,
     "scoreSthGroup": 2,
     "scorePuell": 0,
-    "signalScoreV2": 2,
+    "signalScoreV2": 3,
     "maxSignalScoreV2": 10,
     "signalScoreV2Min3d": 2.0,
     "signalConfirmed3d": false,
@@ -13663,20 +13663,20 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060228916,
+        "trigger": 0.0006025890000000001,
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9934890366890001,
-        "deep": 0.9846998463676666
+        "trigger": 0.993530588056333,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.856
       },
       "lthSopr": {
-        "trigger": 0.8684138063333529,
-        "deep": 0.6281384441766861
+        "trigger": 0.8737324110400193,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -13708,7 +13708,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -119,
+    "reserveRiskPrimaryLagDays": -120,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -13804,7 +13804,7 @@
     "scorePuell": 0,
     "signalScoreV2": 3,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 2.0,
+    "signalScoreV2Min3d": 3.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
     "valuationScore": 0,
@@ -13841,16 +13841,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9934890366890001,
-        "deep": 0.9846998463676666
+        "trigger": 0.993530588056333,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.856
       },
       "lthSopr": {
-        "trigger": 0.8666713300200196,
-        "deep": 0.6281384441766861
+        "trigger": 0.8684138063333529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -13882,7 +13882,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -118,
+    "reserveRiskPrimaryLagDays": -119,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -13978,7 +13978,7 @@
     "scorePuell": 0,
     "signalScoreV2": 3,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 2.0,
+    "signalScoreV2Min3d": 3.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
     "valuationScore": 0,
@@ -14015,16 +14015,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9934890366890001,
-        "deep": 0.9846998463676666
+        "trigger": 0.993530588056333,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.916,
         "deep": 0.856
       },
       "lthSopr": {
-        "trigger": 0.8666713300200196,
-        "deep": 0.6281384441766861
+        "trigger": 0.8684138063333529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -14056,7 +14056,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -117,
+    "reserveRiskPrimaryLagDays": -118,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -14189,16 +14189,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9934890366890001,
-        "deep": 0.9846998463676666
+        "trigger": 0.993530588056333,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.855965
+        "deep": 0.856
       },
       "lthSopr": {
-        "trigger": 0.8666713300200196,
-        "deep": 0.6281384441766861
+        "trigger": 0.8684138063333529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -14230,7 +14230,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -116,
+    "reserveRiskPrimaryLagDays": -117,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -14363,16 +14363,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9934890366890001,
-        "deep": 0.9846998463676666
+        "trigger": 0.993530588056333,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.855
+        "deep": 0.855965
       },
       "lthSopr": {
-        "trigger": 0.8666713300200196,
-        "deep": 0.6281384441766861
+        "trigger": 0.8684138063333529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -14404,7 +14404,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -115,
+    "reserveRiskPrimaryLagDays": -116,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -14537,16 +14537,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9934439076566666,
-        "deep": 0.9846998463676666
+        "trigger": 0.9934890366890001,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.854965
+        "deep": 0.855
       },
       "lthSopr": {
-        "trigger": 0.8666713300200196,
-        "deep": 0.6281384441766861
+        "trigger": 0.8684138063333529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -14578,7 +14578,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -114,
+    "reserveRiskPrimaryLagDays": -115,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -14711,16 +14711,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9934207526226666,
-        "deep": 0.9846998463676666
+        "trigger": 0.9934439076566666,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.85393
+        "deep": 0.854965
       },
       "lthSopr": {
-        "trigger": 0.8666713300200196,
-        "deep": 0.6281384441766861
+        "trigger": 0.8684138063333529,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -14752,7 +14752,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -113,
+    "reserveRiskPrimaryLagDays": -114,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -14885,16 +14885,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9933931559499999,
-        "deep": 0.9846998463676666
+        "trigger": 0.9934207526226666,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.852
+        "deep": 0.85393
       },
       "lthSopr": {
-        "trigger": 0.8619351391933527,
-        "deep": 0.6281384441766861
+        "trigger": 0.8666713300200196,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -14926,7 +14926,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -112,
+    "reserveRiskPrimaryLagDays": -113,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -15059,16 +15059,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9933063417656668,
-        "deep": 0.9846998463676666
+        "trigger": 0.9933931559499999,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.916,
-        "deep": 0.85193
+        "deep": 0.852
       },
       "lthSopr": {
-        "trigger": 0.861113763646686,
-        "deep": 0.6281384441766861
+        "trigger": 0.8619351391933527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -15100,7 +15100,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -111,
+    "reserveRiskPrimaryLagDays": -112,
     "reserveRiskReplacementLagDays": 1,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -15233,16 +15233,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932903703306667,
-        "deep": 0.9846998463676666
+        "trigger": 0.9933063417656668,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
-        "trigger": 0.91593,
-        "deep": 0.85
+        "trigger": 0.916,
+        "deep": 0.85193
       },
       "lthSopr": {
-        "trigger": 0.859983483553353,
-        "deep": 0.6281384441766861
+        "trigger": 0.861113763646686,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -15274,7 +15274,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -110,
+    "reserveRiskPrimaryLagDays": -111,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -15407,16 +15407,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
-        "trigger": 0.915,
+        "trigger": 0.91593,
         "deep": 0.85
       },
       "lthSopr": {
-        "trigger": 0.8577517847466861,
-        "deep": 0.6281384441766861
+        "trigger": 0.859983483553353,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -15448,7 +15448,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -109,
+    "reserveRiskPrimaryLagDays": -110,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -15581,16 +15581,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.915,
         "deep": 0.85
       },
       "lthSopr": {
-        "trigger": 0.8543669367933527,
-        "deep": 0.6281384441766861
+        "trigger": 0.8577517847466861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -15622,7 +15622,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -108,
+    "reserveRiskPrimaryLagDays": -109,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -15755,16 +15755,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.915,
         "deep": 0.85
       },
       "lthSopr": {
-        "trigger": 0.8534174728533528,
-        "deep": 0.6281384441766861
+        "trigger": 0.8543669367933527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -15796,7 +15796,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -107,
+    "reserveRiskPrimaryLagDays": -108,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -15929,16 +15929,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
-        "trigger": 0.91493,
-        "deep": 0.849895
+        "trigger": 0.915,
+        "deep": 0.85
       },
       "lthSopr": {
-        "trigger": 0.8533497410666859,
-        "deep": 0.6281384441766861
+        "trigger": 0.8534174728533528,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -15970,7 +15970,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -106,
+    "reserveRiskPrimaryLagDays": -107,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -16103,16 +16103,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
-        "trigger": 0.914,
-        "deep": 0.847
+        "trigger": 0.91493,
+        "deep": 0.849895
       },
       "lthSopr": {
-        "trigger": 0.8533497410666859,
-        "deep": 0.6281384441766861
+        "trigger": 0.8534174728533528,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -16144,7 +16144,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -105,
+    "reserveRiskPrimaryLagDays": -106,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -16277,16 +16277,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.846965
+        "deep": 0.847
       },
       "lthSopr": {
-        "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "trigger": 0.8533497410666859,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -16318,7 +16318,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -104,
+    "reserveRiskPrimaryLagDays": -105,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -16451,16 +16451,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.846
+        "deep": 0.846965
       },
       "lthSopr": {
-        "trigger": 0.8500126166266861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8525935660933527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -16492,7 +16492,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -103,
+    "reserveRiskPrimaryLagDays": -104,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -16625,16 +16625,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
         "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8500126166266861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8525935660933527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -16666,7 +16666,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -102,
+    "reserveRiskPrimaryLagDays": -103,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -16799,16 +16799,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8500126166266861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8525935660933527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -16840,7 +16840,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -101,
+    "reserveRiskPrimaryLagDays": -102,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -16973,16 +16973,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8500126166266861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8525935660933527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -17014,7 +17014,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -100,
+    "reserveRiskPrimaryLagDays": -101,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -17147,16 +17147,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8500126166266861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -17188,7 +17188,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -99,
+    "reserveRiskPrimaryLagDays": -100,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -17321,16 +17321,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
-        "trigger": 0.91393,
-        "deep": 0.845965
+        "trigger": 0.914,
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8500126166266861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -17362,7 +17362,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -98,
+    "reserveRiskPrimaryLagDays": -99,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -17495,16 +17495,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.91393,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8500126166266861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -17536,7 +17536,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -97,
+    "reserveRiskPrimaryLagDays": -98,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -17669,16 +17669,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.91393,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8500126166266861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -17710,7 +17710,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -96,
+    "reserveRiskPrimaryLagDays": -97,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -17843,16 +17843,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9932772330726664,
-        "deep": 0.9846998463676666
+        "trigger": 0.9932903703306667,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.91393,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8500126166266861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -17884,7 +17884,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -95,
+    "reserveRiskPrimaryLagDays": -96,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -18018,15 +18018,15 @@
       },
       "sthSopr": {
         "trigger": 0.9932903703306667,
-        "deep": 0.9846998463676666
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8500126166266861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -18058,7 +18058,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -94,
+    "reserveRiskPrimaryLagDays": -95,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -18192,15 +18192,15 @@
       },
       "sthSopr": {
         "trigger": 0.9933063417656668,
-        "deep": 0.9846998463676666
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8500126166266861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -18232,7 +18232,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -93,
+    "reserveRiskPrimaryLagDays": -94,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -18299,15 +18299,15 @@
     "signalNuplCore": false,
     "signalValuationBlendV6": false,
     "signalLthMvrv": false,
-    "signalLthSopr": false,
+    "signalLthSopr": true,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
     "signalPuell": false,
     "signalCount": 0,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 7,
-    "signalCountV6": 0,
+    "signalCountV6": 1,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -18316,7 +18316,7 @@
     "scoreReserveRiskPrimary": 0,
     "scoreReserveRiskReplacement": 0,
     "scoreLthMvrv": 0,
-    "scoreLthSopr": 0,
+    "scoreLthSopr": 1,
     "scoreMvrvZscore": 0,
     "scoreMvrvZscoreCore": 0,
     "scoreNupl": 0,
@@ -18335,11 +18335,11 @@
     "maxValuationScore": 8,
     "triggerScore": 0,
     "maxTriggerScore": 2,
-    "confirmationScore": 0,
+    "confirmationScore": 1,
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 0,
+    "totalScoreV4": 1,
     "maxTotalScoreV4": 14,
     "totalScoreV4Min3d": 0.0,
     "signalConfirmed3dV4": false,
@@ -18348,15 +18348,15 @@
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
-    "confirmationScoreV6": 0,
+    "confirmationScoreV6": 1,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 0,
+    "totalScoreV6": 1,
     "maxTotalScoreV6": 14,
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.3,
-    "signalConfidenceV6": 0.3,
+    "signalConfidence": 0.3857,
+    "signalConfidenceV6": 0.3857,
     "dataFreshnessScore": 1.0,
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
@@ -18366,15 +18366,15 @@
       },
       "sthSopr": {
         "trigger": 0.9933931559499999,
-        "deep": 0.9846998463676666
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8500126166266861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -18398,7 +18398,7 @@
       "sthMvrv": false,
       "sthSoprTrigger": false,
       "lthMvrv": false,
-      "lthSopr": false,
+      "lthSopr": true,
       "puell": false
     },
     "reserveRiskActive": true,
@@ -18406,7 +18406,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -92,
+    "reserveRiskPrimaryLagDays": -93,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -18539,16 +18539,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9933931559499999,
-        "deep": 0.9846998463676666
+        "trigger": 0.9934207526226666,
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -18580,7 +18580,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -91,
+    "reserveRiskPrimaryLagDays": -92,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -18714,15 +18714,15 @@
       },
       "sthSopr": {
         "trigger": 0.9934207526226666,
-        "deep": 0.9846998463676666
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -18754,7 +18754,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -90,
+    "reserveRiskPrimaryLagDays": -91,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -18888,15 +18888,15 @@
       },
       "sthSopr": {
         "trigger": 0.9934439076566666,
-        "deep": 0.9847067353358331
+        "deep": 0.9847035280034997
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -18928,7 +18928,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -89,
+    "reserveRiskPrimaryLagDays": -90,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -19066,11 +19066,11 @@
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -19102,7 +19102,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -88,
+    "reserveRiskPrimaryLagDays": -89,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -19236,15 +19236,15 @@
       },
       "sthSopr": {
         "trigger": 0.993530588056333,
-        "deep": 0.9847573676383333
+        "deep": 0.9850080058255
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -19276,7 +19276,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -87,
+    "reserveRiskPrimaryLagDays": -88,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -19409,16 +19409,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.993530588056333,
-        "deep": 0.9847573676383333
+        "trigger": 0.9935793043049997,
+        "deep": 0.9850080058255
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -19450,7 +19450,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -86,
+    "reserveRiskPrimaryLagDays": -87,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -19583,16 +19583,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.993530588056333,
-        "deep": 0.9847573676383333
+        "trigger": 0.9935793043049997,
+        "deep": 0.9850080058255
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -19624,7 +19624,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -85,
+    "reserveRiskPrimaryLagDays": -86,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -19757,16 +19757,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.993530588056333,
-        "deep": 0.9847573676383333
+        "trigger": 0.9935793043049997,
+        "deep": 0.9850080058255
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -19798,7 +19798,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -84,
+    "reserveRiskPrimaryLagDays": -85,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -19932,15 +19932,15 @@
       },
       "sthSopr": {
         "trigger": 0.9935793043049997,
-        "deep": 0.9847573676383333
+        "deep": 0.9850080058255
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -19972,7 +19972,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -83,
+    "reserveRiskPrimaryLagDays": -84,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -20110,11 +20110,11 @@
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -20146,7 +20146,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -82,
+    "reserveRiskPrimaryLagDays": -83,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -20284,11 +20284,11 @@
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -20320,7 +20320,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -81,
+    "reserveRiskPrimaryLagDays": -82,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -20458,11 +20458,11 @@
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -20494,7 +20494,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -80,
+    "reserveRiskPrimaryLagDays": -81,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -20628,15 +20628,15 @@
       },
       "sthSopr": {
         "trigger": 0.9936125659890002,
-        "deep": 0.9851010455956665
+        "deep": 0.9851409665073331
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -20668,7 +20668,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -79,
+    "reserveRiskPrimaryLagDays": -80,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -20802,15 +20802,15 @@
       },
       "sthSopr": {
         "trigger": 0.9936165341866664,
-        "deep": 0.9851010455956665
+        "deep": 0.9851409665073331
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "trigger": 0.8489759056666862,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -20842,7 +20842,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -78,
+    "reserveRiskPrimaryLagDays": -79,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -20976,15 +20976,15 @@
       },
       "sthSopr": {
         "trigger": 0.9936435930469997,
-        "deep": 0.9851010455956665
+        "deep": 0.9851409665073331
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -21016,7 +21016,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -77,
+    "reserveRiskPrimaryLagDays": -78,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -21154,11 +21154,11 @@
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -21190,7 +21190,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -76,
+    "reserveRiskPrimaryLagDays": -77,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -21328,11 +21328,11 @@
       },
       "sthMvrv": {
         "trigger": 0.914,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -21364,7 +21364,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -75,
+    "reserveRiskPrimaryLagDays": -76,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -21501,12 +21501,12 @@
         "deep": 0.9854605701031668
       },
       "sthMvrv": {
-        "trigger": 0.914,
-        "deep": 0.845965
+        "trigger": 0.91493,
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -21538,7 +21538,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -74,
+    "reserveRiskPrimaryLagDays": -75,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -21675,12 +21675,12 @@
         "deep": 0.9855540322354999
       },
       "sthMvrv": {
-        "trigger": 0.914,
-        "deep": 0.845965
+        "trigger": 0.91493,
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -21712,7 +21712,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -73,
+    "reserveRiskPrimaryLagDays": -74,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -21845,16 +21845,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9936782478160001,
-        "deep": 0.9855540322354999
+        "trigger": 0.9936942637756667,
+        "deep": 0.9856622917521667
       },
       "sthMvrv": {
         "trigger": 0.91493,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -21886,7 +21886,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -72,
+    "reserveRiskPrimaryLagDays": -73,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -22020,15 +22020,15 @@
       },
       "sthSopr": {
         "trigger": 0.9936942637756667,
-        "deep": 0.9855540322354999
+        "deep": 0.9856622917521667
       },
       "sthMvrv": {
         "trigger": 0.915,
-        "deep": 0.845965
+        "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -22060,7 +22060,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -71,
+    "reserveRiskPrimaryLagDays": -72,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -22193,16 +22193,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9936942637756667,
-        "deep": 0.9855540322354999
+        "trigger": 0.9937257177566664,
+        "deep": 0.9856622917521667
       },
       "sthMvrv": {
         "trigger": 0.915,
         "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -22234,7 +22234,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -70,
+    "reserveRiskPrimaryLagDays": -71,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -22375,8 +22375,8 @@
         "deep": 0.846
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -22408,7 +22408,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -69,
+    "reserveRiskPrimaryLagDays": -70,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -22549,8 +22549,8 @@
         "deep": 0.846965
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -22582,7 +22582,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -68,
+    "reserveRiskPrimaryLagDays": -69,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -22723,8 +22723,8 @@
         "deep": 0.847
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -22756,7 +22756,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -67,
+    "reserveRiskPrimaryLagDays": -68,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -22897,8 +22897,8 @@
         "deep": 0.849895
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -22930,7 +22930,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -66,
+    "reserveRiskPrimaryLagDays": -67,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -23071,8 +23071,8 @@
         "deep": 0.85
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -23104,7 +23104,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -65,
+    "reserveRiskPrimaryLagDays": -66,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -23245,8 +23245,8 @@
         "deep": 0.85
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -23278,7 +23278,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -64,
+    "reserveRiskPrimaryLagDays": -65,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -23419,8 +23419,8 @@
         "deep": 0.85
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -23452,7 +23452,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -63,
+    "reserveRiskPrimaryLagDays": -64,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -23593,8 +23593,8 @@
         "deep": 0.85
       },
       "lthSopr": {
-        "trigger": 0.8454162484200194,
-        "deep": 0.6281384441766861
+        "trigger": 0.8473917626666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -23626,7 +23626,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -62,
+    "reserveRiskPrimaryLagDays": -63,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -23768,7 +23768,7 @@
       },
       "lthSopr": {
         "trigger": 0.8473917626666861,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -23800,7 +23800,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -61,
+    "reserveRiskPrimaryLagDays": -62,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -23942,7 +23942,7 @@
       },
       "lthSopr": {
         "trigger": 0.8489759056666862,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -23974,7 +23974,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -60,
+    "reserveRiskPrimaryLagDays": -61,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -24116,7 +24116,7 @@
       },
       "lthSopr": {
         "trigger": 0.8503027444600195,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -24148,7 +24148,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -59,
+    "reserveRiskPrimaryLagDays": -60,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -24290,7 +24290,7 @@
       },
       "lthSopr": {
         "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -24322,7 +24322,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -58,
+    "reserveRiskPrimaryLagDays": -59,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -24464,7 +24464,7 @@
       },
       "lthSopr": {
         "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -24496,7 +24496,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -57,
+    "reserveRiskPrimaryLagDays": -58,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -24638,7 +24638,7 @@
       },
       "lthSopr": {
         "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -24670,7 +24670,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -56,
+    "reserveRiskPrimaryLagDays": -57,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -24804,7 +24804,7 @@
       },
       "sthSopr": {
         "trigger": 0.9940841281776667,
-        "deep": 0.986600730599
+        "deep": 0.9866492930213332
       },
       "sthMvrv": {
         "trigger": 0.919,
@@ -24812,7 +24812,7 @@
       },
       "lthSopr": {
         "trigger": 0.8533497410666859,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -24844,7 +24844,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -55,
+    "reserveRiskPrimaryLagDays": -56,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -24978,7 +24978,7 @@
       },
       "sthSopr": {
         "trigger": 0.9942092165806663,
-        "deep": 0.986600730599
+        "deep": 0.9866492930213332
       },
       "sthMvrv": {
         "trigger": 0.91993,
@@ -24986,7 +24986,7 @@
       },
       "lthSopr": {
         "trigger": 0.8534174728533528,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -25018,7 +25018,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -54,
+    "reserveRiskPrimaryLagDays": -55,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -25160,7 +25160,7 @@
       },
       "lthSopr": {
         "trigger": 0.8543669367933527,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -25192,7 +25192,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -53,
+    "reserveRiskPrimaryLagDays": -54,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -25333,8 +25333,8 @@
         "deep": 0.856
       },
       "lthSopr": {
-        "trigger": 0.8543669367933527,
-        "deep": 0.6281384441766861
+        "trigger": 0.8548141230666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -25366,7 +25366,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -52,
+    "reserveRiskPrimaryLagDays": -53,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -25507,8 +25507,8 @@
         "deep": 0.856965
       },
       "lthSopr": {
-        "trigger": 0.8543669367933527,
-        "deep": 0.6281384441766861
+        "trigger": 0.8548141230666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -25540,7 +25540,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -51,
+    "reserveRiskPrimaryLagDays": -52,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -25681,8 +25681,8 @@
         "deep": 0.857965
       },
       "lthSopr": {
-        "trigger": 0.8543669367933527,
-        "deep": 0.6281384441766861
+        "trigger": 0.8548141230666861,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -25714,7 +25714,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -50,
+    "reserveRiskPrimaryLagDays": -51,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -25855,8 +25855,8 @@
         "deep": 0.858
       },
       "lthSopr": {
-        "trigger": 0.8534174728533528,
-        "deep": 0.6281384441766861
+        "trigger": 0.8543669367933527,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -25888,7 +25888,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -49,
+    "reserveRiskPrimaryLagDays": -50,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -26029,8 +26029,8 @@
         "deep": 0.858
       },
       "lthSopr": {
-        "trigger": 0.8533497410666859,
-        "deep": 0.6281384441766861
+        "trigger": 0.8534174728533528,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -26062,7 +26062,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -48,
+    "reserveRiskPrimaryLagDays": -49,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -26203,8 +26203,8 @@
         "deep": 0.858965
       },
       "lthSopr": {
-        "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "trigger": 0.8533497410666859,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -26236,7 +26236,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -47,
+    "reserveRiskPrimaryLagDays": -48,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -26370,15 +26370,15 @@
       },
       "sthSopr": {
         "trigger": 0.9944268989510001,
-        "deep": 0.9870266382328334
+        "deep": 0.9870505101006668
       },
       "sthMvrv": {
         "trigger": 0.92,
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "trigger": 0.8533497410666859,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -26410,7 +26410,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -46,
+    "reserveRiskPrimaryLagDays": -47,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -26543,16 +26543,16 @@
         "deep": 0.0005487936100000001
       },
       "sthSopr": {
-        "trigger": 0.9944268989510001,
-        "deep": 0.9870266382328334
+        "trigger": 0.9944385979839997,
+        "deep": 0.9870505101006668
       },
       "sthMvrv": {
         "trigger": 0.92,
         "deep": 0.859
       },
       "lthSopr": {
-        "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "trigger": 0.8533497410666859,
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -26584,7 +26584,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -45,
+    "reserveRiskPrimaryLagDays": -46,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -26717,8 +26717,8 @@
         "deep": 0.0005479960700000001
       },
       "sthSopr": {
-        "trigger": 0.9943785932769996,
-        "deep": 0.9870266382328334
+        "trigger": 0.9944268989510001,
+        "deep": 0.9870505101006668
       },
       "sthMvrv": {
         "trigger": 0.92,
@@ -26726,7 +26726,7 @@
       },
       "lthSopr": {
         "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -26758,7 +26758,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -44,
+    "reserveRiskPrimaryLagDays": -45,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -26900,7 +26900,7 @@
       },
       "lthSopr": {
         "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -26932,7 +26932,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -43,
+    "reserveRiskPrimaryLagDays": -44,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -27074,7 +27074,7 @@
       },
       "lthSopr": {
         "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -27106,7 +27106,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -42,
+    "reserveRiskPrimaryLagDays": -43,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -27244,11 +27244,11 @@
       },
       "sthMvrv": {
         "trigger": 0.92,
-        "deep": 0.859
+        "deep": 0.859965
       },
       "lthSopr": {
         "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -27280,7 +27280,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -41,
+    "reserveRiskPrimaryLagDays": -42,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -27422,7 +27422,7 @@
       },
       "lthSopr": {
         "trigger": 0.8525935660933527,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -27454,7 +27454,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -40,
+    "reserveRiskPrimaryLagDays": -41,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -27596,7 +27596,7 @@
       },
       "lthSopr": {
         "trigger": 0.8533497410666859,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -27628,7 +27628,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -39,
+    "reserveRiskPrimaryLagDays": -40,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -27762,7 +27762,7 @@
       },
       "sthSopr": {
         "trigger": 0.9944268989510001,
-        "deep": 0.9870505101006668
+        "deep": 0.9870857570825
       },
       "sthMvrv": {
         "trigger": 0.92,
@@ -27770,7 +27770,7 @@
       },
       "lthSopr": {
         "trigger": 0.8533497410666859,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -27802,7 +27802,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -38,
+    "reserveRiskPrimaryLagDays": -39,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -27944,7 +27944,7 @@
       },
       "lthSopr": {
         "trigger": 0.8533497410666859,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -27976,7 +27976,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -37,
+    "reserveRiskPrimaryLagDays": -38,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -28110,7 +28110,7 @@
       },
       "sthSopr": {
         "trigger": 0.9944385979839997,
-        "deep": 0.9870857570825
+        "deep": 0.9871444997815
       },
       "sthMvrv": {
         "trigger": 0.92,
@@ -28118,7 +28118,7 @@
       },
       "lthSopr": {
         "trigger": 0.8533497410666859,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -28150,7 +28150,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -36,
+    "reserveRiskPrimaryLagDays": -37,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -28284,7 +28284,7 @@
       },
       "sthSopr": {
         "trigger": 0.9944385979839997,
-        "deep": 0.9870857570825
+        "deep": 0.9871444997815
       },
       "sthMvrv": {
         "trigger": 0.92,
@@ -28292,7 +28292,7 @@
       },
       "lthSopr": {
         "trigger": 0.8533497410666859,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -28324,7 +28324,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -35,
+    "reserveRiskPrimaryLagDays": -36,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -28466,7 +28466,7 @@
       },
       "lthSopr": {
         "trigger": 0.8533497410666859,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -28498,7 +28498,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -34,
+    "reserveRiskPrimaryLagDays": -35,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -28640,7 +28640,7 @@
       },
       "lthSopr": {
         "trigger": 0.8533497410666859,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -28672,7 +28672,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -33,
+    "reserveRiskPrimaryLagDays": -34,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -28814,7 +28814,7 @@
       },
       "lthSopr": {
         "trigger": 0.8534174728533528,
-        "deep": 0.6281384441766861
+        "deep": 0.6297007887100194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -28846,7 +28846,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -32,
+    "reserveRiskPrimaryLagDays": -33,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -29020,7 +29020,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -31,
+    "reserveRiskPrimaryLagDays": -32,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -29194,7 +29194,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -30,
+    "reserveRiskPrimaryLagDays": -31,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -29336,7 +29336,7 @@
       },
       "lthSopr": {
         "trigger": 0.8548141230666861,
-        "deep": 0.6329341827233527
+        "deep": 0.6335059407500192
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -29368,7 +29368,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -29,
+    "reserveRiskPrimaryLagDays": -30,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -29510,7 +29510,7 @@
       },
       "lthSopr": {
         "trigger": 0.8548141230666861,
-        "deep": 0.6329341827233527
+        "deep": 0.6335059407500192
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -29542,7 +29542,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -28,
+    "reserveRiskPrimaryLagDays": -29,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -29716,7 +29716,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -27,
+    "reserveRiskPrimaryLagDays": -28,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -29890,7 +29890,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -26,
+    "reserveRiskPrimaryLagDays": -27,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -30064,7 +30064,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -25,
+    "reserveRiskPrimaryLagDays": -26,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -30238,7 +30238,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -24,
+    "reserveRiskPrimaryLagDays": -25,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -30412,7 +30412,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -23,
+    "reserveRiskPrimaryLagDays": -24,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -30553,8 +30553,8 @@
         "deep": 0.869965
       },
       "lthSopr": {
-        "trigger": 0.8596157348000197,
-        "deep": 0.6409555942500192
+        "trigger": 0.861113763646686,
+        "deep": 0.6442107196333526
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -30586,7 +30586,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -22,
+    "reserveRiskPrimaryLagDays": -23,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -30727,8 +30727,8 @@
         "deep": 0.869965
       },
       "lthSopr": {
-        "trigger": 0.8563333333333529,
-        "deep": 0.6409555942500192
+        "trigger": 0.8596157348000197,
+        "deep": 0.6442107196333526
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -30760,7 +30760,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -21,
+    "reserveRiskPrimaryLagDays": -22,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -30901,8 +30901,8 @@
         "deep": 0.869965
       },
       "lthSopr": {
-        "trigger": 0.8548141230666861,
-        "deep": 0.6409555942500192
+        "trigger": 0.8563333333333529,
+        "deep": 0.6442107196333526
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -30934,7 +30934,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -20,
+    "reserveRiskPrimaryLagDays": -21,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -31076,7 +31076,7 @@
       },
       "lthSopr": {
         "trigger": 0.8548141230666861,
-        "deep": 0.6442107196333525
+        "deep": 0.6442107196333526
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -31108,7 +31108,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -19,
+    "reserveRiskPrimaryLagDays": -20,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -31250,7 +31250,7 @@
       },
       "lthSopr": {
         "trigger": 0.8548141230666861,
-        "deep": 0.6442107196333525
+        "deep": 0.6449768585933526
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -31282,7 +31282,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -18,
+    "reserveRiskPrimaryLagDays": -19,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -31424,7 +31424,7 @@
       },
       "lthSopr": {
         "trigger": 0.8548141230666861,
-        "deep": 0.6442107196333525
+        "deep": 0.6449768585933526
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -31456,7 +31456,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -17,
+    "reserveRiskPrimaryLagDays": -18,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -31598,7 +31598,7 @@
       },
       "lthSopr": {
         "trigger": 0.8548141230666861,
-        "deep": 0.6442107196333525
+        "deep": 0.6449768585933526
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -31630,7 +31630,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -16,
+    "reserveRiskPrimaryLagDays": -17,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -31772,7 +31772,7 @@
       },
       "lthSopr": {
         "trigger": 0.8548141230666861,
-        "deep": 0.6449768585933525
+        "deep": 0.6449768585933526
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -31804,7 +31804,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -15,
+    "reserveRiskPrimaryLagDays": -16,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -31978,7 +31978,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -14,
+    "reserveRiskPrimaryLagDays": -15,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -32152,7 +32152,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -13,
+    "reserveRiskPrimaryLagDays": -14,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -32326,7 +32326,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -12,
+    "reserveRiskPrimaryLagDays": -13,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -32500,7 +32500,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -11,
+    "reserveRiskPrimaryLagDays": -12,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -32674,7 +32674,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -10,
+    "reserveRiskPrimaryLagDays": -11,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -32848,7 +32848,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -9,
+    "reserveRiskPrimaryLagDays": -10,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -33022,7 +33022,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -8,
+    "reserveRiskPrimaryLagDays": -9,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -33196,7 +33196,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -7,
+    "reserveRiskPrimaryLagDays": -8,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -33370,7 +33370,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -6,
+    "reserveRiskPrimaryLagDays": -7,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -33544,7 +33544,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -5,
+    "reserveRiskPrimaryLagDays": -6,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -33718,7 +33718,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -4,
+    "reserveRiskPrimaryLagDays": -5,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -33892,7 +33892,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -3,
+    "reserveRiskPrimaryLagDays": -4,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -34066,7 +34066,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -2,
+    "reserveRiskPrimaryLagDays": -3,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -34240,7 +34240,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -1,
+    "reserveRiskPrimaryLagDays": -2,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -34414,7 +34414,7 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": 0,
+    "reserveRiskPrimaryLagDays": -1,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -34454,17 +34454,17 @@
   {
     "d": "2026-07-18",
     "unixTs": 1784332800,
-    "btcPrice": 64466.58,
-    "ma200w": 62996.16561505786,
+    "btcPrice": 63915.9181496201,
+    "ma200w": 62963.91743280876,
     "realizedPrice": 52444.96,
-    "priceMa200wRatio": 1.0233413315014632,
-    "priceRealizedRatio": 1.2292235517006782,
-    "reserveRisk": 0.0005104974,
+    "priceMa200wRatio": 1.015119782180441,
+    "priceRealizedRatio": 1.2187237467550762,
+    "reserveRisk": 0.0005168491,
     "lthMvrv": 1.3,
     "lthSopr": 0.8912,
     "lthSoprMa3": 0.8351333333333529,
     "mvrvZscore": 0.3799,
-    "nupl": 0.1805,
+    "nupl": 0.191,
     "sthSopr": 0.998,
     "sthSoprMa3": 0.9979333333333331,
     "sthMvrv": 0.94,
@@ -34537,10 +34537,10 @@
     "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.3536,
-    "signalConfidenceV6": 0.3482,
-    "dataFreshnessScore": 0.892857142857143,
-    "dataFreshnessScoreV6": 0.8750000000000002,
+    "signalConfidence": 0.3295,
+    "signalConfidenceV6": 0.3348,
+    "dataFreshnessScore": 0.8125000000000002,
+    "dataFreshnessScoreV6": 0.830357142857143,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0005823937,
@@ -34556,7 +34556,7 @@
       },
       "lthSopr": {
         "trigger": 0.8685317839266862,
-        "deep": 0.6662569672400193
+        "deep": 0.673768000153353
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -34587,8 +34587,8 @@
     "reserveRiskReplacementActive": false,
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
-    "reserveRiskLagDays": 1,
-    "reserveRiskPrimaryLagDays": 1,
+    "reserveRiskLagDays": 0,
+    "reserveRiskPrimaryLagDays": 0,
     "reserveRiskReplacementLagDays": 1,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -34601,25 +34601,199 @@
     "scoringModelVersion": "core8_independent_valuation_current",
     "legacyScoringModelVersion": "v3_no_lookahead_replacement",
     "api_data_date": {
-      "price_ma200w": "2026-07-18",
+      "price_ma200w": "2026-07-17",
       "price_realized": "2026-07-17",
-      "reserve_risk": "2026-07-17",
+      "reserve_risk": "2026-07-18",
       "lth_mvrv": "2026-07-17",
       "lth_sopr": "2026-07-17",
       "mvrv_zscore": "2026-07-17",
-      "nupl": "2026-07-17",
+      "nupl": "2026-07-18",
       "sth_sopr": "2026-07-17",
       "sth_mvrv": "2026-07-17",
       "puell": "2026-07-17"
     },
     "indicatorDates": {
-      "priceMa200w": "2026-07-18",
+      "priceMa200w": "2026-07-17",
       "priceRealized": "2026-07-17",
-      "reserveRisk": "2026-07-17",
+      "reserveRisk": "2026-07-18",
       "lthMvrv": "2026-07-17",
       "lthSopr": "2026-07-17",
       "mvrvZscore": "2026-07-17",
-      "nupl": "2026-07-17",
+      "nupl": "2026-07-18",
+      "sthSopr": "2026-07-17",
+      "sthMvrv": "2026-07-17",
+      "puell": "2026-07-17"
+    }
+  },
+  {
+    "d": "2026-07-19",
+    "unixTs": 1784419200,
+    "btcPrice": 64814.73,
+    "ma200w": 62996.414293629285,
+    "realizedPrice": 52444.96,
+    "priceMa200wRatio": 1.0288637968804932,
+    "priceRealizedRatio": 1.235861939831778,
+    "reserveRisk": 0.0005168491,
+    "lthMvrv": 1.3,
+    "lthSopr": 0.8912,
+    "lthSoprMa3": 0.8912,
+    "mvrvZscore": 0.3799,
+    "nupl": 0.191,
+    "sthSopr": 0.998,
+    "sthSoprMa3": 0.998,
+    "sthMvrv": 0.94,
+    "puellMultiple": 0.6918571429,
+    "signalPriceMa200w": false,
+    "signalPriceRealized": false,
+    "signalReserveRisk": true,
+    "signalSthSopr": false,
+    "signalSthMvrv": false,
+    "signalSthGroup": false,
+    "signalReserveRiskV4": false,
+    "signalMvrvZscoreCore": false,
+    "signalNupl": false,
+    "signalNuplCore": false,
+    "signalValuationBlendV6": false,
+    "signalLthMvrv": false,
+    "signalLthSopr": false,
+    "signalSthSoprTrigger": false,
+    "signalSthSoprAux": false,
+    "signalPuell": false,
+    "signalCount": 1,
+    "activeIndicatorCount": 5,
+    "signalCountV4": 0,
+    "activeIndicatorCountV4": 7,
+    "signalCountV6": 0,
+    "activeIndicatorCountV6": 8,
+    "scorePriceMa200w": 0,
+    "scorePriceRealized": 0,
+    "scoreReserveRisk": 2,
+    "scoreReserveRiskV4": 0,
+    "scoreReserveRiskPrimary": 2,
+    "scoreReserveRiskReplacement": 0,
+    "scoreLthMvrv": 0,
+    "scoreLthSopr": 0,
+    "scoreMvrvZscore": 0,
+    "scoreMvrvZscoreCore": 0,
+    "scoreNupl": 0,
+    "scoreNuplCore": 0,
+    "valuationBlendScoreV6": 0,
+    "scoreSthSopr": 0,
+    "scoreSthMvrv": 0,
+    "scoreSthGroup": 0,
+    "scorePuell": 0,
+    "signalScoreV2": 2,
+    "maxSignalScoreV2": 10,
+    "signalScoreV2Min3d": 2.0,
+    "signalConfirmed3d": false,
+    "signalBandV2": "watch",
+    "valuationScore": 0,
+    "maxValuationScore": 8,
+    "triggerScore": 0,
+    "maxTriggerScore": 2,
+    "confirmationScore": 0,
+    "maxConfirmationScore": 4,
+    "auxiliaryScore": 0,
+    "maxAuxiliaryScore": 2,
+    "totalScoreV4": 0,
+    "maxTotalScoreV4": 14,
+    "totalScoreV4Min3d": 0.0,
+    "signalConfirmed3dV4": false,
+    "signalBandV4": "watch",
+    "valuationScoreV6": 0,
+    "maxValuationScoreV6": 8,
+    "triggerScoreV6": 0,
+    "maxTriggerScoreV6": 2,
+    "confirmationScoreV6": 0,
+    "maxConfirmationScoreV6": 4,
+    "totalScoreV6": 0,
+    "maxTotalScoreV6": 14,
+    "totalScoreV6Min3d": 0.0,
+    "signalConfirmed3dV6": false,
+    "signalBandV6": "watch",
+    "signalConfidence": 0.2357,
+    "signalConfidenceV6": 0.2304,
+    "dataFreshnessScore": 0.7857142857142858,
+    "dataFreshnessScoreV6": 0.7678571428571429,
+    "thresholds": {
+      "reserveRisk": {
+        "trigger": 0.00058231204,
+        "deep": 0.0005245418299999999
+      },
+      "sthSopr": {
+        "trigger": 0.9949640045583331,
+        "deep": 0.9894539556904997
+      },
+      "sthMvrv": {
+        "trigger": 0.921,
+        "deep": 0.871
+      },
+      "lthSopr": {
+        "trigger": 0.8685317839266862,
+        "deep": 0.673768000153353
+      },
+      "mvrvZscoreCore": {
+        "trigger": 0.0,
+        "deep": -0.5
+      },
+      "nuplCore": {
+        "trigger": 0.15,
+        "deep": 0.0
+      },
+      "nupl": {
+        "trigger": 0.15,
+        "deep": 0.0
+      }
+    },
+    "signalsV6": {
+      "priceMa200w": false,
+      "priceRealized": false,
+      "mvrvZscore": false,
+      "nupl": false,
+      "valuationBlend": false,
+      "sthMvrv": false,
+      "sthSoprTrigger": false,
+      "lthMvrv": false,
+      "lthSopr": false,
+      "puell": false
+    },
+    "reserveRiskActive": true,
+    "reserveRiskReplacementActive": false,
+    "reserveRiskReplacementSource": null,
+    "reserveRiskSourceMode": "primary",
+    "reserveRiskLagDays": 1,
+    "reserveRiskPrimaryLagDays": 1,
+    "reserveRiskReplacementLagDays": 2,
+    "reserveRiskSourceModeV4": "compat_mvrv_zscore",
+    "reserveRiskSoftFallbackActive": false,
+    "reserveRiskFallbackLagDaysV4": null,
+    "fallbackMode": "none",
+    "fallbackModeV6": "none",
+    "staleIndicators": [],
+    "indicatorSet": "core8_bottom_independent_valuation_current",
+    "coreIndicatorSet": "core8_bottom_independent_valuation_current",
+    "scoringModelVersion": "core8_independent_valuation_current",
+    "legacyScoringModelVersion": "v3_no_lookahead_replacement",
+    "api_data_date": {
+      "price_ma200w": "2026-07-19",
+      "price_realized": "2026-07-17",
+      "reserve_risk": "2026-07-18",
+      "lth_mvrv": "2026-07-17",
+      "lth_sopr": "2026-07-17",
+      "mvrv_zscore": "2026-07-17",
+      "nupl": "2026-07-18",
+      "sth_sopr": "2026-07-17",
+      "sth_mvrv": "2026-07-17",
+      "puell": "2026-07-17"
+    },
+    "indicatorDates": {
+      "priceMa200w": "2026-07-19",
+      "priceRealized": "2026-07-17",
+      "reserveRisk": "2026-07-18",
+      "lthMvrv": "2026-07-17",
+      "lthSopr": "2026-07-17",
+      "mvrvZscore": "2026-07-17",
+      "nupl": "2026-07-18",
       "sthSopr": "2026-07-17",
       "sthMvrv": "2026-07-17",
       "puell": "2026-07-17"
