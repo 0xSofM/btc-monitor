@@ -25,12 +25,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { IndicatorCard } from '@/components/IndicatorCard';
 import { SignalOverview } from '@/components/SignalOverview';
 import { StrategyMnavCard } from '@/components/StrategyMnavCard';
-import type { IndicatorData, LatestData, StrategyMnavData } from '@/types';
+import type { IndicatorData, LatestData, StrategyMnavData, StrategyMnavHistoryPoint } from '@/types';
 import {
   fetchHistoricalData,
   fetchRuntimeLatestData,
   fetchStaticLatestData,
   fetchStrategyMnavData,
+  fetchStrategyMnavHistory,
   getEffectiveDataDate,
   getPriceFreshnessHours,
   getOnchainFreshnessHours,
@@ -211,6 +212,7 @@ function resolveCore8Display(latest: LatestData | null) {
 function App() {
   const [latestData, setLatestData] = useState<LatestData | null>(null);
   const [strategyMnavData, setStrategyMnavData] = useState<StrategyMnavData | null>(null);
+  const [strategyMnavHistory, setStrategyMnavHistory] = useState<StrategyMnavHistoryPoint[]>([]);
   const [historicalData, setHistoricalData] = useState<IndicatorData[]>([]);
   const [historyMode, setHistoryMode] = useState<HistoryMode>('none');
   const historyModeRef = useRef<HistoryMode>('none');
@@ -279,9 +281,15 @@ function App() {
   }, [beginHistoryLoad, endHistoryLoad, historicalData]);
 
   const loadStrategyMnav = useCallback(async (forceRefresh = false) => {
-    const data = await fetchStrategyMnavData(forceRefresh);
+    const [data, history] = await Promise.all([
+      fetchStrategyMnavData(forceRefresh),
+      fetchStrategyMnavHistory(forceRefresh),
+    ]);
     if (data) {
       setStrategyMnavData(data);
+    }
+    if (history.length > 0) {
+      setStrategyMnavHistory(history);
     }
     return data;
   }, []);
@@ -858,7 +866,7 @@ function App() {
                   )}
 
                   {strategyMnavData && (
-                    <StrategyMnavCard data={strategyMnavData} />
+                    <StrategyMnavCard data={strategyMnavData} history={strategyMnavHistory} />
                   )}
 
                   {laggingIndicators.length > 0 && (

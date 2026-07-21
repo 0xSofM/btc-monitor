@@ -67,6 +67,7 @@ def validate_strategy_mnav_pair(
     max_mstr_lag_days: int = 7,
     max_btc_lag_hours: int = 36,
     check_freshness: bool = True,
+    min_history_rows: int = 1,
     now: datetime | None = None,
 ) -> Tuple[bool, List[str]]:
     errors: List[str] = []
@@ -163,6 +164,14 @@ def validate_strategy_mnav_pair(
         seen_dates.add(date_str)
         previous_date = date_str
 
+        history_mnav = _as_number(row.get("mnav"))
+        if history_mnav is None:
+            errors.append(f"History row {index} mNAV must be numeric.")
+        elif not 0.2 <= history_mnav <= 10:
+            errors.append(
+                f"History row {index} mNAV out of expected range: {history_mnav}."
+            )
+
     if not history:
         errors.append("Strategy mNAV history must contain at least one row.")
     elif isinstance(history[-1], dict):
@@ -177,6 +186,13 @@ def validate_strategy_mnav_pair(
                 f"History tail mNAV ({tail_mnav}) does not match latest mNAV ({mnav_value})."
             )
 
+    required_history_rows = max(1, min_history_rows)
+    if len(history) < required_history_rows:
+        errors.append(
+            f"Strategy mNAV history has {len(history)} rows; "
+            f"expected at least {required_history_rows}."
+        )
+
     return len(errors) == 0, errors
 
 
@@ -186,6 +202,7 @@ def main() -> int:
     parser.add_argument("--current-history", required=True, help="Current Strategy mNAV history JSON path.")
     parser.add_argument("--max-mstr-lag-days", type=int, default=7)
     parser.add_argument("--max-btc-lag-hours", type=int, default=36)
+    parser.add_argument("--min-history-rows", type=int, default=1)
     parser.add_argument(
         "--skip-freshness-check",
         action="store_true",
@@ -201,6 +218,7 @@ def main() -> int:
         max_mstr_lag_days=max(0, args.max_mstr_lag_days),
         max_btc_lag_hours=max(1, args.max_btc_lag_hours),
         check_freshness=not args.skip_freshness_check,
+        min_history_rows=max(1, args.min_history_rows),
     )
     if not ok:
         print("Strategy mNAV validation failed:")

@@ -11,7 +11,11 @@ from .fetcher import fetch_json_payload
 
 STRATEGY_BITCOIN_KPIS_URL = "https://api.strategy.com/btc/bitcoinKpis"
 STRATEGY_MSTR_KPI_URL = "https://api.strategy.com/btc/mstrKpiData"
+STRATEGY_MNAV_HISTORY_URL = (
+    "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav"
+)
 STRATEGY_SOURCE_NAME = "strategy_official_api"
+STRATEGY_HISTORY_SOURCE_NAME = "strategy_official_timeseries"
 STRATEGY_MNAV_FORMULA = "enterpriseValueUsd / btcReserveUsd"
 
 
@@ -56,6 +60,16 @@ def _as_iso_timestamp(value: Any) -> str | None:
         return None
     trimmed = value.strip()
     return trimmed or None
+
+
+def _as_iso_date(value: Any) -> str | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    raw = value.strip()
+    try:
+        return datetime.strptime(raw[:10], "%Y-%m-%d").strftime("%Y-%m-%d")
+    except ValueError:
+        return None
 
 
 def _round(value: float | None, digits: int = 4) -> float | None:
@@ -103,6 +117,8 @@ def _extract_mstr_row(payload: Any) -> Dict[str, Any]:
     if isinstance(payload, list):
         rows = payload
     elif isinstance(payload, dict):
+        if "entVal" in payload:
+            return payload
         rows = payload.get("value")
     else:
         raise ValueError("Strategy MSTR KPI payload must be an object or array.")
@@ -208,6 +224,59 @@ def fetch_strategy_mnav_snapshot() -> Dict[str, Any]:
     return build_strategy_mnav_snapshot(bitcoin_payload, mstr_payload)
 
 
+def normalize_strategy_mnav_timeseries(payload: Any) -> List[Dict[str, Any]]:
+    """Normalize Strategy's official historical mNAV series for frontend storage."""
+    if isinstance(payload, dict):
+        series_items = [payload]
+    elif isinstance(payload, list):
+        series_items = payload
+    else:
+        raise ValueError("Strategy mNAV time series payload must be an object or array.")
+
+    series = next(
+        (
+            item
+            for item in series_items
+            if isinstance(item, dict)
+            and str(item.get("ticker", "")).upper() == "MSTR"
+            and isinstance(item.get("values"), list)
+        ),
+        None,
+    )
+    if not isinstance(series, dict):
+        raise ValueError("Strategy mNAV time series payload missing MSTR values.")
+
+    rows_by_date: Dict[str, Dict[str, Any]] = {}
+    for item in series.get("values", []):
+        if not isinstance(item, dict):
+            continue
+        date = _as_iso_date(item.get("date"))
+        value = _parse_number(item.get("mNav") or item.get("mnav"))
+        if not date or value is None or not 0.2 <= value <= 10:
+            continue
+
+        band = classify_mnav_band(value)
+        rows_by_date[date] = {
+            "d": date,
+            "mnav": _round(value, 4),
+            "mnavBand": band,
+            "riskFlag": classify_mnav_risk_flag(band),
+            "source": STRATEGY_HISTORY_SOURCE_NAME,
+            "sourceUrl": STRATEGY_MNAV_HISTORY_URL,
+            "observationType": "official_daily_close",
+        }
+
+    if not rows_by_date:
+        raise ValueError("Strategy mNAV time series contains no numeric observations.")
+
+    return [rows_by_date[date] for date in sorted(rows_by_date)]
+
+
+def fetch_strategy_mnav_history() -> List[Dict[str, Any]]:
+    payload = fetch_json_payload(STRATEGY_MNAV_HISTORY_URL)
+    return normalize_strategy_mnav_timeseries(payload)
+
+
 def snapshot_to_history_row(snapshot: Dict[str, Any]) -> Dict[str, Any]:
     mstr = snapshot.get("mstr") if isinstance(snapshot.get("mstr"), dict) else {}
     reserve = (
@@ -240,21 +309,32 @@ def snapshot_to_history_row(snapshot: Dict[str, Any]) -> Dict[str, Any]:
 def merge_strategy_mnav_history(
     existing_history: Any,
     latest_snapshot: Dict[str, Any],
+    official_history: Any = None,
 ) -> List[Dict[str, Any]]:
-    rows: List[Dict[str, Any]] = []
+    rows_by_date: Dict[str, Dict[str, Any]] = {}
     if isinstance(existing_history, list):
-        rows = [row for row in existing_history if isinstance(row, dict)]
+        for row in existing_history:
+            if isinstance(row, dict) and _as_iso_date(row.get("d")):
+                rows_by_date[str(row["d"])] = row
+
+    if isinstance(official_history, list):
+        for row in official_history:
+            if isinstance(row, dict) and _as_iso_date(row.get("d")):
+                rows_by_date[str(row["d"])] = row
 
     latest_row = snapshot_to_history_row(latest_snapshot)
     latest_date = latest_row.get("d")
-    rows = [row for row in rows if row.get("d") != latest_date]
-    rows.append(latest_row)
-    return sorted(rows, key=lambda row: str(row.get("d") or ""))
+    if _as_iso_date(latest_date):
+        rows_by_date[str(latest_date)] = latest_row
+
+    return [rows_by_date[date] for date in sorted(rows_by_date)]
 
 
 def build_strategy_mnav_manifest_health(
     snapshot: Dict[str, Any],
     history_rows: int,
+    history_start_date: str | None = None,
+    official_history_rows: int | None = None,
 ) -> Dict[str, Any]:
     mnav = snapshot.get("mnav") if isinstance(snapshot.get("mnav"), dict) else {}
     data_health = (
@@ -266,7 +346,11 @@ def build_strategy_mnav_manifest_health(
         "source": snapshot.get("source"),
         "formula": snapshot.get("formula"),
         "latestDate": snapshot.get("date"),
+        "historyStartDate": history_start_date,
         "historyRows": history_rows,
+        "officialHistoryRows": official_history_rows,
+        "historySource": STRATEGY_HISTORY_SOURCE_NAME,
+        "historySourceUrl": STRATEGY_MNAV_HISTORY_URL,
         "mnav": mnav.get("value"),
         "band": mnav.get("band"),
         "riskFlag": mnav.get("riskFlag"),

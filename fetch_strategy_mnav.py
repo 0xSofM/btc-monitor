@@ -10,6 +10,7 @@ from typing import Any, Dict
 from pipeline.archiver import load_json_if_exists, write_json
 from pipeline.strategy_mnav import (
     build_strategy_mnav_manifest_health,
+    fetch_strategy_mnav_history,
     fetch_strategy_mnav_snapshot,
     merge_strategy_mnav_history,
 )
@@ -19,6 +20,8 @@ def update_manifest(
     manifest_path: Path,
     snapshot: Dict[str, Any],
     history_rows: int,
+    history_start_date: str | None,
+    official_history_rows: int,
     latest_path: Path,
     history_path: Path,
 ) -> None:
@@ -37,6 +40,8 @@ def update_manifest(
     manifest["strategyMnavHealth"] = build_strategy_mnav_manifest_health(
         snapshot,
         history_rows,
+        history_start_date=history_start_date,
+        official_history_rows=official_history_rows,
     )
     write_json(manifest_path, manifest)
 
@@ -71,18 +76,36 @@ def main() -> int:
 
     snapshot = fetch_strategy_mnav_snapshot()
     previous_history = load_json_if_exists(history_path)
-    history = merge_strategy_mnav_history(previous_history, snapshot)
+    try:
+        official_history = fetch_strategy_mnav_history()
+    except Exception as exc:
+        official_history = []
+        print(f"Warning: Strategy official mNAV history unavailable: {exc}")
+    history = merge_strategy_mnav_history(
+        previous_history,
+        snapshot,
+        official_history=official_history,
+    )
 
     write_json(latest_path, snapshot)
     write_json(history_path, history)
 
     if not args.skip_manifest_update:
-        update_manifest(manifest_path, snapshot, len(history), latest_path, history_path)
+        update_manifest(
+            manifest_path,
+            snapshot,
+            len(history),
+            history[0].get("d") if history else None,
+            len(official_history),
+            latest_path,
+            history_path,
+        )
 
     mnav = snapshot.get("mnav", {})
     print("Strategy mNAV update complete.")
     print(f"- latest file : {latest_path}")
     print(f"- history file: {history_path} ({len(history)} rows)")
+    print(f"- official rows: {len(official_history)}")
     print(f"- mNAV        : {mnav.get('value')} ({mnav.get('band')})")
     return 0
 

@@ -5,6 +5,7 @@ from pipeline.strategy_mnav import (
     build_strategy_mnav_snapshot,
     classify_mnav_band,
     merge_strategy_mnav_history,
+    normalize_strategy_mnav_timeseries,
 )
 from validate_strategy_mnav import validate_strategy_mnav_pair
 
@@ -54,6 +55,37 @@ class StrategyMnavTests(unittest.TestCase):
         self.assertEqual(snapshot["btcReserve"]["btcHoldings"], 846842)
         self.assertEqual(snapshot["mstr"]["enterpriseValueUsdM"], 61225)
 
+    def test_build_strategy_mnav_snapshot_accepts_direct_mstr_object(self):
+        snapshot = build_strategy_mnav_snapshot(
+            self.bitcoin_payload(),
+            self.mstr_payload()[0],
+            generated_at=datetime(2026, 6, 20, 13, 20, tzinfo=timezone.utc),
+        )
+
+        self.assertEqual(snapshot["mstr"]["enterpriseValueUsdM"], 61225)
+        self.assertAlmostEqual(snapshot["mnav"]["value"], 61225 / 53839, places=4)
+
+    def test_normalize_strategy_mnav_timeseries_filters_and_sorts(self):
+        history = normalize_strategy_mnav_timeseries(
+            [
+                {
+                    "ticker": "MSTR",
+                    "values": [
+                        {"date": "2026-01-03T00:00:00", "mNav": None},
+                        {"date": "2026-01-02T00:00:00", "mNav": 1.24},
+                        {"date": "invalid", "mNav": 1.2},
+                        {"date": "2026-01-01T00:00:00", "mNav": 0.98},
+                    ],
+                }
+            ]
+        )
+
+        self.assertEqual([row["d"] for row in history], ["2026-01-01", "2026-01-02"])
+        self.assertEqual(history[0]["mnavBand"], "discount")
+        self.assertEqual(history[1]["mnavBand"], "low_premium")
+        self.assertEqual(history[0]["source"], "strategy_official_timeseries")
+        self.assertEqual(history[0]["observationType"], "official_daily_close")
+
     def test_merge_strategy_mnav_history_replaces_same_day_and_sorts(self):
         snapshot = build_strategy_mnav_snapshot(
             self.bitcoin_payload(),
@@ -69,6 +101,32 @@ class StrategyMnavTests(unittest.TestCase):
 
         self.assertEqual([row["d"] for row in history], ["2026-06-19", "2026-06-20"])
         self.assertAlmostEqual(history[-1]["mnav"], snapshot["mnav"]["value"])
+
+    def test_merge_strategy_mnav_history_prefers_official_then_latest(self):
+        snapshot = build_strategy_mnav_snapshot(
+            self.bitcoin_payload(),
+            self.mstr_payload(),
+            generated_at=datetime(2026, 6, 20, 13, 20, tzinfo=timezone.utc),
+        )
+        existing = [
+            {"d": "2026-06-18", "mnav": 1.3, "source": "existing"},
+            {"d": "2026-06-19", "mnav": 1.2, "source": "existing"},
+        ]
+        official = [
+            {"d": "2026-06-19", "mnav": 1.1, "source": "strategy_official_timeseries"},
+            {"d": "2026-06-20", "mnav": 1.0, "source": "strategy_official_timeseries"},
+        ]
+
+        history = merge_strategy_mnav_history(existing, snapshot, official)
+
+        self.assertEqual(
+            [row["d"] for row in history],
+            ["2026-06-18", "2026-06-19", "2026-06-20"],
+        )
+        self.assertEqual(history[1]["mnav"], 1.1)
+        self.assertEqual(history[1]["source"], "strategy_official_timeseries")
+        self.assertAlmostEqual(history[2]["mnav"], snapshot["mnav"]["value"])
+        self.assertEqual(history[2]["source"], "strategy_official_api")
 
     def test_validate_strategy_mnav_pair_passes_for_fresh_snapshot(self):
         snapshot = build_strategy_mnav_snapshot(

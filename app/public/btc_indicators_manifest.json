@@ -382,12 +382,16 @@
     "source": "strategy_official_api",
     "formula": "enterpriseValueUsd / btcReserveUsd",
     "latestDate": "2026-07-21",
-    "historyRows": 32,
+    "historyRows": 389,
     "mnav": 1.032,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
     "mstrTimestampUtc": "2026-07-21T14:18:00",
-    "btcTimestamp": "2026-07-21T14:18:00"
+    "btcTimestamp": "2026-07-21T14:18:00",
+    "historyStartDate": "2024-12-31",
+    "officialHistoryRows": 387,
+    "historySource": "strategy_official_timeseries",
+    "historySourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav"
   }
 }

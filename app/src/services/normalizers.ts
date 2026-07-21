@@ -1,4 +1,11 @@
-import type { IndicatorData, LatestData, StrategyMnavData, ThresholdMap, ThresholdValue } from '@/types';
+import type {
+  IndicatorData,
+  LatestData,
+  StrategyMnavData,
+  StrategyMnavHistoryPoint,
+  ThresholdMap,
+  ThresholdValue,
+} from '@/types';
 
 import type { ApiDatePayload } from './contracts';
 
@@ -676,5 +683,38 @@ export function normalizeStrategyMnavData(item: unknown): StrategyMnavData | nul
           btcTimestamp: asString(asRecord(record.dataHealth ?? record.data_health)?.btcTimestamp),
         }
       : undefined,
+  };
+}
+
+export function normalizeStrategyMnavHistoryPoint(item: unknown): StrategyMnavHistoryPoint | null {
+  const record = asRecord(item);
+  if (!record) {
+    return null;
+  }
+
+  const date = asString(record.d ?? record.date);
+  const value = toNumberOrNull(record.mnav ?? record.value);
+  if (!date || value === null) {
+    return null;
+  }
+
+  return {
+    date,
+    generatedAt: asString(record.generatedAt ?? record.generated_at),
+    value,
+    band: asString(record.mnavBand ?? record.mnav_band ?? record.band),
+    riskFlag: asString(record.riskFlag ?? record.risk_flag),
+    enterpriseValueUsdM: toNumberOrNull(record.enterpriseValueUsdM ?? record.enterprise_value_usd_m) ?? undefined,
+    btcReserveUsdM: toNumberOrNull(record.btcReserveUsdM ?? record.btc_reserve_usd_m) ?? undefined,
+    marketCapUsdM: toNumberOrNull(record.marketCapUsdM ?? record.market_cap_usd_m) ?? undefined,
+    equityPremium: toNumberOrNull(record.equityPremium ?? record.equity_premium) ?? undefined,
+    mstrPrice: toNumberOrNull(record.mstrPrice ?? record.mstr_price) ?? undefined,
+    btcPrice: toNumberOrNull(record.btcPrice ?? record.btc_price) ?? undefined,
+    btcHoldings: toNumberOrNull(record.btcHoldings ?? record.btc_holdings) ?? undefined,
+    satsPerShare: toNumberOrNull(record.satsPerShare ?? record.sats_per_share) ?? undefined,
+    mstrTimestampUtc: asString(record.mstrTimestampUtc ?? record.mstr_timestamp_utc),
+    btcTimestamp: asString(record.btcTimestamp ?? record.btc_timestamp),
+    source: asString(record.source),
+    observationType: asString(record.observationType ?? record.observation_type),
   };
 }

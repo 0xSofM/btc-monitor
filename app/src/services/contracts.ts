@@ -93,7 +93,11 @@ export interface DataManifest {
     source?: string;
     formula?: string;
     latestDate?: string;
+    historyStartDate?: string;
     historyRows?: number;
+    officialHistoryRows?: number;
+    historySource?: string;
+    historySourceUrl?: string;
     mnav?: number;
     band?: string;
     riskFlag?: string;

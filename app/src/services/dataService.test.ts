@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { IndicatorData, LatestData } from '@/types';
 import {
   fetchStrategyMnavData,
+  fetchStrategyMnavHistory,
   fetchHistoricalData,
   getEffectiveDataDate,
   getDataFreshnessHours,
@@ -53,6 +54,45 @@ describe('dataService helpers', () => {
     expect(data?.mnav.band).toBe('low_premium');
     expect(data?.mstr.enterpriseValueUsdM).toBe(61225);
     expect(data?.btcReserve.btcHoldings).toBe(846842);
+
+    vi.unstubAllGlobals();
+  });
+
+  it('fetchStrategyMnavHistory normalizes, filters, and sorts history rows', async () => {
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify([
+      {
+        d: '2026-06-21',
+        mnav: 1.1306,
+        mnavBand: 'low_premium',
+        enterpriseValueUsdM: 61225,
+        btcReserveUsdM: 54155,
+      },
+      { d: '2026-06-19', mnav: null },
+      {
+        d: '2026-06-20',
+        mnav: 1.1322,
+        mnavBand: 'low_premium',
+        observationType: 'official_daily_close',
+        enterpriseValueUsdM: 61225,
+        btcReserveUsdM: 54075,
+      },
+    ]), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })) as unknown as ReturnType<typeof vi.fn<(url: RequestInfo | URL) => Promise<Response>>>;
+    vi.stubGlobal('fetch', fetchMock);
+
+    const history = await fetchStrategyMnavHistory(true);
+
+    expect(fetchMock.mock.calls[0]?.[0]).toBe('/strategy_mnav_history.json');
+    expect(history.map((point) => point.date)).toEqual(['2026-06-20', '2026-06-21']);
+    expect(history[0]).toMatchObject({
+      value: 1.1322,
+      band: 'low_premium',
+      observationType: 'official_daily_close',
+      enterpriseValueUsdM: 61225,
+      btcReserveUsdM: 54075,
+    });
 
     vi.unstubAllGlobals();
   });

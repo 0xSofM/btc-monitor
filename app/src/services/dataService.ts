@@ -1,4 +1,4 @@
-import type { IndicatorData, LatestData, StrategyMnavData } from '@/types';
+import type { IndicatorData, LatestData, StrategyMnavData, StrategyMnavHistoryPoint } from '@/types';
 
 import {
   API_BASE_URL,
@@ -11,10 +11,17 @@ import {
   fetchStaticHistoryRaw,
   fetchStaticLatestRaw,
   fetchStaticManifestRaw,
+  fetchStaticStrategyMnavHistoryRaw,
   fetchStaticStrategyMnavRaw,
 } from './apiClient';
 import type { DataManifest, FetchHistoricalOptions, FetchStaticLatestOptions } from './contracts';
-import { normalizeIndicatorData, normalizeLatestData, normalizeStrategyMnavData, toFiniteNumber } from './normalizers';
+import {
+  normalizeIndicatorData,
+  normalizeLatestData,
+  normalizeStrategyMnavData,
+  normalizeStrategyMnavHistoryPoint,
+  toFiniteNumber,
+} from './normalizers';
 import { CORE8_COVERAGE_FIELDS, missingCoreHistoryFields } from './schema';
 import {
   INDICATOR_CONFIG,
@@ -50,6 +57,8 @@ type CacheState = {
   manifestTimestamp: number;
   strategyMnav: StrategyMnavData | null;
   strategyMnavTimestamp: number;
+  strategyMnavHistory: StrategyMnavHistoryPoint[];
+  strategyMnavHistoryTimestamp: number;
 };
 
 const cache: CacheState = {
@@ -61,6 +70,8 @@ const cache: CacheState = {
   manifestTimestamp: 0,
   strategyMnav: null,
   strategyMnavTimestamp: 0,
+  strategyMnavHistory: [],
+  strategyMnavHistoryTimestamp: 0,
 };
 
 function mergeCachedLatestIntoHistory(rows: IndicatorData[]): IndicatorData[] {
@@ -319,6 +330,32 @@ export async function fetchStrategyMnavData(forceRefresh = false): Promise<Strat
   } catch (error) {
     console.error('[DataService] Error fetching Strategy mNAV data:', error);
     return cache.strategyMnav;
+  }
+}
+
+export async function fetchStrategyMnavHistory(forceRefresh = false): Promise<StrategyMnavHistoryPoint[]> {
+  const now = Date.now();
+  if (
+    !forceRefresh
+    && cache.strategyMnavHistory.length > 0
+    && (now - cache.strategyMnavHistoryTimestamp) < MANIFEST_CACHE_DURATION
+  ) {
+    return cache.strategyMnavHistory;
+  }
+
+  try {
+    const raw = await fetchStaticStrategyMnavHistoryRaw();
+    const history = raw
+      .map((item) => normalizeStrategyMnavHistoryPoint(item))
+      .filter((item): item is StrategyMnavHistoryPoint => item !== null)
+      .sort((left, right) => left.date.localeCompare(right.date));
+
+    cache.strategyMnavHistory = history;
+    cache.strategyMnavHistoryTimestamp = now;
+    return history;
+  } catch (error) {
+    console.error('[DataService] Error fetching Strategy mNAV history:', error);
+    return cache.strategyMnavHistory;
   }
 }
 

@@ -103,6 +103,7 @@ jobs:
           python validate_strategy_mnav.py \
             --current-latest app/public/strategy_mnav_latest.json \
             --current-history app/public/strategy_mnav_history.json \
+            --min-history-rows 250 \
             --max-mstr-lag-days 7 \
             --max-btc-lag-hours 36
 

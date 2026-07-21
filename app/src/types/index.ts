@@ -376,6 +376,26 @@ export interface StrategyMnavData {
   };
 }
 
+export interface StrategyMnavHistoryPoint {
+  date: string;
+  generatedAt?: string;
+  value: number;
+  band?: string;
+  riskFlag?: string;
+  enterpriseValueUsdM?: number;
+  btcReserveUsdM?: number;
+  marketCapUsdM?: number;
+  equityPremium?: number;
+  mstrPrice?: number;
+  btcPrice?: number;
+  btcHoldings?: number;
+  satsPerShare?: number;
+  mstrTimestampUtc?: string;
+  btcTimestamp?: string;
+  source?: string;
+  observationType?: string;
+}
+
 export type TimeRange = '1w' | '1m' | '6m' | '1y' | 'all';
 
 export interface ChartDataPoint {
