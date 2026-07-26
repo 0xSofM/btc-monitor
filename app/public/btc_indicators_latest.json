@@ -1,11 +1,11 @@
 {
   "date": "2026-07-26",
   "unixTs": 1785024000,
-  "btcPrice": 64446.02,
-  "ma200w": 63216.80006497099,
-  "realizedPrice": 52430.87,
-  "priceMa200wRatio": 1.019444513701511,
-  "priceRealizedRatio": 1.2291617514643567,
+  "btcPrice": 64350.88,
+  "ma200w": 63248.5819291444,
+  "realizedPrice": 52470.83,
+  "priceMa200wRatio": 1.0174280282218893,
+  "priceRealizedRatio": 1.226412465745253,
   "reserveRisk": 0.0005112718,
   "mvrvZscore": 0.3894,
   "nupl": 0.1848,
@@ -15,7 +15,7 @@
   "lthSopr": 1.1753,
   "lthSoprMa3": 1.1753,
   "sthMvrv": 0.95,
-  "puellMultiple": 0.7455714286,
+  "puellMultiple": 0.7265714286,
   "signalCount": 1,
   "activeIndicatorCount": 5,
   "signalCountV4": 0,
@@ -47,10 +47,10 @@
   "totalScoreV6Min3d": 0.0,
   "signalConfirmed3dV6": false,
   "signalBandV6": "watch",
-  "signalConfidence": 0.1607,
-  "signalConfidenceV6": 0.1286,
-  "dataFreshnessScore": 0.5357142857142858,
-  "dataFreshnessScoreV6": 0.4285714285714286,
+  "signalConfidence": 0.1714,
+  "signalConfidenceV6": 0.1339,
+  "dataFreshnessScore": 0.5714285714285714,
+  "dataFreshnessScoreV6": 0.44642857142857145,
   "signalScoreV2": 2,
   "signalScoreV2Min3d": 2.0,
   "signalConfirmed3d": false,
@@ -105,7 +105,7 @@
   "indicatorLagDays": {
     "btcPrice": 0.0,
     "ma200w": 0.0,
-    "realizedPrice": 2.0,
+    "realizedPrice": 1.0,
     "reserveRisk": 1.0,
     "lthMvrv": 7.0,
     "lthSopr": 7.0,
@@ -113,7 +113,7 @@
     "nupl": 1.0,
     "sthSopr": 7.0,
     "sthMvrv": 7.0,
-    "puell": 2.0
+    "puell": 1.0
   },
   "fallbackMode": "none",
   "fallbackModeV6": "none",
@@ -151,7 +151,7 @@
   },
   "api_data_date": {
     "price_ma200w": "2026-07-26",
-    "price_realized": "2026-07-24",
+    "price_realized": "2026-07-25",
     "reserve_risk": "2026-07-25",
     "lth_mvrv": "2026-07-19",
     "lth_sopr": "2026-07-19",
@@ -159,12 +159,12 @@
     "nupl": "2026-07-25",
     "sth_sopr": "2026-07-19",
     "sth_mvrv": "2026-07-19",
-    "puell": "2026-07-24"
+    "puell": "2026-07-25"
   },
   "indicatorDates": {
     "btcPrice": "2026-07-26",
     "priceMa200w": "2026-07-26",
-    "priceRealized": "2026-07-24",
+    "priceRealized": "2026-07-25",
     "reserveRisk": "2026-07-25",
     "lthMvrv": "2026-07-19",
     "lthSopr": "2026-07-19",
@@ -172,7 +172,7 @@
     "nupl": "2026-07-25",
     "sthSopr": "2026-07-19",
     "sthMvrv": "2026-07-19",
-    "puell": "2026-07-24"
+    "puell": "2026-07-25"
   },
   "indicatorSet": "core8_bottom_independent_valuation_current",
   "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -371,7 +371,7 @@
   },
   "scoringModelVersion": "core8_independent_valuation_current",
   "legacyScoringModelVersion": "v3_no_lookahead_replacement",
-  "lastUpdated": "2026-07-26T03:51:38.966691+00:00",
+  "lastUpdated": "2026-07-26T08:38:27.071853+00:00",
   "canonical": {
     "model": "core8_independent_valuation",
     "displayIndicators": [
@@ -399,7 +399,7 @@
       "maxTotal": 14,
       "band": "watch",
       "confirmed3d": false,
-      "confidence": 0.1286
+      "confidence": 0.1339
     },
     "signals": {
       "priceMa200w": false,
