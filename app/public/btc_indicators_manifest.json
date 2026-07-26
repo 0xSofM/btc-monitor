@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-26T13:52:17.453112+00:00",
+  "generatedAt": "2026-07-26T19:32:35.823870+00:00",
   "latestDate": "2026-07-26",
-  "lastUpdated": "2026-07-26T13:52:17.445975+00:00",
+  "lastUpdated": "2026-07-26T19:32:35.810573+00:00",
   "historyRows": 5534,
   "historyLightRows": 890,
   "historyFiles": {
@@ -387,11 +387,11 @@
     "officialHistoryRows": 28,
     "historySource": "strategy_official_timeseries",
     "historySourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav",
-    "mnav": 0.9881,
+    "mnav": 0.9849,
     "band": "discount",
     "riskFlag": "stress",
     "isStale": false,
     "mstrTimestampUtc": "2026-07-24T20:00:00",
-    "btcTimestamp": "2026-07-26T13:52:00"
+    "btcTimestamp": "2026-07-26T19:32:00"
   }
 }
