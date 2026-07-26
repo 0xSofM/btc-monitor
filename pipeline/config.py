@@ -41,6 +41,9 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
         "fallback_urls": [
             "https://charts.bgeometrics.com/files/mvrv_zscore.json",
         ],
+        "history_urls": [
+            "https://bitcoin-data.com/v1/mvrv-zscore",
+        ],
     },
     "nupl": {
         "display_name": "NUPL",

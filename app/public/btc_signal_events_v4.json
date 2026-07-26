@@ -26,7 +26,7 @@
     "return30d": -0.008604,
     "return90d": -0.137788,
     "return180d": 0.185125,
-    "return365d": 0.310986
+    "return365d": 0.305793
   },
   {
     "startDate": "2022-09-08",
@@ -55,7 +55,7 @@
     "return30d": 0.005024,
     "return90d": -0.127898,
     "return180d": 0.147808,
-    "return365d": 0.340884
+    "return365d": 0.371824
   },
   {
     "startDate": "2022-09-16",
@@ -83,8 +83,8 @@
     "minPriceDuringEvent": 18506.7607481005,
     "return30d": -0.024305,
     "return90d": -0.121445,
-    "return180d": 0.010627,
-    "return365d": 0.345163
+    "return180d": 0.427079,
+    "return365d": 0.331647
   },
   {
     "startDate": "2022-10-08",
@@ -112,8 +112,8 @@
     "minPriceDuringEvent": 19416.1772291058,
     "return30d": 0.059352,
     "return90d": -0.126612,
-    "return180d": 0.444624,
-    "return365d": 0.438817
+    "return180d": 0.564202,
+    "return365d": 0.464408
   },
   {
     "startDate": "2022-10-12",
@@ -141,8 +141,8 @@
     "minPriceDuringEvent": 19069.8749272355,
     "return30d": -0.116932,
     "return90d": -0.089941,
-    "return180d": 0.549705,
-    "return365d": 0.395911
+    "return180d": 0.538322,
+    "return365d": 0.561971
   },
   {
     "startDate": "2022-10-23",
@@ -170,8 +170,8 @@
     "minPriceDuringEvent": 19341.460210111,
     "return30d": -0.173394,
     "return90d": 0.165484,
-    "return180d": 0.394912,
-    "return365d": 0.684307
+    "return180d": 0.500138,
+    "return365d": 0.81095
   },
   {
     "startDate": "2022-11-10",
@@ -199,7 +199,7 @@
     "minPriceDuringEvent": 15778.0174047341,
     "return30d": -0.023792,
     "return90d": 0.307613,
-    "return180d": 0.575825,
-    "return365d": 1.130226
+    "return180d": 0.540668,
+    "return365d": 1.134515
   }
 ]

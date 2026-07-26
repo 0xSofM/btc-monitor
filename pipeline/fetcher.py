@@ -302,6 +302,94 @@ def merge_metric_history_sources(
     )
 
 
+def parse_mvrv_zscore_history_series(raw_rows: object) -> pd.DataFrame:
+    """Parse MVRV Z-Score history from bitcoin-data.com dict-list format."""
+    if not isinstance(raw_rows, list):
+        return pd.DataFrame(columns=["date", "mvrv_zscore"])
+
+    if raw_rows and isinstance(raw_rows[0], list):
+        return parse_series("mvrv_zscore", raw_rows)
+
+    parsed: List[Dict[str, object]] = []
+    for row in raw_rows:
+        if not isinstance(row, dict):
+            continue
+
+        date_raw = _safe_iso_date(row.get("d"))
+        if not date_raw:
+            continue
+
+        try:
+            date_value = pd.to_datetime(date_raw)
+        except Exception:
+            continue
+
+        parsed.append(
+            {
+                "date": date_value,
+                "mvrv_zscore": _safe_float(row.get("mvrvZscore")),
+            }
+        )
+
+    if not parsed:
+        return pd.DataFrame(columns=["date", "mvrv_zscore"])
+
+    df = pd.DataFrame(parsed)
+    return df.sort_values("date").groupby("date", as_index=False).last()
+
+
+def fetch_mvrv_zscore_series(config: Dict[str, object]) -> Tuple[pd.DataFrame, str]:
+    """Fetch MVRV Z-Score history; try BGeometrics primary, then bitcoin-data.com.
+
+    bitcoin-data.com rate-limits aggressively, so we add a delay before
+    that request and use extra retries with longer backoff.
+    """
+    source_frames: List[Tuple[pd.DataFrame, int]] = []
+    selected_sources: List[str] = []
+    errors: List[str] = []
+
+    urls = [str(config["url"])] + [str(x) for x in config.get("fallback_urls", [])]
+    for url in urls:
+        try:
+            raw_data = fetch_json(url)
+            df = parse_series("mvrv_zscore", raw_data)
+            if not df.empty:
+                source_frames.append((df, 0))
+                selected_sources.append(url)
+                break
+            errors.append(f"{url} -> empty MVRV Z-Score chart series")
+        except Exception as exc:
+            errors.append(f"{url} -> {exc}")
+
+    # bitcoin-data.com is rate-limited; add a quiet period before attempting
+    # and use more retries with a longer backoff.
+    for url in [str(x) for x in config.get("history_urls", [])]:
+        time.sleep(3.0)
+        for attempt in range(1, MAX_RETRIES + 2):
+            try:
+                payload = fetch_json_payload(url)
+                df = parse_mvrv_zscore_history_series(payload)
+                if not df.empty:
+                    source_frames.append((df, 1))
+                    selected_sources.append(url)
+                else:
+                    errors.append(f"{url} -> empty MVRV Z-Score history")
+                break
+            except Exception as exc:
+                errors.append(f"{url} -> {exc}")
+                if attempt == MAX_RETRIES + 1:
+                    break
+                wait_sec = RETRY_BACKOFF_SEC * attempt * 2
+                time.sleep(wait_sec)
+
+    merged = merge_metric_history_sources("mvrv_zscore", source_frames)
+    if merged.empty:
+        last_error = " | ".join(errors[-3:]) if errors else "no usable source"
+        raise RuntimeError(f"Failed to fetch mvrv_zscore: {last_error}")
+
+    return merged, " + ".join(selected_sources)
+
+
 def fetch_nupl_series(config: Dict[str, object]) -> Tuple[pd.DataFrame, str]:
     """Fetch NUPL long history and patch the newest tail from bitcoin-data."""
     source_frames: List[Tuple[pd.DataFrame, int]] = []
@@ -946,6 +1034,22 @@ def build_base_dataframe(
     print("BTC Indicators History (multi-source with live price)")
     print("=" * 72)
 
+    # Pre-fetch MVRV Z-Score from bitcoin-data.com before the parallel burst,
+    # so we avoid the aggressive rate limit on unauthenticated requests.
+    mvrv_zscore_bd_df: pd.DataFrame | None = None
+    mvrv_zscore_bd_label: str | None = None
+    print("Pre-fetching MVRV Z-Score from bitcoin-data.com ...")
+    time.sleep(2.0)
+    try:
+        bd_payload = fetch_json_payload("https://bitcoin-data.com/v1/mvrv-zscore")
+        bd_df = parse_mvrv_zscore_history_series(bd_payload)
+        if not bd_df.empty:
+            mvrv_zscore_bd_df = bd_df
+            mvrv_zscore_bd_label = "https://bitcoin-data.com/v1/mvrv-zscore"
+            print(f"  bitcoin-data.com MVRV Z-Score: {len(bd_df)} rows, latest={bd_df['date'].max().date()}")
+    except Exception as exc:
+        print(f"  bitcoin-data.com MVRV Z-Score unavailable: {exc}")
+
     # Fetch all indicators except ma200w (we self-compute it from btc_price)
     fetch_keys = [k for k in SERIES_CONFIG if k != "ma200w"]
     futures = {}
@@ -1011,6 +1115,24 @@ def build_base_dataframe(
         dfs["ma200w"] = ma200w_df
         selected_sources["ma200w"] = "self_computed_from_btc_price"
         print(f"  Rows: {len(ma200w_df):,} | Source: self-computed (1400-day SMA)")
+
+    # Merge pre-fetched bitcoin-data.com MVRV Z-Score into the BGeometrics data.
+    if mvrv_zscore_bd_df is not None and "mvrv_zscore" in dfs and not dfs["mvrv_zscore"].empty:
+        merged_df = merge_metric_history_sources(
+            "mvrv_zscore",
+            [
+                (dfs["mvrv_zscore"], 0),
+                (mvrv_zscore_bd_df, 1),
+            ],
+        )
+        if not merged_df.empty:
+            dfs["mvrv_zscore"] = merged_df
+            current_source = selected_sources.get("mvrv_zscore", "?")
+            selected_sources["mvrv_zscore"] = f"{current_source} + {mvrv_zscore_bd_label}"
+            print(
+                f"  Patched MVRV Z-Score with bitcoin-data.com: "
+                f"{len(mvrv_zscore_bd_df)} rows"
+            )
 
     print("Fetching Reserve Risk ...")
     reserve_df, reserve_source_label, reserve_primary_last_date, reserve_risk_diagnostics = (
