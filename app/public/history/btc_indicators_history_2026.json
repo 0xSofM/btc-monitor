@@ -35846,11 +35846,11 @@
   {
     "d": "2026-07-26",
     "unixTs": 1785024000,
-    "btcPrice": 64331.3274596727,
-    "ma200w": 63216.71814172789,
+    "btcPrice": 64423.88,
+    "ma200w": 63248.63407200154,
     "realizedPrice": 52468.49,
-    "priceMa200wRatio": 1.0176315593518461,
-    "priceRealizedRatio": 1.226094508526407,
+    "priceMa200wRatio": 1.0185813645660802,
+    "priceRealizedRatio": 1.2278584727709907,
     "reserveRisk": 0.000519236,
     "lthMvrv": 1.32,
     "lthSopr": 1.0455,
@@ -35860,7 +35860,7 @@
     "sthSopr": 1.0025,
     "sthSoprMa3": 1.0025,
     "sthMvrv": 0.96,
-    "puellMultiple": 0.7265714286,
+    "puellMultiple": 0.7141428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": true,
@@ -35929,10 +35929,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.1741,
-    "signalConfidenceV6": 0.1473,
-    "dataFreshnessScore": 0.5803571428571428,
-    "dataFreshnessScoreV6": 0.49107142857142855,
+    "signalConfidence": 0.2036,
+    "signalConfidenceV6": 0.1714,
+    "dataFreshnessScore": 0.6785714285714286,
+    "dataFreshnessScoreV6": 0.5714285714285714,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.00058096856,
@@ -35993,7 +35993,7 @@
     "scoringModelVersion": "core8_independent_valuation_current",
     "legacyScoringModelVersion": "v3_no_lookahead_replacement",
     "api_data_date": {
-      "price_ma200w": "2026-07-25",
+      "price_ma200w": "2026-07-26",
       "price_realized": "2026-07-26",
       "reserve_risk": "2026-07-26",
       "lth_mvrv": "2026-07-20",
@@ -36002,10 +36002,10 @@
       "nupl": "2026-07-26",
       "sth_sopr": "2026-07-20",
       "sth_mvrv": "2026-07-20",
-      "puell": "2026-07-25"
+      "puell": "2026-07-26"
     },
     "indicatorDates": {
-      "priceMa200w": "2026-07-25",
+      "priceMa200w": "2026-07-26",
       "priceRealized": "2026-07-26",
       "reserveRisk": "2026-07-26",
       "lthMvrv": "2026-07-20",
@@ -36014,17 +36014,17 @@
       "nupl": "2026-07-26",
       "sthSopr": "2026-07-20",
       "sthMvrv": "2026-07-20",
-      "puell": "2026-07-25"
+      "puell": "2026-07-26"
     }
   },
   {
     "d": "2026-07-27",
     "unixTs": 1785110400,
-    "btcPrice": 65083.04,
-    "ma200w": 63249.10490057298,
+    "btcPrice": 64533.89,
+    "ma200w": 63280.35777746869,
     "realizedPrice": 52468.49,
-    "priceMa200wRatio": 1.0289954316714829,
-    "priceRealizedRatio": 1.2404214415166133,
+    "priceMa200wRatio": 1.0198091835532832,
+    "priceRealizedRatio": 1.2299551597539782,
     "reserveRisk": 0.000519236,
     "lthMvrv": 1.32,
     "lthSopr": 1.0455,
@@ -36034,7 +36034,7 @@
     "sthSopr": 1.0025,
     "sthSoprMa3": 1.0025,
     "sthMvrv": 0.96,
-    "puellMultiple": 0.7265714286,
+    "puellMultiple": 0.7141428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": true,
@@ -36103,10 +36103,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.1661,
-    "signalConfidenceV6": 0.1286,
-    "dataFreshnessScore": 0.5535714285714286,
-    "dataFreshnessScoreV6": 0.4285714285714286,
+    "signalConfidence": 0.1714,
+    "signalConfidenceV6": 0.1339,
+    "dataFreshnessScore": 0.5714285714285714,
+    "dataFreshnessScoreV6": 0.44642857142857145,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.00058084402,
@@ -36176,7 +36176,7 @@
       "nupl": "2026-07-26",
       "sth_sopr": "2026-07-20",
       "sth_mvrv": "2026-07-20",
-      "puell": "2026-07-25"
+      "puell": "2026-07-26"
     },
     "indicatorDates": {
       "priceMa200w": "2026-07-27",
@@ -36188,7 +36188,7 @@
       "nupl": "2026-07-26",
       "sthSopr": "2026-07-20",
       "sthMvrv": "2026-07-20",
-      "puell": "2026-07-25"
+      "puell": "2026-07-26"
     }
   }
 ]

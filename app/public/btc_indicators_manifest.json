@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-27T10:07:06.916326+00:00",
+  "generatedAt": "2026-07-27T15:10:51.131580+00:00",
   "latestDate": "2026-07-27",
-  "lastUpdated": "2026-07-27T10:07:06.904208+00:00",
+  "lastUpdated": "2026-07-27T15:10:51.119472+00:00",
   "historyRows": 5535,
   "historyLightRows": 890,
   "historyFiles": {
@@ -164,9 +164,9 @@
   },
   "sourceHealth": {
     "btc_price": {
-      "source": "https://charts.bgeometrics.com/files/moving_average_price.json + live (blockchain_info_stats)",
+      "source": "https://charts.bgeometrics.com/files/moving_average_price.json + live (blockchain_info_stats, updated)",
       "rows": 5535,
-      "nonNullRows": 5111,
+      "nonNullRows": 5112,
       "latestDate": "2026-07-27",
       "latestNonNullDate": "2026-07-27",
       "status": "healthy"
@@ -230,15 +230,15 @@
     "puell_multiple": {
       "source": "https://charts.bgeometrics.com/files/puell_multiple_data.json",
       "rows": 5535,
-      "nonNullRows": 5175,
+      "nonNullRows": 5176,
       "latestDate": "2026-07-27",
-      "latestNonNullDate": "2026-07-25",
+      "latestNonNullDate": "2026-07-26",
       "status": "healthy"
     },
     "ma200w": {
       "source": "self_computed_from_btc_price",
       "rows": 5535,
-      "nonNullRows": 4747,
+      "nonNullRows": 4748,
       "latestDate": "2026-07-27",
       "latestNonNullDate": "2026-07-27",
       "status": "healthy"
@@ -264,13 +264,13 @@
       "nupl": 1.0,
       "sthSopr": 7.0,
       "sthMvrv": 7.0,
-      "puell": 2.0
+      "puell": 1.0
     },
     "staleIndicators": [],
     "inactiveIndicators": [],
     "fallbackModeV6": "none",
-    "dataFreshnessScoreV6": 0.4285714285714286,
-    "signalConfidenceV6": 0.1286
+    "dataFreshnessScoreV6": 0.44642857142857145,
+    "signalConfidenceV6": 0.1339
   },
   "schemaContract": {
     "canonicalModel": "core8_independent_valuation",
@@ -384,14 +384,14 @@
     "latestDate": "2026-07-27",
     "historyStartDate": "2024-12-31",
     "historyRows": 405,
-    "officialHistoryRows": 28,
+    "officialHistoryRows": 29,
     "historySource": "strategy_official_timeseries",
     "historySourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav",
-    "mnav": 0.9775,
-    "band": "discount",
-    "riskFlag": "stress",
+    "mnav": 1.0227,
+    "band": "low_premium",
+    "riskFlag": "normal",
     "isStale": false,
-    "mstrTimestampUtc": "2026-07-24T20:00:00",
-    "btcTimestamp": "2026-07-27T10:06:00"
+    "mstrTimestampUtc": "2026-07-27T15:10:00",
+    "btcTimestamp": "2026-07-27T15:10:00"
   }
 }

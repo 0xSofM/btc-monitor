@@ -1,11 +1,11 @@
 {
   "date": "2026-07-27",
   "unixTs": 1785110400,
-  "btcPrice": 65083.04,
-  "ma200w": 63249.10490057298,
+  "btcPrice": 64533.89,
+  "ma200w": 63280.35777746869,
   "realizedPrice": 52468.49,
-  "priceMa200wRatio": 1.0289954316714829,
-  "priceRealizedRatio": 1.2404214415166133,
+  "priceMa200wRatio": 1.0198091835532832,
+  "priceRealizedRatio": 1.2299551597539782,
   "reserveRisk": 0.000519236,
   "mvrvZscore": 0.3954,
   "nupl": 0.1977,
@@ -15,7 +15,7 @@
   "lthSopr": 1.0455,
   "lthSoprMa3": 1.0455,
   "sthMvrv": 0.96,
-  "puellMultiple": 0.7265714286,
+  "puellMultiple": 0.7141428571,
   "signalCount": 1,
   "activeIndicatorCount": 5,
   "signalCountV4": 0,
@@ -47,10 +47,10 @@
   "totalScoreV6Min3d": 0.0,
   "signalConfirmed3dV6": false,
   "signalBandV6": "watch",
-  "signalConfidence": 0.1661,
-  "signalConfidenceV6": 0.1286,
-  "dataFreshnessScore": 0.5535714285714286,
-  "dataFreshnessScoreV6": 0.4285714285714286,
+  "signalConfidence": 0.1714,
+  "signalConfidenceV6": 0.1339,
+  "dataFreshnessScore": 0.5714285714285714,
+  "dataFreshnessScoreV6": 0.44642857142857145,
   "signalScoreV2": 2,
   "signalScoreV2Min3d": 2.0,
   "signalConfirmed3d": false,
@@ -113,7 +113,7 @@
     "nupl": 1.0,
     "sthSopr": 7.0,
     "sthMvrv": 7.0,
-    "puell": 2.0
+    "puell": 1.0
   },
   "fallbackMode": "none",
   "fallbackModeV6": "none",
@@ -159,7 +159,7 @@
     "nupl": "2026-07-26",
     "sth_sopr": "2026-07-20",
     "sth_mvrv": "2026-07-20",
-    "puell": "2026-07-25"
+    "puell": "2026-07-26"
   },
   "indicatorDates": {
     "btcPrice": "2026-07-27",
@@ -172,7 +172,7 @@
     "nupl": "2026-07-26",
     "sthSopr": "2026-07-20",
     "sthMvrv": "2026-07-20",
-    "puell": "2026-07-25"
+    "puell": "2026-07-26"
   },
   "indicatorSet": "core8_bottom_independent_valuation_current",
   "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -371,7 +371,7 @@
   },
   "scoringModelVersion": "core8_independent_valuation_current",
   "legacyScoringModelVersion": "v3_no_lookahead_replacement",
-  "lastUpdated": "2026-07-27T10:07:06.904208+00:00",
+  "lastUpdated": "2026-07-27T15:10:51.119472+00:00",
   "canonical": {
     "model": "core8_independent_valuation",
     "displayIndicators": [
@@ -399,7 +399,7 @@
       "maxTotal": 14,
       "band": "watch",
       "confirmed3d": false,
-      "confidence": 0.1286
+      "confidence": 0.1339
     },
     "signals": {
       "priceMa200w": false,
