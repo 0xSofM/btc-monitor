@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-27T03:59:00.590166+00:00",
+  "generatedAt": "2026-07-27T10:07:06.916326+00:00",
   "latestDate": "2026-07-27",
-  "lastUpdated": "2026-07-27T03:59:00.576066+00:00",
+  "lastUpdated": "2026-07-27T10:07:06.904208+00:00",
   "historyRows": 5535,
   "historyLightRows": 890,
   "historyFiles": {
@@ -174,9 +174,9 @@
     "realized_price": {
       "source": "https://charts.bgeometrics.com/files/realized_price.json",
       "rows": 5535,
-      "nonNullRows": 5523,
+      "nonNullRows": 5524,
       "latestDate": "2026-07-27",
-      "latestNonNullDate": "2026-07-25",
+      "latestNonNullDate": "2026-07-26",
       "status": "healthy"
     },
     "lth_mvrv": {
@@ -256,7 +256,7 @@
     "indicatorLagDays": {
       "btcPrice": 0.0,
       "ma200w": 0.0,
-      "realizedPrice": 2.0,
+      "realizedPrice": 1.0,
       "reserveRisk": 1.0,
       "lthMvrv": 7.0,
       "lthSopr": 7.0,
@@ -387,11 +387,11 @@
     "officialHistoryRows": 28,
     "historySource": "strategy_official_timeseries",
     "historySourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav",
-    "mnav": 0.9767,
+    "mnav": 0.9775,
     "band": "discount",
     "riskFlag": "stress",
     "isStale": false,
     "mstrTimestampUtc": "2026-07-24T20:00:00",
-    "btcTimestamp": "2026-07-27T03:58:00"
+    "btcTimestamp": "2026-07-27T10:06:00"
   }
 }
