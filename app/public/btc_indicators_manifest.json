@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-04T08:52:03.261370+00:00",
+  "generatedAt": "2026-08-04T14:37:12.262105+00:00",
   "latestDate": "2026-08-04",
-  "lastUpdated": "2026-08-04T08:52:03.250803+00:00",
+  "lastUpdated": "2026-08-04T14:37:12.250059+00:00",
   "historyRows": 5543,
   "historyLightRows": 891,
   "historyFiles": {
@@ -384,14 +384,14 @@
     "latestDate": "2026-08-04",
     "historyStartDate": "2024-12-31",
     "historyRows": 413,
-    "officialHistoryRows": 34,
+    "officialHistoryRows": 35,
     "historySource": "strategy_official_timeseries",
     "historySourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav",
-    "mnav": 1.0254,
+    "mnav": 1.0214,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
-    "mstrTimestampUtc": "2026-08-03T20:00:00",
-    "btcTimestamp": "2026-08-04T08:51:00"
+    "mstrTimestampUtc": "2026-08-04T14:36:00",
+    "btcTimestamp": "2026-08-04T14:36:00"
   }
 }
