@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-11T13:38:22.554655+00:00",
+  "generatedAt": "2026-08-11T19:17:20.555184+00:00",
   "latestDate": "2026-08-11",
-  "lastUpdated": "2026-08-11T13:38:22.544848+00:00",
+  "lastUpdated": "2026-08-11T19:17:20.542603+00:00",
   "historyRows": 5550,
   "historyLightRows": 891,
   "historyFiles": {
@@ -109,7 +109,7 @@
   "thresholdVersion": "v4_dynamic",
   "activeIndicatorCountV6": 8,
   "maxTotalScoreV6": 14,
-  "totalScoreV6": 0,
+  "totalScoreV6": 1,
   "dynamicThresholds": {
     "reserveRisk": {
       "trigger": 0.00057869352,
@@ -270,7 +270,7 @@
     "inactiveIndicators": [],
     "fallbackModeV6": "none",
     "dataFreshnessScoreV6": 0.44642857142857145,
-    "signalConfidenceV6": 0.1339
+    "signalConfidenceV6": 0.1696
   },
   "schemaContract": {
     "canonicalModel": "core8_independent_valuation",
@@ -387,11 +387,11 @@
     "officialHistoryRows": 40,
     "historySource": "strategy_official_timeseries",
     "historySourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav",
-    "mnav": 1.0392,
+    "mnav": 1.0382,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
-    "mstrTimestampUtc": "2026-08-11T13:38:00",
-    "btcTimestamp": "2026-08-11T13:38:00"
+    "mstrTimestampUtc": "2026-08-11T19:17:00",
+    "btcTimestamp": "2026-08-11T19:17:00"
   }
 }
