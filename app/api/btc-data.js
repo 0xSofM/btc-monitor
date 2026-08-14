@@ -21,6 +21,7 @@ import {
   DEFAULT_THRESHOLDS,
   FRESHNESS_LIMITS,
   INDICATOR_ROUTE_MAP,
+  LTH_STH_POINT_BACKUP_URLS,
   MVRV_ZSCORE_BACKUP_URLS,
   NUPL_BACKUP_URLS,
   RESERVE_RISK_BACKUP_URLS,
@@ -658,6 +659,63 @@ async function fetchMvrvZscoreBackupPoint() {
 
 // SECTION: checkonchain fallback (heavy pre-rendered Plotly pages)
 
+function parseBitcoinDataPointPayload(payload, field) {
+  let point = null;
+
+  if (payload && typeof payload === 'object' && !Array.isArray(payload) && 'd' in payload && field in payload) {
+    point = payload;
+  } else if (Array.isArray(payload) && payload.length > 0) {
+    const candidate = payload[payload.length - 1];
+    if (candidate && typeof candidate === 'object') {
+      point = candidate;
+    }
+  }
+
+  if (!point) {
+    return null;
+  }
+
+  const date = asString(point.d);
+  const value = toNumberOrNull(point[field]);
+  if (!date || value === null) {
+    return null;
+  }
+
+  return buildPoint(date, value, `${field}_backup`);
+}
+
+async function fetchBitcoinDataBackupPoints(keys) {
+  const results = {};
+
+  await Promise.all(keys.map(async (key) => {
+    const urls = LTH_STH_POINT_BACKUP_URLS[key];
+    if (!Array.isArray(urls)) {
+      return;
+    }
+
+    for (const url of urls) {
+      const text = await fetchTextSafely(url, null, {
+        headers: {
+          'User-Agent': 'btc-monitor',
+        },
+      });
+
+      if (!text) {
+        continue;
+      }
+
+      const payload = extractJsonPayload(text);
+      const point = parseBitcoinDataPointPayload(payload, key);
+      if (point) {
+        results[key] = point;
+        return;
+      }
+    }
+  }));
+
+  return results;
+}
+
 function extractBalancedJson(text, startIndex) {
   const stack = [];
   let inString = false;
@@ -964,8 +1022,10 @@ async function fetchRuntimeInputs(request) {
   const resolvedNuplPoint = pickNewerPoint(nuplFilePoint, nuplBackupPoint);
   const resolvedMvrvZscorePoint = pickNewerPoint(mvrvZscorePoint, mvrvZscoreBackupPoint);
 
-  // Heavy fallback: only consult checkonchain pages when a primary point is
-  // missing or older than the trigger window (avoids large downloads otherwise).
+  // Backup tiers: only consult them when a primary point is missing or older
+  // than the trigger window (avoids extra upstream load otherwise).
+  // Tier 1: light bitcoin-data.com latest-point endpoints; tier 2: heavy
+  // checkonchain pages (only for keys tier 1 could not resolve).
   const primaryByKey = {
     lthMvrv: lthMvrvPoint,
     lthSopr: lthSoprPoint,
@@ -977,13 +1037,18 @@ async function fetchRuntimeInputs(request) {
     const lagDays = daysBetween(todayUtc, primaryByKey[key]?.d);
     return lagDays === null || lagDays > CHECKONCHAIN_STALE_TRIGGER_DAYS;
   });
-  const checkonchainPoints = staleKeys.length > 0
-    ? await fetchCheckonchainBackupPoints(staleKeys)
+  const bitcoinDataPoints = staleKeys.length > 0
+    ? await fetchBitcoinDataBackupPoints(staleKeys)
     : {};
-  const resolvedLthMvrvPoint = pickNewerPoint(lthMvrvPoint, checkonchainPoints.lthMvrv ?? null);
-  const resolvedLthSoprPoint = pickNewerPoint(lthSoprPoint, checkonchainPoints.lthSopr ?? null);
-  const resolvedSthSoprPoint = pickNewerPoint(sthSoprPoint, checkonchainPoints.sthSopr ?? null);
-  const resolvedSthMvrvPoint = pickNewerPoint(sthMvrvPoint, checkonchainPoints.sthMvrv ?? null);
+  const stillNeededKeys = staleKeys.filter((key) => !bitcoinDataPoints[key]);
+  const checkonchainPoints = stillNeededKeys.length > 0
+    ? await fetchCheckonchainBackupPoints(stillNeededKeys)
+    : {};
+  const backupByKey = { ...checkonchainPoints, ...bitcoinDataPoints };
+  const resolvedLthMvrvPoint = pickNewerPoint(lthMvrvPoint, backupByKey.lthMvrv ?? null);
+  const resolvedLthSoprPoint = pickNewerPoint(lthSoprPoint, backupByKey.lthSopr ?? null);
+  const resolvedSthSoprPoint = pickNewerPoint(sthSoprPoint, backupByKey.sthSopr ?? null);
+  const resolvedSthMvrvPoint = pickNewerPoint(sthMvrvPoint, backupByKey.sthMvrv ?? null);
 
   return {
     staticLatest,
@@ -1651,12 +1716,17 @@ async function fetchIndicatorRoute(path, request) {
   } else if (['lthMvrv', 'lthSopr', 'sthSopr', 'sthMvrv'].includes(routeConfig.seriesKey)) {
     const key = routeConfig.seriesKey;
     const primary = await fetchLatestFilePoint(key);
-    // Consult the heavy checkonchain page only when the primary lags.
+    // Consult backups only when the primary lags; light tier first, then heavy.
     const lagDays = daysBetween(getTodayUtcDate(), primary?.d);
-    const backup = (lagDays === null || lagDays > CHECKONCHAIN_STALE_TRIGGER_DAYS)
-      ? (await fetchCheckonchainBackupPoints([key]))[key] ?? null
-      : null;
-    point = pickNewerPoint(primary, backup);
+    if (lagDays === null || lagDays > CHECKONCHAIN_STALE_TRIGGER_DAYS) {
+      const bdPoints = await fetchBitcoinDataBackupPoints([key]);
+      const backup = bdPoints[key]
+        ?? (await fetchCheckonchainBackupPoints([key]))[key]
+        ?? null;
+      point = pickNewerPoint(primary, backup);
+    } else {
+      point = primary;
+    }
   } else {
     point = await fetchLatestFilePoint(routeConfig.seriesKey);
   }

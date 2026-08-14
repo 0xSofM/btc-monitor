@@ -102,6 +102,31 @@ export const CHECKONCHAIN_CHARTS = {
 /** Only consult the heavy checkonchain fallback when the primary lags this many days. */
 export const CHECKONCHAIN_STALE_TRIGGER_DAYS = 6;
 
+/**
+ * Light latest-point backups on bitcoin-data.com for the LTH/STH metrics.
+ * Response field name matches the seriesKey:
+ *   GET /v1/lth-mvrv/last -> {"d":"2026-08-13","unixTs":...,"lthMvrv":1.29}
+ * (The `{last}` path parameter takes the literal "last", not "1".)
+ */
+export const LTH_STH_POINT_BACKUP_URLS = {
+  lthMvrv: [
+    'https://bitcoin-data.com/v1/lth-mvrv/last',
+    'https://r.jina.ai/http://bitcoin-data.com/v1/lth-mvrv/last',
+  ],
+  lthSopr: [
+    'https://bitcoin-data.com/v1/lth-sopr/last',
+    'https://r.jina.ai/http://bitcoin-data.com/v1/lth-sopr/last',
+  ],
+  sthSopr: [
+    'https://bitcoin-data.com/v1/sth-sopr/last',
+    'https://r.jina.ai/http://bitcoin-data.com/v1/sth-sopr/last',
+  ],
+  sthMvrv: [
+    'https://bitcoin-data.com/v1/sth-mvrv/last',
+    'https://r.jina.ai/http://bitcoin-data.com/v1/sth-mvrv/last',
+  ],
+};
+
 export const INDICATOR_ROUTE_MAP = {
   '/btc-data/v1/mvrv-zscore/1': { seriesKey: 'mvrvZscore', dataKey: 'mvrvZscore', dateKey: 'mvrvZscore' },
   '/btc-data/v1/nupl/1': { seriesKey: 'nupl', dataKey: 'nupl', dateKey: 'nupl' },
