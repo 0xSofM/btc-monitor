@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import base64
 import json
 import math
 import re
+import struct
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
@@ -14,6 +17,8 @@ import pandas as pd
 import requests
 
 from .config import (
+    CHECKONCHAIN_CHART_SERIES,
+    CHECKONCHAIN_STALE_TRIGGER_DAYS,
     INDICATOR_FRESHNESS_MAX_LAG_DAYS,
     LIVE_BTC_PRICE_SOURCES,
     MAX_RETRIES,
@@ -445,12 +450,289 @@ def fetch_nupl_series(config: Dict[str, object]) -> Tuple[pd.DataFrame, str]:
     return merged, " + ".join(selected_sources)
 
 
+# ---- Checkonchain fallback (heavy pre-rendered Plotly pages) ---------------
+
+
+_checkonchain_page_cache: Dict[str, str] = {}
+_checkonchain_page_lock = threading.Lock()
+
+
+def _extract_balanced_json(text: str, start_index: int) -> str | None:
+    stack: List[str] = []
+    in_string = False
+    escaped = False
+
+    for index in range(start_index, len(text)):
+        char = text[index]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                in_string = False
+            continue
+
+        if char == '"':
+            in_string = True
+        elif char in "{[":
+            stack.append(char)
+        elif char in "}]":
+            stack.pop()
+            if not stack:
+                return text[start_index : index + 1]
+
+    return None
+
+
+def _decode_b64_float64(b64_data: str) -> List[float] | None:
+    """Decode a Plotly base64 float64 payload into a list of floats."""
+    if not b64_data:
+        return None
+
+    try:
+        raw = base64.b64decode(b64_data, validate=True)
+    except Exception:
+        return None
+
+    count = len(raw) // 8
+    if count == 0 or len(raw) % 8 != 0:
+        return None
+
+    try:
+        return [value for (value,) in struct.iter_unpack("<d", raw)]
+    except Exception:
+        return None
+
+
+def _parse_checkonchain_traces(html: str) -> List[Dict[str, object]] | None:
+    marker = "Plotly.newPlot("
+    marker_index = html.find(marker)
+    if marker_index < 0:
+        return None
+
+    cursor = marker_index + len(marker)
+    while cursor < len(html) and html[cursor] not in "[{":
+        cursor += 1
+
+    traces_json = _extract_balanced_json(html, cursor)
+    if traces_json is None:
+        return None
+
+    try:
+        payload = json.loads(traces_json)
+    except Exception:
+        return None
+
+    if not isinstance(payload, list):
+        return None
+    return payload
+
+
+def _build_trace_history(trace: Dict[str, object]) -> pd.DataFrame:
+    """Build a date/value DataFrame from a single Plotly trace."""
+    if not isinstance(trace, dict):
+        return pd.DataFrame(columns=["date"])
+
+    x_values = trace.get("x")
+    y_obj = trace.get("y")
+    b64_data = y_obj.get("bdata") if isinstance(y_obj, dict) else None
+    y_values = _decode_b64_float64(str(b64_data)) if b64_data else None
+
+    if not isinstance(x_values, list) or y_values is None:
+        return pd.DataFrame(columns=["date"])
+
+    rows: List[Dict[str, object]] = []
+    for x_raw, y_raw in zip(x_values, y_values):
+        date_raw = _safe_iso_date(x_raw)
+        value = _safe_float(y_raw)
+        if not date_raw or value is None:
+            continue
+        rows.append({"date": pd.to_datetime(date_raw), "value": value})
+
+    if not rows:
+        return pd.DataFrame(columns=["date"])
+
+    df = pd.DataFrame(rows)
+    return df.sort_values("date").groupby("date", as_index=False).last()
+
+
+def _build_clipped_band_history(
+    band_traces: List[Dict[str, object]],
+) -> pd.DataFrame:
+    """Reconstruct STH-SOPR from two band traces clipped at 1.
+
+    "STH-SOPR > 1" holds the raw value when above 1 (else exactly 1);
+    "STH-SOPR < 1" holds the raw value when below 1 (else exactly 1).
+    """
+    decoded: List[pd.DataFrame] = []
+    for trace in band_traces:
+        if not isinstance(trace, dict):
+            return pd.DataFrame(columns=["date"])
+
+        x_values = trace.get("x")
+        y_obj = trace.get("y")
+        b64_data = y_obj.get("bdata") if isinstance(y_obj, dict) else None
+        y_values = _decode_b64_float64(str(b64_data)) if b64_data else None
+
+        if not isinstance(x_values, list) or y_values is None:
+            return pd.DataFrame(columns=["date"])
+
+        rows: List[Dict[str, object]] = []
+        for x_raw, y_raw in zip(x_values, y_values):
+            date_raw = _safe_iso_date(x_raw)
+            value = _safe_float(y_raw)
+            if not date_raw or value is None:
+                continue
+            rows.append({"date": pd.to_datetime(date_raw), "value": value})
+
+        if not rows:
+            return pd.DataFrame(columns=["date"])
+        decoded.append(pd.DataFrame(rows))
+
+    if len(decoded) < 2:
+        return pd.DataFrame(columns=["date"])
+
+    merged = pd.merge(decoded[0], decoded[1], on="date", how="inner")
+    merged["value"] = merged.apply(
+        lambda row: row["value_x"]
+        if abs(float(row["value_x"]) - 1) >= abs(float(row["value_y"]) - 1)
+        else row["value_y"],
+        axis=1,
+    )
+    return (
+        merged[["date", "value"]]
+        .sort_values("date")
+        .groupby("date", as_index=False)
+        .last()
+    )
+
+
+def _fetch_checkonchain_page(url: str) -> str | None:
+    """Fetch a checkonchain chart page (deduped per process via cache)."""
+    with _checkonchain_page_lock:
+        cached = _checkonchain_page_cache.get(url)
+    if cached is not None:
+        return cached
+
+    headers = {"User-Agent": "btc-monitor-history-fetcher/1.1"}
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+            response.raise_for_status()
+            html = response.text
+            if not html:
+                raise RuntimeError(f"empty response from {url}")
+            with _checkonchain_page_lock:
+                _checkonchain_page_cache[url] = html
+            return html
+        except Exception:
+            if attempt == MAX_RETRIES:
+                return None
+            time.sleep(RETRY_BACKOFF_SEC * attempt)
+
+    return None
+
+
+def fetch_checkonchain_history(metric_key: str) -> pd.DataFrame:
+    """Fetch full history for one LTH/STH metric from checkonchain."""
+    config = CHECKONCHAIN_CHART_SERIES.get(metric_key)
+    if config is None:
+        return pd.DataFrame(columns=["date", metric_key])
+
+    url = str(config["url"])
+    html = _fetch_checkonchain_page(url)
+    if html is None:
+        return pd.DataFrame(columns=["date", metric_key])
+
+    traces = _parse_checkonchain_traces(html)
+    if traces is None:
+        return pd.DataFrame(columns=["date", metric_key])
+
+    trace_name = config.get("trace")
+    if trace_name:
+        trace = next(
+            (candidate for candidate in traces if candidate.get("name") == trace_name),
+            None,
+        )
+        df = _build_trace_history(trace) if isinstance(trace, dict) else None
+    else:
+        band_names = [str(name) for name in config.get("band_traces", [])]
+        band_traces = [
+            next(
+                (candidate for candidate in traces if candidate.get("name") == name),
+                {},
+            )
+            for name in band_names
+        ]
+        df = _build_clipped_band_history(band_traces)
+
+    if df is None or df.empty or "value" not in df.columns:
+        return pd.DataFrame(columns=["date", metric_key])
+
+    result = df.rename(columns={"value": metric_key})
+    return result.sort_values("date").groupby("date", as_index=False).last()
+
+
+def fetch_lth_sth_series(
+    metric_key: str, config: Dict[str, object]
+) -> Tuple[pd.DataFrame, str]:
+    """Fetch an LTH/STH metric; extend with checkonchain when the primary lags."""
+    urls = [str(config["url"])] + [str(x) for x in config.get("fallback_urls", [])]
+    source_frames: List[Tuple[pd.DataFrame, int]] = []
+    selected_sources: List[str] = []
+    errors: List[str] = []
+
+    for url in urls:
+        try:
+            raw_data = fetch_json(url)
+            df = parse_series(metric_key, raw_data)
+            if not df.empty:
+                # Rank 1 (higher) so the primary wins ties on overlapping dates;
+                # the fallback (rank 0) only fills nulls and extends the tail.
+                source_frames.append((df, 1))
+                selected_sources.append(url)
+                break
+            errors.append(f"{url} -> empty {metric_key} chart series")
+        except Exception as exc:
+            errors.append(f"{url} -> {exc}")
+
+    merged = merge_metric_history_sources(metric_key, source_frames)
+    if merged.empty:
+        last_error = " | ".join(errors[-3:]) if errors else "no usable source"
+        raise RuntimeError(f"Failed to fetch {metric_key}: {last_error}")
+
+    # Extend the tail with checkonchain only when the primary lags too long.
+    last_date = pd.to_datetime(merged["date"]).max()
+    today = pd.Timestamp.now(tz="utc").date()
+    lag_days = (today - last_date.date()).days
+    if lag_days > CHECKONCHAIN_STALE_TRIGGER_DAYS:
+        try:
+            fallback_df = fetch_checkonchain_history(metric_key)
+            if not fallback_df.empty:
+                source_frames.append((fallback_df, 0))
+                selected_sources.append(
+                    str(CHECKONCHAIN_CHART_SERIES[metric_key]["url"])
+                )
+                merged = merge_metric_history_sources(metric_key, source_frames)
+        except Exception as exc:
+            errors.append(f"checkonchain fallback -> {exc}")
+
+    if merged.empty:
+        last_error = " | ".join(errors[-3:]) if errors else "no usable source"
+        raise RuntimeError(f"Failed to fetch {metric_key}: {last_error}")
+
+    return merged, " + ".join(selected_sources)
+
+
 def fetch_metric(
     metric_key: str, config: Dict[str, object]
 ) -> Tuple[pd.DataFrame, str]:
     """Fetch one metric; try primary URL then fallback URLs."""
     if metric_key == "nupl":
         return fetch_nupl_series(config)
+    if metric_key in CHECKONCHAIN_CHART_SERIES:
+        return fetch_lth_sth_series(metric_key, config)
 
     urls = [str(config["url"])] + [str(x) for x in config.get("fallback_urls", [])]
     last_error: Exception | None = None

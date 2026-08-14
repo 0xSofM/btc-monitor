@@ -462,5 +462,155 @@ class FetchHistoryPipelineTests(unittest.TestCase):
             self.assertIn("2024-01-01", Path(restored["latest"]).read_text(encoding="utf-8"))
 
 
+class CheckonchainFallbackTests(unittest.TestCase):
+    """Offline tests for the checkonchain Plotly parsing / fallback logic."""
+
+    @staticmethod
+    def _b64_floats(values) -> str:
+        import base64
+        import struct
+
+        return base64.b64encode(
+            b"".join(struct.pack("<d", float(value)) for value in values)
+        ).decode("ascii")
+
+    def test_extract_balanced_json_recovers_traces_argument(self) -> None:
+        from pipeline.fetcher import _extract_balanced_json
+
+        snippet = (
+            'Plotly.newPlot("abc", [{"name": "A", "x": ["2024-01-01"],'
+            ' "y": {"bdata": "AAAA"}}], {"layout": {}})'
+        )
+        start = snippet.find("[", snippet.find("Plotly.newPlot("))
+        extracted = _extract_balanced_json(snippet, start)
+        self.assertIsNotNone(extracted)
+        self.assertTrue(extracted.startswith("["))
+        self.assertTrue(extracted.endswith("]"))
+        self.assertIn('"name": "A"', extracted)
+
+    def test_decode_b64_float64_round_trip(self) -> None:
+        from pipeline.fetcher import _decode_b64_float64
+
+        values = [1.25, -0.5, 2.0]
+        decoded = _decode_b64_float64(self._b64_floats(values))
+        self.assertIsNotNone(decoded)
+        self.assertEqual(len(decoded), 3)
+        self.assertAlmostEqual(decoded[0], 1.25)
+        self.assertAlmostEqual(decoded[1], -0.5)
+
+    def test_decode_b64_float64_rejects_garbage(self) -> None:
+        from pipeline.fetcher import _decode_b64_float64
+
+        self.assertIsNone(_decode_b64_float64("not base64!!!"))
+        self.assertIsNone(_decode_b64_float64(""))
+
+    def test_build_trace_history_skips_nulls_and_keeps_tail(self) -> None:
+        from pipeline.fetcher import _build_trace_history
+
+        trace = {
+            "name": "LTH-MVRV",
+            "x": ["2024-01-01T00:00:00", "2024-01-02T00:00:00", None],
+            "y": {"bdata": self._b64_floats([1.1, 1.2, 9.9])},
+        }
+        df = _build_trace_history(trace)
+        self.assertEqual(len(df), 2)
+        self.assertEqual(df.iloc[-1]["date"].strftime("%Y-%m-%d"), "2024-01-02")
+        self.assertAlmostEqual(float(df.iloc[-1]["value"]), 1.2)
+
+    def test_build_clipped_band_history_reconstructs_raw_value(self) -> None:
+        from pipeline.fetcher import _build_clipped_band_history
+
+        above = {
+            "name": "STH-SOPR > 1",
+            "x": ["2024-01-01T00:00:00", "2024-01-02T00:00:00", "2024-01-03T00:00:00"],
+            "y": {"bdata": self._b64_floats([1.012, 1.0, 1.0])},
+        }
+        below = {
+            "name": "STH-SOPR < 1",
+            "x": ["2024-01-01T00:00:00", "2024-01-02T00:00:00", "2024-01-03T00:00:00"],
+            "y": {"bdata": self._b64_floats([1.0, 0.987, 1.0])},
+        }
+        df = _build_clipped_band_history([above, below])
+        self.assertEqual(len(df), 3)
+        self.assertAlmostEqual(float(df.iloc[0]["value"]), 1.012)
+        self.assertAlmostEqual(float(df.iloc[1]["value"]), 0.987)
+        # both sides clipped at exactly 1 -> value 1.0
+        self.assertAlmostEqual(float(df.iloc[2]["value"]), 1.0)
+
+    def test_fetch_lth_sth_series_extends_stale_primary_with_fallback(self) -> None:
+        from unittest import mock
+
+        from pipeline import fetcher as fetcher_module
+
+        primary = pd.DataFrame(
+            {
+                "date": pd.to_datetime(["2024-01-01", "2024-01-02"]),
+                "lth_mvrv": [1.05, 0.98],
+            }
+        )
+        fallback = pd.DataFrame(
+            {
+                "date": pd.to_datetime(["2024-01-02", "2024-01-09"]),
+                "lth_mvrv": [0.97, 0.90],
+            }
+        )
+        config = {
+            "url": "https://charts.bgeometrics.com/files/lth_mvrv.json",
+            "fallback_urls": [],
+        }
+
+        with mock.patch.object(fetcher_module, "fetch_json", return_value=[]), \
+                mock.patch.object(
+                    fetcher_module, "parse_series", return_value=primary
+                ) as parse_mock, \
+                mock.patch.object(
+                    fetcher_module, "fetch_checkonchain_history", return_value=fallback
+                ) as fallback_mock:
+            df, sources = fetcher_module.fetch_lth_sth_series("lth_mvrv", config)
+
+        self.assertIn("2024-01-09", df["date"].dt.strftime("%Y-%m-%d").tolist())
+        self.assertEqual(len(df), 3)
+        # primary wins for the overlapping date, fallback fills the tail
+        overlap = df[df["date"] == pd.to_datetime("2024-01-02")].iloc[0]
+        self.assertAlmostEqual(float(overlap["lth_mvrv"]), 0.98)
+        tail = df[df["date"] == pd.to_datetime("2024-01-09")].iloc[0]
+        self.assertAlmostEqual(float(tail["lth_mvrv"]), 0.90)
+        parse_mock.assert_called_once()
+        fallback_mock.assert_called_once_with("lth_mvrv")
+        self.assertTrue(sources.endswith("mvrv_lth_light.html"))
+
+    def test_fetch_lth_sth_series_skips_fallback_when_primary_is_fresh(self) -> None:
+        import datetime
+        from unittest import mock
+
+        from pipeline import fetcher as fetcher_module
+
+        today = pd.Timestamp.now(tz="utc").date()
+        recent = today - datetime.timedelta(days=1)
+        primary = pd.DataFrame(
+            {
+                "date": pd.to_datetime([recent, today]),
+                "sth_sopr": [1.01, 0.99],
+            }
+        )
+        config = {
+            "url": "https://charts.bgeometrics.com/files/sth_sopr.json",
+            "fallback_urls": [],
+        }
+
+        with mock.patch.object(fetcher_module, "fetch_json", return_value=[]), \
+                mock.patch.object(
+                    fetcher_module, "parse_series", return_value=primary
+                ), \
+                mock.patch.object(
+                    fetcher_module, "fetch_checkonchain_history"
+                ) as fallback_mock:
+            df, sources = fetcher_module.fetch_lth_sth_series("sth_sopr", config)
+
+        self.assertEqual(len(df), 2)
+        fallback_mock.assert_not_called()
+        self.assertNotIn("checkonchain", sources)
+
+
 if __name__ == "__main__":
     unittest.main()

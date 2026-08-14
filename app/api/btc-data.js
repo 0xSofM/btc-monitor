@@ -14,11 +14,14 @@ import {
 import {
   BGEOMETRICS_SERIES,
   BLOCKCHAIN_INFO_STATS_URL,
+  CHECKONCHAIN_CHARTS,
+  CHECKONCHAIN_STALE_TRIGGER_DAYS,
   COINBASE_SPOT_URL,
   COINGECKO_SPOT_URL,
   DEFAULT_THRESHOLDS,
   FRESHNESS_LIMITS,
   INDICATOR_ROUTE_MAP,
+  MVRV_ZSCORE_BACKUP_URLS,
   NUPL_BACKUP_URLS,
   RESERVE_RISK_BACKUP_URLS,
   RESERVE_RISK_DISABLE_LAG_DAYS,
@@ -408,6 +411,31 @@ function parseNuplBackupPayload(payload) {
   return buildPoint(date, value, 'nupl_backup');
 }
 
+function parseMvrvZscoreBackupPayload(payload) {
+  let point = null;
+
+  if (payload && typeof payload === 'object' && !Array.isArray(payload) && 'd' in payload && 'mvrvZscore' in payload) {
+    point = payload;
+  } else if (Array.isArray(payload) && payload.length > 0) {
+    const candidate = payload[payload.length - 1];
+    if (candidate && typeof candidate === 'object') {
+      point = candidate;
+    }
+  }
+
+  if (!point) {
+    return null;
+  }
+
+  const date = asString(point.d);
+  const value = toNumberOrNull(point.mvrvZscore);
+  if (!date || value === null) {
+    return null;
+  }
+
+  return buildPoint(date, value, 'mvrv_zscore_backup');
+}
+
 function buildLatestRollingMin(historyRows, latestDate, field, newValue) {
   if (!Array.isArray(historyRows) || historyRows.length === 0) {
     return null;
@@ -606,6 +634,245 @@ async function fetchNuplBackupPoint() {
   return null;
 }
 
+async function fetchMvrvZscoreBackupPoint() {
+  for (const url of MVRV_ZSCORE_BACKUP_URLS) {
+    const text = await fetchTextSafely(url, null, {
+      headers: {
+        'User-Agent': 'btc-monitor',
+      },
+    });
+
+    if (!text) {
+      continue;
+    }
+
+    const payload = extractJsonPayload(text);
+    const point = parseMvrvZscoreBackupPayload(payload);
+    if (point) {
+      return point;
+    }
+  }
+
+  return null;
+}
+
+// SECTION: checkonchain fallback (heavy pre-rendered Plotly pages)
+
+function extractBalancedJson(text, startIndex) {
+  const stack = [];
+  let inString = false;
+  let escaped = false;
+
+  for (let index = startIndex; index < text.length; index += 1) {
+    const char = text[index];
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === '\\') {
+        escaped = true;
+      } else if (char === '"') {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (char === '"') {
+      inString = true;
+    } else if (char === '{' || char === '[') {
+      stack.push(char);
+    } else if (char === '}' || char === ']') {
+      stack.pop();
+      if (stack.length === 0) {
+        return text.slice(startIndex, index + 1);
+      }
+    }
+  }
+
+  return null;
+}
+
+function decodeBase64Float64(base64Data) {
+  if (!base64Data || typeof base64Data !== 'string') {
+    return null;
+  }
+
+  try {
+    const binary = atob(base64Data);
+    const bytes = new Uint8Array(binary.length);
+    for (let index = 0; index < binary.length; index += 1) {
+      bytes[index] = binary.charCodeAt(index);
+    }
+    return new Float64Array(bytes.buffer);
+  } catch {
+    return null;
+  }
+}
+
+function parseCheckonchainTraces(html) {
+  if (!html || typeof html !== 'string') {
+    return null;
+  }
+
+  const marker = 'Plotly.newPlot(';
+  const markerIndex = html.indexOf(marker);
+  if (markerIndex < 0) {
+    return null;
+  }
+
+  let cursor = markerIndex + marker.length;
+  while (cursor < html.length && html[cursor] !== '[' && html[cursor] !== '{') {
+    cursor += 1;
+  }
+
+  const tracesJson = extractBalancedJson(html, cursor);
+  if (!tracesJson) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(tracesJson);
+  } catch {
+    return null;
+  }
+}
+
+function buildTracePoint(trace) {
+  if (!trace || !Array.isArray(trace.x)) {
+    return null;
+  }
+
+  const ys = decodeBase64Float64(trace?.y?.bdata);
+  if (!ys) {
+    return null;
+  }
+
+  const length = Math.min(trace.x.length, ys.length);
+  for (let index = length - 1; index >= 0; index -= 1) {
+    const date = asString(trace.x[index]);
+    const value = toNumberOrNull(ys[index]);
+    if (!date || value === null) {
+      continue;
+    }
+
+    return buildPoint(date.slice(0, 10), value, 'checkonchain');
+  }
+
+  return null;
+}
+
+function buildClippedBandPoint(bandTraces) {
+  // STH-SOPR is published as two band traces clipped at 1:
+  // "STH-SOPR > 1" holds the raw value when above 1 (else exactly 1),
+  // "STH-SOPR < 1" holds the raw value when below 1 (else exactly 1).
+  if (!Array.isArray(bandTraces) || bandTraces.length < 2) {
+    return null;
+  }
+
+  const decoded = bandTraces
+    .map((trace) => {
+      if (!trace || !Array.isArray(trace.x)) {
+        return null;
+      }
+
+      const ys = decodeBase64Float64(trace?.y?.bdata);
+      if (!ys) {
+        return null;
+      }
+
+      return { x: trace.x, ys };
+    })
+    .filter(Boolean);
+
+  if (decoded.length < 2) {
+    return null;
+  }
+
+  const length = Math.min(
+    decoded[0].x.length,
+    decoded[0].ys.length,
+    decoded[1].x.length,
+    decoded[1].ys.length,
+  );
+
+  for (let index = length - 1; index >= 0; index -= 1) {
+    const date = asString(decoded[0].x[index]);
+    if (!date) {
+      continue;
+    }
+
+    const above = toNumberOrNull(decoded[0].ys[index]);
+    const below = toNumberOrNull(decoded[1].ys[index]);
+    if (above === null || below === null) {
+      continue;
+    }
+
+    // Pick the side that deviates from the 1.0 clip.
+    const value = Math.abs(above - 1) >= Math.abs(below - 1) ? above : below;
+    return buildPoint(date.slice(0, 10), value, 'checkonchain');
+  }
+
+  return null;
+}
+
+async function fetchCheckonchainPage(url) {
+  const cacheKey = `checkonchain:${url}`;
+  const cached = memoryCache.get(cacheKey);
+  if (cached && (Date.now() - cached.ts) < MEMORY_CACHE_TTL_MS) {
+    return cached.html;
+  }
+
+  const text = await fetchTextSafely(url, null, {
+    headers: {
+      'User-Agent': 'btc-monitor',
+    },
+  });
+
+  if (text) {
+    memoryCache.set(cacheKey, { ts: Date.now(), html: text });
+  }
+
+  return text;
+}
+
+async function fetchCheckonchainBackupPoints(keys) {
+  const requested = [...new Set(keys ?? [])].filter((key) => CHECKONCHAIN_CHARTS[key]);
+  if (requested.length === 0) {
+    return {};
+  }
+
+  const pages = {};
+  const urls = [...new Set(requested.map((key) => CHECKONCHAIN_CHARTS[key].url))];
+  await Promise.all(urls.map(async (url) => {
+    pages[url] = await fetchCheckonchainPage(url);
+  }));
+
+  const results = {};
+  for (const key of requested) {
+    const config = CHECKONCHAIN_CHARTS[key];
+    const html = pages[config.url];
+    if (!html) {
+      continue;
+    }
+
+    const traces = parseCheckonchainTraces(html);
+    if (!Array.isArray(traces)) {
+      continue;
+    }
+
+    if (config.trace) {
+      const trace = traces.find((candidate) => candidate?.name === config.trace);
+      results[key] = buildTracePoint(trace);
+    } else if (Array.isArray(config.traces)) {
+      const bandTraces = config.traces.map((name) => (
+        traces.find((candidate) => candidate?.name === name)
+      ));
+      results[key] = buildClippedBandPoint(bandTraces);
+    }
+  }
+
+  return results;
+}
+
 async function fetchCoinbaseSpotPrice() {
   const payload = await fetchJsonSafely(COINBASE_SPOT_URL, null, {
     headers: {
@@ -666,6 +933,7 @@ async function fetchRuntimeInputs(request) {
     lthMvrvPoint,
     lthSoprPoint,
     mvrvZscorePoint,
+    mvrvZscoreBackupPoint,
     nuplFilePoint,
     nuplBackupPoint,
     sthSoprPoint,
@@ -682,6 +950,7 @@ async function fetchRuntimeInputs(request) {
     fetchLatestFilePoint('lthMvrv'),
     fetchLatestFilePoint('lthSopr'),
     fetchLatestFilePoint('mvrvZscore'),
+    fetchMvrvZscoreBackupPoint(),
     fetchLatestFilePoint('nupl'),
     fetchNuplBackupPoint(),
     fetchLatestFilePoint('sthSopr'),
@@ -693,6 +962,28 @@ async function fetchRuntimeInputs(request) {
   const resolvedPricePoint = pickNewerPoint(filePricePoint, backupSpotPrice);
   const resolvedReserveRiskPoint = pickNewerPoint(reserveRiskPrimaryPoint, reserveRiskBackupPoint);
   const resolvedNuplPoint = pickNewerPoint(nuplFilePoint, nuplBackupPoint);
+  const resolvedMvrvZscorePoint = pickNewerPoint(mvrvZscorePoint, mvrvZscoreBackupPoint);
+
+  // Heavy fallback: only consult checkonchain pages when a primary point is
+  // missing or older than the trigger window (avoids large downloads otherwise).
+  const primaryByKey = {
+    lthMvrv: lthMvrvPoint,
+    lthSopr: lthSoprPoint,
+    sthSopr: sthSoprPoint,
+    sthMvrv: sthMvrvPoint,
+  };
+  const todayUtc = getTodayUtcDate();
+  const staleKeys = Object.keys(primaryByKey).filter((key) => {
+    const lagDays = daysBetween(todayUtc, primaryByKey[key]?.d);
+    return lagDays === null || lagDays > CHECKONCHAIN_STALE_TRIGGER_DAYS;
+  });
+  const checkonchainPoints = staleKeys.length > 0
+    ? await fetchCheckonchainBackupPoints(staleKeys)
+    : {};
+  const resolvedLthMvrvPoint = pickNewerPoint(lthMvrvPoint, checkonchainPoints.lthMvrv ?? null);
+  const resolvedLthSoprPoint = pickNewerPoint(lthSoprPoint, checkonchainPoints.lthSopr ?? null);
+  const resolvedSthSoprPoint = pickNewerPoint(sthSoprPoint, checkonchainPoints.sthSopr ?? null);
+  const resolvedSthMvrvPoint = pickNewerPoint(sthMvrvPoint, checkonchainPoints.sthMvrv ?? null);
 
   return {
     staticLatest,
@@ -703,12 +994,12 @@ async function fetchRuntimeInputs(request) {
       realizedPrice: realizedPricePoint,
       reserveRisk: resolvedReserveRiskPoint,
       reserveRiskPrimary: reserveRiskPrimaryPoint,
-      lthMvrv: lthMvrvPoint,
-      lthSopr: lthSoprPoint,
-      mvrvZscore: mvrvZscorePoint,
+      lthMvrv: resolvedLthMvrvPoint,
+      lthSopr: resolvedLthSoprPoint,
+      mvrvZscore: resolvedMvrvZscorePoint,
       nupl: resolvedNuplPoint,
-      sthSopr: sthSoprPoint,
-      sthMvrv: sthMvrvPoint,
+      sthSopr: resolvedSthSoprPoint,
+      sthMvrv: resolvedSthMvrvPoint,
       puellMultiple: puellPoint,
     },
   };
@@ -1319,6 +1610,11 @@ function buildRuntimePayload({
       reserveRiskSource: points.reserveRisk?.source ?? null,
       reserveRiskV4Source: reserveRiskSourceModeV4,
       nuplSource: points.nupl?.source ?? null,
+      mvrvZscoreSource: points.mvrvZscore?.source ?? null,
+      lthMvrvSource: points.lthMvrv?.source ?? null,
+      lthSoprSource: points.lthSopr?.source ?? null,
+      sthSoprSource: points.sthSopr?.source ?? null,
+      sthMvrvSource: points.sthMvrv?.source ?? null,
     },
     lastUpdated: new Date().toISOString(),
   };
@@ -1345,6 +1641,21 @@ async function fetchIndicatorRoute(path, request) {
       fetchLatestFilePoint('nupl'),
       fetchNuplBackupPoint(),
     ]);
+    point = pickNewerPoint(primary, backup);
+  } else if (routeConfig.seriesKey === 'mvrvZscore') {
+    const [primary, backup] = await Promise.all([
+      fetchLatestFilePoint('mvrvZscore'),
+      fetchMvrvZscoreBackupPoint(),
+    ]);
+    point = pickNewerPoint(primary, backup);
+  } else if (['lthMvrv', 'lthSopr', 'sthSopr', 'sthMvrv'].includes(routeConfig.seriesKey)) {
+    const key = routeConfig.seriesKey;
+    const primary = await fetchLatestFilePoint(key);
+    // Consult the heavy checkonchain page only when the primary lags.
+    const lagDays = daysBetween(getTodayUtcDate(), primary?.d);
+    const backup = (lagDays === null || lagDays > CHECKONCHAIN_STALE_TRIGGER_DAYS)
+      ? (await fetchCheckonchainBackupPoints([key]))[key] ?? null
+      : null;
     point = pickNewerPoint(primary, backup);
   } else {
     point = await fetchLatestFilePoint(routeConfig.seriesKey);

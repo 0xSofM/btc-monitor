@@ -96,6 +96,35 @@ LIVE_BTC_PRICE_SOURCES: List[Dict[str, object]] = [
     },
 ]
 
+# Checkonchain (checkmatey) pre-rendered chart pages — fallback sources for
+# LTH/STH metrics when the BGeometrics primary series lags too long. Each page
+# embeds the full Plotly data (x: ISO dates, y: base64 float64), so one page
+# can back several traces:
+#   - mvrv_lth page     -> lth_mvrv ("LTH-MVRV") + lth_sopr ("LTH-SOPR")
+#   - mvrv_sth page     -> sth_mvrv ("STH-MVRV")
+#   - sthsopr_indicator -> sth_sopr (clipped band traces "STH-SOPR > 1" / "STH-SOPR < 1")
+CHECKONCHAIN_CHART_SERIES: Dict[str, Dict[str, object]] = {
+    "lth_mvrv": {
+        "url": "https://charts-cdn.checkonchain.com/btconchain/unrealised/mvrv_lth/mvrv_lth_light.html",
+        "trace": "LTH-MVRV",
+    },
+    "lth_sopr": {
+        "url": "https://charts-cdn.checkonchain.com/btconchain/unrealised/mvrv_lth/mvrv_lth_light.html",
+        "trace": "LTH-SOPR",
+    },
+    "sth_mvrv": {
+        "url": "https://charts-cdn.checkonchain.com/btconchain/unrealised/mvrv_sth/mvrv_sth_light.html",
+        "trace": "STH-MVRV",
+    },
+    "sth_sopr": {
+        "url": "https://charts-cdn.checkonchain.com/btconchain/realised/sthsopr_indicator/sthsopr_indicator_light.html",
+        "band_traces": ["STH-SOPR > 1", "STH-SOPR < 1"],
+    },
+}
+
+# Only consult the heavy checkonchain fallback when the primary lags this many days.
+CHECKONCHAIN_STALE_TRIGGER_DAYS = 6
+
 REQUEST_TIMEOUT = 45
 MAX_RETRIES = 4
 RETRY_BACKOFF_SEC = 2.0

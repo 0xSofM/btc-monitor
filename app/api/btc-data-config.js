@@ -66,6 +66,42 @@ export const NUPL_BACKUP_URLS = [
   'https://r.jina.ai/http://bitcoin-data.com/v1/nupl/1',
 ];
 
+export const MVRV_ZSCORE_BACKUP_URLS = [
+  'https://bitcoin-data.com/v1/mvrv-zscore/1',
+  'https://r.jina.ai/http://bitcoin-data.com/v1/mvrv-zscore/1',
+];
+
+/**
+ * Checkonchain (checkmatey) pre-rendered chart pages — fallback sources for
+ * LTH/STH metrics when BGeometrics files lag too long. Each page embeds the
+ * full Plotly data (x: ISO dates, y: base64 float64), so one page can back
+ * several traces:
+ *   - mvrv_lth page     -> lthMvrv ("LTH-MVRV") + lthSopr ("LTH-SOPR")
+ *   - mvrv_sth page     -> sthMvrv ("STH-MVRV")
+ *   - sthsopr_indicator -> sthSopr (clipped band traces "STH-SOPR > 1" / "STH-SOPR < 1")
+ */
+export const CHECKONCHAIN_CHARTS = {
+  lthMvrv: {
+    url: 'https://charts-cdn.checkonchain.com/btconchain/unrealised/mvrv_lth/mvrv_lth_light.html',
+    trace: 'LTH-MVRV',
+  },
+  lthSopr: {
+    url: 'https://charts-cdn.checkonchain.com/btconchain/unrealised/mvrv_lth/mvrv_lth_light.html',
+    trace: 'LTH-SOPR',
+  },
+  sthMvrv: {
+    url: 'https://charts-cdn.checkonchain.com/btconchain/unrealised/mvrv_sth/mvrv_sth_light.html',
+    trace: 'STH-MVRV',
+  },
+  sthSopr: {
+    url: 'https://charts-cdn.checkonchain.com/btconchain/realised/sthsopr_indicator/sthsopr_indicator_light.html',
+    traces: ['STH-SOPR > 1', 'STH-SOPR < 1'],
+  },
+};
+
+/** Only consult the heavy checkonchain fallback when the primary lags this many days. */
+export const CHECKONCHAIN_STALE_TRIGGER_DAYS = 6;
+
 export const INDICATOR_ROUTE_MAP = {
   '/btc-data/v1/mvrv-zscore/1': { seriesKey: 'mvrvZscore', dataKey: 'mvrvZscore', dateKey: 'mvrvZscore' },
   '/btc-data/v1/nupl/1': { seriesKey: 'nupl', dataKey: 'nupl', dateKey: 'nupl' },

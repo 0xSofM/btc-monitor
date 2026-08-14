@@ -112,24 +112,31 @@ function getSourceBadge(source: SignalOverviewProps['dataSource']) {
   };
 }
 
-function getFreshnessBadge(hours: number) {
+function getFreshnessBadge(hours: number, type: 'price' | 'onchain') {
+  const isStale = hours > 72;
+
+  if (isStale) {
+    return {
+      label: `${hours.toFixed(1)}小时 滞后`,
+      className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-300',
+      note: type === 'onchain'
+        ? '链上指标通常每日更新，延迟 24-72 小时很正常。'
+        : '价格数据实时更新',
+    };
+  }
+
   if (hours <= 24) {
     return {
       label: `${hours.toFixed(1)}小时 新鲜`,
       className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
-    };
-  }
-
-  if (hours <= 72) {
-    return {
-      label: `${hours.toFixed(1)}小时 滞后`,
-      className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-300',
+      note: '',
     };
   }
 
   return {
-    label: `${hours.toFixed(1)}小时 陈旧`,
-    className: 'border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300',
+    label: `${hours.toFixed(1)}小时 滞后`,
+    className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-300',
+    note: '',
   };
 }
 
@@ -175,8 +182,8 @@ export function SignalOverview({
   const thresholds = resolveScoreThresholds(effectiveMaxScore);
   const status = getSignalStatus(effectiveScore, signalCount, effectiveMaxScore);
   const sourceBadge = getSourceBadge(dataSource);
-  const priceFreshnessBadge = getFreshnessBadge(priceFreshnessHours);
-  const onchainFreshnessBadge = getFreshnessBadge(onchainFreshnessHours);
+  const priceFreshnessBadge = getFreshnessBadge(priceFreshnessHours, 'price');
+  const onchainFreshnessBadge = getFreshnessBadge(onchainFreshnessHours, 'onchain');
   const hasLaggingIndicators = laggingIndicators.length > 0;
   const scoreProgress = Math.max(0, Math.min(100, (effectiveScore / Math.max(1, effectiveMaxScore)) * 100));
   const confidencePercent = signalConfidence === undefined ? null : Math.round(signalConfidence * 100);
