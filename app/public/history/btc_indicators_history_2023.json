@@ -92,7 +92,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017022,
-        "deep": 0.0011102
+        "deep": 0.0011146
       },
       "sthSopr": {
         "trigger": 0.9886622651272652,
@@ -266,7 +266,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001699,
-        "deep": 0.0011001000000000001
+        "deep": 0.0011102
       },
       "sthSopr": {
         "trigger": 0.9886933451688072,
@@ -440,7 +440,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016988,
-        "deep": 0.001074
+        "deep": 0.0011001000000000001
       },
       "sthSopr": {
         "trigger": 0.9887130732598146,
@@ -614,7 +614,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016974000000000002,
-        "deep": 0.0010735
+        "deep": 0.001074
       },
       "sthSopr": {
         "trigger": 0.9887130732598146,
@@ -788,7 +788,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016941999999999999,
-        "deep": 0.0010688000000000002
+        "deep": 0.0010735
       },
       "sthSopr": {
         "trigger": 0.9887130732598146,
@@ -962,7 +962,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016908000000000001,
-        "deep": 0.001067
+        "deep": 0.0010688000000000002
       },
       "sthSopr": {
         "trigger": 0.9887130732598146,
@@ -1136,7 +1136,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.00169,
-        "deep": 0.0010665
+        "deep": 0.001067
       },
       "sthSopr": {
         "trigger": 0.9887130732598146,
@@ -1310,7 +1310,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016898,
-        "deep": 0.0010600000000000002
+        "deep": 0.0010665
       },
       "sthSopr": {
         "trigger": 0.9887130732598146,
@@ -1484,7 +1484,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001689,
-        "deep": 0.0010392
+        "deep": 0.0010600000000000002
       },
       "sthSopr": {
         "trigger": 0.9887130732598146,
@@ -1658,7 +1658,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001689,
-        "deep": 0.0010118
+        "deep": 0.0010392
       },
       "sthSopr": {
         "trigger": 0.9887130732598146,
@@ -1832,7 +1832,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001689,
-        "deep": 0.0009587228400000019
+        "deep": 0.0010118
       },
       "sthSopr": {
         "trigger": 0.9887305178695539,
@@ -2006,7 +2006,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016888,
-        "deep": 0.00065870005
+        "deep": 0.0009581944900000019
       },
       "sthSopr": {
         "trigger": 0.9887352765382623,
@@ -16099,7 +16099,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012920000000000002,
+        "trigger": 0.0012924000000000002,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -16273,7 +16273,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012878,
+        "trigger": 0.0012896,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -16447,7 +16447,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012866,
+        "trigger": 0.0012878,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -16621,7 +16621,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012848,
+        "trigger": 0.0012866,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -16795,7 +16795,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012838,
+        "trigger": 0.0012848,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -16969,7 +16969,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012818,
+        "trigger": 0.0012838,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -17143,7 +17143,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012754,
+        "trigger": 0.0012818,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -17317,7 +17317,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001269,
+        "trigger": 0.0012754,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -17491,7 +17491,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012686,
+        "trigger": 0.001269,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -17665,7 +17665,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012654,
+        "trigger": 0.0012686,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -17839,7 +17839,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012586,
+        "trigger": 0.0012654,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -18013,7 +18013,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012556000000000002,
+        "trigger": 0.0012586,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -18187,7 +18187,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012498,
+        "trigger": 0.0012556000000000002,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -18361,7 +18361,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001249,
+        "trigger": 0.0012498,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -18883,7 +18883,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012478,
+        "trigger": 0.001249,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -19057,7 +19057,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001243,
+        "trigger": 0.0012478,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -19231,7 +19231,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012428,
+        "trigger": 0.001243,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -19405,7 +19405,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012412,
+        "trigger": 0.0012428,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -19579,7 +19579,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012376,
+        "trigger": 0.0012412,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -19753,7 +19753,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012358,
+        "trigger": 0.0012376,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -19927,7 +19927,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001234,
+        "trigger": 0.0012358,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -20101,7 +20101,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001229,
+        "trigger": 0.001234,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -20275,7 +20275,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012218,
+        "trigger": 0.001229,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -20449,7 +20449,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012086,
+        "trigger": 0.0012218,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -20623,7 +20623,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0012052,
+        "trigger": 0.0012086,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -20797,7 +20797,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001198,
+        "trigger": 0.0012052,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -20971,7 +20971,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011974000000000002,
+        "trigger": 0.001198,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -21145,7 +21145,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011946,
+        "trigger": 0.0011974000000000002,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -21319,7 +21319,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011916000000000001,
+        "trigger": 0.0011946,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -21493,7 +21493,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011838,
+        "trigger": 0.0011916000000000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -21667,7 +21667,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001175,
+        "trigger": 0.0011838,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -21841,7 +21841,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011744000000000001,
+        "trigger": 0.001175,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -22015,7 +22015,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011708,
+        "trigger": 0.0011744000000000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -22189,7 +22189,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001164,
+        "trigger": 0.0011708,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -22363,7 +22363,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011556,
+        "trigger": 0.001164,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -22537,7 +22537,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001154,
+        "trigger": 0.0011556,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -22711,7 +22711,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011534000000000002,
+        "trigger": 0.001154,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -22885,7 +22885,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011504,
+        "trigger": 0.0011534000000000002,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -23059,7 +23059,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011478,
+        "trigger": 0.0011504,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -23233,7 +23233,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011466,
+        "trigger": 0.0011478,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -23407,7 +23407,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001145,
+        "trigger": 0.0011466,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -23581,7 +23581,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011448,
+        "trigger": 0.001145,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -23755,7 +23755,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011438,
+        "trigger": 0.0011448,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -23929,7 +23929,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011422,
+        "trigger": 0.0011438,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -24103,7 +24103,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011382,
+        "trigger": 0.0011422,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -24277,7 +24277,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011346,
+        "trigger": 0.0011382,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -24451,7 +24451,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011316,
+        "trigger": 0.0011346,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -24625,7 +24625,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011250000000000001,
+        "trigger": 0.0011316,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -24799,7 +24799,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011206,
+        "trigger": 0.0011250000000000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -24973,7 +24973,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011184,
+        "trigger": 0.0011206,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -25147,7 +25147,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011158000000000001,
+        "trigger": 0.0011184,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -25321,7 +25321,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011142,
+        "trigger": 0.0011158000000000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -25495,7 +25495,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0011094000000000002,
+        "trigger": 0.0011142,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -25669,7 +25669,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0010972000000000004,
+        "trigger": 0.0011094000000000002,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -25843,7 +25843,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0010972000000000004,
+        "trigger": 0.0011094000000000002,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -26017,7 +26017,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001074,
+        "trigger": 0.0010972000000000004,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -26191,7 +26191,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0010730000000000002,
+        "trigger": 0.001074,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -26365,7 +26365,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0010686,
+        "trigger": 0.0010730000000000002,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -26539,7 +26539,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001067,
+        "trigger": 0.0010686,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -26713,7 +26713,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.001066,
+        "trigger": 0.001067,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -26887,7 +26887,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0010580000000000001,
+        "trigger": 0.001066,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -27061,7 +27061,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0010364000000000003,
+        "trigger": 0.0010580000000000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -27235,7 +27235,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0010096000000000003,
+        "trigger": 0.0010364000000000003,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -27409,7 +27409,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0009400583800000029,
+        "trigger": 0.0010096000000000003,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -27583,7 +27583,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0007317313,
+        "trigger": 0.0009400583800000029,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -27757,7 +27757,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00072920524,
+        "trigger": 0.0007317313,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -27931,7 +27931,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00072804814,
+        "trigger": 0.00072920524,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -28105,7 +28105,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00072783568,
+        "trigger": 0.00072804814,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -28279,7 +28279,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00072722,
+        "trigger": 0.00072783568,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -28453,7 +28453,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00072563108,
+        "trigger": 0.00072722,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -28627,7 +28627,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0007184992800000001,
+        "trigger": 0.00072563108,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -28801,7 +28801,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0007072354,
+        "trigger": 0.0007184992800000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -28975,7 +28975,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00070628358,
+        "trigger": 0.0007072354,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -29149,7 +29149,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00070382818,
+        "trigger": 0.00070628358,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -29323,7 +29323,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00069960668,
+        "trigger": 0.00070382818,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -29497,7 +29497,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00069859706,
+        "trigger": 0.00069960668,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -29671,7 +29671,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006981644800000001,
+        "trigger": 0.00069859706,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -29845,7 +29845,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00069654432,
+        "trigger": 0.0006981644800000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -30019,7 +30019,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006946564,
+        "trigger": 0.00069654432,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -30193,7 +30193,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00069120788,
+        "trigger": 0.0006946564,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -30367,7 +30367,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00069120788,
+        "trigger": 0.0006946564,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -30541,7 +30541,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00069120788,
+        "trigger": 0.0006946564,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -30643,7 +30643,7 @@
     "puellMultiple": 1.278,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
-    "signalReserveRisk": false,
+    "signalReserveRisk": true,
     "signalSthSopr": false,
     "signalSthMvrv": false,
     "signalSthGroup": false,
@@ -30657,7 +30657,7 @@
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
     "signalPuell": false,
-    "signalCount": 0,
+    "signalCount": 1,
     "activeIndicatorCount": 5,
     "signalCountV4": 0,
     "activeIndicatorCountV4": 7,
@@ -30665,9 +30665,9 @@
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
-    "scoreReserveRisk": 0,
+    "scoreReserveRisk": 1,
     "scoreReserveRiskV4": 0,
-    "scoreReserveRiskPrimary": 0,
+    "scoreReserveRiskPrimary": 1,
     "scoreReserveRiskReplacement": 0,
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
@@ -30680,7 +30680,7 @@
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
     "scorePuell": 0,
-    "signalScoreV2": 0,
+    "signalScoreV2": 1,
     "maxSignalScoreV2": 10,
     "signalScoreV2Min3d": 0.0,
     "signalConfirmed3d": false,
@@ -30715,7 +30715,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00069120788,
+        "trigger": 0.0006946564,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -30889,7 +30889,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00069120788,
+        "trigger": 0.00069145704,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -31063,7 +31063,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00069120788,
+        "trigger": 0.00069145704,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -31237,7 +31237,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006908444599999999,
+        "trigger": 0.00069120788,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -31411,7 +31411,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006908444599999999,
+        "trigger": 0.00069120788,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -31585,7 +31585,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006908444599999999,
+        "trigger": 0.00069120788,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -31759,7 +31759,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006908444599999999,
+        "trigger": 0.00069120788,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -31933,7 +31933,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006908444599999999,
+        "trigger": 0.00069120788,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -32107,7 +32107,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006908444599999999,
+        "trigger": 0.00069120788,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -32281,7 +32281,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006908444599999999,
+        "trigger": 0.00069120788,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -32455,7 +32455,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006908444599999999,
+        "trigger": 0.00069120788,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -32629,7 +32629,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00069030028,
+        "trigger": 0.0006908444599999999,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -32803,7 +32803,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006900439600000001,
+        "trigger": 0.00069030028,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -32977,7 +32977,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006893282,
+        "trigger": 0.0006900439600000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -33151,7 +33151,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006891489,
+        "trigger": 0.0006893282,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -33325,7 +33325,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006891489,
+        "trigger": 0.0006893282,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -33499,7 +33499,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006891489,
+        "trigger": 0.0006893282,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -33673,7 +33673,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068872122,
+        "trigger": 0.00068915248,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -33847,7 +33847,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068872122,
+        "trigger": 0.00068915248,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -34021,7 +34021,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
+        "trigger": 0.00068872122,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -34195,7 +34195,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068784164,
+        "trigger": 0.00068854884,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -34369,7 +34369,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006875274,
+        "trigger": 0.00068784164,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -34543,7 +34543,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006873313199999999,
+        "trigger": 0.0006875274,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -34717,7 +34717,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068667582,
+        "trigger": 0.0006873313199999999,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -34891,7 +34891,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068621722,
+        "trigger": 0.00068667582,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -35065,7 +35065,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068593032,
+        "trigger": 0.00068621722,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -35239,7 +35239,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068558066,
+        "trigger": 0.00068593032,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -35413,7 +35413,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.000685375,
+        "trigger": 0.00068558066,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -35587,7 +35587,7 @@
     "dataFreshnessScoreV6": 0.9196428571428572,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068515484,
+        "trigger": 0.000685375,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -35761,7 +35761,7 @@
     "dataFreshnessScoreV6": 0.8392857142857143,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068487568,
+        "trigger": 0.00068515484,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -35935,7 +35935,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068392322,
+        "trigger": 0.00068487568,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -36109,7 +36109,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068362914,
+        "trigger": 0.00068392322,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -36283,7 +36283,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068344624,
+        "trigger": 0.00068362914,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -36457,7 +36457,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068332084,
+        "trigger": 0.00068344624,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -36631,7 +36631,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068266344,
+        "trigger": 0.00068332084,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -36805,7 +36805,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006816915000000001,
+        "trigger": 0.00068266344,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -36979,7 +36979,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068139172,
+        "trigger": 0.0006816915000000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -37153,7 +37153,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006809375199999999,
+        "trigger": 0.00068139172,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -37327,7 +37327,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006805923799999999,
+        "trigger": 0.0006809375199999999,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -37501,7 +37501,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006800972,
+        "trigger": 0.0006805923799999999,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -37675,7 +37675,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006795816800000001,
+        "trigger": 0.0006800972,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -37849,7 +37849,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006790999200000001,
+        "trigger": 0.0006795816800000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -38023,7 +38023,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067744186,
+        "trigger": 0.0006790999200000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -38197,7 +38197,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067721818,
+        "trigger": 0.00067744186,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -38371,7 +38371,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067684558,
+        "trigger": 0.00067721818,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -38545,7 +38545,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006756438,
+        "trigger": 0.00067684558,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -38719,7 +38719,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067506768,
+        "trigger": 0.0006756438,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -38893,7 +38893,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006744057,
+        "trigger": 0.00067506768,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -39067,7 +39067,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067411514,
+        "trigger": 0.0006744057,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -39241,7 +39241,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067399708,
+        "trigger": 0.00067411514,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -39415,7 +39415,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067381754,
+        "trigger": 0.00067399708,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -39589,7 +39589,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067370166,
+        "trigger": 0.00067381754,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -39763,7 +39763,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067328788,
+        "trigger": 0.00067370166,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -39937,7 +39937,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006725819800000001,
+        "trigger": 0.00067328788,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -40111,7 +40111,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006716913600000001,
+        "trigger": 0.0006725819800000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -40285,7 +40285,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067127142,
+        "trigger": 0.0006716913600000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -40459,7 +40459,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066910712,
+        "trigger": 0.00067127142,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -40633,7 +40633,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066692264,
+        "trigger": 0.00066910712,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -40807,7 +40807,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066579506,
+        "trigger": 0.00066692264,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -40981,7 +40981,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.000665046,
+        "trigger": 0.00066579506,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -41155,7 +41155,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066449902,
+        "trigger": 0.000665046,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -41329,7 +41329,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066265194,
+        "trigger": 0.00066449902,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -41503,7 +41503,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066165308,
+        "trigger": 0.00066265194,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -41677,7 +41677,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006614682600000001,
+        "trigger": 0.00066165308,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -41851,7 +41851,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006610259000000001,
+        "trigger": 0.0006614682600000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -42025,7 +42025,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006602740800000001,
+        "trigger": 0.0006610259000000001,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
@@ -42199,7 +42199,7 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006590361,
+        "trigger": 0.00066008178,
         "deep": 0.0005488029700000001
       },
       "sthSopr": {
