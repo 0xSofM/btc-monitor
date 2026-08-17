@@ -1,19 +1,19 @@
 {
-  "date": "2026-08-16",
-  "unixTs": 1786838400,
-  "btcPrice": 63156.62,
-  "ma200w": 63915.133832487976,
+  "date": "2026-08-17",
+  "unixTs": 1786924800,
+  "btcPrice": 62788.58,
+  "ma200w": 63946.041413038605,
   "realizedPrice": 52270.35,
-  "priceMa200wRatio": 0.9881324846400865,
-  "priceRealizedRatio": 1.2082685499523154,
+  "priceMa200wRatio": 0.9818994047565454,
+  "priceRealizedRatio": 1.2012274645186038,
   "reserveRisk": 0.000495834,
   "mvrvZscore": 0.3577,
   "nupl": 0.1714,
   "lthMvrv": 1.2683,
   "sthSopr": 0.9968619288231602,
-  "sthSoprMa3": 0.9960403550056146,
+  "sthSoprMa3": 0.996800192318796,
   "lthSopr": 0.8852091279215761,
-  "lthSoprMa3": 0.9007719671265552,
+  "lthSoprMa3": 0.8941741114152176,
   "sthMvrv": 0.942,
   "puellMultiple": 0.742,
   "signalCount": 2,
@@ -47,10 +47,10 @@
   "totalScoreV6Min3d": 1.0,
   "signalConfirmed3dV6": false,
   "signalBandV6": "watch",
-  "signalConfidence": 0.3196,
-  "signalConfidenceV6": 0.3196,
-  "dataFreshnessScore": 0.9464285714285716,
-  "dataFreshnessScoreV6": 0.9464285714285714,
+  "signalConfidence": 0.2875,
+  "signalConfidenceV6": 0.2821,
+  "dataFreshnessScore": 0.8392857142857144,
+  "dataFreshnessScoreV6": 0.8214285714285715,
   "signalScoreV2": 3,
   "signalScoreV2Min3d": 3.0,
   "signalConfirmed3d": false,
@@ -93,27 +93,27 @@
   "reserveRiskV4Active": true,
   "reserveRiskReplacementActive": false,
   "reserveRiskReplacementSource": null,
-  "reserveRiskReplacementLagDays": 0.0,
+  "reserveRiskReplacementLagDays": 1.0,
   "reserveRiskSourceMode": "primary",
   "reserveRiskSourceModeV4": "compat_mvrv_zscore",
   "reserveRiskSoftFallbackActive": false,
   "reserveRiskFallbackLagDaysV4": null,
-  "reserveRiskLagDays": 1.0,
-  "reserveRiskPrimaryLagDays": 1.0,
+  "reserveRiskLagDays": 2.0,
+  "reserveRiskPrimaryLagDays": 2.0,
   "inactiveIndicators": [],
   "staleIndicators": [],
   "indicatorLagDays": {
     "btcPrice": 0.0,
     "ma200w": 0.0,
-    "realizedPrice": 1.0,
-    "reserveRisk": 1.0,
-    "lthMvrv": 0.0,
-    "lthSopr": 0.0,
-    "mvrvZscore": 1.0,
-    "nupl": 1.0,
-    "sthSopr": 0.0,
-    "sthMvrv": 0.0,
-    "puell": 1.0
+    "realizedPrice": 2.0,
+    "reserveRisk": 2.0,
+    "lthMvrv": 1.0,
+    "lthSopr": 1.0,
+    "mvrvZscore": 2.0,
+    "nupl": 2.0,
+    "sthSopr": 1.0,
+    "sthMvrv": 1.0,
+    "puell": 2.0
   },
   "fallbackMode": "none",
   "fallbackModeV6": "none",
@@ -150,7 +150,7 @@
     "puell": false
   },
   "api_data_date": {
-    "price_ma200w": "2026-08-16",
+    "price_ma200w": "2026-08-17",
     "price_realized": "2026-08-15",
     "reserve_risk": "2026-08-15",
     "lth_mvrv": "2026-08-16",
@@ -162,8 +162,8 @@
     "puell": "2026-08-15"
   },
   "indicatorDates": {
-    "btcPrice": "2026-08-16",
-    "priceMa200w": "2026-08-16",
+    "btcPrice": "2026-08-17",
+    "priceMa200w": "2026-08-17",
     "priceRealized": "2026-08-15",
     "reserveRisk": "2026-08-15",
     "lthMvrv": "2026-08-16",
@@ -187,8 +187,8 @@
       "deep": 0.9
     },
     "reserveRisk": {
-      "trigger": 0.00057794164,
-      "deep": 0.00051471321,
+      "trigger": 0.0005770261800000001,
+      "deep": 0.00051457156,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -207,7 +207,7 @@
       "valueField": "sth_sopr_ma3"
     },
     "sthMvrv": {
-      "trigger": 0.928,
+      "trigger": 0.92893,
       "deep": 0.879,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
@@ -224,8 +224,8 @@
       "deep": 0.9
     },
     "lthSopr": {
-      "trigger": 0.893560435733331,
-      "deep": 0.7114099529733307,
+      "trigger": 0.8938817755999978,
+      "deep": 0.7115989639399973,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -317,7 +317,7 @@
       "trailingNullRows": 0,
       "trailingNullDays": 0,
       "healthStatus": "healthy",
-      "sourceLabel": "https://bitcoin-data.com/v1/reserve-risk + legacy_bridge(https://charts.bgeometrics.com/files/reserve_risk.json < 2022-08-16)"
+      "sourceLabel": "https://bitcoin-data.com/v1/reserve-risk + legacy_bridge(https://charts.bgeometrics.com/files/reserve_risk.json < 2022-08-17)"
     },
     "pointSources": [
       {
@@ -371,7 +371,7 @@
   },
   "scoringModelVersion": "core8_independent_valuation_current",
   "legacyScoringModelVersion": "v3_no_lookahead_replacement",
-  "lastUpdated": "2026-08-16T18:45:46.681376+00:00",
+  "lastUpdated": "2026-08-17T01:53:03.512952+00:00",
   "canonical": {
     "model": "core8_independent_valuation",
     "displayIndicators": [
@@ -399,7 +399,7 @@
       "maxTotal": 14,
       "band": "watch",
       "confirmed3d": false,
-      "confidence": 0.3196
+      "confidence": 0.2821
     },
     "signals": {
       "priceMa200w": true,
