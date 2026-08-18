@@ -40363,12 +40363,12 @@
     "realizedPrice": 21777.6015,
     "priceMa200wRatio": 1.0158688412008534,
     "priceRealizedRatio": 1.0715757165009425,
-    "reserveRisk": 0.000637238,
+    "reserveRisk": 0.001248,
     "lthMvrv": 1.163,
     "lthSopr": 0.5179614161,
     "lthSoprMa3": 0.6432390984876252,
-    "mvrvZscore": 0.1083,
-    "nupl": 0.0686,
+    "mvrvZscore": 0.1083146006,
+    "nupl": 0.0668,
     "sthSopr": 1.008160558,
     "sthSoprMa3": 1.0034100002301127,
     "sthMvrv": 0.886,
@@ -58022,7 +58022,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017386,
-        "deep": 0.0012484
+        "deep": 0.0012488999999999998
       },
       "sthSopr": {
         "trigger": 0.9881988757692409,
@@ -58196,7 +58196,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017364000000000001,
-        "deep": 0.001243
+        "deep": 0.0012475
       },
       "sthSopr": {
         "trigger": 0.9881988757692409,
@@ -58370,7 +58370,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001734,
-        "deep": 0.0012429
+        "deep": 0.001243
       },
       "sthSopr": {
         "trigger": 0.9881988757692409,
@@ -58544,7 +58544,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001734,
-        "deep": 0.0012416
+        "deep": 0.0012429
       },
       "sthSopr": {
         "trigger": 0.9881988757692409,
@@ -58718,7 +58718,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001734,
-        "deep": 0.0012378
+        "deep": 0.0012416
       },
       "sthSopr": {
         "trigger": 0.9881988757692409,
@@ -58892,7 +58892,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017338,
-        "deep": 0.0012358999999999998
+        "deep": 0.0012378
       },
       "sthSopr": {
         "trigger": 0.9881988757692409,
@@ -59066,7 +59066,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017328,
-        "deep": 0.0012345
+        "deep": 0.0012358999999999998
       },
       "sthSopr": {
         "trigger": 0.9881988757692409,
@@ -59240,7 +59240,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001732,
-        "deep": 0.0012295
+        "deep": 0.0012345
       },
       "sthSopr": {
         "trigger": 0.9881988757692409,
@@ -59414,7 +59414,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001732,
-        "deep": 0.0012234000000000001
+        "deep": 0.0012295
       },
       "sthSopr": {
         "trigger": 0.988266585458752,
@@ -59588,7 +59588,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017318,
-        "deep": 0.0012088000000000001
+        "deep": 0.0012234000000000001
       },
       "sthSopr": {
         "trigger": 0.9883005823062215,
@@ -59762,7 +59762,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001731,
-        "deep": 0.0012061
+        "deep": 0.0012088000000000001
       },
       "sthSopr": {
         "trigger": 0.9883061487250717,
@@ -59936,7 +59936,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001731,
-        "deep": 0.001198
+        "deep": 0.0012061
       },
       "sthSopr": {
         "trigger": 0.9883093013639613,
@@ -60110,7 +60110,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001731,
-        "deep": 0.0011977000000000001
+        "deep": 0.001198
       },
       "sthSopr": {
         "trigger": 0.9883116060747027,
@@ -60284,7 +60284,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001731,
-        "deep": 0.0011948000000000002
+        "deep": 0.0011977000000000001
       },
       "sthSopr": {
         "trigger": 0.9883162151286666,
@@ -60458,7 +60458,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001731,
-        "deep": 0.0011923
+        "deep": 0.0011948000000000002
       },
       "sthSopr": {
         "trigger": 0.9883162151286666,
@@ -60632,7 +60632,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001731,
-        "deep": 0.0011849
+        "deep": 0.0011923
       },
       "sthSopr": {
         "trigger": 0.9883511715472213,
@@ -60806,7 +60806,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001731,
-        "deep": 0.001175
+        "deep": 0.0011849
       },
       "sthSopr": {
         "trigger": 0.9883574671167177,
@@ -60980,7 +60980,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001731,
-        "deep": 0.0011747
+        "deep": 0.001175
       },
       "sthSopr": {
         "trigger": 0.9883603858424358,
@@ -61154,7 +61154,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001731,
-        "deep": 0.0011714000000000002
+        "deep": 0.0011747
       },
       "sthSopr": {
         "trigger": 0.9883718134123597,
@@ -61328,7 +61328,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001731,
-        "deep": 0.001165
+        "deep": 0.0011714000000000002
       },
       "sthSopr": {
         "trigger": 0.9883752692332773,
@@ -61502,7 +61502,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001731,
-        "deep": 0.0011558
+        "deep": 0.001165
       },
       "sthSopr": {
         "trigger": 0.9884864831775718,
@@ -61676,7 +61676,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017308,
-        "deep": 0.001154
+        "deep": 0.0011558
       },
       "sthSopr": {
         "trigger": 0.9885719245631972,
@@ -61850,7 +61850,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.00173,
-        "deep": 0.0011537000000000001
+        "deep": 0.001154
       },
       "sthSopr": {
         "trigger": 0.9886262383792283,
@@ -62024,7 +62024,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017298,
-        "deep": 0.0011507
+        "deep": 0.0011537000000000001
       },
       "sthSopr": {
         "trigger": 0.9886404536840826,
@@ -62198,7 +62198,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017288,
-        "deep": 0.0011478999999999999
+        "deep": 0.0011507
       },
       "sthSopr": {
         "trigger": 0.9886404536840826,
@@ -62372,7 +62372,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001728,
-        "deep": 0.0011468000000000001
+        "deep": 0.0011478999999999999
       },
       "sthSopr": {
         "trigger": 0.9886404536840826,
@@ -62546,7 +62546,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017278,
-        "deep": 0.001145
+        "deep": 0.0011468000000000001
       },
       "sthSopr": {
         "trigger": 0.9886262383792283,
@@ -62720,7 +62720,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001727,
-        "deep": 0.0011449
+        "deep": 0.001145
       },
       "sthSopr": {
         "trigger": 0.9886262383792283,
@@ -62894,7 +62894,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017268000000000001,
-        "deep": 0.0011439
+        "deep": 0.0011449
       },
       "sthSopr": {
         "trigger": 0.9885719245631972,
@@ -63068,7 +63068,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017258,
-        "deep": 0.0011426
+        "deep": 0.0011439
       },
       "sthSopr": {
         "trigger": 0.9885719245631972,
@@ -63242,7 +63242,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.001724,
-        "deep": 0.0011386
+        "deep": 0.0011426
       },
       "sthSopr": {
         "trigger": 0.9884864831775718,
@@ -63416,7 +63416,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017198,
-        "deep": 0.0011348
+        "deep": 0.0011386
       },
       "sthSopr": {
         "trigger": 0.9885719245631972,
@@ -63590,7 +63590,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017186,
-        "deep": 0.0011323
+        "deep": 0.0011348
       },
       "sthSopr": {
         "trigger": 0.9885926751154307,
@@ -63764,7 +63764,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017164,
-        "deep": 0.0011255
+        "deep": 0.0011323
       },
       "sthSopr": {
         "trigger": 0.9886273635304645,
@@ -63938,7 +63938,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017120000000000002,
-        "deep": 0.0011208000000000001
+        "deep": 0.0011255
       },
       "sthSopr": {
         "trigger": 0.9886404536840826,
@@ -64112,7 +64112,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017038,
-        "deep": 0.0011187
+        "deep": 0.0011208000000000001
       },
       "sthSopr": {
         "trigger": 0.988643240672423,
