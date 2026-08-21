@@ -40894,12 +40894,12 @@
     "realizedPrice": 21722.6006,
     "priceMa200wRatio": 0.9192316359574044,
     "priceRealizedRatio": 0.9734863330388949,
-    "reserveRisk": 0.0005754374,
+    "reserveRisk": 0.001128,
     "lthMvrv": 1.036,
     "lthSopr": 0.6497956731,
     "lthSoprMa3": 0.6837925053887353,
-    "mvrvZscore": -0.04,
-    "nupl": -0.0262,
+    "mvrvZscore": -0.0400286888,
+    "nupl": -0.0272,
     "sthSopr": 1.0059492425,
     "sthSoprMa3": 0.9965153811597064,
     "sthMvrv": 0.804,
@@ -63947,7 +63947,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017120000000000002,
-        "deep": 0.0011323
+        "deep": 0.0011325
       },
       "sthSopr": {
         "trigger": 0.9886404536840826,
@@ -64121,7 +64121,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017038,
-        "deep": 0.0011255
+        "deep": 0.0011278000000000002
       },
       "sthSopr": {
         "trigger": 0.988643240672423,
