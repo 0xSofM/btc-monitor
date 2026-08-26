@@ -41779,12 +41779,12 @@
     "realizedPrice": 21684.4811,
     "priceMa200wRatio": 0.9362189761796107,
     "priceRealizedRatio": 0.9955432866896455,
-    "reserveRisk": 0.0005870006,
+    "reserveRisk": 0.001146,
     "lthMvrv": 1.055,
     "lthSopr": 0.5932754393,
     "lthSoprMa3": 0.6373789496508805,
-    "mvrvZscore": -0.0067,
-    "nupl": -0.0044,
+    "mvrvZscore": -0.0067188106,
+    "nupl": -0.0045,
     "sthSopr": 0.9675702999,
     "sthSoprMa3": 0.9817751810834442,
     "sthMvrv": 0.831,
@@ -62918,7 +62918,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017268000000000001,
-        "deep": 0.0011468000000000001
+        "deep": 0.0011469
       },
       "sthSopr": {
         "trigger": 0.9886306911180429,
@@ -63092,7 +63092,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017258,
-        "deep": 0.001145
+        "deep": 0.0011459
       },
       "sthSopr": {
         "trigger": 0.9886273635304645,
@@ -63440,7 +63440,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017198,
-        "deep": 0.0011449
+        "deep": 0.001145
       },
       "sthSopr": {
         "trigger": 0.9886273635304645,
@@ -63614,7 +63614,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017186,
-        "deep": 0.0011439
+        "deep": 0.0011449
       },
       "sthSopr": {
         "trigger": 0.9886306911180429,
@@ -63788,7 +63788,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017164,
-        "deep": 0.0011426
+        "deep": 0.0011439
       },
       "sthSopr": {
         "trigger": 0.9886405139985222,
@@ -63962,7 +63962,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017120000000000002,
-        "deep": 0.001139
+        "deep": 0.0011426
       },
       "sthSopr": {
         "trigger": 0.988643240672423,
@@ -64136,7 +64136,7 @@
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017038,
-        "deep": 0.0011386
+        "deep": 0.001139
       },
       "sthSopr": {
         "trigger": 0.9886622651272652,
