@@ -72,6 +72,16 @@ export const MVRV_ZSCORE_BACKUP_URLS = [
 ];
 
 /**
+ * Puell Multiple backups. The BGeometrics chart files (puell_multiple_data.json
+ * and puell_multiple_7dma.json) were truncated upstream and now end at
+ * 2025-10-27, so this metric needs an independent source.
+ */
+export const PUELL_BACKUP_URLS = [
+  'https://bitcoin-data.com/v1/puell-multiple/1',
+  'https://r.jina.ai/http://bitcoin-data.com/v1/puell-multiple/1',
+];
+
+/**
  * Checkonchain (checkmatey) pre-rendered chart pages — fallback sources for
  * LTH/STH metrics when BGeometrics files lag too long. Each page embeds the
  * full Plotly data (x: ISO dates, y: base64 float64), so one page can back

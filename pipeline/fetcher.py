@@ -343,6 +343,42 @@ def parse_mvrv_zscore_history_series(raw_rows: object) -> pd.DataFrame:
     return df.sort_values("date").groupby("date", as_index=False).last()
 
 
+def parse_puell_multiple_history_series(raw_rows: object) -> pd.DataFrame:
+    """Parse Puell Multiple history from bitcoin-data.com dict-list format."""
+    if not isinstance(raw_rows, list):
+        return pd.DataFrame(columns=["date", "puell_multiple"])
+
+    if raw_rows and isinstance(raw_rows[0], list):
+        return parse_series("puell_multiple", raw_rows)
+
+    parsed: List[Dict[str, object]] = []
+    for row in raw_rows:
+        if not isinstance(row, dict):
+            continue
+
+        date_raw = _safe_iso_date(row.get("d"))
+        if not date_raw:
+            continue
+
+        try:
+            date_value = pd.to_datetime(date_raw)
+        except Exception:
+            continue
+
+        parsed.append(
+            {
+                "date": date_value,
+                "puell_multiple": _safe_float(row.get("puellMultiple")),
+            }
+        )
+
+    if not parsed:
+        return pd.DataFrame(columns=["date", "puell_multiple"])
+
+    df = pd.DataFrame(parsed)
+    return df.sort_values("date").groupby("date", as_index=False).last()
+
+
 def fetch_mvrv_zscore_series(config: Dict[str, object]) -> Tuple[pd.DataFrame, str]:
     """Fetch MVRV Z-Score history; try BGeometrics primary, then bitcoin-data.com.
 
@@ -1332,6 +1368,24 @@ def build_base_dataframe(
     except Exception as exc:
         print(f"  bitcoin-data.com MVRV Z-Score unavailable: {exc}")
 
+    # Pre-fetch Puell Multiple from bitcoin-data.com as well: the BGeometrics
+    # chart files (puell_multiple_data.json / _7dma.json) were truncated
+    # upstream and now end at 2025-10-27, so this metric needs a live source.
+    puell_bd_df: pd.DataFrame | None = None
+    print("Pre-fetching Puell Multiple from bitcoin-data.com ...")
+    time.sleep(2.0)
+    try:
+        puell_payload = fetch_json_payload("https://bitcoin-data.com/v1/puell-multiple")
+        puell_df = parse_puell_multiple_history_series(puell_payload)
+        if not puell_df.empty:
+            puell_bd_df = puell_df
+            print(
+                f"  bitcoin-data.com Puell Multiple: {len(puell_df)} rows, "
+                f"latest={puell_df['date'].max().date()}"
+            )
+    except Exception as exc:
+        print(f"  bitcoin-data.com Puell Multiple unavailable: {exc}")
+
     # Fetch all indicators except ma200w (we self-compute it from btc_price)
     fetch_keys = [k for k in SERIES_CONFIG if k != "ma200w"]
     futures = {}
@@ -1414,6 +1468,27 @@ def build_base_dataframe(
             print(
                 f"  Patched MVRV Z-Score with bitcoin-data.com: "
                 f"{len(mvrv_zscore_bd_df)} rows"
+            )
+
+    # Merge bitcoin-data.com Puell Multiple over the (truncated) BGeometrics
+    # series so the quality gate sees a fresh latest date instead of 2025-10-27.
+    if puell_bd_df is not None and "puell_multiple" in dfs and not dfs["puell_multiple"].empty:
+        merged_puell_df = merge_metric_history_sources(
+            "puell_multiple",
+            [
+                (dfs["puell_multiple"], 0),
+                (puell_bd_df, 1),
+            ],
+        )
+        if not merged_puell_df.empty:
+            dfs["puell_multiple"] = merged_puell_df
+            selected_sources["puell_multiple"] = (
+                f"{selected_sources.get('puell_multiple', '?')} "
+                "+ https://bitcoin-data.com/v1/puell-multiple"
+            )
+            print(
+                f"  Patched Puell Multiple with bitcoin-data.com: "
+                f"{len(puell_bd_df)} rows"
             )
 
     print("Fetching Reserve Risk ...")

@@ -24,6 +24,7 @@ import {
   LTH_STH_POINT_BACKUP_URLS,
   MVRV_ZSCORE_BACKUP_URLS,
   NUPL_BACKUP_URLS,
+  PUELL_BACKUP_URLS,
   RESERVE_RISK_BACKUP_URLS,
   RESERVE_RISK_DISABLE_LAG_DAYS,
   SCORE_CONFIRM_RATIO,
@@ -37,6 +38,9 @@ export const config = {
 // SECTION: constants
 const CACHE_DURATION = 900;
 const UPSTREAM_TIMEOUT_MS = 8000;
+// Heavy pre-rendered Plotly pages (1.3-6.5MB) need more than 8s to transfer.
+// Measured: sthsopr_indicator_light.html ~10s. Keep total under the 25s Edge budget.
+const HEAVY_UPSTREAM_TIMEOUT_MS = 15000;
 
 // In-memory cache — Vercel Edge Functions run per-region, cold-start clears.
 // Prevents redundant BGeometrics downloads within the cache window.
@@ -130,8 +134,8 @@ function withTimeout(init = {}, timeoutMs = UPSTREAM_TIMEOUT_MS) {
   };
 }
 
-async function fetchJsonSafely(url, fallback, init = {}) {
-  const { init: requestInit, done } = withTimeout(init);
+async function fetchJsonSafely(url, fallback, init = {}, timeoutMs = UPSTREAM_TIMEOUT_MS) {
+  const { init: requestInit, done } = withTimeout(init, timeoutMs);
 
   try {
     const response = await fetch(url, requestInit);
@@ -153,8 +157,8 @@ async function fetchJsonSafely(url, fallback, init = {}) {
   }
 }
 
-async function fetchTextSafely(url, fallback, init = {}) {
-  const { init: requestInit, done } = withTimeout(init);
+async function fetchTextSafely(url, fallback, init = {}, timeoutMs = UPSTREAM_TIMEOUT_MS) {
+  const { init: requestInit, done } = withTimeout(init, timeoutMs);
 
   try {
     const response = await fetch(url, requestInit);
@@ -437,6 +441,31 @@ function parseMvrvZscoreBackupPayload(payload) {
   return buildPoint(date, value, 'mvrv_zscore_backup');
 }
 
+function parsePuellBackupPayload(payload) {
+  let point = null;
+
+  if (payload && typeof payload === 'object' && !Array.isArray(payload) && 'd' in payload && 'puellMultiple' in payload) {
+    point = payload;
+  } else if (Array.isArray(payload) && payload.length > 0) {
+    const candidate = payload[payload.length - 1];
+    if (candidate && typeof candidate === 'object') {
+      point = candidate;
+    }
+  }
+
+  if (!point) {
+    return null;
+  }
+
+  const date = asString(point.d);
+  const value = toNumberOrNull(point.puellMultiple);
+  if (!date || value === null) {
+    return null;
+  }
+
+  return buildPoint(date, value, 'puell_backup');
+}
+
 function buildLatestRollingMin(historyRows, latestDate, field, newValue) {
   if (!Array.isArray(historyRows) || historyRows.length === 0) {
     return null;
@@ -649,6 +678,28 @@ async function fetchMvrvZscoreBackupPoint() {
 
     const payload = extractJsonPayload(text);
     const point = parseMvrvZscoreBackupPayload(payload);
+    if (point) {
+      return point;
+    }
+  }
+
+  return null;
+}
+
+async function fetchPuellBackupPoint() {
+  for (const url of PUELL_BACKUP_URLS) {
+    const text = await fetchTextSafely(url, null, {
+      headers: {
+        'User-Agent': 'btc-monitor',
+      },
+    });
+
+    if (!text) {
+      continue;
+    }
+
+    const payload = extractJsonPayload(text);
+    const point = parsePuellBackupPayload(payload);
     if (point) {
       return point;
     }
@@ -883,7 +934,7 @@ async function fetchCheckonchainPage(url) {
     headers: {
       'User-Agent': 'btc-monitor',
     },
-  });
+  }, HEAVY_UPSTREAM_TIMEOUT_MS);
 
   if (text) {
     memoryCache.set(cacheKey, { ts: Date.now(), html: text });
@@ -1014,6 +1065,7 @@ async function fetchRuntimeInputs(request) {
     fetchLatestFilePoint('sthSopr'),
     fetchLatestFilePoint('sthMvrv'),
     fetchLatestFilePoint('puellMultiple'),
+    fetchPuellBackupPoint(),
   ]);
 
   const backupSpotPrice = await fetchBackupSpotPrice();
@@ -1021,6 +1073,7 @@ async function fetchRuntimeInputs(request) {
   const resolvedReserveRiskPoint = pickNewerPoint(reserveRiskPrimaryPoint, reserveRiskBackupPoint);
   const resolvedNuplPoint = pickNewerPoint(nuplFilePoint, nuplBackupPoint);
   const resolvedMvrvZscorePoint = pickNewerPoint(mvrvZscorePoint, mvrvZscoreBackupPoint);
+  const resolvedPuellPoint = pickNewerPoint(puellPoint, puellBackupPoint);
 
   // Backup tiers: only consult them when a primary point is missing or older
   // than the trigger window (avoids extra upstream load otherwise).
@@ -1065,7 +1118,7 @@ async function fetchRuntimeInputs(request) {
       nupl: resolvedNuplPoint,
       sthSopr: resolvedSthSoprPoint,
       sthMvrv: resolvedSthMvrvPoint,
-      puellMultiple: puellPoint,
+      puellMultiple: resolvedPuellPoint,
     },
   };
 }
