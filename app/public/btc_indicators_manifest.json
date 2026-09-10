@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-10T16:21:40.100539+00:00",
+  "generatedAt": "2026-09-10T20:49:23.922443+00:00",
   "latestDate": "2026-09-10",
-  "lastUpdated": "2026-09-10T16:21:40.075122+00:00",
+  "lastUpdated": "2026-09-10T20:49:23.896804+00:00",
   "historyRows": 6462,
   "historyLightRows": 921,
   "historyFiles": {
@@ -200,9 +200,9 @@
     "nupl": {
       "source": "https://charts.bgeometrics.com/files/nupl_data.json + https://bitcoin-data.com/v1/nupl + https://bitcoin-data.com/v1/nupl/1",
       "rows": 6462,
-      "nonNullRows": 1461,
+      "nonNullRows": 1455,
       "latestDate": "2026-09-10",
-      "latestNonNullDate": "2026-09-09",
+      "latestNonNullDate": "2026-09-03",
       "status": "healthy"
     },
     "sth_sopr": {
@@ -263,7 +263,7 @@
       "lthMvrv": 0.0,
       "lthSopr": 0.0,
       "mvrvZscore": 1.0,
-      "nupl": 1.0,
+      "nupl": 7.0,
       "sthSopr": 0.0,
       "sthMvrv": 0.0,
       "puell": 1.0
@@ -271,8 +271,8 @@
     "staleIndicators": [],
     "inactiveIndicators": [],
     "fallbackModeV6": "none",
-    "dataFreshnessScoreV6": 0.9464285714285714,
-    "signalConfidenceV6": 0.2839
+    "dataFreshnessScoreV6": 0.8392857142857144,
+    "signalConfidenceV6": 0.2518
   },
   "schemaContract": {
     "canonicalModel": "core8_independent_valuation",
@@ -389,11 +389,11 @@
     "officialHistoryRows": 61,
     "historySource": "strategy_official_timeseries",
     "historySourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav",
-    "mnav": 1.0636,
+    "mnav": 1.0554,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
-    "mstrTimestampUtc": "2026-09-10T16:21:00",
-    "btcTimestamp": "2026-09-10T16:21:00"
+    "mstrTimestampUtc": "2026-09-10T20:00:00",
+    "btcTimestamp": "2026-09-10T20:49:00"
   }
 }
