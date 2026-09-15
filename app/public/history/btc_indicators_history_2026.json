@@ -43685,12 +43685,12 @@
     "lthMvrv": 1.5806,
     "lthSopr": 1.0694891503025759,
     "lthSoprMa3": 1.1067630501008565,
-    "mvrvZscore": 0.8725,
-    "nupl": 0.3276,
+    "mvrvZscore": 0.8401543301247028,
+    "nupl": 0.3249415927391811,
     "sthSopr": 1.0079340173871096,
     "sthSoprMa3": 1.00344467246237,
     "sthMvrv": 1.0978,
-    "puellMultiple": 0.8901,
+    "puellMultiple": 1.0697200322176441,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -43759,10 +43759,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.2893,
-    "signalConfidenceV6": 0.2839,
-    "dataFreshnessScore": 0.9642857142857144,
-    "dataFreshnessScoreV6": 0.9464285714285714,
+    "signalConfidence": 0.3,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScore": 1.0,
+    "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0005793828,
@@ -43828,11 +43828,11 @@
       "reserve_risk": "2026-09-09",
       "lth_mvrv": "2026-09-09",
       "lth_sopr": "2026-09-09",
-      "mvrv_zscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrv_zscore": "2026-09-09",
+      "nupl": "2026-09-09",
       "sth_sopr": "2026-09-09",
       "sth_mvrv": "2026-09-09",
-      "puell": "2026-09-08"
+      "puell": "2026-09-09"
     },
     "indicatorDates": {
       "priceMa200w": "2026-09-09",
@@ -43840,11 +43840,11 @@
       "reserveRisk": "2026-09-09",
       "lthMvrv": "2026-09-09",
       "lthSopr": "2026-09-09",
-      "mvrvZscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrvZscore": "2026-09-09",
+      "nupl": "2026-09-09",
       "sthSopr": "2026-09-09",
       "sthMvrv": "2026-09-09",
-      "puell": "2026-09-08"
+      "puell": "2026-09-09"
     }
   },
   {
@@ -43859,12 +43859,12 @@
     "lthMvrv": 1.5561,
     "lthSopr": 1.079949389021024,
     "lthSoprMa3": 1.0915795131078647,
-    "mvrvZscore": 0.8725,
-    "nupl": 0.3276,
+    "mvrvZscore": 0.7895824387854108,
+    "nupl": 0.3113484567092899,
     "sthSopr": 1.006077171023702,
     "sthSoprMa3": 1.0052037294702705,
     "sthMvrv": 1.08,
-    "puellMultiple": 0.8901,
+    "puellMultiple": 0.8876082526851322,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -43933,10 +43933,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.2786,
-    "signalConfidenceV6": 0.2679,
-    "dataFreshnessScore": 0.9285714285714286,
-    "dataFreshnessScoreV6": 0.8928571428571429,
+    "signalConfidence": 0.3,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScore": 1.0,
+    "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0005793828,
@@ -44002,11 +44002,11 @@
       "reserve_risk": "2026-09-10",
       "lth_mvrv": "2026-09-10",
       "lth_sopr": "2026-09-10",
-      "mvrv_zscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrv_zscore": "2026-09-10",
+      "nupl": "2026-09-10",
       "sth_sopr": "2026-09-10",
       "sth_mvrv": "2026-09-10",
-      "puell": "2026-09-08"
+      "puell": "2026-09-10"
     },
     "indicatorDates": {
       "priceMa200w": "2026-09-10",
@@ -44014,11 +44014,11 @@
       "reserveRisk": "2026-09-10",
       "lthMvrv": "2026-09-10",
       "lthSopr": "2026-09-10",
-      "mvrvZscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrvZscore": "2026-09-10",
+      "nupl": "2026-09-10",
       "sthSopr": "2026-09-10",
       "sthMvrv": "2026-09-10",
-      "puell": "2026-09-08"
+      "puell": "2026-09-10"
     }
   },
   {
@@ -44033,12 +44033,12 @@
     "lthMvrv": 1.5573,
     "lthSopr": 1.0613618855624607,
     "lthSoprMa3": 1.0702668082953515,
-    "mvrvZscore": 0.8725,
-    "nupl": 0.3276,
+    "mvrvZscore": 0.8058092150415429,
+    "nupl": 0.31577834484126577,
     "sthSopr": 1.0051081801723556,
     "sthSoprMa3": 1.0063731228610557,
     "sthMvrv": 1.0814,
-    "puellMultiple": 0.8901,
+    "puellMultiple": 1.0462313301880466,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -44107,10 +44107,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.2679,
-    "signalConfidenceV6": 0.2518,
-    "dataFreshnessScore": 0.8928571428571428,
-    "dataFreshnessScoreV6": 0.8392857142857142,
+    "signalConfidence": 0.3,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScore": 1.0,
+    "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0005793828,
@@ -44176,11 +44176,11 @@
       "reserve_risk": "2026-09-11",
       "lth_mvrv": "2026-09-11",
       "lth_sopr": "2026-09-11",
-      "mvrv_zscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrv_zscore": "2026-09-11",
+      "nupl": "2026-09-11",
       "sth_sopr": "2026-09-11",
       "sth_mvrv": "2026-09-11",
-      "puell": "2026-09-08"
+      "puell": "2026-09-11"
     },
     "indicatorDates": {
       "priceMa200w": "2026-09-11",
@@ -44188,11 +44188,11 @@
       "reserveRisk": "2026-09-11",
       "lthMvrv": "2026-09-11",
       "lthSopr": "2026-09-11",
-      "mvrvZscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrvZscore": "2026-09-11",
+      "nupl": "2026-09-11",
       "sthSopr": "2026-09-11",
       "sthMvrv": "2026-09-11",
-      "puell": "2026-09-08"
+      "puell": "2026-09-11"
     }
   },
   {
@@ -44207,12 +44207,12 @@
     "lthMvrv": 1.5647,
     "lthSopr": 1.0959937963199582,
     "lthSoprMa3": 1.0791016903011457,
-    "mvrvZscore": 0.8725,
-    "nupl": 0.3276,
+    "mvrvZscore": 0.8082336336997401,
+    "nupl": 0.31638715669126627,
     "sthSopr": 1.0024126188298108,
     "sthSoprMa3": 1.0045326566752895,
     "sthMvrv": 1.087,
-    "puellMultiple": 0.8901,
+    "puellMultiple": 1.0419137202696642,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -44281,10 +44281,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.2571,
-    "signalConfidenceV6": 0.2357,
-    "dataFreshnessScore": 0.8571428571428572,
-    "dataFreshnessScoreV6": 0.7857142857142858,
+    "signalConfidence": 0.3,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScore": 1.0,
+    "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0005793828,
@@ -44350,11 +44350,11 @@
       "reserve_risk": "2026-09-12",
       "lth_mvrv": "2026-09-12",
       "lth_sopr": "2026-09-12",
-      "mvrv_zscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrv_zscore": "2026-09-12",
+      "nupl": "2026-09-12",
       "sth_sopr": "2026-09-12",
       "sth_mvrv": "2026-09-12",
-      "puell": "2026-09-08"
+      "puell": "2026-09-12"
     },
     "indicatorDates": {
       "priceMa200w": "2026-09-12",
@@ -44362,11 +44362,11 @@
       "reserveRisk": "2026-09-12",
       "lthMvrv": "2026-09-12",
       "lthSopr": "2026-09-12",
-      "mvrvZscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrvZscore": "2026-09-12",
+      "nupl": "2026-09-12",
       "sthSopr": "2026-09-12",
       "sthMvrv": "2026-09-12",
-      "puell": "2026-09-08"
+      "puell": "2026-09-12"
     }
   },
   {
@@ -44381,12 +44381,12 @@
     "lthMvrv": 1.554,
     "lthSopr": 1.0891135799458174,
     "lthSoprMa3": 1.0821564206094099,
-    "mvrvZscore": 0.8725,
-    "nupl": 0.3276,
+    "mvrvZscore": 0.7918763362628178,
+    "nupl": 0.3118142229708952,
     "sthSopr": 1.0020956728813433,
     "sthSoprMa3": 1.0032054906278365,
     "sthMvrv": 1.0797,
-    "puellMultiple": 0.8901,
+    "puellMultiple": 0.9768633019738434,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -44455,10 +44455,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.2464,
-    "signalConfidenceV6": 0.2196,
-    "dataFreshnessScore": 0.8214285714285714,
-    "dataFreshnessScoreV6": 0.7321428571428571,
+    "signalConfidence": 0.3,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScore": 1.0,
+    "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0005793828,
@@ -44524,11 +44524,11 @@
       "reserve_risk": "2026-09-13",
       "lth_mvrv": "2026-09-13",
       "lth_sopr": "2026-09-13",
-      "mvrv_zscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrv_zscore": "2026-09-13",
+      "nupl": "2026-09-13",
       "sth_sopr": "2026-09-13",
       "sth_mvrv": "2026-09-13",
-      "puell": "2026-09-08"
+      "puell": "2026-09-13"
     },
     "indicatorDates": {
       "priceMa200w": "2026-09-13",
@@ -44536,11 +44536,11 @@
       "reserveRisk": "2026-09-13",
       "lthMvrv": "2026-09-13",
       "lthSopr": "2026-09-13",
-      "mvrvZscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrvZscore": "2026-09-13",
+      "nupl": "2026-09-13",
       "sthSopr": "2026-09-13",
       "sthMvrv": "2026-09-13",
-      "puell": "2026-09-08"
+      "puell": "2026-09-13"
     }
   },
   {
@@ -44555,12 +44555,12 @@
     "lthMvrv": 1.5888,
     "lthSopr": 1.0762012010573931,
     "lthSoprMa3": 1.0871028591077208,
-    "mvrvZscore": 0.8725,
-    "nupl": 0.3276,
+    "mvrvZscore": 0.8414255379050027,
+    "nupl": 0.3255832347744695,
     "sthSopr": 1.0048231692327634,
     "sthSoprMa3": 1.0031104869813061,
     "sthMvrv": 1.1036,
-    "puellMultiple": 0.8901,
+    "puellMultiple": 1.0173194944396244,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -44629,10 +44629,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.2357,
-    "signalConfidenceV6": 0.2036,
-    "dataFreshnessScore": 0.7857142857142858,
-    "dataFreshnessScoreV6": 0.6785714285714286,
+    "signalConfidence": 0.3,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScore": 1.0,
+    "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0005793828,
@@ -44698,11 +44698,11 @@
       "reserve_risk": "2026-09-14",
       "lth_mvrv": "2026-09-14",
       "lth_sopr": "2026-09-14",
-      "mvrv_zscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrv_zscore": "2026-09-14",
+      "nupl": "2026-09-14",
       "sth_sopr": "2026-09-14",
       "sth_mvrv": "2026-09-14",
-      "puell": "2026-09-08"
+      "puell": "2026-09-14"
     },
     "indicatorDates": {
       "priceMa200w": "2026-09-14",
@@ -44710,31 +44710,31 @@
       "reserveRisk": "2026-09-14",
       "lthMvrv": "2026-09-14",
       "lthSopr": "2026-09-14",
-      "mvrvZscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrvZscore": "2026-09-14",
+      "nupl": "2026-09-14",
       "sthSopr": "2026-09-14",
       "sthMvrv": "2026-09-14",
-      "puell": "2026-09-08"
+      "puell": "2026-09-14"
     }
   },
   {
     "d": "2026-09-15",
     "unixTs": 1789430400,
-    "btcPrice": 76925.65,
-    "ma200w": 65138.08867309649,
+    "btcPrice": 76385.65,
+    "ma200w": 65137.702958810776,
     "realizedPrice": 52792.53,
-    "priceMa200wRatio": 1.180962652835284,
-    "priceRealizedRatio": 1.4571313403619792,
+    "priceMa200wRatio": 1.1726795163210124,
+    "priceRealizedRatio": 1.4469026205033173,
     "reserveRisk": 0.0006046299,
-    "lthMvrv": 1.5707,
-    "lthSopr": 1.0631764149363865,
-    "lthSoprMa3": 1.0761637319798636,
-    "mvrvZscore": 0.8725,
-    "nupl": 0.3276,
-    "sthSopr": 1.0048787672217807,
-    "sthSoprMa3": 1.0039325364452958,
-    "sthMvrv": 1.0911,
-    "puellMultiple": 0.8901,
+    "lthMvrv": 1.554,
+    "lthSopr": 1.062137370319024,
+    "lthSoprMa3": 1.075817383774076,
+    "mvrvZscore": 0.7787696553243496,
+    "nupl": 0.3088684851146779,
+    "sthSopr": 1.0033950790302122,
+    "sthSoprMa3": 1.003437973714773,
+    "sthMvrv": 1.0797,
+    "puellMultiple": 0.9792142146014272,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -44803,10 +44803,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.2196,
-    "signalConfidenceV6": 0.1875,
-    "dataFreshnessScore": 0.7321428571428572,
-    "dataFreshnessScoreV6": 0.625,
+    "signalConfidence": 0.2946,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScore": 0.9821428571428572,
+    "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.00057943586,
@@ -44872,11 +44872,11 @@
       "reserve_risk": "2026-09-14",
       "lth_mvrv": "2026-09-15",
       "lth_sopr": "2026-09-15",
-      "mvrv_zscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrv_zscore": "2026-09-15",
+      "nupl": "2026-09-15",
       "sth_sopr": "2026-09-15",
       "sth_mvrv": "2026-09-15",
-      "puell": "2026-09-08"
+      "puell": "2026-09-15"
     },
     "indicatorDates": {
       "priceMa200w": "2026-09-15",
@@ -44884,11 +44884,11 @@
       "reserveRisk": "2026-09-14",
       "lthMvrv": "2026-09-15",
       "lthSopr": "2026-09-15",
-      "mvrvZscore": "2026-09-08",
-      "nupl": "2026-09-08",
+      "mvrvZscore": "2026-09-15",
+      "nupl": "2026-09-15",
       "sthSopr": "2026-09-15",
       "sthMvrv": "2026-09-15",
-      "puell": "2026-09-08"
+      "puell": "2026-09-15"
     }
   }
 ]
