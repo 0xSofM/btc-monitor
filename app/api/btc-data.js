@@ -19,12 +19,15 @@ import {
   COINBASE_SPOT_URL,
   COINGECKO_SPOT_URL,
   DEFAULT_THRESHOLDS,
+  DERIVED_VALUATION_SERIES,
   FRESHNESS_LIMITS,
   INDICATOR_ROUTE_MAP,
   LTH_STH_POINT_BACKUP_URLS,
   MVRV_ZSCORE_BACKUP_URLS,
+  MVRV_ZSCORE_MIN_SIGMA_OBS,
   NUPL_BACKUP_URLS,
   PUELL_BACKUP_URLS,
+  PUELL_MA_WINDOW_DAYS,
   RESERVE_RISK_BACKUP_URLS,
   RESERVE_RISK_DISABLE_LAG_DAYS,
   SCORE_CONFIRM_RATIO,
@@ -708,6 +711,216 @@ async function fetchPuellBackupPoint() {
   return null;
 }
 
+// SECTION: derived valuation metrics (locally rebuilt from fresh BGeometrics inputs)
+//
+// bitcoin-data.com now answers with `"delayed": true` for the latest 7 days, so
+// nupl / mvrvZscore / puellMultiple freeze at D-7 no matter which vendor mirror
+// is used. The BGeometrics price / realized price / market cap / supply files
+// still publish daily, so the three metrics are rebuilt here:
+//   NUPL         = 1 - realizedPrice / price
+//   MVRV Z-Score = (marketCap - realizedCap) / stdev(marketCap history)
+//   Puell        = issuance / 365d mean(issuance)
+
+async function fetchSeriesRowsByUrls(urls) {
+  for (const url of urls) {
+    const payload = await fetchJsonSafely(url, [], {
+      headers: {
+        'User-Agent': 'btc-monitor',
+      },
+    });
+
+    if (!Array.isArray(payload)) {
+      continue;
+    }
+
+    const rows = [];
+    for (const row of payload) {
+      if (!Array.isArray(row) || row.length < 2) {
+        continue;
+      }
+
+      const date = parseDateFromTimestamp(row[0]);
+      const value = toNumberOrNull(row[1]);
+      if (!date || value === null) {
+        continue;
+      }
+
+      rows.push({ d: date, v: value });
+    }
+
+    if (rows.length > 0) {
+      rows.sort((left, right) => left.d.localeCompare(right.d));
+      return rows;
+    }
+  }
+
+  return [];
+}
+
+function rowsToDateMap(rows) {
+  const map = new Map();
+  for (const row of rows) {
+    map.set(row.d, row.v);
+  }
+  return map;
+}
+
+function buildDerivedValuationPoints({
+  priceRows,
+  realizedPriceRows,
+  marketCapRows,
+  supplyRows,
+}) {
+  if (!priceRows?.length || !realizedPriceRows?.length || !marketCapRows?.length) {
+    return {};
+  }
+
+  const priceMap = rowsToDateMap(priceRows);
+  const realizedMap = rowsToDateMap(realizedPriceRows);
+  const marketCapMap = rowsToDateMap(marketCapRows);
+  const supplyMap = rowsToDateMap(supplyRows);
+
+  const priceDates = [...priceMap.keys()].sort();
+  const marketCapDates = [...marketCapMap.keys()].sort();
+  const supplyDates = [...supplyMap.keys()].sort();
+
+  // Implied circulating supply (market cap / price) so market cap can be carried
+  // onto the newest price date even when market_cap.json lands a day late.
+  let impliedSupply = null;
+  for (const date of marketCapDates) {
+    const price = priceMap.get(date);
+    if (price) {
+      impliedSupply = marketCapMap.get(date) / price;
+    }
+  }
+
+  const lastMarketCapDate = marketCapDates[marketCapDates.length - 1];
+  const extraMarketCap = new Map();
+  if (impliedSupply) {
+    for (const date of priceDates) {
+      if (date > lastMarketCapDate) {
+        extraMarketCap.set(date, priceMap.get(date) * impliedSupply);
+      }
+    }
+  }
+
+  // Population stdev of market cap across the full history — matches the vendor.
+  const sigmaByDate = new Map();
+  const timeline = marketCapDates.map((date) => [date, marketCapMap.get(date)]);
+  timeline.push(
+    ...[...extraMarketCap.entries()].sort((left, right) => left[0].localeCompare(right[0])),
+  );
+  let runningSum = 0;
+  let runningSq = 0;
+  let observationCount = 0;
+  for (const [date, marketCap] of timeline) {
+    runningSum += marketCap;
+    runningSq += marketCap * marketCap;
+    observationCount += 1;
+    if (observationCount < MVRV_ZSCORE_MIN_SIGMA_OBS) {
+      continue;
+    }
+
+    const mean = runningSum / observationCount;
+    const variance = Math.max(runningSq / observationCount - mean * mean, 0);
+    sigmaByDate.set(date, Math.sqrt(variance));
+  }
+
+  // Daily issuance in BTC plus a trailing mean used to carry it one day forward.
+  const issuanceBtc = new Map();
+  for (let index = 1; index < supplyDates.length; index += 1) {
+    const previous = supplyDates[index - 1];
+    const current = supplyDates[index];
+    const delta = supplyMap.get(current) - supplyMap.get(previous);
+    if (delta > 0) {
+      issuanceBtc.set(current, delta);
+    }
+  }
+  const recentIssuance = supplyDates
+    .slice(-7)
+    .map((date) => issuanceBtc.get(date))
+    .filter((value) => typeof value === 'number');
+  const fallbackIssuance = recentIssuance.length > 0
+    ? recentIssuance.reduce((total, value) => total + value, 0) / recentIssuance.length
+    : null;
+
+  const issuanceUsd = new Map();
+  for (const date of supplyDates) {
+    if (issuanceBtc.has(date) && priceMap.has(date)) {
+      issuanceUsd.set(date, issuanceBtc.get(date) * priceMap.get(date));
+    }
+  }
+  if (supplyDates.length > 0 && fallbackIssuance) {
+    const lastSupplyDate = supplyDates[supplyDates.length - 1];
+    for (const date of priceDates) {
+      if (date > lastSupplyDate) {
+        issuanceUsd.set(date, fallbackIssuance * priceMap.get(date));
+      }
+    }
+  }
+  const issuanceDates = [...issuanceUsd.keys()].sort();
+
+  const lastRealizedDate = realizedPriceRows[realizedPriceRows.length - 1]?.d ?? null;
+  const carriedRealizedPrice = lastRealizedDate ? realizedMap.get(lastRealizedDate) : null;
+  if (!carriedRealizedPrice) {
+    return {};
+  }
+
+  const targetDate = priceDates[priceDates.length - 1];
+  const price = priceMap.get(targetDate);
+  const marketCap = marketCapMap.has(targetDate)
+    ? marketCapMap.get(targetDate)
+    : extraMarketCap.get(targetDate);
+  if (!price || !marketCap) {
+    return {};
+  }
+
+  // Realized price lands one day later than price; carrying it forward shifts
+  // NUPL / MVRV-Z by well under 0.1%.
+  const realizedPrice = realizedMap.get(targetDate) ?? carriedRealizedPrice;
+  const realizedCap = (marketCap * realizedPrice) / price;
+  const nupl = 1 - realizedPrice / price;
+
+  const sigma = sigmaByDate.get(targetDate);
+  const mvrvZscore = sigma && sigma > 0 ? (marketCap - realizedCap) / sigma : null;
+
+  let puell = null;
+  if (issuanceUsd.has(targetDate)) {
+    const window = issuanceDates
+      .filter((date) => date <= targetDate)
+      .slice(-PUELL_MA_WINDOW_DAYS);
+    if (window.length > 0) {
+      const mean =
+        window.reduce((total, date) => total + issuanceUsd.get(date), 0) / window.length;
+      if (mean > 0) {
+        puell = issuanceUsd.get(targetDate) / mean;
+      }
+    }
+  }
+
+  return {
+    nupl: buildPoint(targetDate, nupl, 'derived_bgeometrics_caps'),
+    mvrvZscore: buildPoint(targetDate, mvrvZscore, 'derived_bgeometrics_caps'),
+    puellMultiple: buildPoint(targetDate, puell, 'derived_bgeometrics_caps'),
+  };
+}
+
+async function fetchDerivedValuationPoints() {
+  const [priceRows, realizedPriceRows, marketCapRows, supplyRows] = await Promise.all([
+    fetchSeriesRowsByUrls(BGEOMETRICS_SERIES.btcPrice?.urls ?? []),
+    fetchSeriesRowsByUrls(BGEOMETRICS_SERIES.realizedPrice?.urls ?? []),
+    fetchSeriesRowsByUrls(DERIVED_VALUATION_SERIES.marketCap?.urls ?? []),
+    fetchSeriesRowsByUrls(DERIVED_VALUATION_SERIES.supply?.urls ?? []),
+  ]);
+
+  return buildDerivedValuationPoints({
+    priceRows,
+    realizedPriceRows,
+    marketCapRows,
+    supplyRows,
+  });
+}
+
 // SECTION: checkonchain fallback (heavy pre-rendered Plotly pages)
 
 function parseBitcoinDataPointPayload(payload, field) {
@@ -1048,6 +1261,7 @@ async function fetchRuntimeInputs(request) {
     sthSoprPoint,
     sthMvrvPoint,
     puellPoint,
+    derivedValuationPoints,
   ] = await Promise.all([
     fetchStaticLatestSnapshot(request),
     fetchStaticHistory(request),
@@ -1066,14 +1280,29 @@ async function fetchRuntimeInputs(request) {
     fetchLatestFilePoint('sthMvrv'),
     fetchLatestFilePoint('puellMultiple'),
     fetchPuellBackupPoint(),
+    fetchDerivedValuationPoints(),
   ]);
 
   const backupSpotPrice = await fetchBackupSpotPrice();
   const resolvedPricePoint = pickNewerPoint(filePricePoint, backupSpotPrice);
   const resolvedReserveRiskPoint = pickNewerPoint(reserveRiskPrimaryPoint, reserveRiskBackupPoint);
-  const resolvedNuplPoint = pickNewerPoint(nuplFilePoint, nuplBackupPoint);
-  const resolvedMvrvZscorePoint = pickNewerPoint(mvrvZscorePoint, mvrvZscoreBackupPoint);
-  const resolvedPuellPoint = pickNewerPoint(puellPoint, puellBackupPoint);
+  // Locally rebuilt metrics win whenever they are newer than the frozen D-7
+  // vendor points (they are derived from same-day price/market-cap inputs).
+  const resolvedNuplPoint = pickFreshestPoint(
+    nuplFilePoint,
+    nuplBackupPoint,
+    derivedValuationPoints.nupl ?? null,
+  );
+  const resolvedMvrvZscorePoint = pickFreshestPoint(
+    mvrvZscorePoint,
+    mvrvZscoreBackupPoint,
+    derivedValuationPoints.mvrvZscore ?? null,
+  );
+  const resolvedPuellPoint = pickFreshestPoint(
+    puellPoint,
+    puellBackupPoint,
+    derivedValuationPoints.puellMultiple ?? null,
+  );
 
   // Backup tiers: only consult them when a primary point is missing or older
   // than the trigger window (avoids extra upstream load otherwise).

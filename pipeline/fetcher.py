@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import base64
+import bisect
 import json
 import math
 import re
@@ -19,9 +20,12 @@ import requests
 from .config import (
     CHECKONCHAIN_CHART_SERIES,
     CHECKONCHAIN_STALE_TRIGGER_DAYS,
+    DERIVED_VALUATION_SOURCES,
     INDICATOR_FRESHNESS_MAX_LAG_DAYS,
     LIVE_BTC_PRICE_SOURCES,
     MAX_RETRIES,
+    MVRV_ZSCORE_MIN_SIGMA_OBS,
+    PUELL_MA_WINDOW_DAYS,
     REQUEST_TIMEOUT,
     RESERVE_RISK_SOURCE_REGISTRY,
     RETRY_BACKOFF_SEC,
@@ -1340,6 +1344,181 @@ def patch_reserve_risk_tail(
     return df, best
 
 
+def _series_to_date_map(df: pd.DataFrame, column: str) -> Dict[object, float]:
+    """Collapse a parsed series DataFrame into a {date: value} map."""
+    if df is None or df.empty or column not in df.columns:
+        return {}
+
+    result: Dict[object, float] = {}
+    for _, row in df.iterrows():
+        value = _safe_float(row.get(column))
+        if value is None:
+            continue
+        raw_date = row.get("date")
+        date = raw_date.date() if hasattr(raw_date, "date") else raw_date
+        if date is None:
+            continue
+        result[date] = value
+
+    return result
+
+
+def build_derived_valuation_frame(
+    price_df: pd.DataFrame,
+    realized_price_df: pd.DataFrame,
+) -> pd.DataFrame:
+    """Rebuild nupl / mvrv_zscore / puell_multiple from fresh BGeometrics inputs.
+
+    The vendor indicator files for these three metrics are frozen at D-7 because
+    bitcoin-data.com paywalls the most recent week. The inputs used here
+    (price, realized price, market cap, circulating supply) are published daily,
+    so the metrics can be reconstructed locally and stay current.
+    """
+    empty = pd.DataFrame(columns=["date", "nupl", "mvrv_zscore", "puell_multiple"])
+
+    try:
+        market_cap_df = parse_series(
+            "market_cap", fetch_json(DERIVED_VALUATION_SOURCES["market_cap"])
+        )
+        supply_df = parse_series(
+            "supply", fetch_json(DERIVED_VALUATION_SOURCES["supply"])
+        )
+    except Exception as exc:  # pragma: no cover - network dependent
+        print(f"  derived valuation inputs unavailable: {exc}")
+        return empty
+
+    price_map = _series_to_date_map(price_df, "btc_price")
+    realized_map = _series_to_date_map(realized_price_df, "realized_price")
+    market_cap_map = _series_to_date_map(market_cap_df, "market_cap")
+    supply_map = _series_to_date_map(supply_df, "supply")
+
+    if not price_map or not market_cap_map or not realized_map:
+        return empty
+
+    price_dates = sorted(price_map)
+    market_cap_dates = sorted(market_cap_map)
+    supply_dates = sorted(supply_map)
+
+    # Implied circulating supply (market cap / price) so market cap can be
+    # carried onto the newest price date even when market_cap.json lands late.
+    implied_supply: float | None = None
+    for date in market_cap_dates:
+        price_on_date = price_map.get(date)
+        if price_on_date:
+            implied_supply = market_cap_map[date] / price_on_date
+
+    last_market_cap_date = market_cap_dates[-1]
+    extra_market_cap: Dict[object, float] = {}
+    if implied_supply:
+        for date in price_dates:
+            if date > last_market_cap_date:
+                extra_market_cap[date] = price_map[date] * implied_supply
+
+    # Population stdev of market cap over the full history (matches the vendor).
+    sigma_by_date: Dict[object, float] = {}
+    running_sum = 0.0
+    running_sq = 0.0
+    observation_count = 0
+    timeline = [(d, market_cap_map[d]) for d in market_cap_dates]
+    timeline.extend(sorted(extra_market_cap.items()))
+    for date, market_cap in timeline:
+        running_sum += market_cap
+        running_sq += market_cap * market_cap
+        observation_count += 1
+        if observation_count < MVRV_ZSCORE_MIN_SIGMA_OBS:
+            continue
+        mean = running_sum / observation_count
+        variance = max(running_sq / observation_count - mean * mean, 0.0)
+        sigma_by_date[date] = math.sqrt(variance)
+
+    # Daily issuance in BTC, plus a trailing mean used to carry it forward.
+    issuance_btc: Dict[object, float] = {}
+    for previous, current in zip(supply_dates, supply_dates[1:]):
+        delta = supply_map[current] - supply_map[previous]
+        if delta > 0:
+            issuance_btc[current] = delta
+    recent_issuance = [
+        issuance_btc[d] for d in supply_dates[-7:] if d in issuance_btc
+    ]
+    fallback_issuance = (
+        sum(recent_issuance) / len(recent_issuance) if recent_issuance else None
+    )
+
+    # Daily issuance in USD over the supply window, extended onto newer dates.
+    issuance_usd: Dict[object, float] = {}
+    for date in supply_dates:
+        if date in issuance_btc and date in price_map:
+            issuance_usd[date] = issuance_btc[date] * price_map[date]
+    if supply_dates and fallback_issuance:
+        last_supply_date = supply_dates[-1]
+        for date in price_dates:
+            if date > last_supply_date:
+                issuance_usd[date] = fallback_issuance * price_map[date]
+    issuance_dates = sorted(issuance_usd)
+
+    # Prefix sums so the 365-day trailing mean stays O(1) per date.
+    issuance_values = [issuance_usd[d] for d in issuance_dates]
+    issuance_prefix = [0.0]
+    for value in issuance_values:
+        issuance_prefix.append(issuance_prefix[-1] + value)
+
+    def trailing_issuance_mean(date: object) -> float | None:
+        index = bisect.bisect_right(issuance_dates, date) - 1
+        if index < 0:
+            return None
+        start = max(0, index + 1 - PUELL_MA_WINDOW_DAYS)
+        count = index + 1 - start
+        if count <= 0:
+            return None
+        return (issuance_prefix[index + 1] - issuance_prefix[start]) / count
+
+    last_realized_date = max(realized_map)
+    carried_realized_price = realized_map[last_realized_date]
+
+    rows: List[Dict[str, object]] = []
+    for date in price_dates:
+        price = price_map[date]
+        market_cap = market_cap_map.get(date, extra_market_cap.get(date))
+        if not price or not market_cap:
+            continue
+
+        # Realized price lands one day later than price; carrying it forward
+        # shifts NUPL/MVRV-Z by well under 0.1%.
+        realized_price = realized_map.get(date, carried_realized_price)
+        if not realized_price:
+            continue
+
+        realized_cap = market_cap * realized_price / price
+        nupl = 1.0 - realized_price / price
+
+        mvrv_zscore: float | None = None
+        sigma = sigma_by_date.get(date)
+        if sigma and sigma > 0:
+            mvrv_zscore = (market_cap - realized_cap) / sigma
+
+        puell: float | None = None
+        if date in issuance_usd:
+            mean_issuance = trailing_issuance_mean(date)
+            if mean_issuance and mean_issuance > 0:
+                puell = issuance_usd[date] / mean_issuance
+
+        rows.append(
+            {
+                "date": date,
+                "nupl": nupl,
+                "mvrv_zscore": mvrv_zscore,
+                "puell_multiple": puell,
+            }
+        )
+
+    if not rows:
+        return empty
+
+    frame = pd.DataFrame(rows)
+    frame["date"] = pd.to_datetime(frame["date"])
+    return frame.sort_values("date").reset_index(drop=True)
+
+
 def build_base_dataframe(
     start_date: str | None = None,
     end_date: str | None = None,
@@ -1489,6 +1668,42 @@ def build_base_dataframe(
             print(
                 f"  Patched Puell Multiple with bitcoin-data.com: "
                 f"{len(puell_bd_df)} rows"
+            )
+
+    # The three metrics backed by bitcoin-data.com freeze at D-7 (the vendor now
+    # paywalls the latest week). Rebuild them from fresh BGeometrics inputs and
+    # extend only the tail, so the published history stays untouched.
+    try:
+        derived_df = build_derived_valuation_frame(
+            dfs.get("btc_price"), dfs.get("realized_price")
+        )
+    except Exception as exc:  # pragma: no cover - network dependent
+        print(f"  derived valuation metrics unavailable: {exc}")
+        derived_df = pd.DataFrame()
+
+    if not derived_df.empty:
+        print("Extending nupl / mvrv_zscore / puell_multiple from derived caps ...")
+        for key in ("nupl", "mvrv_zscore", "puell_multiple"):
+            if key not in dfs or dfs[key].empty:
+                continue
+
+            primary_last = pd.to_datetime(dfs[key]["date"]).max()
+            tail = derived_df[derived_df["date"] > primary_last]
+            tail = tail[["date", key]].dropna(subset=[key])
+            if tail.empty:
+                continue
+
+            merged_df = merge_metric_history_sources(key, [(dfs[key], 0), (tail, 1)])
+            if merged_df.empty:
+                continue
+
+            dfs[key] = merged_df
+            selected_sources[key] = (
+                f"{selected_sources.get(key, '?')} + derived_from_bgeometrics_caps"
+            )
+            print(
+                f"  {key}: +{len(tail)} rows, "
+                f"latest={pd.to_datetime(tail['date']).max().date()}"
             )
 
     print("Fetching Reserve Risk ...")

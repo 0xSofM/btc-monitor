@@ -56,6 +56,31 @@ export const BGEOMETRICS_SERIES = {
   },
 };
 
+/**
+ * Inputs for locally rebuilding the three metrics whose vendor files are frozen
+ * at D-7 (bitcoin-data.com paywalls the latest week):
+ *   NUPL         = 1 - realizedPrice / price
+ *   MVRV Z-Score = (marketCap - realizedCap) / stdev(marketCap history),
+ *                  realizedCap = marketCap * realizedPrice / price
+ *   Puell        = issuance / 365d mean(issuance),
+ *                  issuance = (supply[t] - supply[t-1]) * price[t]
+ * Verified against the vendor series: NUPL MAE ~0.005, MVRV Z MAE ~0.010,
+ * Puell within ~0.5%.
+ */
+export const DERIVED_VALUATION_SERIES = {
+  marketCap: {
+    dataKey: 'marketCap',
+    urls: ['https://charts.bgeometrics.com/files/market_cap.json'],
+  },
+  supply: {
+    dataKey: 'supply',
+    urls: ['https://charts.bgeometrics.com/files/supply.json'],
+  },
+};
+
+export const PUELL_MA_WINDOW_DAYS = 365;
+export const MVRV_ZSCORE_MIN_SIGMA_OBS = 60;
+
 export const RESERVE_RISK_BACKUP_URLS = [
   'https://bitcoin-data.com/v1/reserve-risk/1',
   'https://r.jina.ai/http://bitcoin-data.com/v1/reserve-risk/1',

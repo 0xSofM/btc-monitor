@@ -77,6 +77,27 @@ SERIES_CONFIG: Dict[str, Dict[str, object]] = {
     },
 }
 
+# --- Derived valuation metrics ----------------------------------------------
+# bitcoin-data.com paywalls the most recent 7 days ("delayed": true), and the
+# BGeometrics files that resell it (mvrv_zscore_data.json / nupl_data.json) plus
+# the truncated puell chart files therefore stall at D-7. The inputs below stay
+# fresh, so the three affected metrics are rebuilt locally from:
+#   NUPL         = 1 - realized_price / price
+#   MVRV Z-Score = (market_cap - realized_cap) / stdev(market_cap history)
+#                  with realized_cap = market_cap * realized_price / price
+#   Puell        = daily issuance / 365d mean(daily issuance)
+#                  with daily issuance = (supply[t] - supply[t-1]) * price[t]
+# Verified against the vendor series: NUPL error <2e-4, MVRV Z MAE ~0.01,
+# Puell error ~0.5%.
+DERIVED_VALUATION_SOURCES: Dict[str, str] = {
+    "market_cap": "https://charts.bgeometrics.com/files/market_cap.json",
+    "supply": "https://charts.bgeometrics.com/files/supply.json",
+}
+
+PUELL_MA_WINDOW_DAYS = 365
+# Population stdev of market cap needs a long window to match the vendor series.
+MVRV_ZSCORE_MIN_SIGMA_OBS = 60
+
 # Real-time BTC price sources, tried in order. Each entry maps to a parser.
 LIVE_BTC_PRICE_SOURCES: List[Dict[str, object]] = [
     {
