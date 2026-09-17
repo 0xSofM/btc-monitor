@@ -20728,7 +20728,7 @@
     "reserveRisk": 0.0005147255,
     "lthMvrv": 0.922,
     "lthSopr": 0.5795817755,
-    "lthSoprMa3": 0.5375169843333307,
+    "lthSoprMa3": 0.5375169843333308,
     "mvrvZscore": -0.1366,
     "nupl": -0.1001,
     "sthSopr": 0.9963965808,
@@ -21048,7 +21048,7 @@
       },
       "lthSopr": {
         "trigger": 0.8046863560021056,
-        "deep": 0.6198146899244215
+        "deep": 0.621651588552548
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -21173,7 +21173,7 @@
       },
       "lthSopr": {
         "trigger": 0.7954217242466642,
-        "deep": 0.6111303619273
+        "deep": 0.6119846652637194
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -21298,7 +21298,7 @@
       },
       "lthSopr": {
         "trigger": 0.7877549148010148,
-        "deep": 0.6135663222045161
+        "deep": 0.613833054574976
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -22540,7 +22540,7 @@
       },
       "sthSopr": {
         "trigger": 0.9903858294404823,
-        "deep": 0.98281728533111
+        "deep": 0.9828063251410804
       },
       "sthMvrv": {
         "trigger": 0.900772,
@@ -54540,7 +54540,7 @@
       },
       "sthSopr": {
         "trigger": 0.9915748831749833,
-        "deep": 0.9838253422644201
+        "deep": 0.983803400115728
       },
       "sthMvrv": {
         "trigger": 0.907,
@@ -54665,7 +54665,7 @@
       },
       "sthSopr": {
         "trigger": 0.991581674609487,
-        "deep": 0.9838778521316046
+        "deep": 0.9838770563023774
       },
       "sthMvrv": {
         "trigger": 0.907465,
@@ -55040,7 +55040,7 @@
       },
       "sthSopr": {
         "trigger": 0.9916796875751916,
-        "deep": 0.9841961359105005
+        "deep": 0.9841961359105003
       },
       "sthMvrv": {
         "trigger": 0.908,
@@ -55294,7 +55294,7 @@
       },
       "sthMvrv": {
         "trigger": 0.908186,
-        "deep": 0.831
+        "deep": 0.8314825
       },
       "lthSopr": {
         "trigger": 0.8820254364779972,
@@ -55419,7 +55419,7 @@
       },
       "sthMvrv": {
         "trigger": 0.908386,
-        "deep": 0.8314825
+        "deep": 0.8317895
       },
       "lthSopr": {
         "trigger": 0.8820254364779972,
@@ -55544,7 +55544,7 @@
       },
       "sthMvrv": {
         "trigger": 0.908865,
-        "deep": 0.8317895
+        "deep": 0.8318964999999999
       },
       "lthSopr": {
         "trigger": 0.8820254364779972,
@@ -55669,7 +55669,7 @@
       },
       "sthMvrv": {
         "trigger": 0.908993,
-        "deep": 0.8318964999999999
+        "deep": 0.832479
       },
       "lthSopr": {
         "trigger": 0.8820254364779972,
@@ -55794,7 +55794,7 @@
       },
       "sthMvrv": {
         "trigger": 0.909,
-        "deep": 0.832479
+        "deep": 0.8329825
       },
       "lthSopr": {
         "trigger": 0.8820254364779972,
@@ -55919,7 +55919,7 @@
       },
       "sthMvrv": {
         "trigger": 0.909,
-        "deep": 0.8329825
+        "deep": 0.833
       },
       "lthSopr": {
         "trigger": 0.8820254364779972,
@@ -56044,7 +56044,7 @@
       },
       "sthMvrv": {
         "trigger": 0.909,
-        "deep": 0.833
+        "deep": 0.8332895
       },
       "lthSopr": {
         "trigger": 0.8820254364779972,
@@ -56169,7 +56169,7 @@
       },
       "sthMvrv": {
         "trigger": 0.909093,
-        "deep": 0.8332895
+        "deep": 0.8333965
       },
       "lthSopr": {
         "trigger": 0.8820254364779972,
@@ -56294,7 +56294,7 @@
       },
       "sthMvrv": {
         "trigger": 0.909286,
-        "deep": 0.8333965
+        "deep": 0.835137
       },
       "lthSopr": {
         "trigger": 0.8820254364779972,
@@ -56419,7 +56419,7 @@
       },
       "sthMvrv": {
         "trigger": 0.909486,
-        "deep": 0.8356195
+        "deep": 0.8356825
       },
       "lthSopr": {
         "trigger": 0.8820254364779972,
@@ -99040,7 +99040,7 @@
       },
       "sthSopr": {
         "trigger": 0.9944279833280003,
-        "deep": 0.9882591360790003
+        "deep": 0.9882461008567569
       },
       "sthMvrv": {
         "trigger": 0.916,
@@ -99165,7 +99165,7 @@
       },
       "sthSopr": {
         "trigger": 0.9944641062720001,
-        "deep": 0.988269881926449
+        "deep": 0.9882605022199189
       },
       "sthMvrv": {
         "trigger": 0.916,
@@ -99290,7 +99290,7 @@
       },
       "sthSopr": {
         "trigger": 0.9945039960296668,
-        "deep": 0.9882838864153126
+        "deep": 0.9882835633661669
       },
       "sthMvrv": {
         "trigger": 0.916,
@@ -114102,12 +114102,12 @@
     "priceRealizedRatio": 1.4521132054994261,
     "reserveRisk": 0.0005936202,
     "lthMvrv": 1.5561,
-    "lthSopr": 1.079949389021024,
-    "lthSoprMa3": 1.0532497963403393,
+    "lthSopr": 1.1458,
+    "lthSoprMa3": 1.075199999999998,
     "mvrvZscore": 0.8394,
     "nupl": 0.3116,
-    "sthSopr": 1.006077171023702,
-    "sthSoprMa3": 1.003892390341234,
+    "sthSopr": 1.0004,
+    "sthSoprMa3": 1.002,
     "sthMvrv": 1.08,
     "puellMultiple": 0.8894,
     "signalPriceMa200w": false,
@@ -114228,13 +114228,13 @@
     "reserveRisk": 0.0005970208,
     "lthMvrv": 1.5573,
     "lthSopr": 1.0613618855624607,
-    "lthSoprMa3": 1.031937091527826,
-    "mvrvZscore": 0.8394,
-    "nupl": 0.3116,
+    "lthSoprMa3": 1.0538872951874847,
+    "mvrvZscore": 0.8058092150415429,
+    "nupl": 0.31577834484126577,
     "sthSopr": 1.0051081801723556,
-    "sthSoprMa3": 1.0050617837320193,
+    "sthSoprMa3": 1.0031693933907853,
     "sthMvrv": 1.0814,
-    "puellMultiple": 0.8894,
+    "puellMultiple": 1.0462313301880466,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114280,8 +114280,8 @@
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
     "scorePuell": 0,
-    "signalConfidenceV6": 0.2839,
-    "dataFreshnessScoreV6": 0.9464285714285714,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScoreV6": 1.0,
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
@@ -114332,11 +114332,11 @@
       "reserveRisk": "2026-09-11",
       "lthMvrv": "2026-09-11",
       "lthSopr": "2026-09-11",
-      "mvrvZscore": "2026-09-10",
-      "nupl": "2026-09-10",
+      "mvrvZscore": "2026-09-11",
+      "nupl": "2026-09-11",
       "sthSopr": "2026-09-11",
       "sthMvrv": "2026-09-11",
-      "puell": "2026-09-10"
+      "puell": "2026-09-11"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -114353,13 +114353,13 @@
     "reserveRisk": 0.0005973737,
     "lthMvrv": 1.5647,
     "lthSopr": 1.0959937963199582,
-    "lthSoprMa3": 1.0791016903011454,
-    "mvrvZscore": 0.8394,
-    "nupl": 0.3116,
+    "lthSoprMa3": 1.1010518939608043,
+    "mvrvZscore": 0.8082336336997401,
+    "nupl": 0.31638715669126627,
     "sthSopr": 1.0024126188298108,
-    "sthSoprMa3": 1.0045326566752895,
+    "sthSoprMa3": 1.0026402663340555,
     "sthMvrv": 1.087,
-    "puellMultiple": 0.8894,
+    "puellMultiple": 1.0419137202696642,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114405,8 +114405,8 @@
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
     "scorePuell": 0,
-    "signalConfidenceV6": 0.2679,
-    "dataFreshnessScoreV6": 0.8928571428571429,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScoreV6": 1.0,
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
@@ -114457,11 +114457,11 @@
       "reserveRisk": "2026-09-12",
       "lthMvrv": "2026-09-12",
       "lthSopr": "2026-09-12",
-      "mvrvZscore": "2026-09-10",
-      "nupl": "2026-09-10",
+      "mvrvZscore": "2026-09-12",
+      "nupl": "2026-09-12",
       "sthSopr": "2026-09-12",
       "sthMvrv": "2026-09-12",
-      "puell": "2026-09-10"
+      "puell": "2026-09-12"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -114479,12 +114479,12 @@
     "lthMvrv": 1.554,
     "lthSopr": 1.0891135799458174,
     "lthSoprMa3": 1.08215642060941,
-    "mvrvZscore": 0.8394,
-    "nupl": 0.3116,
+    "mvrvZscore": 0.7918763362628178,
+    "nupl": 0.3118142229708952,
     "sthSopr": 1.0020956728813433,
-    "sthSoprMa3": 1.0032054906278365,
+    "sthSoprMa3": 1.0032054906278367,
     "sthMvrv": 1.0797,
-    "puellMultiple": 0.8894,
+    "puellMultiple": 0.9768633019738434,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114530,8 +114530,8 @@
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
     "scorePuell": 0,
-    "signalConfidenceV6": 0.2518,
-    "dataFreshnessScoreV6": 0.8392857142857142,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScoreV6": 1.0,
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
@@ -114582,11 +114582,11 @@
       "reserveRisk": "2026-09-13",
       "lthMvrv": "2026-09-13",
       "lthSopr": "2026-09-13",
-      "mvrvZscore": "2026-09-10",
-      "nupl": "2026-09-10",
+      "mvrvZscore": "2026-09-13",
+      "nupl": "2026-09-13",
       "sthSopr": "2026-09-13",
       "sthMvrv": "2026-09-13",
-      "puell": "2026-09-10"
+      "puell": "2026-09-13"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -114604,12 +114604,12 @@
     "lthMvrv": 1.5888,
     "lthSopr": 1.0762012010573931,
     "lthSoprMa3": 1.0871028591077208,
-    "mvrvZscore": 0.8394,
-    "nupl": 0.3116,
+    "mvrvZscore": 0.8414255379050027,
+    "nupl": 0.3255832347744695,
     "sthSopr": 1.0048231692327634,
-    "sthSoprMa3": 1.0031104869813061,
+    "sthSoprMa3": 1.003110486981306,
     "sthMvrv": 1.1036,
-    "puellMultiple": 0.8894,
+    "puellMultiple": 1.0173194944396244,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114655,8 +114655,8 @@
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
     "scorePuell": 0,
-    "signalConfidenceV6": 0.2357,
-    "dataFreshnessScoreV6": 0.7857142857142858,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScoreV6": 1.0,
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
@@ -114707,11 +114707,11 @@
       "reserveRisk": "2026-09-14",
       "lthMvrv": "2026-09-14",
       "lthSopr": "2026-09-14",
-      "mvrvZscore": "2026-09-10",
-      "nupl": "2026-09-10",
+      "mvrvZscore": "2026-09-14",
+      "nupl": "2026-09-14",
       "sthSopr": "2026-09-14",
       "sthMvrv": "2026-09-14",
-      "puell": "2026-09-10"
+      "puell": "2026-09-14"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -114729,12 +114729,12 @@
     "lthMvrv": 1.5336,
     "lthSopr": 1.072818530247192,
     "lthSoprMa3": 1.0793777704167988,
-    "mvrvZscore": 0.8394,
-    "nupl": 0.3116,
+    "mvrvZscore": 0.7543216259205731,
+    "nupl": 0.30175623795383755,
     "sthSopr": 1.000862954363999,
     "sthSoprMa3": 1.0025939321593687,
     "sthMvrv": 1.0656,
-    "puellMultiple": 0.8894,
+    "puellMultiple": 1.0556275457578626,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114780,8 +114780,8 @@
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
     "scorePuell": 0,
-    "signalConfidenceV6": 0.2196,
-    "dataFreshnessScoreV6": 0.7321428571428571,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScoreV6": 1.0,
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
@@ -114832,11 +114832,11 @@
       "reserveRisk": "2026-09-15",
       "lthMvrv": "2026-09-15",
       "lthSopr": "2026-09-15",
-      "mvrvZscore": "2026-09-10",
-      "nupl": "2026-09-10",
+      "mvrvZscore": "2026-09-15",
+      "nupl": "2026-09-15",
       "sthSopr": "2026-09-15",
       "sthMvrv": "2026-09-15",
-      "puell": "2026-09-10"
+      "puell": "2026-09-15"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -114845,21 +114845,21 @@
   {
     "d": "2026-09-16",
     "unixTs": 1789516800,
-    "btcPrice": 76011.35,
-    "ma200w": 65176.77979000611,
-    "realizedPrice": 52822.44,
-    "priceMa200wRatio": 1.166233591854368,
-    "priceRealizedRatio": 1.4389973276508998,
+    "btcPrice": 76082.3769918527,
+    "ma200w": 65176.83052357171,
+    "realizedPrice": 52784.89,
+    "priceMa200wRatio": 1.1673224423568267,
+    "priceRealizedRatio": 1.4413665916866114,
     "reserveRisk": 0.0005867904,
     "lthMvrv": 1.5366,
     "lthSopr": 1.0352237112435962,
     "lthSoprMa3": 1.0614144808493917,
-    "mvrvZscore": 0.8394,
-    "nupl": 0.3116,
+    "mvrvZscore": 0.7687504544566773,
+    "nupl": 0.3062139737609344,
     "sthSopr": 1.005908767697742,
     "sthSoprMa3": 1.003864963764835,
     "sthMvrv": 1.0646,
-    "puellMultiple": 0.8894,
+    "puellMultiple": 0.8875605071391388,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114905,8 +114905,8 @@
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
     "scorePuell": 0,
-    "signalConfidenceV6": 0.2036,
-    "dataFreshnessScoreV6": 0.6785714285714286,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScoreV6": 1.0,
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
@@ -114953,15 +114953,15 @@
     "staleIndicators": [],
     "indicatorDates": {
       "priceMa200w": "2026-09-16",
-      "priceRealized": "2026-09-15",
+      "priceRealized": "2026-09-16",
       "reserveRisk": "2026-09-16",
       "lthMvrv": "2026-09-16",
       "lthSopr": "2026-09-16",
-      "mvrvZscore": "2026-09-10",
-      "nupl": "2026-09-10",
+      "mvrvZscore": "2026-09-16",
+      "nupl": "2026-09-16",
       "sthSopr": "2026-09-16",
       "sthMvrv": "2026-09-16",
-      "puell": "2026-09-10"
+      "puell": "2026-09-16"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -114970,21 +114970,21 @@
   {
     "d": "2026-09-17",
     "unixTs": 1789603200,
-    "btcPrice": 76431.36,
-    "ma200w": 65218.14435346065,
-    "realizedPrice": 52822.44,
-    "priceMa200wRatio": 1.1719339879676345,
-    "priceRealizedRatio": 1.4469486831732876,
+    "btcPrice": 76670.22,
+    "ma200w": 65218.36570131197,
+    "realizedPrice": 52784.89,
+    "priceMa200wRatio": 1.175592475762662,
+    "priceRealizedRatio": 1.4525031689940058,
     "reserveRisk": 0.0005867904,
-    "lthMvrv": 1.5366,
-    "lthSopr": 1.0352237112435962,
-    "lthSoprMa3": 1.047755317578126,
-    "mvrvZscore": 0.8394,
-    "nupl": 0.3116,
-    "sthSopr": 1.005908767697742,
-    "sthSoprMa3": 1.0042268299198278,
-    "sthMvrv": 1.0646,
-    "puellMultiple": 0.8894,
+    "lthMvrv": 1.5449,
+    "lthSopr": 1.005838050861149,
+    "lthSoprMa3": 1.0379600974506438,
+    "mvrvZscore": 0.7879899063534548,
+    "nupl": 0.3115333437154608,
+    "sthSopr": 1.006815661780473,
+    "sthSoprMa3": 1.004529127947405,
+    "sthMvrv": 1.0708,
+    "puellMultiple": 0.9909748693854422,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -115030,8 +115030,8 @@
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
     "scorePuell": 0,
-    "signalConfidenceV6": 0.1661,
-    "dataFreshnessScoreV6": 0.5535714285714286,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScoreV6": 1.0,
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
@@ -115078,15 +115078,15 @@
     "staleIndicators": [],
     "indicatorDates": {
       "priceMa200w": "2026-09-17",
-      "priceRealized": "2026-09-15",
+      "priceRealized": "2026-09-16",
       "reserveRisk": "2026-09-16",
-      "lthMvrv": "2026-09-16",
-      "lthSopr": "2026-09-16",
-      "mvrvZscore": "2026-09-10",
-      "nupl": "2026-09-10",
-      "sthSopr": "2026-09-16",
-      "sthMvrv": "2026-09-16",
-      "puell": "2026-09-10"
+      "lthMvrv": "2026-09-17",
+      "lthSopr": "2026-09-17",
+      "mvrvZscore": "2026-09-17",
+      "nupl": "2026-09-17",
+      "sthSopr": "2026-09-17",
+      "sthMvrv": "2026-09-17",
+      "puell": "2026-09-17"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
