@@ -16,7 +16,7 @@
     "sthSopr": 1.0447835382698265,
     "sthSoprMa3": 1.0413401559629287,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6897285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -87,8 +87,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -148,7 +148,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -166,7 +165,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-01",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-01"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -178,7 +177,7 @@
       "nupl": null,
       "sthSopr": "2012-01-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-01"
     }
   },
   {
@@ -198,7 +197,7 @@
     "sthSopr": 1.0740541191349133,
     "sthSoprMa3": 1.0563529113147978,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6997428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -269,8 +268,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -330,7 +329,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -348,7 +346,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-02",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-02"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -360,7 +358,7 @@
       "nupl": null,
       "sthSopr": "2012-01-02",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-02"
     }
   },
   {
@@ -380,7 +378,7 @@
     "sthSopr": 1.0935009595674567,
     "sthSoprMa3": 1.0707795389907324,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7259714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -451,8 +449,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -512,7 +510,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -530,7 +527,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-03",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-03"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -542,7 +539,7 @@
       "nupl": null,
       "sthSopr": "2012-01-03",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-03"
     }
   },
   {
@@ -562,7 +559,7 @@
     "sthSopr": 1.1025811797837284,
     "sthSoprMa3": 1.0900454194953664,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7515285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -633,8 +630,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -694,7 +691,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -712,7 +708,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-04",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-04"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -724,7 +720,7 @@
       "nupl": null,
       "sthSopr": "2012-01-04",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-04"
     }
   },
   {
@@ -744,7 +740,7 @@
     "sthSopr": 1.1392177898918643,
     "sthSoprMa3": 1.111766643081017,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8156285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -815,8 +811,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -876,7 +872,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -894,7 +889,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-05",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-05"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -906,7 +901,7 @@
       "nupl": null,
       "sthSopr": "2012-01-05",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-05"
     }
   },
   {
@@ -926,7 +921,7 @@
     "sthSopr": 1.1391165449459322,
     "sthSoprMa3": 1.1269718382071752,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8932857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -997,8 +992,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -1058,7 +1053,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -1076,7 +1070,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-06",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-06"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -1088,7 +1082,7 @@
       "nupl": null,
       "sthSopr": "2012-01-06",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-06"
     }
   },
   {
@@ -1108,7 +1102,7 @@
     "sthSopr": 1.111665772472966,
     "sthSoprMa3": 1.1300000357702544,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.9699428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -1179,8 +1173,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -1240,7 +1234,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -1258,7 +1251,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-07",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-07"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -1270,7 +1263,7 @@
       "nupl": null,
       "sthSopr": "2012-01-07",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-07"
     }
   },
   {
@@ -1290,7 +1283,7 @@
     "sthSopr": 1.1323230362364831,
     "sthSoprMa3": 1.127701784551794,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 1.0189714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -1361,8 +1354,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -1422,7 +1415,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -1440,7 +1432,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-08",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-08"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -1452,7 +1444,7 @@
       "nupl": null,
       "sthSopr": "2012-01-08",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-08"
     }
   },
   {
@@ -1472,7 +1464,7 @@
     "sthSopr": 1.1431945681182416,
     "sthSoprMa3": 1.1290611256092304,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 1.0528428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -1543,8 +1535,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -1604,7 +1596,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -1622,7 +1613,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-09",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-09"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -1634,7 +1625,7 @@
       "nupl": null,
       "sthSopr": "2012-01-09",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-09"
     }
   },
   {
@@ -1654,7 +1645,7 @@
     "sthSopr": 1.1265876340591208,
     "sthSoprMa3": 1.1340350794712821,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 1.0680428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -1725,8 +1716,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -1786,7 +1777,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -1804,7 +1794,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-10",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-10"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -1816,7 +1806,7 @@
       "nupl": null,
       "sthSopr": "2012-01-10",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-10"
     }
   },
   {
@@ -1836,7 +1826,7 @@
     "sthSopr": 1.1191418670295605,
     "sthSoprMa3": 1.129641356402308,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 1.0978714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -1907,8 +1897,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -1968,7 +1958,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -1986,7 +1975,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-11",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-11"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -1998,7 +1987,7 @@
       "nupl": null,
       "sthSopr": "2012-01-11",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-11"
     }
   },
   {
@@ -2018,7 +2007,7 @@
     "sthSopr": 1.1102205835147803,
     "sthSoprMa3": 1.1186500282011542,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 1.1002714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2089,8 +2078,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -2150,7 +2139,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2168,7 +2156,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-12",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-12"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -2180,7 +2168,7 @@
       "nupl": null,
       "sthSopr": "2012-01-12",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-12"
     }
   },
   {
@@ -2200,7 +2188,7 @@
     "sthSopr": 1.0949037417573901,
     "sthSoprMa3": 1.1080887307672438,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 1.0617,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2271,8 +2259,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -2332,7 +2320,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2350,7 +2337,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-13",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-13"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -2362,7 +2349,7 @@
       "nupl": null,
       "sthSopr": "2012-01-13",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-13"
     }
   },
   {
@@ -2382,7 +2369,7 @@
     "sthSopr": 1.075391670878695,
     "sthSoprMa3": 1.0935053320502888,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 1.0242,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2453,8 +2440,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -2514,7 +2501,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2532,7 +2518,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-14",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-14"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -2544,7 +2530,7 @@
       "nupl": null,
       "sthSopr": "2012-01-14",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-14"
     }
   },
   {
@@ -2564,7 +2550,7 @@
     "sthSopr": 1.0777754354393476,
     "sthSoprMa3": 1.0826902826918112,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.9949,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2635,8 +2621,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -2696,7 +2682,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2714,7 +2699,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-15",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-15"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -2726,7 +2711,7 @@
       "nupl": null,
       "sthSopr": "2012-01-15",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-15"
     }
   },
   {
@@ -2746,7 +2731,7 @@
     "sthSopr": 1.0789622177196738,
     "sthSoprMa3": 1.0773764413459057,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 1.0115428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2817,8 +2802,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -2878,7 +2863,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2896,7 +2880,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-16",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-16"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -2908,7 +2892,7 @@
       "nupl": null,
       "sthSopr": "2012-01-16",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-16"
     }
   },
   {
@@ -2928,7 +2912,7 @@
     "sthSopr": 1.080165208859837,
     "sthSoprMa3": 1.0789676206729533,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 1.0067714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2999,8 +2983,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -3060,7 +3044,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3078,7 +3061,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-17",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-17"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -3090,7 +3073,7 @@
       "nupl": null,
       "sthSopr": "2012-01-17",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-17"
     }
   },
   {
@@ -3110,7 +3093,7 @@
     "sthSopr": 1.0478114544299184,
     "sthSoprMa3": 1.0689796270031433,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.9621428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3181,8 +3164,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -3242,7 +3225,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3260,7 +3242,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-18",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-18"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -3272,7 +3254,7 @@
       "nupl": null,
       "sthSopr": "2012-01-18",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-18"
     }
   },
   {
@@ -3292,7 +3274,7 @@
     "sthSopr": 1.0537950272149592,
     "sthSoprMa3": 1.0605905635015718,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.9451857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3363,8 +3345,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -3424,7 +3406,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3442,7 +3423,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-19",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-19"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -3454,7 +3435,7 @@
       "nupl": null,
       "sthSopr": "2012-01-19",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-19"
     }
   },
   {
@@ -3474,7 +3455,7 @@
     "sthSopr": 1.0431594636074797,
     "sthSoprMa3": 1.0482553150841192,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.9494142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3545,8 +3526,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -3606,7 +3587,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3624,7 +3604,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-20",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-20"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -3636,7 +3616,7 @@
       "nupl": null,
       "sthSopr": "2012-01-20",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-20"
     }
   },
   {
@@ -3656,7 +3636,7 @@
     "sthSopr": 1.0417553318037398,
     "sthSoprMa3": 1.04623660754206,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.9469428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3727,8 +3707,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -3788,7 +3768,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3806,7 +3785,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-21",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-21"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -3818,7 +3797,7 @@
       "nupl": null,
       "sthSopr": "2012-01-21",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-21"
     }
   },
   {
@@ -3838,7 +3817,7 @@
     "sthSopr": 1.0251620659018699,
     "sthSoprMa3": 1.0366922871043636,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.9283428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3909,8 +3888,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -3970,7 +3949,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3988,7 +3966,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-22",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-22"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -4000,7 +3978,7 @@
       "nupl": null,
       "sthSopr": "2012-01-22",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-22"
     }
   },
   {
@@ -4020,7 +3998,7 @@
     "sthSopr": 1.018692632950935,
     "sthSoprMa3": 1.0285366768855153,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.9126,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4091,8 +4069,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -4152,7 +4130,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4170,7 +4147,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-23",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-23"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -4182,7 +4159,7 @@
       "nupl": null,
       "sthSopr": "2012-01-23",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-23"
     }
   },
   {
@@ -4202,7 +4179,7 @@
     "sthSopr": 1.0193823664754675,
     "sthSoprMa3": 1.021079021776091,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.9099428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4273,8 +4250,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -4334,7 +4311,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4352,7 +4328,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-24",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-24"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -4364,7 +4340,7 @@
       "nupl": null,
       "sthSopr": "2012-01-24",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-24"
     }
   },
   {
@@ -4384,7 +4360,7 @@
     "sthSopr": 1.0139335832377339,
     "sthSoprMa3": 1.017336194221379,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.9211,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4455,8 +4431,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -4516,7 +4492,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4534,7 +4509,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-25",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-25"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -4546,7 +4521,7 @@
       "nupl": null,
       "sthSopr": "2012-01-25",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-25"
     }
   },
   {
@@ -4566,7 +4541,7 @@
     "sthSopr": 1.0042553166188668,
     "sthSoprMa3": 1.012523755444023,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8885285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4637,8 +4612,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -4698,7 +4673,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4716,7 +4690,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-26",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-26"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -4728,7 +4702,7 @@
       "nupl": null,
       "sthSopr": "2012-01-26",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-26"
     }
   },
   {
@@ -4748,7 +4722,7 @@
     "sthSopr": 0.9844525883094334,
     "sthSoprMa3": 1.000880496055345,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8594285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4819,8 +4793,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -4880,7 +4854,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4898,7 +4871,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-27",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-27"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -4910,7 +4883,7 @@
       "nupl": null,
       "sthSopr": "2012-01-27",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-27"
     }
   },
   {
@@ -4930,7 +4903,7 @@
     "sthSopr": 0.9335726441547167,
     "sthSoprMa3": 0.9740935163610059,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8301,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4999,10 +4972,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -5062,7 +5035,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -5080,7 +5052,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-28",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-28"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -5092,7 +5064,7 @@
       "nupl": null,
       "sthSopr": "2012-01-28",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-28"
     }
   },
   {
@@ -5112,7 +5084,7 @@
     "sthSopr": 0.9541820720773584,
     "sthSoprMa3": 0.9574024348471698,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8371285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -5181,10 +5153,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -5244,7 +5216,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -5262,7 +5233,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-29",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-29"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -5274,7 +5245,7 @@
       "nupl": null,
       "sthSopr": "2012-01-29",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-29"
     }
   },
   {
@@ -5294,7 +5265,7 @@
     "sthSopr": 0.9536705860386792,
     "sthSoprMa3": 0.947141767423585,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8166,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -5363,10 +5334,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -5426,7 +5397,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -5444,7 +5414,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-30",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-30"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -5456,7 +5426,7 @@
       "nupl": null,
       "sthSopr": "2012-01-30",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-30"
     }
   },
   {
@@ -5476,7 +5446,7 @@
     "sthSopr": 0.9609860580193396,
     "sthSoprMa3": 0.9562795720451259,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8077428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -5545,10 +5515,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -5608,7 +5578,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -5626,7 +5595,7 @@
       "nupl": null,
       "sth_sopr": "2012-01-31",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-01-31"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -5638,7 +5607,7 @@
       "nupl": null,
       "sthSopr": "2012-01-31",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-31"
     }
   },
   {
@@ -5658,7 +5627,7 @@
     "sthSopr": 0.9779128040096698,
     "sthSoprMa3": 0.9641898160225632,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8068285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -5727,10 +5696,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -5790,7 +5759,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -5808,7 +5776,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-01",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-01"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -5820,7 +5788,7 @@
       "nupl": null,
       "sthSopr": "2012-02-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-01"
     }
   },
   {
@@ -5840,7 +5808,7 @@
     "sthSopr": 1.003309852004835,
     "sthSoprMa3": 0.9807362380112817,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8372857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -5909,10 +5877,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -5972,7 +5940,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -5990,7 +5957,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-02",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-02"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -6002,7 +5969,7 @@
       "nupl": null,
       "sthSopr": "2012-02-02",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-02"
     }
   },
   {
@@ -6022,7 +5989,7 @@
     "sthSopr": 1.0179130260024176,
     "sthSoprMa3": 0.9997118940056411,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8622142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -6093,8 +6060,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -6154,7 +6121,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -6172,7 +6138,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-03",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-03"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -6184,7 +6150,7 @@
       "nupl": null,
       "sthSopr": "2012-02-03",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-03"
     }
   },
   {
@@ -6204,7 +6170,7 @@
     "sthSopr": 1.0196686130012087,
     "sthSoprMa3": 1.0136304970028207,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8750428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -6275,8 +6241,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -6336,7 +6302,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -6354,7 +6319,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-04",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-04"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -6366,7 +6331,7 @@
       "nupl": null,
       "sthSopr": "2012-02-04",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-04"
     }
   },
   {
@@ -6386,7 +6351,7 @@
     "sthSopr": 0.9988760815006044,
     "sthSoprMa3": 1.0121525735014105,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8577428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -6457,8 +6422,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -6518,7 +6483,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -6536,7 +6500,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-05",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-05"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -6548,7 +6512,7 @@
       "nupl": null,
       "sthSopr": "2012-02-05",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-05"
     }
   },
   {
@@ -6568,7 +6532,7 @@
     "sthSopr": 0.9841650057503022,
     "sthSoprMa3": 1.000903233417372,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8355,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -6639,8 +6603,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -6700,7 +6664,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -6718,7 +6681,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-06",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-06"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -6730,7 +6693,7 @@
       "nupl": null,
       "sthSopr": "2012-02-06",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-06"
     }
   },
   {
@@ -6750,7 +6713,7 @@
     "sthSopr": 0.9791166028751511,
     "sthSoprMa3": 0.9873858967086862,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8281714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -6819,10 +6782,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -6882,7 +6845,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -6900,7 +6862,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-07",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-07"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -6912,7 +6874,7 @@
       "nupl": null,
       "sthSopr": "2012-02-07",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-07"
     }
   },
   {
@@ -6932,7 +6894,7 @@
     "sthSopr": 0.9831668364375756,
     "sthSoprMa3": 0.9821494816876766,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8206142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -7001,10 +6963,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -7064,7 +7026,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -7082,7 +7043,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-08",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-08"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -7094,7 +7055,7 @@
       "nupl": null,
       "sthSopr": "2012-02-08",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-08"
     }
   },
   {
@@ -7114,7 +7075,7 @@
     "sthSopr": 0.9932015182187878,
     "sthSoprMa3": 0.9851616525105052,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.8020714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -7183,10 +7144,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -7246,7 +7207,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -7264,7 +7224,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-09",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-09"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -7276,7 +7236,7 @@
       "nupl": null,
       "sthSopr": "2012-02-09",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-09"
     }
   },
   {
@@ -7296,7 +7256,7 @@
     "sthSopr": 1.0018322091093939,
     "sthSoprMa3": 0.9927335212552527,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7835714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -7365,10 +7325,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -7428,7 +7388,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -7446,7 +7405,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-10",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-10"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -7458,7 +7417,7 @@
       "nupl": null,
       "sthSopr": "2012-02-10",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-10"
     }
   },
   {
@@ -7478,7 +7437,7 @@
     "sthSopr": 0.993841269554697,
     "sthSoprMa3": 0.9962916656276265,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.771,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -7549,8 +7508,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -7610,7 +7569,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -7628,7 +7586,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-11",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-11"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -7640,7 +7598,7 @@
       "nupl": null,
       "sthSopr": "2012-02-11",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-11"
     }
   },
   {
@@ -7660,7 +7618,7 @@
     "sthSopr": 0.9898291847773485,
     "sthSoprMa3": 0.9951675544804801,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7782714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -7731,8 +7689,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -7792,7 +7750,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -7810,7 +7767,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-12",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-12"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -7822,7 +7779,7 @@
       "nupl": null,
       "sthSopr": "2012-02-12",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-12"
     }
   },
   {
@@ -7842,7 +7799,7 @@
     "sthSopr": 0.9994900423886743,
     "sthSoprMa3": 0.9943868322402403,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7669428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -7913,8 +7870,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -7974,7 +7931,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -7992,7 +7948,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-13",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-13"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -8004,7 +7960,7 @@
       "nupl": null,
       "sthSopr": "2012-02-13",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-13"
     }
   },
   {
@@ -8024,7 +7980,7 @@
     "sthSopr": 1.0097124711943373,
     "sthSoprMa3": 0.999677232786787,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7439714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -8095,8 +8051,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -8156,7 +8112,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -8174,7 +8129,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-14",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-14"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -8186,7 +8141,7 @@
       "nupl": null,
       "sthSopr": "2012-02-14",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-14"
     }
   },
   {
@@ -8206,7 +8161,7 @@
     "sthSopr": 0.9958342355971687,
     "sthSoprMa3": 1.001678916393394,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7117571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -8277,8 +8232,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -8338,7 +8293,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -8356,7 +8310,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-15",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-15"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -8368,7 +8322,7 @@
       "nupl": null,
       "sthSopr": "2012-02-15",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-15"
     }
   },
   {
@@ -8388,7 +8342,7 @@
     "sthSopr": 0.9798239177985844,
     "sthSoprMa3": 0.9951235415300305,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6765285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -8459,8 +8413,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -8520,7 +8474,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -8538,7 +8491,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-16",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-16"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -8550,7 +8503,7 @@
       "nupl": null,
       "sthSopr": "2012-02-16",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-16"
     }
   },
   {
@@ -8570,7 +8523,7 @@
     "sthSopr": 0.9713316588992922,
     "sthSoprMa3": 0.9823299374316821,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6561,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -8639,10 +8592,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -8702,7 +8655,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -8720,7 +8672,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-17",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-17"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -8732,7 +8684,7 @@
       "nupl": null,
       "sthSopr": "2012-02-17",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-17"
     }
   },
   {
@@ -8752,7 +8704,7 @@
     "sthSopr": 0.9610706794496461,
     "sthSoprMa3": 0.9707420853825077,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6393857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -8821,10 +8773,10 @@
     "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -8884,7 +8836,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -8902,7 +8853,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-18",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-18"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -8914,7 +8865,7 @@
       "nupl": null,
       "sthSopr": "2012-02-18",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-18"
     }
   },
   {
@@ -8934,7 +8885,7 @@
     "sthSopr": 0.9470362397248231,
     "sthSoprMa3": 0.9598128593579207,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6146714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -9003,10 +8954,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -9066,7 +9017,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -9084,7 +9034,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-19",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-19"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -9096,7 +9046,7 @@
       "nupl": null,
       "sthSopr": "2012-02-19",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-19"
     }
   },
   {
@@ -9116,7 +9066,7 @@
     "sthSopr": 0.9629358698624115,
     "sthSoprMa3": 0.9570142630122938,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5992428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -9132,12 +9082,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": true,
     "signalSthSoprAux": true,
-    "signalPuell": false,
-    "signalCount": 1,
+    "signalPuell": true,
+    "signalCount": 2,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 1,
+    "signalCountV6": 2,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -9155,13 +9105,13 @@
     "scoreSthSopr": 2,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 2,
-    "scorePuell": 0,
-    "signalScoreV2": 2,
+    "scorePuell": 1,
+    "signalScoreV2": 3,
     "maxSignalScoreV2": 10,
     "signalScoreV2Min3d": 2.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 2,
     "maxTriggerScore": 2,
@@ -9169,26 +9119,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 2,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 2,
+    "totalScoreV4": 3,
     "maxTotalScoreV4": 12,
     "totalScoreV4Min3d": 2.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 2,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 2,
+    "totalScoreV6": 3,
     "maxTotalScoreV6": 14,
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
-    "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "signalConfidence": 0.05,
+    "signalConfidenceV6": 0.0321,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -9229,7 +9179,7 @@
       "sthSoprTrigger": true,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -9248,7 +9198,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -9266,7 +9215,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-20",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-20"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -9278,7 +9227,7 @@
       "nupl": null,
       "sthSopr": "2012-02-20",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-20"
     }
   },
   {
@@ -9298,7 +9247,7 @@
     "sthSopr": 0.9623524849312057,
     "sthSoprMa3": 0.9574415315061472,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5898285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -9314,12 +9263,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": true,
     "signalSthSoprAux": true,
-    "signalPuell": false,
-    "signalCount": 1,
+    "signalPuell": true,
+    "signalCount": 2,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 1,
+    "signalCountV6": 2,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -9337,13 +9286,13 @@
     "scoreSthSopr": 2,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 2,
-    "scorePuell": 0,
-    "signalScoreV2": 2,
+    "scorePuell": 1,
+    "signalScoreV2": 3,
     "maxSignalScoreV2": 10,
     "signalScoreV2Min3d": 2.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 2,
     "maxTriggerScore": 2,
@@ -9351,26 +9300,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 2,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 2,
+    "totalScoreV4": 3,
     "maxTotalScoreV4": 12,
     "totalScoreV4Min3d": 2.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 2,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 2,
+    "totalScoreV6": 3,
     "maxTotalScoreV6": 14,
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
-    "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "signalConfidence": 0.05,
+    "signalConfidenceV6": 0.0321,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -9411,7 +9360,7 @@
       "sthSoprTrigger": true,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -9430,7 +9379,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -9448,7 +9396,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-21",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-21"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -9460,7 +9408,7 @@
       "nupl": null,
       "sthSopr": "2012-02-21",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-21"
     }
   },
   {
@@ -9480,7 +9428,7 @@
     "sthSopr": 0.9679352174656028,
     "sthSoprMa3": 0.9644078574197404,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6056285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -9549,10 +9497,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -9612,7 +9560,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -9630,7 +9577,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-22",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-22"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -9642,7 +9589,7 @@
       "nupl": null,
       "sthSopr": "2012-02-22",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-22"
     }
   },
   {
@@ -9662,7 +9609,7 @@
     "sthSopr": 0.9921000087328015,
     "sthSoprMa3": 0.9741292370432036,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6370714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -9731,10 +9678,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -9794,7 +9741,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -9812,7 +9758,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-23",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-23"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -9824,7 +9770,7 @@
       "nupl": null,
       "sthSopr": "2012-02-23",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-23"
     }
   },
   {
@@ -9844,7 +9790,7 @@
     "sthSopr": 1.0095358543664008,
     "sthSoprMa3": 0.9898570268549353,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6467285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -9913,10 +9859,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -9976,7 +9922,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -9994,7 +9939,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-24",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-24"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -10006,7 +9951,7 @@
       "nupl": null,
       "sthSopr": "2012-02-24",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-24"
     }
   },
   {
@@ -10026,7 +9971,7 @@
     "sthSopr": 1.0147919771832004,
     "sthSoprMa3": 1.0054759467608012,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6545142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -10097,8 +10042,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -10158,7 +10103,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -10176,7 +10120,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-25",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-25"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -10188,7 +10132,7 @@
       "nupl": null,
       "sthSopr": "2012-02-25",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-25"
     }
   },
   {
@@ -10208,7 +10152,7 @@
     "sthSopr": 1.0113665385916002,
     "sthSoprMa3": 1.0118981233804007,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6596571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -10279,8 +10223,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -10340,7 +10284,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -10358,7 +10301,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-26",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-26"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -10370,7 +10313,7 @@
       "nupl": null,
       "sthSopr": "2012-02-26",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-26"
     }
   },
   {
@@ -10390,7 +10333,7 @@
     "sthSopr": 1.0113978692958001,
     "sthSoprMa3": 1.012518795023534,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6790571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -10461,8 +10404,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -10522,7 +10465,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -10540,7 +10482,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-27",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-27"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -10552,7 +10494,7 @@
       "nupl": null,
       "sthSopr": "2012-02-27",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-27"
     }
   },
   {
@@ -10572,7 +10514,7 @@
     "sthSopr": 1.0102130846479,
     "sthSoprMa3": 1.010992497511767,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7083428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -10643,8 +10585,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -10704,7 +10646,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -10722,7 +10663,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-28",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-28"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -10734,7 +10675,7 @@
       "nupl": null,
       "sthSopr": "2012-02-28",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-28"
     }
   },
   {
@@ -10754,7 +10695,7 @@
     "sthSopr": 1.0052293923239501,
     "sthSoprMa3": 1.008946782089217,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7292428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -10825,8 +10766,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -10886,7 +10827,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -10904,7 +10844,7 @@
       "nupl": null,
       "sth_sopr": "2012-02-29",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-02-29"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -10916,7 +10856,7 @@
       "nupl": null,
       "sthSopr": "2012-02-29",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-29"
     }
   },
   {
@@ -10936,7 +10876,7 @@
     "sthSopr": 1.0039666461619752,
     "sthSoprMa3": 1.0064697077112754,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7163857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -11007,8 +10947,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -11068,7 +11008,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -11086,7 +11025,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-01",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-01"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -11098,7 +11037,7 @@
       "nupl": null,
       "sthSopr": "2012-03-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-01"
     }
   },
   {
@@ -11118,7 +11057,7 @@
     "sthSopr": 0.9880939230809875,
     "sthSoprMa3": 0.9990966538556378,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6998,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -11189,8 +11128,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -11250,7 +11189,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -11268,7 +11206,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-02",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-02"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -11280,7 +11218,7 @@
       "nupl": null,
       "sthSopr": "2012-03-02",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-02"
     }
   },
   {
@@ -11300,7 +11238,7 @@
     "sthSopr": 0.9795469115404938,
     "sthSoprMa3": 0.990535826927819,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6639428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -11369,10 +11307,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -11432,7 +11370,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -11450,7 +11387,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-03",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-03"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -11462,7 +11399,7 @@
       "nupl": null,
       "sthSopr": "2012-03-03",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-03"
     }
   },
   {
@@ -11482,7 +11419,7 @@
     "sthSopr": 0.9909734057702468,
     "sthSoprMa3": 0.9862047467972429,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6528571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -11551,10 +11488,10 @@
     "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -11614,7 +11551,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -11632,7 +11568,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-04",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-04"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -11644,7 +11580,7 @@
       "nupl": null,
       "sthSopr": "2012-03-04",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-04"
     }
   },
   {
@@ -11664,7 +11600,7 @@
     "sthSopr": 1.0047843028851235,
     "sthSoprMa3": 0.991768206731955,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6466285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -11733,10 +11669,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -11796,7 +11732,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -11814,7 +11749,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-05",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-05"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -11826,7 +11761,7 @@
       "nupl": null,
       "sthSopr": "2012-03-05",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-05"
     }
   },
   {
@@ -11846,7 +11781,7 @@
     "sthSopr": 1.0093343014425618,
     "sthSoprMa3": 1.001697336699311,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6333142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -11917,8 +11852,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -11978,7 +11913,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -11996,7 +11930,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-06",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-06"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -12008,7 +11942,7 @@
       "nupl": null,
       "sthSopr": "2012-03-06",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-06"
     }
   },
   {
@@ -12028,7 +11962,7 @@
     "sthSopr": 1.009146750721281,
     "sthSoprMa3": 1.0077551183496556,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6180857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -12099,8 +12033,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -12160,7 +12094,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -12178,7 +12111,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-07",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-07"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -12190,7 +12123,7 @@
       "nupl": null,
       "sthSopr": "2012-03-07",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-07"
     }
   },
   {
@@ -12210,7 +12143,7 @@
     "sthSopr": 1.0065035753606404,
     "sthSoprMa3": 1.008328209174828,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6206,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -12281,8 +12214,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -12342,7 +12275,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -12360,7 +12292,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-08",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-08"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -12372,7 +12304,7 @@
       "nupl": null,
       "sthSopr": "2012-03-08",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-08"
     }
   },
   {
@@ -12392,7 +12324,7 @@
     "sthSopr": 1.0068874376803203,
     "sthSoprMa3": 1.0075125879207476,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6440285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -12463,8 +12395,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -12524,7 +12456,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -12542,7 +12473,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-09",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-09"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -12554,7 +12485,7 @@
       "nupl": null,
       "sthSopr": "2012-03-09",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-09"
     }
   },
   {
@@ -12574,7 +12505,7 @@
     "sthSopr": 1.0022622938401602,
     "sthSoprMa3": 1.0052177689603738,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6791714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -12645,8 +12576,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -12706,7 +12637,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -12724,7 +12654,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-10",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-10"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -12736,7 +12666,7 @@
       "nupl": null,
       "sthSopr": "2012-03-10",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-10"
     }
   },
   {
@@ -12756,7 +12686,7 @@
     "sthSopr": 1.00172474692008,
     "sthSoprMa3": 1.0036248261468537,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6779428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -12827,8 +12757,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -12888,7 +12818,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -12906,7 +12835,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-11",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-11"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -12918,7 +12847,7 @@
       "nupl": null,
       "sthSopr": "2012-03-11",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-11"
     }
   },
   {
@@ -12938,7 +12867,7 @@
     "sthSopr": 0.9971786734600401,
     "sthSoprMa3": 1.0003885714067604,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6884142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -13009,8 +12938,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -13070,7 +12999,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -13088,7 +13016,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-12",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-12"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -13100,7 +13028,7 @@
       "nupl": null,
       "sthSopr": "2012-03-12",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-12"
     }
   },
   {
@@ -13120,7 +13048,7 @@
     "sthSopr": 1.00876723673002,
     "sthSoprMa3": 1.0025568857033802,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7080714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -13191,8 +13119,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -13252,7 +13180,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -13270,7 +13197,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-13",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-13"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -13282,7 +13209,7 @@
       "nupl": null,
       "sthSopr": "2012-03-13",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-13"
     }
   },
   {
@@ -13302,7 +13229,7 @@
     "sthSopr": 1.02318311836501,
     "sthSoprMa3": 1.0097096761850237,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7039428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -13373,8 +13300,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -13434,7 +13361,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -13452,7 +13378,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-14",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-14"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -13464,7 +13390,7 @@
       "nupl": null,
       "sthSopr": "2012-03-14",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-14"
     }
   },
   {
@@ -13484,7 +13410,7 @@
     "sthSopr": 1.025863609182505,
     "sthSoprMa3": 1.0192713214258453,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6867857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -13555,8 +13481,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -13616,7 +13542,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -13634,7 +13559,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-15",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-15"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -13646,7 +13571,7 @@
       "nupl": null,
       "sthSopr": "2012-03-15",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-15"
     }
   },
   {
@@ -13666,7 +13591,7 @@
     "sthSopr": 1.0300908545912524,
     "sthSoprMa3": 1.026379194046256,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6858,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -13737,8 +13662,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -13798,7 +13723,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -13816,7 +13740,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-16",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-16"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -13828,7 +13752,7 @@
       "nupl": null,
       "sthSopr": "2012-03-16",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-16"
     }
   },
   {
@@ -13848,7 +13772,7 @@
     "sthSopr": 1.0302229272956263,
     "sthSoprMa3": 1.028725797023128,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6960428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -13919,8 +13843,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -13980,7 +13904,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -13998,7 +13921,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-17",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-17"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -14010,7 +13933,7 @@
       "nupl": null,
       "sthSopr": "2012-03-17",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-17"
     }
   },
   {
@@ -14030,7 +13953,7 @@
     "sthSopr": 1.0314043136478133,
     "sthSoprMa3": 1.0305726985115642,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7189285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -14101,8 +14024,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -14162,7 +14085,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -14180,7 +14102,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-18",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-18"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -14192,7 +14114,7 @@
       "nupl": null,
       "sthSopr": "2012-03-18",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-18"
     }
   },
   {
@@ -14212,7 +14134,7 @@
     "sthSopr": 1.0079583068239066,
     "sthSoprMa3": 1.0231951825891155,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6997571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -14283,8 +14205,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -14344,7 +14266,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -14362,7 +14283,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-19",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-19"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -14374,7 +14295,7 @@
       "nupl": null,
       "sthSopr": "2012-03-19",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-19"
     }
   },
   {
@@ -14394,7 +14315,7 @@
     "sthSopr": 0.9892961734119533,
     "sthSoprMa3": 1.009552931294558,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6896142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -14465,8 +14386,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -14526,7 +14447,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -14544,7 +14464,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-20",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-20"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -14556,7 +14476,7 @@
       "nupl": null,
       "sthSopr": "2012-03-20",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-20"
     }
   },
   {
@@ -14576,7 +14496,7 @@
     "sthSopr": 0.9845046367059767,
     "sthSoprMa3": 0.9939197056472792,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6915142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -14647,8 +14567,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -14708,7 +14628,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -14726,7 +14645,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-21",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-21"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -14738,7 +14657,7 @@
       "nupl": null,
       "sthSopr": "2012-03-21",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-21"
     }
   },
   {
@@ -14758,7 +14677,7 @@
     "sthSopr": 0.9802045483529883,
     "sthSoprMa3": 0.9846684528236397,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7031142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -14827,10 +14746,10 @@
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -14890,7 +14809,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -14908,7 +14826,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-22",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-22"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -14920,7 +14838,7 @@
       "nupl": null,
       "sthSopr": "2012-03-22",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-22"
     }
   },
   {
@@ -14940,7 +14858,7 @@
     "sthSopr": 0.9807054241764941,
     "sthSoprMa3": 0.9818048697451532,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6730285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -15009,10 +14927,10 @@
     "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -15072,7 +14990,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -15090,7 +15007,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-23",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-23"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -15102,7 +15019,7 @@
       "nupl": null,
       "sthSopr": "2012-03-23",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-23"
     }
   },
   {
@@ -15122,7 +15039,7 @@
     "sthSopr": 0.9809017120882471,
     "sthSoprMa3": 0.9806038948725767,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6686,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -15191,10 +15108,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -15254,7 +15171,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -15272,7 +15188,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-24",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-24"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -15284,7 +15200,7 @@
       "nupl": null,
       "sthSopr": "2012-03-24",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-24"
     }
   },
   {
@@ -15304,7 +15220,7 @@
     "sthSopr": 0.9710968410441235,
     "sthSoprMa3": 0.9775679924362884,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6510142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -15373,10 +15289,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -15436,7 +15352,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -15454,7 +15369,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-25",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-25"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -15466,7 +15381,7 @@
       "nupl": null,
       "sthSopr": "2012-03-25",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-25"
     }
   },
   {
@@ -15486,7 +15401,7 @@
     "sthSopr": 0.9734565455220618,
     "sthSoprMa3": 0.9751516995514776,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6534428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -15555,10 +15470,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -15618,7 +15533,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -15636,7 +15550,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-26",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-26"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -15648,7 +15562,7 @@
       "nupl": null,
       "sthSopr": "2012-03-26",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-26"
     }
   },
   {
@@ -15668,7 +15582,7 @@
     "sthSopr": 0.979247872761031,
     "sthSoprMa3": 0.9746004197757391,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6494428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -15737,10 +15651,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -15800,7 +15714,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -15818,7 +15731,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-27",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-27"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -15830,7 +15743,7 @@
       "nupl": null,
       "sthSopr": "2012-03-27",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-27"
     }
   },
   {
@@ -15850,7 +15763,7 @@
     "sthSopr": 0.9891326163805154,
     "sthSoprMa3": 0.9806123448878696,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6431285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -15919,10 +15832,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -15982,7 +15895,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -16000,7 +15912,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-28",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-28"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -16012,7 +15924,7 @@
       "nupl": null,
       "sthSopr": "2012-03-28",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-28"
     }
   },
   {
@@ -16032,7 +15944,7 @@
     "sthSopr": 0.9934955381902577,
     "sthSoprMa3": 0.9872920091106017,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6339857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -16101,10 +16013,10 @@
     "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -16164,7 +16076,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -16182,7 +16093,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-29",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-29"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -16194,7 +16105,7 @@
       "nupl": null,
       "sthSopr": "2012-03-29",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-29"
     }
   },
   {
@@ -16214,7 +16125,7 @@
     "sthSopr": 0.9953258990951288,
     "sthSoprMa3": 0.9926513512219676,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6530857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -16285,8 +16196,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -16346,7 +16257,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -16364,7 +16274,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-30",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-30"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -16376,7 +16286,7 @@
       "nupl": null,
       "sthSopr": "2012-03-30",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-30"
     }
   },
   {
@@ -16396,7 +16306,7 @@
     "sthSopr": 1.0006087495475644,
     "sthSoprMa3": 0.9964767289443172,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6486,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -16467,8 +16377,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -16528,7 +16438,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -16546,7 +16455,7 @@
       "nupl": null,
       "sth_sopr": "2012-03-31",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-03-31"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -16558,7 +16467,7 @@
       "nupl": null,
       "sthSopr": "2012-03-31",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-31"
     }
   },
   {
@@ -16578,7 +16487,7 @@
     "sthSopr": 0.9957852747737822,
     "sthSoprMa3": 0.9972399744721586,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6440285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -16649,8 +16558,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -16710,7 +16619,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -16728,7 +16636,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-01",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-01"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -16740,7 +16648,7 @@
       "nupl": null,
       "sthSopr": "2012-04-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-01"
     }
   },
   {
@@ -16760,7 +16668,7 @@
     "sthSopr": 1.001764137386891,
     "sthSoprMa3": 0.9993860539027462,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6280857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -16831,8 +16739,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -16892,7 +16800,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -16910,7 +16817,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-02",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-02"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -16922,7 +16829,7 @@
       "nupl": null,
       "sthSopr": "2012-04-02",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-02"
     }
   },
   {
@@ -16942,7 +16849,7 @@
     "sthSopr": 1.0034324686934455,
     "sthSoprMa3": 1.0003272936180398,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6157,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -17013,8 +16920,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -17074,7 +16981,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -17092,7 +16998,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-03",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-03"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -17104,7 +17010,7 @@
       "nupl": null,
       "sthSopr": "2012-04-03",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-03"
     }
   },
   {
@@ -17124,7 +17030,7 @@
     "sthSopr": 1.0039011843467227,
     "sthSoprMa3": 1.00303259680902,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6091714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -17195,8 +17101,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -17256,7 +17162,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -17274,7 +17179,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-04",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-04"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -17286,7 +17191,7 @@
       "nupl": null,
       "sthSopr": "2012-04-04",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-04"
     }
   },
   {
@@ -17306,7 +17211,7 @@
     "sthSopr": 1.0044659921733614,
     "sthSoprMa3": 1.0039332150711766,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5956142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -17322,12 +17227,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 0,
+    "signalPuell": true,
+    "signalCount": 1,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 0,
+    "signalCountV6": 1,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -17345,13 +17250,13 @@
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
-    "scorePuell": 0,
-    "signalScoreV2": 0,
+    "scorePuell": 1,
+    "signalScoreV2": 1,
     "maxSignalScoreV2": 10,
     "signalScoreV2Min3d": 0.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
@@ -17359,26 +17264,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 0,
+    "totalScoreV4": 1,
     "maxTotalScoreV4": 12,
     "totalScoreV4Min3d": 0.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 0,
+    "totalScoreV6": 1,
     "maxTotalScoreV6": 14,
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -17419,7 +17324,7 @@
       "sthSoprTrigger": false,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -17438,7 +17343,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -17456,7 +17360,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-05",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-05"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -17468,7 +17372,7 @@
       "nupl": null,
       "sthSopr": "2012-04-05",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-05"
     }
   },
   {
@@ -17488,7 +17392,7 @@
     "sthSopr": 1.0063144960866808,
     "sthSoprMa3": 1.0048938908689218,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5854,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -17504,12 +17408,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 0,
+    "signalPuell": true,
+    "signalCount": 1,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 0,
+    "signalCountV6": 1,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -17527,13 +17431,13 @@
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
-    "scorePuell": 0,
-    "signalScoreV2": 0,
+    "scorePuell": 1,
+    "signalScoreV2": 1,
     "maxSignalScoreV2": 10,
     "signalScoreV2Min3d": 0.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
@@ -17541,26 +17445,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 0,
+    "totalScoreV4": 1,
     "maxTotalScoreV4": 12,
     "totalScoreV4Min3d": 0.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 0,
+    "totalScoreV6": 1,
     "maxTotalScoreV6": 14,
     "totalScoreV6Min3d": 0.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -17601,7 +17505,7 @@
       "sthSoprTrigger": false,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -17620,7 +17524,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -17638,7 +17541,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-06",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-06"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -17650,7 +17553,7 @@
       "nupl": null,
       "sthSopr": "2012-04-06",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-06"
     }
   },
   {
@@ -17670,7 +17573,7 @@
     "sthSopr": 0.9993286980433405,
     "sthSoprMa3": 1.0033697287677945,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5559,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -17686,12 +17589,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 0,
+    "signalPuell": true,
+    "signalCount": 1,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 0,
+    "signalCountV6": 1,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -17709,13 +17612,13 @@
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
-    "scorePuell": 0,
-    "signalScoreV2": 0,
+    "scorePuell": 1,
+    "signalScoreV2": 1,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 0.0,
+    "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
@@ -17723,26 +17626,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 0,
+    "totalScoreV4": 1,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 0.0,
+    "totalScoreV4Min3d": 1.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 0,
+    "totalScoreV6": 1,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 0.0,
+    "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -17783,7 +17686,7 @@
       "sthSoprTrigger": false,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -17802,7 +17705,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -17820,7 +17722,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-07",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-07"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -17832,7 +17734,7 @@
       "nupl": null,
       "sthSopr": "2012-04-07",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-07"
     }
   },
   {
@@ -17852,7 +17754,7 @@
     "sthSopr": 0.9919162840216702,
     "sthSoprMa3": 0.9991864927172306,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5593142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -17868,12 +17770,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": true,
     "signalSthSoprAux": true,
-    "signalPuell": false,
-    "signalCount": 1,
+    "signalPuell": true,
+    "signalCount": 2,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 1,
+    "signalCountV6": 2,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -17891,13 +17793,13 @@
     "scoreSthSopr": 1,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 1,
-    "scorePuell": 0,
-    "signalScoreV2": 1,
+    "scorePuell": 1,
+    "signalScoreV2": 2,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 0.0,
+    "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 1,
     "maxTriggerScore": 2,
@@ -17905,26 +17807,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 1,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 1,
+    "totalScoreV4": 2,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 0.0,
+    "totalScoreV4Min3d": 1.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 1,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 1,
+    "totalScoreV6": 2,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 0.0,
+    "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -17965,7 +17867,7 @@
       "sthSoprTrigger": true,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -17984,7 +17886,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -18002,7 +17903,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-08",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-08"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -18014,7 +17915,7 @@
       "nupl": null,
       "sthSopr": "2012-04-08",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-08"
     }
   },
   {
@@ -18034,7 +17935,7 @@
     "sthSopr": 0.9970812920108351,
     "sthSoprMa3": 0.9961087580252821,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5753285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -18050,12 +17951,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": true,
     "signalSthSoprAux": true,
-    "signalPuell": false,
-    "signalCount": 1,
+    "signalPuell": true,
+    "signalCount": 2,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 1,
+    "signalCountV6": 2,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -18073,13 +17974,13 @@
     "scoreSthSopr": 1,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 1,
-    "scorePuell": 0,
-    "signalScoreV2": 1,
+    "scorePuell": 1,
+    "signalScoreV2": 2,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 0.0,
+    "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 1,
     "maxTriggerScore": 2,
@@ -18087,26 +17988,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 1,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 1,
+    "totalScoreV4": 2,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 0.0,
+    "totalScoreV4Min3d": 1.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 1,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 1,
+    "totalScoreV6": 2,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 0.0,
+    "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -18147,7 +18048,7 @@
       "sthSoprTrigger": true,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -18166,7 +18067,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -18184,7 +18084,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-09",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-09"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -18196,7 +18096,7 @@
       "nupl": null,
       "sthSopr": "2012-04-09",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-09"
     }
   },
   {
@@ -18216,7 +18116,7 @@
     "sthSopr": 0.9944240460054175,
     "sthSoprMa3": 0.9944738740126411,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5811,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -18232,12 +18132,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": true,
     "signalSthSoprAux": true,
-    "signalPuell": false,
-    "signalCount": 1,
+    "signalPuell": true,
+    "signalCount": 2,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 1,
+    "signalCountV6": 2,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -18255,13 +18155,13 @@
     "scoreSthSopr": 1,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 1,
-    "scorePuell": 0,
-    "signalScoreV2": 1,
+    "scorePuell": 1,
+    "signalScoreV2": 2,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 1.0,
+    "signalScoreV2Min3d": 2.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 1,
     "maxTriggerScore": 2,
@@ -18269,26 +18169,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 1,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 1,
+    "totalScoreV4": 2,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 1.0,
+    "totalScoreV4Min3d": 2.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 1,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 1,
+    "totalScoreV6": 2,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 1.0,
+    "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -18329,7 +18229,7 @@
       "sthSoprTrigger": true,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -18348,7 +18248,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -18366,7 +18265,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-10",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-10"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -18378,7 +18277,7 @@
       "nupl": null,
       "sthSopr": "2012-04-10",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-10"
     }
   },
   {
@@ -18398,7 +18297,7 @@
     "sthSopr": 1.0021414230027088,
     "sthSoprMa3": 0.9978822536729872,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5830714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -18414,12 +18313,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": true,
     "signalSthSoprAux": true,
-    "signalPuell": false,
-    "signalCount": 1,
+    "signalPuell": true,
+    "signalCount": 2,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 1,
+    "signalCountV6": 2,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -18437,13 +18336,13 @@
     "scoreSthSopr": 1,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 1,
-    "scorePuell": 0,
-    "signalScoreV2": 1,
+    "scorePuell": 1,
+    "signalScoreV2": 2,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 1.0,
+    "signalScoreV2Min3d": 2.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 1,
     "maxTriggerScore": 2,
@@ -18451,26 +18350,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 1,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 1,
+    "totalScoreV4": 2,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 1.0,
+    "totalScoreV4Min3d": 2.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 1,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 1,
+    "totalScoreV6": 2,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 1.0,
+    "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -18511,7 +18410,7 @@
       "sthSoprTrigger": true,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -18530,7 +18429,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -18548,7 +18446,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-11",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-11"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -18560,7 +18458,7 @@
       "nupl": null,
       "sthSopr": "2012-04-11",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-11"
     }
   },
   {
@@ -18580,7 +18478,7 @@
     "sthSopr": 1.0007272415013544,
     "sthSoprMa3": 0.9990975701698271,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5885285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -18596,12 +18494,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": true,
     "signalSthSoprAux": true,
-    "signalPuell": false,
-    "signalCount": 1,
+    "signalPuell": true,
+    "signalCount": 2,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 1,
+    "signalCountV6": 2,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -18619,13 +18517,13 @@
     "scoreSthSopr": 1,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 1,
-    "scorePuell": 0,
-    "signalScoreV2": 1,
+    "scorePuell": 1,
+    "signalScoreV2": 2,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 1.0,
+    "signalScoreV2Min3d": 2.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 1,
     "maxTriggerScore": 2,
@@ -18633,26 +18531,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 1,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 1,
+    "totalScoreV4": 2,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 1.0,
+    "totalScoreV4Min3d": 2.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 1,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 1,
+    "totalScoreV6": 2,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 1.0,
+    "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -18693,7 +18591,7 @@
       "sthSoprTrigger": true,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -18712,7 +18610,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -18730,7 +18627,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-12",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-12"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -18742,7 +18639,7 @@
       "nupl": null,
       "sthSopr": "2012-04-12",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-12"
     }
   },
   {
@@ -18762,7 +18659,7 @@
     "sthSopr": 1.0027634207506773,
     "sthSoprMa3": 1.0018773617515804,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5796857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -18778,12 +18675,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 0,
+    "signalPuell": true,
+    "signalCount": 1,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 0,
+    "signalCountV6": 1,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -18801,13 +18698,13 @@
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
-    "scorePuell": 0,
-    "signalScoreV2": 0,
+    "scorePuell": 1,
+    "signalScoreV2": 1,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 0.0,
+    "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
@@ -18815,26 +18712,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 0,
+    "totalScoreV4": 1,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 0.0,
+    "totalScoreV4Min3d": 1.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 0,
+    "totalScoreV6": 1,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 0.0,
+    "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -18875,7 +18772,7 @@
       "sthSoprTrigger": false,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -18894,7 +18791,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -18912,7 +18808,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-13",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-13"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -18924,7 +18820,7 @@
       "nupl": null,
       "sthSopr": "2012-04-13",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-13"
     }
   },
   {
@@ -18944,7 +18840,7 @@
     "sthSopr": 1.0096090103753386,
     "sthSoprMa3": 1.004366557542457,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5894857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -18960,12 +18856,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 0,
+    "signalPuell": true,
+    "signalCount": 1,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 0,
+    "signalCountV6": 1,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -18983,13 +18879,13 @@
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
-    "scorePuell": 0,
-    "signalScoreV2": 0,
+    "scorePuell": 1,
+    "signalScoreV2": 1,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 0.0,
+    "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
@@ -18997,26 +18893,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 0,
+    "totalScoreV4": 1,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 0.0,
+    "totalScoreV4Min3d": 1.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 0,
+    "totalScoreV6": 1,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 0.0,
+    "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -19057,7 +18953,7 @@
       "sthSoprTrigger": false,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -19076,7 +18972,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -19094,7 +18989,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-14",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-14"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -19106,7 +19001,7 @@
       "nupl": null,
       "sthSopr": "2012-04-14",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-14"
     }
   },
   {
@@ -19126,7 +19021,7 @@
     "sthSopr": 1.0099721551876693,
     "sthSoprMa3": 1.0074481954378953,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5656714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -19142,12 +19037,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 0,
+    "signalPuell": true,
+    "signalCount": 1,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 0,
+    "signalCountV6": 1,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -19165,13 +19060,13 @@
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
-    "scorePuell": 0,
-    "signalScoreV2": 0,
+    "scorePuell": 1,
+    "signalScoreV2": 1,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 0.0,
+    "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
@@ -19179,26 +19074,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 0,
+    "totalScoreV4": 1,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 0.0,
+    "totalScoreV4Min3d": 1.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 0,
+    "totalScoreV6": 1,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 0.0,
+    "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -19239,7 +19134,7 @@
       "sthSoprTrigger": false,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -19258,7 +19153,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -19276,7 +19170,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-15",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-15"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -19288,7 +19182,7 @@
       "nupl": null,
       "sthSopr": "2012-04-15",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-15"
     }
   },
   {
@@ -19308,7 +19202,7 @@
     "sthSopr": 1.0087385275938345,
     "sthSoprMa3": 1.0094398977189476,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5684857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -19324,12 +19218,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 0,
+    "signalPuell": true,
+    "signalCount": 1,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 0,
+    "signalCountV6": 1,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -19347,13 +19241,13 @@
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
-    "scorePuell": 0,
-    "signalScoreV2": 0,
+    "scorePuell": 1,
+    "signalScoreV2": 1,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 0.0,
+    "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
@@ -19361,26 +19255,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 0,
+    "totalScoreV4": 1,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 0.0,
+    "totalScoreV4Min3d": 1.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 0,
+    "totalScoreV6": 1,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 0.0,
+    "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -19421,7 +19315,7 @@
       "sthSoprTrigger": false,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -19440,7 +19334,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -19458,7 +19351,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-16",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-16"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -19470,7 +19363,7 @@
       "nupl": null,
       "sthSopr": "2012-04-16",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-16"
     }
   },
   {
@@ -19490,7 +19383,7 @@
     "sthSopr": 1.0080385637969171,
     "sthSoprMa3": 1.0089164155261405,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5629571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -19506,12 +19399,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 0,
+    "signalPuell": true,
+    "signalCount": 1,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 0,
+    "signalCountV6": 1,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -19529,13 +19422,13 @@
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
-    "scorePuell": 0,
-    "signalScoreV2": 0,
+    "scorePuell": 1,
+    "signalScoreV2": 1,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 0.0,
+    "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
@@ -19543,26 +19436,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 0,
+    "totalScoreV4": 1,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 0.0,
+    "totalScoreV4Min3d": 1.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 0,
+    "totalScoreV6": 1,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 0.0,
+    "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -19603,7 +19496,7 @@
       "sthSoprTrigger": false,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -19622,7 +19515,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -19640,7 +19532,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-17",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-17"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -19652,7 +19544,7 @@
       "nupl": null,
       "sthSopr": "2012-04-17",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-17"
     }
   },
   {
@@ -19672,7 +19564,7 @@
     "sthSopr": 1.0147684318984584,
     "sthSoprMa3": 1.010515174429737,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5586714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -19688,12 +19580,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 0,
+    "signalPuell": true,
+    "signalCount": 1,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 0,
+    "signalCountV6": 1,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -19711,13 +19603,13 @@
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
-    "scorePuell": 0,
-    "signalScoreV2": 0,
+    "scorePuell": 1,
+    "signalScoreV2": 1,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 0.0,
+    "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
@@ -19725,26 +19617,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 0,
+    "totalScoreV4": 1,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 0.0,
+    "totalScoreV4Min3d": 1.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 0,
+    "totalScoreV6": 1,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 0.0,
+    "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -19785,7 +19677,7 @@
       "sthSoprTrigger": false,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -19804,7 +19696,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -19822,7 +19713,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-18",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-18"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -19834,7 +19725,7 @@
       "nupl": null,
       "sthSopr": "2012-04-18",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-18"
     }
   },
   {
@@ -19854,7 +19745,7 @@
     "sthSopr": 1.015654965949229,
     "sthSoprMa3": 1.0128206538815352,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5803142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -19870,12 +19761,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 0,
+    "signalPuell": true,
+    "signalCount": 1,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 0,
+    "signalCountV6": 1,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -19893,13 +19784,13 @@
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
-    "scorePuell": 0,
-    "signalScoreV2": 0,
+    "scorePuell": 1,
+    "signalScoreV2": 1,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 0.0,
+    "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
@@ -19907,26 +19798,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 0,
+    "totalScoreV4": 1,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 0.0,
+    "totalScoreV4Min3d": 1.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 0,
+    "totalScoreV6": 1,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 0.0,
+    "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -19967,7 +19858,7 @@
       "sthSoprTrigger": false,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -19986,7 +19877,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -20004,7 +19894,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-19",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-19"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -20016,7 +19906,7 @@
       "nupl": null,
       "sthSopr": "2012-04-19",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-19"
     }
   },
   {
@@ -20036,7 +19926,7 @@
     "sthSopr": 1.0183199329746144,
     "sthSoprMa3": 1.0162477769407676,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6061714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -20107,8 +19997,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -20168,7 +20058,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -20186,7 +20075,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-20",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-20"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -20198,7 +20087,7 @@
       "nupl": null,
       "sthSopr": "2012-04-20",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-20"
     }
   },
   {
@@ -20218,7 +20107,7 @@
     "sthSopr": 1.0206175164873073,
     "sthSoprMa3": 1.018197471803717,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6201714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -20289,8 +20178,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -20350,7 +20239,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -20368,7 +20256,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-21",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-21"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -20380,7 +20268,7 @@
       "nupl": null,
       "sthSopr": "2012-04-21",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-21"
     }
   },
   {
@@ -20400,7 +20288,7 @@
     "sthSopr": 1.0268740082436536,
     "sthSoprMa3": 1.0219371525685252,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6436428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -20471,8 +20359,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -20532,7 +20420,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -20550,7 +20437,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-22",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-22"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -20562,7 +20449,7 @@
       "nupl": null,
       "sthSopr": "2012-04-22",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-22"
     }
   },
   {
@@ -20582,7 +20469,7 @@
     "sthSopr": 1.0151774541218268,
     "sthSoprMa3": 1.0208896596175963,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6342714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -20653,8 +20540,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -20714,7 +20601,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -20732,7 +20618,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-23",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-23"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -20744,7 +20630,7 @@
       "nupl": null,
       "sthSopr": "2012-04-23",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-23"
     }
   },
   {
@@ -20764,7 +20650,7 @@
     "sthSopr": 1.0094990770609134,
     "sthSoprMa3": 1.0171835131421314,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6374571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -20835,8 +20721,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -20896,7 +20782,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -20914,7 +20799,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-24",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-24"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -20926,7 +20811,7 @@
       "nupl": null,
       "sthSopr": "2012-04-24",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-24"
     }
   },
   {
@@ -20946,7 +20831,7 @@
     "sthSopr": 1.0036691135304567,
     "sthSoprMa3": 1.0094485482377324,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6351571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -21017,8 +20902,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -21078,7 +20963,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -21096,7 +20980,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-25",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-25"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -21108,7 +20992,7 @@
       "nupl": null,
       "sthSopr": "2012-04-25",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-25"
     }
   },
   {
@@ -21128,7 +21012,7 @@
     "sthSopr": 1.0002358417652284,
     "sthSoprMa3": 1.004468010785533,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6325,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -21199,8 +21083,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -21260,7 +21144,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -21278,7 +21161,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-26",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-26"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -21290,7 +21173,7 @@
       "nupl": null,
       "sthSopr": "2012-04-26",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-26"
     }
   },
   {
@@ -21310,7 +21193,7 @@
     "sthSopr": 0.9991086958826142,
     "sthSoprMa3": 1.0010045503927667,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6155142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -21381,8 +21264,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -21442,7 +21325,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -21460,7 +21342,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-27",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-27"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -21472,7 +21354,7 @@
       "nupl": null,
       "sthSopr": "2012-04-27",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-27"
     }
   },
   {
@@ -21492,7 +21374,7 @@
     "sthSopr": 0.9919826479413071,
     "sthSoprMa3": 0.9971090618630502,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6085,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -21563,8 +21445,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -21624,7 +21506,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -21642,7 +21523,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-28",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-28"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -21654,7 +21535,7 @@
       "nupl": null,
       "sthSopr": "2012-04-28",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-28"
     }
   },
   {
@@ -21674,7 +21555,7 @@
     "sthSopr": 0.9897113489706535,
     "sthSoprMa3": 0.9936008975981917,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6261571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -21745,8 +21626,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -21806,7 +21687,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -21824,7 +21704,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-29",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-29"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -21836,7 +21716,7 @@
       "nupl": null,
       "sthSopr": "2012-04-29",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-29"
     }
   },
   {
@@ -21856,7 +21736,7 @@
     "sthSopr": 0.9927033244853267,
     "sthSoprMa3": 0.9914657737990961,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.652,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -21925,10 +21805,10 @@
     "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -21988,7 +21868,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -22006,7 +21885,7 @@
       "nupl": null,
       "sth_sopr": "2012-04-30",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-04-30"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -22018,7 +21897,7 @@
       "nupl": null,
       "sthSopr": "2012-04-30",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-30"
     }
   },
   {
@@ -22038,7 +21917,7 @@
     "sthSopr": 0.9951418972426633,
     "sthSoprMa3": 0.9925188568995481,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6693571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -22109,8 +21988,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -22170,7 +22049,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -22188,7 +22066,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-01",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-01"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -22200,7 +22078,7 @@
       "nupl": null,
       "sthSopr": "2012-05-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-01"
     }
   },
   {
@@ -22220,7 +22098,7 @@
     "sthSopr": 1.0022322486213318,
     "sthSoprMa3": 0.9966924901164408,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6822857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -22291,8 +22169,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -22352,7 +22230,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -22370,7 +22247,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-02",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-02"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -22382,7 +22259,7 @@
       "nupl": null,
       "sthSopr": "2012-05-02",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-02"
     }
   },
   {
@@ -22402,7 +22279,7 @@
     "sthSopr": 1.0033603743106658,
     "sthSoprMa3": 1.0002448400582205,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6838714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -22473,8 +22350,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -22534,7 +22411,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -22552,7 +22428,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-03",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-03"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -22564,7 +22440,7 @@
       "nupl": null,
       "sthSopr": "2012-05-03",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-03"
     }
   },
   {
@@ -22584,7 +22460,7 @@
     "sthSopr": 1.0045538871553328,
     "sthSoprMa3": 1.0033821700291103,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6989428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -22655,8 +22531,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -22716,7 +22592,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -22734,7 +22609,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-04",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-04"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -22746,7 +22621,7 @@
       "nupl": null,
       "sthSopr": "2012-05-04",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-04"
     }
   },
   {
@@ -22766,7 +22641,7 @@
     "sthSopr": 1.0012568935776665,
     "sthSoprMa3": 1.003057051681222,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7097285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -22837,8 +22712,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -22898,7 +22773,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -22916,7 +22790,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-05",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-05"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -22928,7 +22802,7 @@
       "nupl": null,
       "sthSopr": "2012-05-05",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-05"
     }
   },
   {
@@ -22948,7 +22822,7 @@
     "sthSopr": 0.9914274267888332,
     "sthSoprMa3": 0.9990794025072778,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7035,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -23019,8 +22893,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -23080,7 +22954,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -23098,7 +22971,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-06",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-06"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -23110,7 +22983,7 @@
       "nupl": null,
       "sthSopr": "2012-05-06",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-06"
     }
   },
   {
@@ -23130,7 +23003,7 @@
     "sthSopr": 0.9943654633944166,
     "sthSoprMa3": 0.9956832612536389,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7003142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -23201,8 +23074,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -23262,7 +23135,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -23280,7 +23152,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-07",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-07"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -23292,7 +23164,7 @@
       "nupl": null,
       "sthSopr": "2012-05-07",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-07"
     }
   },
   {
@@ -23312,7 +23184,7 @@
     "sthSopr": 0.9939988616972083,
     "sthSoprMa3": 0.9932639172934863,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.7049714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -23383,8 +23255,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -23444,7 +23316,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -23462,7 +23333,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-08",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-08"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -23474,7 +23345,7 @@
       "nupl": null,
       "sthSopr": "2012-05-08",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-08"
     }
   },
   {
@@ -23494,7 +23365,7 @@
     "sthSopr": 0.9966588508486042,
     "sthSoprMa3": 0.9950077253134099,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6898571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -23565,8 +23436,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -23626,7 +23497,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -23644,7 +23514,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-09",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-09"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -23656,7 +23526,7 @@
       "nupl": null,
       "sthSopr": "2012-05-09",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-09"
     }
   },
   {
@@ -23676,7 +23546,7 @@
     "sthSopr": 0.9961360254243021,
     "sthSoprMa3": 0.995597912656705,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6783857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -23747,8 +23617,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -23808,7 +23678,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -23826,7 +23695,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-10",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-10"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -23838,7 +23707,7 @@
       "nupl": null,
       "sthSopr": "2012-05-10",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-10"
     }
   },
   {
@@ -23858,7 +23727,7 @@
     "sthSopr": 0.989434312712151,
     "sthSoprMa3": 0.9940763963283527,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6566285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -23929,8 +23798,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -23990,7 +23859,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -24008,7 +23876,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-11",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-11"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -24020,7 +23888,7 @@
       "nupl": null,
       "sthSopr": "2012-05-11",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-11"
     }
   },
   {
@@ -24040,7 +23908,7 @@
     "sthSopr": 0.9940358063560755,
     "sthSoprMa3": 0.9932020481641765,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6384714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -24111,8 +23979,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -24172,7 +24040,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -24190,7 +24057,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-12",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-12"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -24202,7 +24069,7 @@
       "nupl": null,
       "sthSopr": "2012-05-12",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-12"
     }
   },
   {
@@ -24222,7 +24089,7 @@
     "sthSopr": 0.9934630531780377,
     "sthSoprMa3": 0.9923110574154217,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.6232857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -24293,8 +24160,8 @@
     "signalBandV6": "watch",
     "signalConfidence": 0.0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -24354,7 +24221,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -24372,7 +24238,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-13",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-13"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -24384,7 +24250,7 @@
       "nupl": null,
       "sthSopr": "2012-05-13",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-13"
     }
   },
   {
@@ -24404,7 +24270,7 @@
     "sthSopr": 0.9914417765890189,
     "sthSoprMa3": 0.9929802120410441,
     "sthMvrv": null,
-    "puellMultiple": null,
+    "puellMultiple": 0.5993,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -24420,12 +24286,12 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": true,
     "signalSthSoprAux": true,
-    "signalPuell": false,
-    "signalCount": 1,
+    "signalPuell": true,
+    "signalCount": 2,
     "activeIndicatorCount": 5,
-    "signalCountV4": 0,
+    "signalCountV4": 1,
     "activeIndicatorCountV4": 6,
-    "signalCountV6": 1,
+    "signalCountV6": 2,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
@@ -24443,13 +24309,13 @@
     "scoreSthSopr": 1,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 1,
-    "scorePuell": 0,
-    "signalScoreV2": 1,
+    "scorePuell": 1,
+    "signalScoreV2": 2,
     "maxSignalScoreV2": 10,
     "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
-    "valuationScore": 0,
+    "valuationScore": 1,
     "maxValuationScore": 6,
     "triggerScore": 1,
     "maxTriggerScore": 2,
@@ -24457,26 +24323,26 @@
     "maxConfirmationScore": 4,
     "auxiliaryScore": 1,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 1,
+    "totalScoreV4": 2,
     "maxTotalScoreV4": 12,
     "totalScoreV4Min3d": 1.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 1,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 1,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 0,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 1,
+    "totalScoreV6": 2,
     "maxTotalScoreV6": 14,
     "totalScoreV6Min3d": 1.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
-    "signalConfidence": 0.0,
+    "signalConfidence": 0.0083,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScore": 0.125,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScore": 0.25,
+    "dataFreshnessScoreV6": 0.25,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0016,
@@ -24517,7 +24383,7 @@
       "sthSoprTrigger": true,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "reserveRiskActive": true,
     "reserveRiskReplacementActive": false,
@@ -24536,7 +24402,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -24554,7 +24419,7 @@
       "nupl": null,
       "sth_sopr": "2012-05-14",
       "sth_mvrv": null,
-      "puell": null
+      "puell": "2012-05-14"
     },
     "indicatorDates": {
       "priceMa200w": null,
@@ -24566,7 +24431,7 @@
       "nupl": null,
       "sthSopr": "2012-05-14",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-14"
     }
   },
   {
@@ -24809,7 +24674,7 @@
     "scorePuell": 1,
     "signalScoreV2": 2,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 1.0,
+    "signalScoreV2Min3d": 2.0,
     "signalConfirmed3d": false,
     "signalBandV2": "watch",
     "valuationScore": 1,
@@ -24822,7 +24687,7 @@
     "maxAuxiliaryScore": 2,
     "totalScoreV4": 2,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 1.0,
+    "totalScoreV4Min3d": 2.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
     "valuationScoreV6": 1,
@@ -24833,7 +24698,7 @@
     "maxConfirmationScoreV6": 4,
     "totalScoreV6": 2,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 1.0,
+    "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "signalConfidence": 0.0083,

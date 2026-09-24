@@ -1708,6 +1708,7 @@
     "unixTs": 1264982400,
     "sthSopr": 1.0,
     "sthSoprMa3": 1.0,
+    "puellMultiple": 4.5357428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -1754,7 +1755,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -1805,7 +1806,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -1819,7 +1819,7 @@
       "nupl": null,
       "sthSopr": "2010-02-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2010-02-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -1830,6 +1830,7 @@
     "unixTs": 1267401600,
     "sthSopr": 1.0,
     "sthSoprMa3": 1.0,
+    "puellMultiple": 3.2332571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -1876,7 +1877,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -1927,7 +1928,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -1941,7 +1941,7 @@
       "nupl": null,
       "sthSopr": "2010-03-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2010-03-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -1952,6 +1952,7 @@
     "unixTs": 1270080000,
     "sthSopr": 1.0,
     "sthSoprMa3": 1.0,
+    "puellMultiple": 2.7434857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -1998,7 +1999,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -2049,7 +2050,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2063,7 +2063,7 @@
       "nupl": null,
       "sthSopr": "2010-04-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2010-04-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -2074,6 +2074,7 @@
     "unixTs": 1272672000,
     "sthSopr": 1.0,
     "sthSoprMa3": 1.0,
+    "puellMultiple": 1.9259142857,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2120,7 +2121,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -2171,7 +2172,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2185,7 +2185,7 @@
       "nupl": null,
       "sthSopr": "2010-05-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2010-05-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -2196,6 +2196,7 @@
     "unixTs": 1275350400,
     "sthSopr": 1.0,
     "sthSoprMa3": 1.0,
+    "puellMultiple": 1.7999428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2242,7 +2243,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -2293,7 +2294,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2307,7 +2307,7 @@
       "nupl": null,
       "sthSopr": "2010-06-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2010-06-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -2318,6 +2318,7 @@
     "unixTs": 1277942400,
     "sthSopr": 1.0,
     "sthSoprMa3": 1.0,
+    "puellMultiple": 1.5276571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2364,7 +2365,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -2415,7 +2416,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2429,7 +2429,7 @@
       "nupl": null,
       "sthSopr": "2010-07-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2010-07-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -2440,6 +2440,7 @@
     "unixTs": 1280620800,
     "sthSopr": 1.0,
     "sthSoprMa3": 1.0,
+    "puellMultiple": 23.5002714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2486,7 +2487,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -2537,7 +2538,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2551,7 +2551,7 @@
       "nupl": null,
       "sthSopr": "2010-08-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2010-08-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -2562,6 +2562,7 @@
     "unixTs": 1283299200,
     "sthSopr": 1.2838794770462036,
     "sthSoprMa3": 1.283070479774475,
+    "puellMultiple": 6.8927714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2608,7 +2609,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -2659,7 +2660,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2673,7 +2673,7 @@
       "nupl": null,
       "sthSopr": "2010-09-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2010-09-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -2684,6 +2684,7 @@
     "unixTs": 1285891200,
     "sthSopr": 1.1424145482921992,
     "sthSoprMa3": 1.1125963793484648,
+    "puellMultiple": 4.6332714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2730,7 +2731,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -2781,7 +2782,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2795,7 +2795,7 @@
       "nupl": null,
       "sthSopr": "2010-10-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2010-10-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -2806,6 +2806,7 @@
     "unixTs": 1288569600,
     "sthSopr": 1.2067322409522994,
     "sthSoprMa3": 1.2931839622220318,
+    "puellMultiple": 9.4197571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2852,7 +2853,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -2903,7 +2904,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -2917,7 +2917,7 @@
       "nupl": null,
       "sthSopr": "2010-11-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2010-11-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -2928,6 +2928,7 @@
     "unixTs": 1291161600,
     "sthSopr": 0.9023886515791609,
     "sthSoprMa3": 0.9457959536847088,
+    "puellMultiple": 5.7702285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -2974,7 +2975,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -3025,7 +3026,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3039,7 +3039,7 @@
       "nupl": null,
       "sthSopr": "2010-12-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2010-12-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -3050,6 +3050,7 @@
     "unixTs": 1293840000,
     "sthSopr": 1.0795695214303573,
     "sthSoprMa3": 1.1091667833375005,
+    "puellMultiple": 3.9442285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3096,7 +3097,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -3147,7 +3148,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3161,7 +3161,7 @@
       "nupl": null,
       "sthSopr": "2011-01-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-01-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -3172,6 +3172,7 @@
     "unixTs": 1296518400,
     "sthSopr": 1.4512555148470898,
     "sthSoprMa3": 1.2931111013098762,
+    "puellMultiple": 4.6715,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3218,7 +3219,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -3269,7 +3270,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3283,7 +3283,7 @@
       "nupl": null,
       "sthSopr": "2011-02-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-02-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -3294,6 +3294,7 @@
     "unixTs": 1298937600,
     "sthSopr": 1.3694610755992205,
     "sthSoprMa3": 1.2065795097315146,
+    "puellMultiple": 6.3815,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3340,7 +3341,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -3391,7 +3392,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3405,7 +3405,7 @@
       "nupl": null,
       "sthSopr": "2011-03-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-03-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -3416,6 +3416,7 @@
     "unixTs": 1301616000,
     "sthSopr": 0.9887748129230056,
     "sthSoprMa3": 0.9835569968203465,
+    "puellMultiple": 3.0752,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3462,7 +3463,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -3513,7 +3514,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3527,7 +3527,7 @@
       "nupl": null,
       "sthSopr": "2011-04-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-04-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -3538,6 +3538,7 @@
     "unixTs": 1304208000,
     "sthSopr": 1.533780557459954,
     "sthSoprMa3": 1.8428452340732255,
+    "puellMultiple": 7.6398428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3584,7 +3585,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -3635,7 +3636,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3649,7 +3649,7 @@
       "nupl": null,
       "sthSopr": "2011-05-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-05-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -3661,6 +3661,7 @@
     "realizedPrice": 1.9335,
     "sthSopr": 1.1614837266682398,
     "sthSoprMa3": 1.165317662225893,
+    "puellMultiple": 9.6016428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3707,7 +3708,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -3757,7 +3758,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3771,7 +3771,7 @@
       "nupl": null,
       "sthSopr": "2011-06-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-06-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -3783,6 +3783,7 @@
     "realizedPrice": 7.0893,
     "sthSopr": 1.0047955460924047,
     "sthSoprMa3": 1.0198132408822778,
+    "puellMultiple": 5.7932428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3829,7 +3830,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -3879,7 +3880,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -3893,7 +3893,7 @@
       "nupl": null,
       "sthSopr": "2011-07-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-07-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -3905,6 +3905,7 @@
     "realizedPrice": 7.0507,
     "sthSopr": 0.9858310832473421,
     "sthSoprMa3": 0.9944916209104652,
+    "puellMultiple": 3.3832714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -3951,7 +3952,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -4001,7 +4002,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4015,7 +4015,7 @@
       "nupl": null,
       "sthSopr": "2011-08-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-08-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -4027,6 +4027,7 @@
     "realizedPrice": 6.4952,
     "sthSopr": 0.942623286971163,
     "sthSoprMa3": 0.9461726529327138,
+    "puellMultiple": 1.4756428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4073,7 +4074,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -4123,7 +4124,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4137,7 +4137,7 @@
       "nupl": null,
       "sthSopr": "2011-09-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-09-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -4149,6 +4149,7 @@
     "realizedPrice": 5.9672,
     "sthSopr": 0.9385571618009854,
     "sthSoprMa3": 0.9495124775356327,
+    "puellMultiple": 0.7781285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4195,7 +4196,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -4245,7 +4246,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4259,7 +4259,7 @@
       "nupl": null,
       "sthSopr": "2011-10-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-10-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -4271,6 +4271,7 @@
     "realizedPrice": 5.6466,
     "sthSopr": 0.9710241341878654,
     "sthSoprMa3": 0.9741085897716862,
+    "puellMultiple": 0.4185571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4286,26 +4287,26 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": true,
     "signalSthSoprAux": true,
-    "signalPuell": false,
-    "signalCount": 1,
-    "signalCountV4": 0,
-    "signalCountV6": 1,
+    "signalPuell": true,
+    "signalCount": 2,
+    "signalCountV4": 1,
+    "signalCountV6": 2,
     "activeIndicatorCount": 4,
     "activeIndicatorCountV4": 6,
     "activeIndicatorCountV6": 8,
-    "signalScoreV2": 2,
+    "signalScoreV2": 4,
     "maxSignalScoreV2": 8,
-    "totalScoreV4": 2,
+    "totalScoreV4": 4,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 2.0,
+    "totalScoreV4Min3d": 4.0,
     "signalConfirmed3dV4": false,
-    "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "signalBandV4": "focus",
+    "valuationScoreV6": 2,
     "triggerScoreV6": 2,
     "confirmationScoreV6": 0,
-    "totalScoreV6": 2,
+    "totalScoreV6": 4,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 2.0,
+    "totalScoreV6Min3d": 4.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "scoreMvrvZscoreCore": 0,
@@ -4315,9 +4316,9 @@
     "scoreSthMvrv": 0,
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
-    "scorePuell": 0,
-    "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "scorePuell": 2,
+    "signalConfidenceV6": 0.0679,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -4359,7 +4360,7 @@
       "sthSoprTrigger": true,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "staleIndicators": [
       "priceMa200w",
@@ -4367,7 +4368,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4381,7 +4381,7 @@
       "nupl": null,
       "sthSopr": "2011-11-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-11-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -4393,6 +4393,7 @@
     "realizedPrice": 4.9101,
     "sthSopr": 1.0075949312224095,
     "sthSoprMa3": 1.004301072852289,
+    "puellMultiple": 0.4111428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4408,26 +4409,26 @@
     "signalLthSopr": false,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
-    "signalPuell": false,
-    "signalCount": 0,
-    "signalCountV4": 0,
-    "signalCountV6": 0,
+    "signalPuell": true,
+    "signalCount": 1,
+    "signalCountV4": 1,
+    "signalCountV6": 1,
     "activeIndicatorCount": 4,
     "activeIndicatorCountV4": 6,
     "activeIndicatorCountV6": 8,
-    "signalScoreV2": 0,
+    "signalScoreV2": 2,
     "maxSignalScoreV2": 8,
-    "totalScoreV4": 0,
+    "totalScoreV4": 2,
     "maxTotalScoreV4": 12,
-    "totalScoreV4Min3d": 0.0,
+    "totalScoreV4Min3d": 2.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "watch",
-    "valuationScoreV6": 0,
+    "valuationScoreV6": 2,
     "triggerScoreV6": 0,
     "confirmationScoreV6": 0,
-    "totalScoreV6": 0,
+    "totalScoreV6": 2,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 0.0,
+    "totalScoreV6Min3d": 2.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "watch",
     "scoreMvrvZscoreCore": 0,
@@ -4437,9 +4438,9 @@
     "scoreSthMvrv": 0,
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
-    "scorePuell": 0,
+    "scorePuell": 2,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -4481,7 +4482,7 @@
       "sthSoprTrigger": false,
       "lthMvrv": false,
       "lthSopr": false,
-      "puell": false
+      "puell": true
     },
     "staleIndicators": [
       "priceMa200w",
@@ -4489,7 +4490,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4503,7 +4503,7 @@
       "nupl": null,
       "sthSopr": "2011-12-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2011-12-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -4516,6 +4516,7 @@
     "reserveRisk": 0.003959,
     "sthSopr": 1.0447835382698265,
     "sthSoprMa3": 1.0413401559629287,
+    "puellMultiple": 0.6897285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4562,7 +4563,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -4611,7 +4612,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4625,7 +4625,7 @@
       "nupl": null,
       "sthSopr": "2012-01-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-01-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -4638,6 +4638,7 @@
     "reserveRisk": 0.004085,
     "sthSopr": 0.9779128040096698,
     "sthSoprMa3": 0.9641898160225632,
+    "puellMultiple": 0.8068285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4684,7 +4685,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -4733,7 +4734,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4747,7 +4747,7 @@
       "nupl": null,
       "sthSopr": "2012-02-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-02-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -4760,6 +4760,7 @@
     "reserveRisk": 0.003077,
     "sthSopr": 1.0039666461619752,
     "sthSoprMa3": 1.0064697077112754,
+    "puellMultiple": 0.7163857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4806,7 +4807,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -4855,7 +4856,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4869,7 +4869,7 @@
       "nupl": null,
       "sthSopr": "2012-03-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-03-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -4882,6 +4882,7 @@
     "reserveRisk": 0.002786,
     "sthSopr": 0.9957852747737822,
     "sthSoprMa3": 0.9972399744721586,
+    "puellMultiple": 0.6440285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -4928,7 +4929,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -4977,7 +4978,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -4991,7 +4991,7 @@
       "nupl": null,
       "sthSopr": "2012-04-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-04-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -5004,6 +5004,7 @@
     "reserveRisk": 0.002714,
     "sthSopr": 0.9951418972426633,
     "sthSoprMa3": 0.9925188568995481,
+    "puellMultiple": 0.6693571429,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -5050,7 +5051,7 @@
     "scoreLthSopr": 0,
     "scorePuell": 0,
     "signalConfidenceV6": 0.0,
-    "dataFreshnessScoreV6": 0.125,
+    "dataFreshnessScoreV6": 0.25,
     "fallbackModeV6": "valuation_metrics_inactive",
     "thresholds": {
       "reserveRisk": {
@@ -5099,7 +5100,6 @@
       "sthMvrv",
       "lthMvrv",
       "lthSopr",
-      "puell",
       "mvrvZscore",
       "nupl"
     ],
@@ -5113,7 +5113,7 @@
       "nupl": null,
       "sthSopr": "2012-05-01",
       "sthMvrv": null,
-      "puell": null
+      "puell": "2012-05-01"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
@@ -114234,7 +114234,7 @@
     "sthSopr": 1.0102318964193948,
     "sthSoprMa3": 1.0055772988064655,
     "sthMvrv": 1.134034,
-    "puellMultiple": 1.1342857143,
+    "puellMultiple": 0.9981857143,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114359,7 +114359,7 @@
     "sthSopr": 1.0131279982096975,
     "sthSoprMa3": 1.008353298209698,
     "sthMvrv": 1.135319,
-    "puellMultiple": 1.0694285714,
+    "puellMultiple": 0.9774,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114484,7 +114484,7 @@
     "sthSopr": 1.0086262991048487,
     "sthSoprMa3": 1.0106620645779811,
     "sthMvrv": 1.13502,
-    "puellMultiple": 1.0507142857,
+    "puellMultiple": 0.9889285714,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114609,7 +114609,7 @@
     "sthSopr": 1.0238531495524243,
     "sthSoprMa3": 1.015202482288991,
     "sthMvrv": 1.196536,
-    "puellMultiple": 1.0435714286,
+    "puellMultiple": 1.0007428571,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114734,7 +114734,7 @@
     "sthSopr": 1.0248787747762123,
     "sthSoprMa3": 1.0191194078111625,
     "sthMvrv": 1.187572,
-    "puellMultiple": 1.0298571429,
+    "puellMultiple": 0.9950714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114845,21 +114845,21 @@
   {
     "d": "2026-09-23",
     "unixTs": 1790121600,
-    "btcPrice": 84463.47,
-    "ma200w": 65504.48463901201,
+    "btcPrice": 84434.3188651724,
+    "ma200w": 65504.46381677284,
     "realizedPrice": 53092.97,
-    "priceMa200wRatio": 1.2894303415326274,
-    "priceRealizedRatio": 1.5908597691935487,
+    "priceMa200wRatio": 1.2889857262453075,
+    "priceRealizedRatio": 1.5903107109128083,
     "reserveRisk": 0.0006480647,
     "lthMvrv": 1.70506,
     "lthSopr": 1.1409421682758907,
     "lthSoprMa3": 1.0948620567253442,
-    "mvrvZscore": 1.032689935414102,
-    "nupl": 0.37140908371394166,
+    "mvrvZscore": 1.0333219549579493,
+    "nupl": 0.3711920613135914,
     "sthSopr": 1.013654737388106,
     "sthSoprMa3": 1.0207955539055815,
     "sthMvrv": 1.160928,
-    "puellMultiple": 1.0051428571,
+    "puellMultiple": 1.0050714286,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -114970,21 +114970,21 @@
   {
     "d": "2026-09-24",
     "unixTs": 1790208000,
-    "btcPrice": 83977.0,
-    "ma200w": 65552.42850059336,
+    "btcPrice": 83258.63,
+    "ma200w": 65551.89455692563,
     "realizedPrice": 53092.97,
-    "priceMa200wRatio": 1.2810661926772073,
-    "priceRealizedRatio": 1.581697162543365,
+    "priceMa200wRatio": 1.2701178289774333,
+    "priceRealizedRatio": 1.5681667459929254,
     "reserveRisk": 0.0006480647,
-    "lthMvrv": 1.70506,
-    "lthSopr": 1.1409421682758907,
-    "lthSoprMa3": 1.1265950191461716,
-    "mvrvZscore": 1.0163943553623849,
-    "nupl": 0.36776772211438846,
-    "sthSopr": 1.013654737388106,
-    "sthSoprMa3": 1.017396083184142,
-    "sthMvrv": 1.160928,
-    "puellMultiple": 1.0392682646568585,
+    "lthMvrv": 1.70215,
+    "lthSopr": 1.1785451347414044,
+    "lthSoprMa3": 1.1391293413013426,
+    "mvrvZscore": 0.9942910118395941,
+    "nupl": 0.36231271160719314,
+    "sthSopr": 1.007358668694053,
+    "sthSoprMa3": 1.0152973936194576,
+    "sthMvrv": 1.158809,
+    "puellMultiple": 1.0255023143615594,
     "signalPriceMa200w": false,
     "signalPriceRealized": false,
     "signalReserveRisk": false,
@@ -115030,8 +115030,8 @@
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
     "scorePuell": 0,
-    "signalConfidenceV6": 0.2786,
-    "dataFreshnessScoreV6": 0.9285714285714286,
+    "signalConfidenceV6": 0.3,
+    "dataFreshnessScoreV6": 1.0,
     "fallbackModeV6": "none",
     "thresholds": {
       "reserveRisk": {
@@ -115080,12 +115080,12 @@
       "priceMa200w": "2026-09-24",
       "priceRealized": "2026-09-23",
       "reserveRisk": "2026-09-23",
-      "lthMvrv": "2026-09-23",
-      "lthSopr": "2026-09-23",
+      "lthMvrv": "2026-09-24",
+      "lthSopr": "2026-09-24",
       "mvrvZscore": "2026-09-24",
       "nupl": "2026-09-24",
-      "sthSopr": "2026-09-23",
-      "sthMvrv": "2026-09-23",
+      "sthSopr": "2026-09-24",
+      "sthMvrv": "2026-09-24",
       "puell": "2026-09-24"
     },
     "indicatorSet": "core8_bottom_independent_valuation_current",
