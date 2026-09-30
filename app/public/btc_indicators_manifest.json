@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-29T22:12:07.324113+00:00",
-  "latestDate": "2026-09-29",
-  "lastUpdated": "2026-09-29T22:12:07.309202+00:00",
-  "historyRows": 6481,
+  "generatedAt": "2026-09-30T05:27:29.274442+00:00",
+  "latestDate": "2026-09-30",
+  "lastUpdated": "2026-09-30T05:27:29.248700+00:00",
+  "historyRows": 6482,
   "historyLightRows": 921,
   "historyFiles": {
     "full": "btc_indicators_history.json",
@@ -103,7 +103,7 @@
       "2026": "history/btc_indicators_history_2026.json"
     }
   },
-  "signalEventsV4Rows": 16,
+  "signalEventsV4Rows": 15,
   "schemaVersion": "current",
   "indicatorSet": "core8_bottom_independent_valuation_current",
   "scoringModelVersion": "core8_independent_valuation_current",
@@ -114,7 +114,7 @@
   "totalScoreV6": 0,
   "dynamicThresholds": {
     "reserveRisk": {
-      "trigger": 0.0005825089,
+      "trigger": 0.00058290332,
       "deep": 0.00051647637,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
@@ -123,8 +123,8 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.9961581757103338,
-      "deep": 0.9909719333935006,
+      "trigger": 0.9961662031896673,
+      "deep": 0.9909837540676676,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -134,8 +134,8 @@
       "valueField": "sth_sopr_ma3"
     },
     "sthMvrv": {
-      "trigger": 0.9399299999999999,
-      "deep": 0.891965,
+      "trigger": 0.94,
+      "deep": 0.892965,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -143,8 +143,8 @@
       "deepQuantile": 0.135
     },
     "lthSopr": {
-      "trigger": 0.9227743294000001,
-      "deep": 0.7612800000000003,
+      "trigger": 0.9232888499733335,
+      "deep": 0.7620500000000001,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -160,97 +160,97 @@
   },
   "reserveRiskHealth": {
     "primaryStatus": "healthy",
-    "primaryLatestNonNullDate": "2026-09-28",
+    "primaryLatestNonNullDate": "2026-09-29",
     "primaryTrailingNullDays": 0,
     "sourceMode": null
   },
   "sourceHealth": {
     "btc_price": {
       "source": "https://charts.bgeometrics.com/files/moving_average_price.json + live (blockchain_info_stats, updated)",
-      "rows": 6481,
-      "nonNullRows": 5176,
-      "latestDate": "2026-09-29",
-      "latestNonNullDate": "2026-09-29",
+      "rows": 6482,
+      "nonNullRows": 5177,
+      "latestDate": "2026-09-30",
+      "latestNonNullDate": "2026-09-30",
       "status": "healthy"
     },
     "realized_price": {
       "source": "https://charts.bgeometrics.com/files/realized_price.json",
-      "rows": 6481,
-      "nonNullRows": 5589,
-      "latestDate": "2026-09-29",
-      "latestNonNullDate": "2026-09-28",
+      "rows": 6482,
+      "nonNullRows": 5590,
+      "latestDate": "2026-09-30",
+      "latestNonNullDate": "2026-09-29",
       "status": "healthy"
     },
     "lth_mvrv": {
       "source": "https://charts.bgeometrics.com/files/lth_mvrv.json + https://charts-cdn.checkonchain.com/btconchain/unrealised/mvrv_lth/mvrv_lth_light.html",
-      "rows": 6481,
+      "rows": 6482,
       "nonNullRows": 5019,
-      "latestDate": "2026-09-29",
+      "latestDate": "2026-09-30",
       "latestNonNullDate": "2026-09-29",
       "status": "healthy"
     },
     "mvrv_zscore": {
       "source": "https://charts.bgeometrics.com/files/mvrv_zscore_data.json + https://bitcoin-data.com/v1/mvrv-zscore + derived_from_bgeometrics_caps",
-      "rows": 6481,
+      "rows": 6482,
       "nonNullRows": 1462,
-      "latestDate": "2026-09-29",
-      "latestNonNullDate": "2026-09-29",
+      "latestDate": "2026-09-30",
+      "latestNonNullDate": "2026-09-30",
       "status": "healthy"
     },
     "nupl": {
       "source": "https://charts.bgeometrics.com/files/nupl_data.json + https://bitcoin-data.com/v1/nupl + https://bitcoin-data.com/v1/nupl/1 + derived_from_bgeometrics_caps",
-      "rows": 6481,
+      "rows": 6482,
       "nonNullRows": 1462,
-      "latestDate": "2026-09-29",
-      "latestNonNullDate": "2026-09-29",
+      "latestDate": "2026-09-30",
+      "latestNonNullDate": "2026-09-30",
       "status": "healthy"
     },
     "sth_sopr": {
       "source": "https://charts.bgeometrics.com/files/sth_sopr.json + https://charts-cdn.checkonchain.com/btconchain/realised/sthsopr_indicator/sthsopr_indicator_light.html",
-      "rows": 6481,
+      "rows": 6482,
       "nonNullRows": 6481,
-      "latestDate": "2026-09-29",
+      "latestDate": "2026-09-30",
       "latestNonNullDate": "2026-09-29",
       "status": "healthy"
     },
     "sth_mvrv": {
       "source": "https://charts.bgeometrics.com/files/sth_mvrv.json + https://charts-cdn.checkonchain.com/btconchain/unrealised/mvrv_sth/mvrv_sth_light.html",
-      "rows": 6481,
+      "rows": 6482,
       "nonNullRows": 5019,
-      "latestDate": "2026-09-29",
+      "latestDate": "2026-09-30",
       "latestNonNullDate": "2026-09-29",
       "status": "healthy"
     },
     "lth_sopr": {
       "source": "https://charts.bgeometrics.com/files/lth_sopr.json + https://charts-cdn.checkonchain.com/btconchain/unrealised/mvrv_lth/mvrv_lth_light.html",
-      "rows": 6481,
+      "rows": 6482,
       "nonNullRows": 5019,
-      "latestDate": "2026-09-29",
+      "latestDate": "2026-09-30",
       "latestNonNullDate": "2026-09-29",
       "status": "healthy"
     },
     "puell_multiple": {
       "source": "https://charts.bgeometrics.com/files/puell_multiple_data.json + https://bitcoin-data.com/v1/puell-multiple + derived_from_bgeometrics_caps",
-      "rows": 6481,
-      "nonNullRows": 6109,
-      "latestDate": "2026-09-29",
-      "latestNonNullDate": "2026-09-29",
+      "rows": 6482,
+      "nonNullRows": 6110,
+      "latestDate": "2026-09-30",
+      "latestNonNullDate": "2026-09-30",
       "status": "healthy"
     },
     "ma200w": {
       "source": "self_computed_from_btc_price",
-      "rows": 6481,
-      "nonNullRows": 4812,
-      "latestDate": "2026-09-29",
-      "latestNonNullDate": "2026-09-29",
+      "rows": 6482,
+      "nonNullRows": 4813,
+      "latestDate": "2026-09-30",
+      "latestNonNullDate": "2026-09-30",
       "status": "healthy"
     },
     "reserve_risk": {
-      "source": "https://bitcoin-data.com/v1/reserve-risk + legacy_bridge(https://charts.bgeometrics.com/files/reserve_risk.json < 2022-09-29)",
-      "rows": 6481,
-      "nonNullRows": 5384,
-      "latestDate": "2026-09-29",
-      "latestNonNullDate": "2026-09-28",
+      "source": "https://bitcoin-data.com/v1/reserve-risk + legacy_bridge(https://charts.bgeometrics.com/files/reserve_risk.json < 2022-09-30)",
+      "rows": 6482,
+      "nonNullRows": 5385,
+      "latestDate": "2026-09-30",
+      "latestNonNullDate": "2026-09-29",
       "status": "healthy"
     }
   },
@@ -260,19 +260,19 @@
       "ma200w": 0.0,
       "realizedPrice": 1.0,
       "reserveRisk": 1.0,
-      "lthMvrv": 0.0,
-      "lthSopr": 0.0,
+      "lthMvrv": 1.0,
+      "lthSopr": 1.0,
       "mvrvZscore": 0.0,
       "nupl": 0.0,
-      "sthSopr": 0.0,
-      "sthMvrv": 0.0,
+      "sthSopr": 1.0,
+      "sthMvrv": 1.0,
       "puell": 0.0
     },
     "staleIndicators": [],
     "inactiveIndicators": [],
     "fallbackModeV6": "none",
-    "dataFreshnessScoreV6": 1.0,
-    "signalConfidenceV6": 0.3
+    "dataFreshnessScoreV6": 0.9285714285714286,
+    "signalConfidenceV6": 0.2786
   },
   "schemaContract": {
     "canonicalModel": "core8_independent_valuation",
@@ -383,17 +383,17 @@
   "strategyMnavHealth": {
     "source": "strategy_official_api",
     "formula": "enterpriseValueUsd / btcReserveUsd",
-    "latestDate": "2026-09-29",
+    "latestDate": "2026-09-30",
     "historyStartDate": "2024-12-31",
-    "historyRows": 468,
+    "historyRows": 469,
     "officialHistoryRows": 74,
     "historySource": "strategy_official_timeseries",
     "historySourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav",
-    "mnav": 1.1305,
+    "mnav": 1.1335,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
     "mstrTimestampUtc": "2026-09-29T20:00:00",
-    "btcTimestamp": "2026-09-29T22:11:00"
+    "btcTimestamp": "2026-09-30T05:27:00"
   }
 }
