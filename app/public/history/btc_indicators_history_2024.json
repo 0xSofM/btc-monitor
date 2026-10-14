@@ -14,7 +14,7 @@
     "mvrvZscore": 1.5158,
     "nupl": 0.5035,
     "sthSopr": 1.0147279951,
-    "sthSoprMa3": 1.0138538213333341,
+    "sthSoprMa3": 1.0138538213333337,
     "sthMvrv": 1.2049,
     "puellMultiple": 1.374,
     "signalPriceMa200w": false,
@@ -96,7 +96,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918702691522782,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.9061987699999999,
@@ -270,7 +270,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918848567214291,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90629531,
@@ -362,7 +362,7 @@
     "mvrvZscore": 1.4229,
     "nupl": 0.4862,
     "sthSopr": 1.0209379803,
-    "sthSoprMa3": 1.0382746962666674,
+    "sthSoprMa3": 1.0382746962666671,
     "sthMvrv": 1.1719,
     "puellMultiple": 1.745,
     "signalPriceMa200w": false,
@@ -444,7 +444,7 @@
       },
       "sthSopr": {
         "trigger": 0.9919856634685983,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90675012,
@@ -536,7 +536,7 @@
     "mvrvZscore": 1.5104,
     "nupl": 0.4978,
     "sthSopr": 1.0348462411,
-    "sthSoprMa3": 1.0449807782666674,
+    "sthSoprMa3": 1.0449807782666671,
     "sthMvrv": 1.1845,
     "puellMultiple": 1.41,
     "signalPriceMa200w": false,
@@ -618,7 +618,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90681934,
@@ -710,7 +710,7 @@
     "mvrvZscore": 1.5005,
     "nupl": 0.4971,
     "sthSopr": 1.0288138751,
-    "sthSoprMa3": 1.0281993655000008,
+    "sthSoprMa3": 1.0281993655000006,
     "sthMvrv": 1.1716,
     "puellMultiple": 1.421,
     "signalPriceMa200w": false,
@@ -792,7 +792,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -966,7 +966,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -1058,7 +1058,7 @@
     "mvrvZscore": 1.4773,
     "nupl": 0.494,
     "sthSopr": 1.0201573133,
-    "sthSoprMa3": 1.0229178810333341,
+    "sthSoprMa3": 1.022917881033334,
     "sthMvrv": 1.1651,
     "puellMultiple": 1.33,
     "signalPriceMa200w": false,
@@ -1140,7 +1140,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -1232,7 +1232,7 @@
     "mvrvZscore": 1.6882,
     "nupl": 0.5259,
     "sthSopr": 1.045908436,
-    "sthSoprMa3": 1.0286160680000007,
+    "sthSoprMa3": 1.0286160680000005,
     "sthMvrv": 1.2414,
     "puellMultiple": 1.608,
     "signalPriceMa200w": false,
@@ -1314,7 +1314,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -1406,7 +1406,7 @@
     "mvrvZscore": 1.6231,
     "nupl": 0.5161,
     "sthSopr": 1.0608482346,
-    "sthSoprMa3": 1.0423046613000009,
+    "sthSoprMa3": 1.0423046613000004,
     "sthMvrv": 1.217,
     "puellMultiple": 1.427,
     "signalPriceMa200w": false,
@@ -1488,7 +1488,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -1580,7 +1580,7 @@
     "mvrvZscore": 1.6699,
     "nupl": 0.521,
     "sthSopr": 1.033229,
-    "sthSoprMa3": 1.0466618902000009,
+    "sthSoprMa3": 1.0466618902000004,
     "sthMvrv": 1.2276,
     "puellMultiple": 1.832,
     "signalPriceMa200w": false,
@@ -1662,7 +1662,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -1754,7 +1754,7 @@
     "mvrvZscore": 1.6367,
     "nupl": 0.5168,
     "sthSopr": 1.0449019176,
-    "sthSoprMa3": 1.0463263840666674,
+    "sthSoprMa3": 1.0463263840666672,
     "sthMvrv": 1.2096,
     "puellMultiple": 1.638,
     "signalPriceMa200w": false,
@@ -1836,7 +1836,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -2010,7 +2010,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -2184,7 +2184,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -2276,7 +2276,7 @@
     "mvrvZscore": 1.3289,
     "nupl": 0.463,
     "sthSopr": 0.9866135972,
-    "sthSoprMa3": 0.9874598217000008,
+    "sthSoprMa3": 0.9874598217000007,
     "sthMvrv": 1.1049,
     "puellMultiple": 1.099,
     "signalPriceMa200w": false,
@@ -2358,7 +2358,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -2450,7 +2450,7 @@
     "mvrvZscore": 1.3715,
     "nupl": 0.4729,
     "sthSopr": 0.9913241064,
-    "sthSoprMa3": 0.9844026044333342,
+    "sthSoprMa3": 0.9844026044333339,
     "sthMvrv": 1.1128,
     "puellMultiple": 1.222,
     "signalPriceMa200w": false,
@@ -2532,7 +2532,7 @@
       },
       "sthSopr": {
         "trigger": 0.9919856634685983,
-        "deep": 0.984623295810841
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -2624,7 +2624,7 @@
     "mvrvZscore": 1.4073,
     "nupl": 0.4781,
     "sthSopr": 0.9962908142,
-    "sthSoprMa3": 0.991409505933334,
+    "sthSoprMa3": 0.9914095059333339,
     "sthMvrv": 1.1237,
     "puellMultiple": 1.168,
     "signalPriceMa200w": false,
@@ -2706,7 +2706,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918848567214291,
-        "deep": 0.9844000607293615
+        "deep": 0.9846258395148136
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -2880,7 +2880,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918702691522782,
-        "deep": 0.9844000607293615
+        "deep": 0.9846258395148136
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -2972,7 +2972,7 @@
     "mvrvZscore": 1.2728,
     "nupl": 0.4537,
     "sthSopr": 1.0659544102,
-    "sthSoprMa3": 1.0183690792666675,
+    "sthSoprMa3": 1.0183690792666673,
     "sthMvrv": 1.0755,
     "puellMultiple": 1.238,
     "signalPriceMa200w": false,
@@ -3054,7 +3054,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918702691522782,
-        "deep": 0.9844000607293615
+        "deep": 0.9846258395148136
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -3146,7 +3146,7 @@
     "mvrvZscore": 1.2947,
     "nupl": 0.4577,
     "sthSopr": 0.9891658417,
-    "sthSoprMa3": 1.0159940884333343,
+    "sthSoprMa3": 1.0159940884333338,
     "sthMvrv": 1.0826,
     "puellMultiple": 1.341,
     "signalPriceMa200w": false,
@@ -3228,7 +3228,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918702691522782,
-        "deep": 0.9844000607293615
+        "deep": 0.9846258395148136
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -3320,7 +3320,7 @@
     "mvrvZscore": 1.2983,
     "nupl": 0.4584,
     "sthSopr": 0.9975161878,
-    "sthSoprMa3": 1.0175454799000008,
+    "sthSoprMa3": 1.0175454799000005,
     "sthMvrv": 1.0845,
     "puellMultiple": 1.306,
     "signalPriceMa200w": false,
@@ -3402,7 +3402,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918702691522782,
-        "deep": 0.9844000607293615
+        "deep": 0.9846258395148136
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -3494,7 +3494,7 @@
     "mvrvZscore": 1.2887,
     "nupl": 0.4566,
     "sthSopr": 0.9990029744,
-    "sthSoprMa3": 0.995228334633334,
+    "sthSoprMa3": 0.9952283346333339,
     "sthMvrv": 1.0803,
     "puellMultiple": 1.42,
     "signalPriceMa200w": false,
@@ -3576,7 +3576,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918702691522782,
-        "deep": 0.9844000607293615
+        "deep": 0.9846258395148136
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -3668,7 +3668,7 @@
     "mvrvZscore": 1.1555,
     "nupl": 0.4288,
     "sthSopr": 0.9778307097,
-    "sthSoprMa3": 0.9914499573000007,
+    "sthSoprMa3": 0.9914499573000005,
     "sthMvrv": 1.0354,
     "puellMultiple": 1.37,
     "signalPriceMa200w": false,
@@ -3750,7 +3750,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918702691522782,
-        "deep": 0.9844000607293615
+        "deep": 0.9846258395148136
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -3842,7 +3842,7 @@
     "mvrvZscore": 1.1652,
     "nupl": 0.4337,
     "sthSopr": 0.9836031537,
-    "sthSoprMa3": 0.9868122792666673,
+    "sthSoprMa3": 0.9868122792666671,
     "sthMvrv": 1.0251,
     "puellMultiple": 1.344,
     "signalPriceMa200w": false,
@@ -3924,7 +3924,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918687416464177,
-        "deep": 0.9844000607293615
+        "deep": 0.9846258395148136
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -4016,7 +4016,7 @@
     "mvrvZscore": 1.1866,
     "nupl": 0.4353,
     "sthSopr": 0.9852377173,
-    "sthSoprMa3": 0.9822238602333341,
+    "sthSoprMa3": 0.9822238602333339,
     "sthMvrv": 1.0346,
     "puellMultiple": 1.611,
     "signalPriceMa200w": false,
@@ -4098,7 +4098,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918522588287918,
-        "deep": 0.9844000607293615
+        "deep": 0.9846258395148136
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -4190,7 +4190,7 @@
     "mvrvZscore": 1.1726,
     "nupl": 0.4331,
     "sthSopr": 1.0081961451,
-    "sthSoprMa3": 0.9923456720333341,
+    "sthSoprMa3": 0.992345672033334,
     "sthMvrv": 1.0342,
     "puellMultiple": 1.417,
     "signalPriceMa200w": false,
@@ -4272,7 +4272,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -4446,7 +4446,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -4538,7 +4538,7 @@
     "mvrvZscore": 1.3196,
     "nupl": 0.4616,
     "sthSopr": 1.0212107208,
-    "sthSoprMa3": 1.0141523852333343,
+    "sthSoprMa3": 1.014152385233334,
     "sthMvrv": 1.0863,
     "puellMultiple": 1.49,
     "signalPriceMa200w": false,
@@ -4620,7 +4620,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -4794,7 +4794,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -4968,7 +4968,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -5142,7 +5142,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -5234,7 +5234,7 @@
     "mvrvZscore": 1.3417,
     "nupl": 0.4642,
     "sthSopr": 1.0380169117,
-    "sthSoprMa3": 1.035138838933334,
+    "sthSoprMa3": 1.0351388389333338,
     "sthMvrv": 1.086,
     "puellMultiple": 1.449,
     "signalPriceMa200w": false,
@@ -5316,7 +5316,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -5408,7 +5408,7 @@
     "mvrvZscore": 1.3696,
     "nupl": 0.4706,
     "sthSopr": 0.9931529373,
-    "sthSoprMa3": 1.0245227137333341,
+    "sthSoprMa3": 1.024522713733334,
     "sthMvrv": 1.0909,
     "puellMultiple": 1.781,
     "signalPriceMa200w": false,
@@ -5490,7 +5490,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -5664,7 +5664,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -5756,7 +5756,7 @@
     "mvrvZscore": 1.3649,
     "nupl": 0.4693,
     "sthSopr": 1.0085813089,
-    "sthSoprMa3": 1.0044390997666675,
+    "sthSoprMa3": 1.0044390997666672,
     "sthMvrv": 1.0915,
     "puellMultiple": 1.443,
     "signalPriceMa200w": false,
@@ -5838,7 +5838,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -6012,7 +6012,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -6104,7 +6104,7 @@
     "mvrvZscore": 1.3382,
     "nupl": 0.4645,
     "sthSopr": 1.0016566187,
-    "sthSoprMa3": 1.0042175708666674,
+    "sthSoprMa3": 1.0042175708666672,
     "sthMvrv": 1.0756,
     "puellMultiple": 1.595,
     "signalPriceMa200w": false,
@@ -6186,7 +6186,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -6360,7 +6360,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -6534,7 +6534,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -6708,7 +6708,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -6800,7 +6800,7 @@
     "mvrvZscore": 1.6355,
     "nupl": 0.513,
     "sthSopr": 1.063758241,
-    "sthSoprMa3": 1.043863162133334,
+    "sthSoprMa3": 1.0438631621333336,
     "sthMvrv": 1.179,
     "puellMultiple": 1.567,
     "signalPriceMa200w": false,
@@ -6882,7 +6882,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -7056,7 +7056,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -7230,7 +7230,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -7404,7 +7404,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -7578,7 +7578,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -7752,7 +7752,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -7844,7 +7844,7 @@
     "mvrvZscore": 1.9297,
     "nupl": 0.5519,
     "sthSopr": 1.0591390004,
-    "sthSoprMa3": 1.0706698409666675,
+    "sthSoprMa3": 1.0706698409666673,
     "sthMvrv": 1.2462,
     "puellMultiple": 1.488,
     "signalPriceMa200w": false,
@@ -7926,7 +7926,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -8018,7 +8018,7 @@
     "mvrvZscore": 1.9405,
     "nupl": 0.5531,
     "sthSopr": 1.0364931788,
-    "sthSoprMa3": 1.0637784370666674,
+    "sthSoprMa3": 1.0637784370666672,
     "sthMvrv": 1.2494,
     "puellMultiple": 1.646,
     "signalPriceMa200w": false,
@@ -8100,7 +8100,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -8192,7 +8192,7 @@
     "mvrvZscore": 1.9056,
     "nupl": 0.5484,
     "sthSopr": 1.0294858482,
-    "sthSoprMa3": 1.0417060091333343,
+    "sthSoprMa3": 1.0417060091333339,
     "sthMvrv": 1.2371,
     "puellMultiple": 1.338,
     "signalPriceMa200w": false,
@@ -8274,7 +8274,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -8366,7 +8366,7 @@
     "mvrvZscore": 1.9347,
     "nupl": 0.5523,
     "sthSopr": 1.0406470117,
-    "sthSoprMa3": 1.0355420129000008,
+    "sthSoprMa3": 1.0355420129000006,
     "sthMvrv": 1.2469,
     "puellMultiple": 1.492,
     "signalPriceMa200w": false,
@@ -8448,7 +8448,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -8540,7 +8540,7 @@
     "mvrvZscore": 1.9055,
     "nupl": 0.5476,
     "sthSopr": 1.0552172209,
-    "sthSoprMa3": 1.0417833602666675,
+    "sthSoprMa3": 1.041783360266667,
     "sthMvrv": 1.2351,
     "puellMultiple": 1.558,
     "signalPriceMa200w": false,
@@ -8622,7 +8622,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -8796,7 +8796,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -8888,7 +8888,7 @@
     "mvrvZscore": 1.8947,
     "nupl": 0.5471,
     "sthSopr": 1.0444797928,
-    "sthSoprMa3": 1.0422733906333341,
+    "sthSoprMa3": 1.0422733906333337,
     "sthMvrv": 1.2155,
     "puellMultiple": 1.457,
     "signalPriceMa200w": false,
@@ -8970,7 +8970,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -9144,7 +9144,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -9236,7 +9236,7 @@
     "mvrvZscore": 1.8227,
     "nupl": 0.5354,
     "sthSopr": 1.0240879909,
-    "sthSoprMa3": 1.0381169269666675,
+    "sthSoprMa3": 1.0381169269666672,
     "sthMvrv": 1.1897,
     "puellMultiple": 1.481,
     "signalPriceMa200w": false,
@@ -9318,7 +9318,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -9492,7 +9492,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -9584,7 +9584,7 @@
     "mvrvZscore": 1.8825,
     "nupl": 0.5438,
     "sthSopr": 1.02915305,
-    "sthSoprMa3": 1.023086034133334,
+    "sthSoprMa3": 1.0230860341333339,
     "sthMvrv": 1.2072,
     "puellMultiple": 1.512,
     "signalPriceMa200w": false,
@@ -9666,7 +9666,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -9840,7 +9840,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -9932,7 +9932,7 @@
     "mvrvZscore": 2.2208,
     "nupl": 0.5833,
     "sthSopr": 1.1264769204,
-    "sthSoprMa3": 1.0683759955666676,
+    "sthSoprMa3": 1.0683759955666672,
     "sthMvrv": 1.2987,
     "puellMultiple": 1.928,
     "signalPriceMa200w": false,
@@ -10014,7 +10014,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918290473648367,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -10188,7 +10188,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918522588287918,
-        "deep": 0.9843290603211099
+        "deep": 0.9844000607293613
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -10280,7 +10280,7 @@
     "mvrvZscore": 2.4735,
     "nupl": 0.6036,
     "sthSopr": 1.1147772312,
-    "sthSoprMa3": 1.1508238009666674,
+    "sthSoprMa3": 1.1508238009666671,
     "sthMvrv": 1.3368,
     "puellMultiple": 1.983,
     "signalPriceMa200w": false,
@@ -10362,7 +10362,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918687416464177,
-        "deep": 0.9844000607293615
+        "deep": 0.9846258395148136
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -10454,7 +10454,7 @@
     "mvrvZscore": 2.5348,
     "nupl": 0.6088,
     "sthSopr": 1.0856495703,
-    "sthSoprMa3": 1.1372146842666675,
+    "sthSoprMa3": 1.1372146842666673,
     "sthMvrv": 1.3479,
     "puellMultiple": 1.619,
     "signalPriceMa200w": false,
@@ -10536,7 +10536,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918702691522782,
-        "deep": 0.9846258395148137
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -10628,7 +10628,7 @@
     "mvrvZscore": 2.499,
     "nupl": 0.6059,
     "sthSopr": 1.0443420502,
-    "sthSoprMa3": 1.0815896172333341,
+    "sthSoprMa3": 1.081589617233334,
     "sthMvrv": 1.327,
     "puellMultiple": 1.999,
     "signalPriceMa200w": false,
@@ -10710,7 +10710,7 @@
       },
       "sthSopr": {
         "trigger": 0.9918848567214291,
-        "deep": 0.9846258395148137
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -10802,7 +10802,7 @@
     "mvrvZscore": 2.5564,
     "nupl": 0.6123,
     "sthSopr": 1.0538911726,
-    "sthSoprMa3": 1.0612942643666674,
+    "sthSoprMa3": 1.0612942643666672,
     "sthMvrv": 1.3457,
     "puellMultiple": 1.793,
     "signalPriceMa200w": false,
@@ -10884,7 +10884,7 @@
       },
       "sthSopr": {
         "trigger": 0.9919856634685983,
-        "deep": 0.9846258395148137
+        "deep": 0.9846877136013986
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -11058,7 +11058,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920265687003209,
-        "deep": 0.9846877136013986
+        "deep": 0.9847618709044504
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -11232,7 +11232,7 @@
       },
       "sthSopr": {
         "trigger": 0.9920693633226292,
-        "deep": 0.9846877136013986
+        "deep": 0.9847618709044504
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -11406,7 +11406,7 @@
       },
       "sthSopr": {
         "trigger": 0.992087519612808,
-        "deep": 0.9846877136013986
+        "deep": 0.9847618709044504
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -11580,7 +11580,7 @@
       },
       "sthSopr": {
         "trigger": 0.992087519612808,
-        "deep": 0.9846877136013986
+        "deep": 0.9847618709044504
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -11754,7 +11754,7 @@
       },
       "sthSopr": {
         "trigger": 0.992087519612808,
-        "deep": 0.9846877136013986
+        "deep": 0.9847618709044504
       },
       "sthMvrv": {
         "trigger": 0.90708054,
@@ -11928,7 +11928,7 @@
       },
       "sthSopr": {
         "trigger": 0.9921373087321587,
-        "deep": 0.9847599204259951
+        "deep": 0.984823966362981
       },
       "sthMvrv": {
         "trigger": 0.9071,
@@ -12102,7 +12102,7 @@
       },
       "sthSopr": {
         "trigger": 0.9921507872052645,
-        "deep": 0.984823966362981
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9071,
@@ -12276,7 +12276,7 @@
       },
       "sthSopr": {
         "trigger": 0.9921524344714723,
-        "deep": 0.9848540600137266
+        "deep": 0.9848627420081149
       },
       "sthMvrv": {
         "trigger": 0.9071,
@@ -12450,7 +12450,7 @@
       },
       "sthSopr": {
         "trigger": 0.9921950034400491,
-        "deep": 0.9848627420081149
+        "deep": 0.985011639558732
       },
       "sthMvrv": {
         "trigger": 0.90742922,
@@ -12623,8 +12623,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.9850116395587322
+        "trigger": 0.9921983220606737,
+        "deep": 0.9850483344638388
       },
       "sthMvrv": {
         "trigger": 0.90786878,
@@ -12716,7 +12716,7 @@
     "mvrvZscore": 2.9348,
     "nupl": 0.6263,
     "sthSopr": 1.0380541596,
-    "sthSoprMa3": 1.1470802114000007,
+    "sthSoprMa3": 1.1470802114000005,
     "sthMvrv": 1.3471,
     "puellMultiple": 1.723,
     "signalPriceMa200w": false,
@@ -12798,7 +12798,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922406256442657,
-        "deep": 0.9850483344638388
+        "deep": 0.9850697132278924
       },
       "sthMvrv": {
         "trigger": 0.9079,
@@ -12890,7 +12890,7 @@
     "mvrvZscore": 2.7909,
     "nupl": 0.6156,
     "sthSopr": 1.0064898873,
-    "sthSoprMa3": 1.1170103253666674,
+    "sthSoprMa3": 1.1170103253666672,
     "sthMvrv": 1.2953,
     "puellMultiple": 1.836,
     "signalPriceMa200w": false,
@@ -12972,7 +12972,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922580559322302,
-        "deep": 0.9850697132278924
+        "deep": 0.9850853338334697
       },
       "sthMvrv": {
         "trigger": 0.90804601,
@@ -13064,7 +13064,7 @@
     "mvrvZscore": 2.5262,
     "nupl": 0.5903,
     "sthSopr": 1.0248295378,
-    "sthSoprMa3": 1.0231245282333343,
+    "sthSoprMa3": 1.0231245282333339,
     "sthMvrv": 1.2432,
     "puellMultiple": 1.937,
     "signalPriceMa200w": false,
@@ -13146,7 +13146,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922874558366159,
-        "deep": 0.9850853338334697
+        "deep": 0.9852427530213795
       },
       "sthMvrv": {
         "trigger": 0.90818999,
@@ -13319,8 +13319,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.90821023,
@@ -13493,8 +13493,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9923419633400008,
-        "deep": 0.9853394507549316
+        "trigger": 0.9923419633400007,
+        "deep": 0.9853750684814329
       },
       "sthMvrv": {
         "trigger": 0.90834771,
@@ -13586,7 +13586,7 @@
     "mvrvZscore": 2.286,
     "nupl": 0.5664,
     "sthSopr": 0.9741558322,
-    "sthSoprMa3": 0.9976477219666675,
+    "sthSoprMa3": 0.9976477219666672,
     "sthMvrv": 1.1653,
     "puellMultiple": 1.946,
     "signalPriceMa200w": false,
@@ -13668,7 +13668,7 @@
       },
       "sthSopr": {
         "trigger": 0.9923585343610934,
-        "deep": 0.9853750684814329
+        "deep": 0.9853926769222696
       },
       "sthMvrv": {
         "trigger": 0.90849006,
@@ -13760,7 +13760,7 @@
     "mvrvZscore": 2.6601,
     "nupl": 0.6038,
     "sthSopr": 0.9942444794,
-    "sthSoprMa3": 0.9987204336000007,
+    "sthSoprMa3": 0.9987204336000005,
     "sthMvrv": 1.2517,
     "puellMultiple": 1.509,
     "signalPriceMa200w": false,
@@ -13842,7 +13842,7 @@
       },
       "sthSopr": {
         "trigger": 0.9924791357356261,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.90887851,
@@ -13934,7 +13934,7 @@
     "mvrvZscore": 2.4989,
     "nupl": 0.5885,
     "sthSopr": 1.0419531789,
-    "sthSoprMa3": 1.0034511635000007,
+    "sthSoprMa3": 1.0034511635000005,
     "sthMvrv": 1.2082,
     "puellMultiple": 1.644,
     "signalPriceMa200w": false,
@@ -14016,7 +14016,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925238231410126,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.90908463,
@@ -14108,7 +14108,7 @@
     "mvrvZscore": 2.3649,
     "nupl": 0.5766,
     "sthSopr": 1.0028151269,
-    "sthSoprMa3": 1.0130042617333341,
+    "sthSoprMa3": 1.013004261733334,
     "sthMvrv": 1.1637,
     "puellMultiple": 1.92,
     "signalPriceMa200w": false,
@@ -14190,7 +14190,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925368623448428,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.90930353,
@@ -14364,7 +14364,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925368623448428,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -14538,7 +14538,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925368623448428,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.90964321,
@@ -14712,7 +14712,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925368623448428,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91016199,
@@ -14804,7 +14804,7 @@
     "mvrvZscore": 2.7363,
     "nupl": 0.605,
     "sthSopr": 1.0130413851,
-    "sthSoprMa3": 1.0416830082333342,
+    "sthSoprMa3": 1.041683008233334,
     "sthMvrv": 1.2736,
     "puellMultiple": 1.78,
     "signalPriceMa200w": false,
@@ -14886,7 +14886,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925368623448428,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.9105719999999999,
@@ -14978,7 +14978,7 @@
     "mvrvZscore": 2.6784,
     "nupl": 0.6013,
     "sthSopr": 1.0282261952,
-    "sthSoprMa3": 1.0448519780000007,
+    "sthSoprMa3": 1.0448519780000005,
     "sthMvrv": 1.2559,
     "puellMultiple": 2.027,
     "signalPriceMa200w": false,
@@ -15060,7 +15060,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925368623448428,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91085296,
@@ -15152,7 +15152,7 @@
     "mvrvZscore": 2.7673,
     "nupl": 0.6072,
     "sthSopr": 1.0502206863,
-    "sthSoprMa3": 1.0304960888666674,
+    "sthSoprMa3": 1.0304960888666672,
     "sthMvrv": 1.2742,
     "puellMultiple": 1.89,
     "signalPriceMa200w": false,
@@ -15234,7 +15234,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925368623448428,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.9109910400000001,
@@ -15326,7 +15326,7 @@
     "mvrvZscore": 2.7031,
     "nupl": 0.6016,
     "sthSopr": 1.0185906472,
-    "sthSoprMa3": 1.0323458429000008,
+    "sthSoprMa3": 1.0323458429000005,
     "sthMvrv": 1.2531,
     "puellMultiple": 2.02,
     "signalPriceMa200w": false,
@@ -15407,8 +15407,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9925418560213393,
-        "deep": 0.9854242629788564
+        "trigger": 0.992541856021339,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.911558,
@@ -15582,7 +15582,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854337319003481
+        "deep": 0.9854648133059905
       },
       "sthMvrv": {
         "trigger": 0.91246955,
@@ -15674,7 +15674,7 @@
     "mvrvZscore": 2.7769,
     "nupl": 0.609,
     "sthSopr": 1.0195121381,
-    "sthSoprMa3": 1.0216577577666675,
+    "sthSoprMa3": 1.0216577577666672,
     "sthMvrv": 1.2634,
     "puellMultiple": 1.946,
     "signalPriceMa200w": false,
@@ -15755,8 +15755,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854648133059907
+        "trigger": 0.9926757654807488,
+        "deep": 0.985504497531341
       },
       "sthMvrv": {
         "trigger": 0.9125443000000001,
@@ -15930,7 +15930,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926779157973804,
-        "deep": 0.985504497531341
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91306115,
@@ -16022,7 +16022,7 @@
     "mvrvZscore": 2.3906,
     "nupl": 0.5707,
     "sthSopr": 0.984053928,
-    "sthSoprMa3": 0.9964247439000008,
+    "sthSoprMa3": 0.9964247439000005,
     "sthMvrv": 1.1648,
     "puellMultiple": 1.736,
     "signalPriceMa200w": false,
@@ -16103,8 +16103,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926899356892658,
-        "deep": 0.9855081144536738
+        "trigger": 0.9926899356892656,
+        "deep": 0.9855210662314984
       },
       "sthMvrv": {
         "trigger": 0.91318184,
@@ -16196,7 +16196,7 @@
     "mvrvZscore": 2.4234,
     "nupl": 0.5734,
     "sthSopr": 1.010111824,
-    "sthSoprMa3": 0.9932913058666674,
+    "sthSoprMa3": 0.9932913058666673,
     "sthMvrv": 1.1666,
     "puellMultiple": 1.741,
     "signalPriceMa200w": false,
@@ -16278,7 +16278,7 @@
       },
       "sthSopr": {
         "trigger": 0.9927906156462178,
-        "deep": 0.9855210662314984
+        "deep": 0.9855431686961413
       },
       "sthMvrv": {
         "trigger": 0.91319916,
@@ -16370,7 +16370,7 @@
     "mvrvZscore": 2.5656,
     "nupl": 0.5887,
     "sthSopr": 1.0124163217,
-    "sthSoprMa3": 1.0021940245666674,
+    "sthSoprMa3": 1.0021940245666672,
     "sthMvrv": 1.1968,
     "puellMultiple": 1.848,
     "signalPriceMa200w": false,
@@ -16452,7 +16452,7 @@
       },
       "sthSopr": {
         "trigger": 0.992822349224776,
-        "deep": 0.9855210662314984
+        "deep": 0.9855431686961413
       },
       "sthMvrv": {
         "trigger": 0.91384449,
@@ -16626,7 +16626,7 @@
       },
       "sthSopr": {
         "trigger": 0.992822349224776,
-        "deep": 0.9855210662314984
+        "deep": 0.9855431686961413
       },
       "sthMvrv": {
         "trigger": 0.91389951,
@@ -16718,7 +16718,7 @@
     "mvrvZscore": 2.6003,
     "nupl": 0.5902,
     "sthSopr": 1.0358879944,
-    "sthSoprMa3": 1.0202122834333343,
+    "sthSoprMa3": 1.0202122834333338,
     "sthMvrv": 1.2022,
     "puellMultiple": 2.153,
     "signalPriceMa200w": false,
@@ -16800,7 +16800,7 @@
       },
       "sthSopr": {
         "trigger": 0.992822349224776,
-        "deep": 0.9855210662314984
+        "deep": 0.9855431686961413
       },
       "sthMvrv": {
         "trigger": 0.91389951,
@@ -16974,7 +16974,7 @@
       },
       "sthSopr": {
         "trigger": 0.992822349224776,
-        "deep": 0.9855210662314984
+        "deep": 0.9855431686961413
       },
       "sthMvrv": {
         "trigger": 0.91389951,
@@ -17148,7 +17148,7 @@
       },
       "sthSopr": {
         "trigger": 0.992822349224776,
-        "deep": 0.9855210662314984
+        "deep": 0.9855431686961413
       },
       "sthMvrv": {
         "trigger": 0.91389951,
@@ -17240,7 +17240,7 @@
     "mvrvZscore": 2.5798,
     "nupl": 0.5899,
     "sthSopr": 1.0227488431,
-    "sthSoprMa3": 1.0366475947666676,
+    "sthSoprMa3": 1.0366475947666671,
     "sthMvrv": 1.2092,
     "puellMultiple": 1.926,
     "signalPriceMa200w": false,
@@ -17322,7 +17322,7 @@
       },
       "sthSopr": {
         "trigger": 0.992822349224776,
-        "deep": 0.9855210662314984
+        "deep": 0.9855431686961413
       },
       "sthMvrv": {
         "trigger": 0.91389951,
@@ -17414,7 +17414,7 @@
     "mvrvZscore": 2.6694,
     "nupl": 0.5984,
     "sthSopr": 1.0098074031,
-    "sthSoprMa3": 1.0306643907666675,
+    "sthSoprMa3": 1.0306643907666673,
     "sthMvrv": 1.2208,
     "puellMultiple": 1.668,
     "signalPriceMa200w": false,
@@ -17496,7 +17496,7 @@
       },
       "sthSopr": {
         "trigger": 0.992822349224776,
-        "deep": 0.9855210662314984
+        "deep": 0.9855431686961413
       },
       "sthMvrv": {
         "trigger": 0.914365,
@@ -17670,7 +17670,7 @@
       },
       "sthSopr": {
         "trigger": 0.9928559222984464,
-        "deep": 0.9855431686961413
+        "deep": 0.9855648031995038
       },
       "sthMvrv": {
         "trigger": 0.914365,
@@ -17762,7 +17762,7 @@
     "mvrvZscore": 2.4408,
     "nupl": 0.5764,
     "sthSopr": 1.0242156457,
-    "sthSoprMa3": 1.0202717475666674,
+    "sthSoprMa3": 1.0202717475666672,
     "sthMvrv": 1.1653,
     "puellMultiple": 1.899,
     "signalPriceMa200w": false,
@@ -17844,7 +17844,7 @@
       },
       "sthSopr": {
         "trigger": 0.9928798184541214,
-        "deep": 0.9855567630676165
+        "deep": 0.9855810554976061
       },
       "sthMvrv": {
         "trigger": 0.914365,
@@ -17936,7 +17936,7 @@
     "mvrvZscore": 2.2779,
     "nupl": 0.5557,
     "sthSopr": 0.9643642517,
-    "sthSoprMa3": 1.0051240304333342,
+    "sthSoprMa3": 1.0051240304333338,
     "sthMvrv": 1.0958,
     "puellMultiple": 1.844,
     "signalPriceMa200w": false,
@@ -18018,7 +18018,7 @@
       },
       "sthSopr": {
         "trigger": 0.9928990648306635,
-        "deep": 0.9855652677985547
+        "deep": 0.98566314539745
       },
       "sthMvrv": {
         "trigger": 0.914365,
@@ -18110,7 +18110,7 @@
     "mvrvZscore": 2.3435,
     "nupl": 0.5675,
     "sthSopr": 0.9692996048,
-    "sthSoprMa3": 0.9859598340666674,
+    "sthSoprMa3": 0.9859598340666672,
     "sthMvrv": 1.1082,
     "puellMultiple": 1.595,
     "signalPriceMa200w": false,
@@ -18191,8 +18191,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.992914536096836,
-        "deep": 0.9855652677985547
+        "trigger": 0.9929145360968358,
+        "deep": 0.98566314539745
       },
       "sthMvrv": {
         "trigger": 0.914365,
@@ -18284,7 +18284,7 @@
     "mvrvZscore": 2.1992,
     "nupl": 0.5516,
     "sthSopr": 0.9970994925,
-    "sthSoprMa3": 0.976921116333334,
+    "sthSoprMa3": 0.9769211163333339,
     "sthMvrv": 1.1006,
     "puellMultiple": 1.872,
     "signalPriceMa200w": false,
@@ -18365,8 +18365,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.992914536096836,
-        "deep": 0.9855652677985547
+        "trigger": 0.9929145360968358,
+        "deep": 0.98566314539745
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -18540,7 +18540,7 @@
       },
       "sthSopr": {
         "trigger": 0.9928990648306635,
-        "deep": 0.9855567630676165
+        "deep": 0.9855810554976061
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -18632,7 +18632,7 @@
     "mvrvZscore": 2.0634,
     "nupl": 0.5354,
     "sthSopr": 0.9659699549,
-    "sthSoprMa3": 0.9785853807666675,
+    "sthSoprMa3": 0.9785853807666672,
     "sthMvrv": 1.0667,
     "puellMultiple": 1.631,
     "signalPriceMa200w": false,
@@ -18714,7 +18714,7 @@
       },
       "sthSopr": {
         "trigger": 0.9928798184541214,
-        "deep": 0.9855431686961413
+        "deep": 0.9855648031995038
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -18806,7 +18806,7 @@
     "mvrvZscore": 2.1963,
     "nupl": 0.5512,
     "sthSopr": 0.9727133194,
-    "sthSoprMa3": 0.9704566564000009,
+    "sthSoprMa3": 0.9704566564000007,
     "sthMvrv": 1.1039,
     "puellMultiple": 1.678,
     "signalPriceMa200w": false,
@@ -18888,7 +18888,7 @@
       },
       "sthSopr": {
         "trigger": 0.9928559222984464,
-        "deep": 0.9855210662314984
+        "deep": 0.9855431686961413
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -18980,7 +18980,7 @@
     "mvrvZscore": 2.2076,
     "nupl": 0.553,
     "sthSopr": 1.0001420633,
-    "sthSoprMa3": 0.9796084458666674,
+    "sthSoprMa3": 0.9796084458666673,
     "sthMvrv": 1.1185,
     "puellMultiple": 0.745,
     "signalPriceMa200w": false,
@@ -19062,7 +19062,7 @@
       },
       "sthSopr": {
         "trigger": 0.992822349224776,
-        "deep": 0.9855081144536738
+        "deep": 0.9855210662314984
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -19236,7 +19236,7 @@
       },
       "sthSopr": {
         "trigger": 0.9927906156462178,
-        "deep": 0.985504497531341
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -19410,7 +19410,7 @@
       },
       "sthSopr": {
         "trigger": 0.9927906156462178,
-        "deep": 0.985504497531341
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -19584,7 +19584,7 @@
       },
       "sthSopr": {
         "trigger": 0.9927906156462178,
-        "deep": 0.985504497531341
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -19676,7 +19676,7 @@
     "mvrvZscore": 2.3577,
     "nupl": 0.5694,
     "sthSopr": 1.0015710434,
-    "sthSoprMa3": 1.0149899733666674,
+    "sthSoprMa3": 1.0149899733666672,
     "sthMvrv": 1.1397,
     "puellMultiple": 0.877,
     "signalPriceMa200w": false,
@@ -19758,7 +19758,7 @@
       },
       "sthSopr": {
         "trigger": 0.9927906156462178,
-        "deep": 0.985504497531341
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -19850,7 +19850,7 @@
     "mvrvZscore": 2.2105,
     "nupl": 0.5527,
     "sthSopr": 1.0227852611,
-    "sthSoprMa3": 1.0150930098000008,
+    "sthSoprMa3": 1.0150930098000004,
     "sthMvrv": 1.1028,
     "puellMultiple": 0.813,
     "signalPriceMa200w": false,
@@ -19932,7 +19932,7 @@
       },
       "sthSopr": {
         "trigger": 0.9927906156462178,
-        "deep": 0.985504497531341
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -20024,7 +20024,7 @@
     "mvrvZscore": 2.2277,
     "nupl": 0.5542,
     "sthSopr": 0.9885043269,
-    "sthSoprMa3": 1.004286877133334,
+    "sthSoprMa3": 1.0042868771333338,
     "sthMvrv": 1.1072,
     "puellMultiple": 0.747,
     "signalPriceMa200w": false,
@@ -20106,7 +20106,7 @@
       },
       "sthSopr": {
         "trigger": 0.9927906156462178,
-        "deep": 0.985504497531341
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -20198,7 +20198,7 @@
     "mvrvZscore": 2.1792,
     "nupl": 0.549,
     "sthSopr": 0.9898258216,
-    "sthSoprMa3": 1.0003718032000009,
+    "sthSoprMa3": 1.0003718032000004,
     "sthMvrv": 1.0965,
     "puellMultiple": 0.782,
     "signalPriceMa200w": false,
@@ -20280,7 +20280,7 @@
       },
       "sthSopr": {
         "trigger": 0.9927906156462178,
-        "deep": 0.985504497531341
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -20372,7 +20372,7 @@
     "mvrvZscore": 2.1546,
     "nupl": 0.5467,
     "sthSopr": 0.9908142537,
-    "sthSoprMa3": 0.9897148007333341,
+    "sthSoprMa3": 0.9897148007333337,
     "sthMvrv": 1.0828,
     "puellMultiple": 0.776,
     "signalPriceMa200w": false,
@@ -20454,7 +20454,7 @@
       },
       "sthSopr": {
         "trigger": 0.9927906156462178,
-        "deep": 0.985504497531341
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -20627,8 +20627,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926899356892658,
-        "deep": 0.985504497531341
+        "trigger": 0.9926899356892656,
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -20801,8 +20801,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926899356892658,
-        "deep": 0.985504497531341
+        "trigger": 0.9926899356892656,
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -20894,7 +20894,7 @@
     "mvrvZscore": 1.972,
     "nupl": 0.5247,
     "sthSopr": 0.9948775263,
-    "sthSoprMa3": 0.997942992833334,
+    "sthSoprMa3": 0.9979429928333339,
     "sthMvrv": 1.0265,
     "puellMultiple": 0.676,
     "signalPriceMa200w": false,
@@ -20975,8 +20975,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926899356892658,
-        "deep": 0.985504497531341
+        "trigger": 0.9926899356892656,
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -21149,8 +21149,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926899356892658,
-        "deep": 0.985504497531341
+        "trigger": 0.9926899356892656,
+        "deep": 0.9855081144536738
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -21242,7 +21242,7 @@
     "mvrvZscore": 1.88,
     "nupl": 0.5127,
     "sthSopr": 0.9682133377,
-    "sthSoprMa3": 0.964843609433334,
+    "sthSoprMa3": 0.9648436094333338,
     "sthMvrv": 1.0098,
     "puellMultiple": 0.716,
     "signalPriceMa200w": false,
@@ -21324,7 +21324,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926779157973804,
-        "deep": 0.9854648133059907
+        "deep": 0.985504497531341
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -21497,8 +21497,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854337319003481
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854648133059905
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -21590,7 +21590,7 @@
     "mvrvZscore": 2.1652,
     "nupl": 0.549,
     "sthSopr": 1.0304669516,
-    "sthSoprMa3": 0.999238658433334,
+    "sthSoprMa3": 0.9992386584333338,
     "sthMvrv": 1.0884,
     "puellMultiple": 0.784,
     "signalPriceMa200w": false,
@@ -21672,7 +21672,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -21846,7 +21846,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -22020,7 +22020,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -22112,7 +22112,7 @@
     "mvrvZscore": 2.0659,
     "nupl": 0.5367,
     "sthSopr": 1.0071447774,
-    "sthSoprMa3": 1.0126474378000008,
+    "sthSoprMa3": 1.0126474378000003,
     "sthMvrv": 1.0722,
     "puellMultiple": 0.683,
     "signalPriceMa200w": false,
@@ -22194,7 +22194,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -22286,7 +22286,7 @@
     "mvrvZscore": 1.9819,
     "nupl": 0.5278,
     "sthSopr": 1.0289636216,
-    "sthSoprMa3": 1.0193721342000008,
+    "sthSoprMa3": 1.0193721342000004,
     "sthMvrv": 1.0437,
     "puellMultiple": 0.804,
     "signalPriceMa200w": false,
@@ -22368,7 +22368,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -22460,7 +22460,7 @@
     "mvrvZscore": 2.0971,
     "nupl": 0.5418,
     "sthSopr": 1.0027877093,
-    "sthSoprMa3": 1.012965369433334,
+    "sthSoprMa3": 1.0129653694333338,
     "sthMvrv": 1.0603,
     "puellMultiple": 0.777,
     "signalPriceMa200w": false,
@@ -22542,7 +22542,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -22716,7 +22716,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -22808,7 +22808,7 @@
     "mvrvZscore": 1.9608,
     "nupl": 0.5245,
     "sthSopr": 0.9901484267,
-    "sthSoprMa3": 0.994953896233334,
+    "sthSoprMa3": 0.9949538962333339,
     "sthMvrv": 1.0319,
     "puellMultiple": 0.714,
     "signalPriceMa200w": false,
@@ -22890,7 +22890,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -22982,7 +22982,7 @@
     "mvrvZscore": 1.9944,
     "nupl": 0.5293,
     "sthSopr": 0.999541314,
-    "sthSoprMa3": 0.9938717644666674,
+    "sthSoprMa3": 0.9938717644666673,
     "sthMvrv": 1.0361,
     "puellMultiple": 0.813,
     "signalPriceMa200w": false,
@@ -23064,7 +23064,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -23156,7 +23156,7 @@
     "mvrvZscore": 2.0806,
     "nupl": 0.5401,
     "sthSopr": 1.0097613126,
-    "sthSoprMa3": 0.9998170177666673,
+    "sthSoprMa3": 0.9998170177666671,
     "sthMvrv": 1.0626,
     "puellMultiple": 0.737,
     "signalPriceMa200w": false,
@@ -23238,7 +23238,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -23330,7 +23330,7 @@
     "mvrvZscore": 1.9964,
     "nupl": 0.5296,
     "sthSopr": 1.0027386164,
-    "sthSoprMa3": 1.0040137476666675,
+    "sthSoprMa3": 1.004013747666667,
     "sthMvrv": 1.04,
     "puellMultiple": 0.822,
     "signalPriceMa200w": false,
@@ -23412,7 +23412,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -23586,7 +23586,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -23760,7 +23760,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -23934,7 +23934,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -24026,7 +24026,7 @@
     "mvrvZscore": 2.308,
     "nupl": 0.5646,
     "sthSopr": 1.0158864512,
-    "sthSoprMa3": 1.0269722729333342,
+    "sthSoprMa3": 1.0269722729333337,
     "sthMvrv": 1.1155,
     "puellMultiple": 0.896,
     "signalPriceMa200w": false,
@@ -24108,7 +24108,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -24282,7 +24282,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -24456,7 +24456,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -24548,7 +24548,7 @@
     "mvrvZscore": 2.4885,
     "nupl": 0.5826,
     "sthSopr": 1.0715593985,
-    "sthSoprMa3": 1.0407652167666672,
+    "sthSoprMa3": 1.040765216766667,
     "sthMvrv": 1.1509,
     "puellMultiple": 0.927,
     "signalPriceMa200w": false,
@@ -24630,7 +24630,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -24804,7 +24804,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -24896,7 +24896,7 @@
     "mvrvZscore": 2.3298,
     "nupl": 0.568,
     "sthSopr": 1.0105458117,
-    "sthSoprMa3": 1.035879735833334,
+    "sthSoprMa3": 1.0358797358333336,
     "sthMvrv": 1.1182,
     "puellMultiple": 0.961,
     "signalPriceMa200w": false,
@@ -24978,7 +24978,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -25152,7 +25152,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -25244,7 +25244,7 @@
     "mvrvZscore": 2.4145,
     "nupl": 0.5758,
     "sthSopr": 1.0175991215,
-    "sthSoprMa3": 1.011314058033334,
+    "sthSoprMa3": 1.0113140580333337,
     "sthMvrv": 1.1361,
     "puellMultiple": 1.005,
     "signalPriceMa200w": false,
@@ -25326,7 +25326,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -25500,7 +25500,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -25592,7 +25592,7 @@
     "mvrvZscore": 2.4096,
     "nupl": 0.5757,
     "sthSopr": 1.0240291779,
-    "sthSoprMa3": 1.0156881628666674,
+    "sthSoprMa3": 1.015688162866667,
     "sthMvrv": 1.1448,
     "puellMultiple": 0.8,
     "signalPriceMa200w": false,
@@ -25673,8 +25673,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -25766,7 +25766,7 @@
     "mvrvZscore": 2.3156,
     "nupl": 0.5618,
     "sthSopr": 1.0187140918,
-    "sthSoprMa3": 1.016059819633334,
+    "sthSoprMa3": 1.0160598196333337,
     "sthMvrv": 1.1162,
     "puellMultiple": 0.809,
     "signalPriceMa200w": false,
@@ -25847,8 +25847,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -25940,7 +25940,7 @@
     "mvrvZscore": 2.2665,
     "nupl": 0.5564,
     "sthSopr": 1.0045130895,
-    "sthSoprMa3": 1.015752119733334,
+    "sthSoprMa3": 1.0157521197333337,
     "sthMvrv": 1.1041,
     "puellMultiple": 0.735,
     "signalPriceMa200w": false,
@@ -26021,8 +26021,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -26114,7 +26114,7 @@
     "mvrvZscore": 2.3107,
     "nupl": 0.561,
     "sthSopr": 1.0134133834,
-    "sthSoprMa3": 1.0122135215666674,
+    "sthSoprMa3": 1.012213521566667,
     "sthMvrv": 1.1128,
     "puellMultiple": 0.871,
     "signalPriceMa200w": false,
@@ -26195,8 +26195,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -26288,7 +26288,7 @@
     "mvrvZscore": 2.2474,
     "nupl": 0.5554,
     "sthSopr": 1.0042077553,
-    "sthSoprMa3": 1.0073780760666673,
+    "sthSoprMa3": 1.007378076066667,
     "sthMvrv": 1.0981,
     "puellMultiple": 0.833,
     "signalPriceMa200w": false,
@@ -26369,8 +26369,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -26462,7 +26462,7 @@
     "mvrvZscore": 2.2647,
     "nupl": 0.5567,
     "sthSopr": 1.0040071816,
-    "sthSoprMa3": 1.0072094401000007,
+    "sthSoprMa3": 1.0072094401000005,
     "sthMvrv": 1.1004,
     "puellMultiple": 0.828,
     "signalPriceMa200w": false,
@@ -26543,8 +26543,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -26636,7 +26636,7 @@
     "mvrvZscore": 2.2671,
     "nupl": 0.5566,
     "sthSopr": 1.0049519993,
-    "sthSoprMa3": 1.004388978733334,
+    "sthSoprMa3": 1.0043889787333338,
     "sthMvrv": 1.1003,
     "puellMultiple": 0.942,
     "signalPriceMa200w": false,
@@ -26717,8 +26717,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -26810,7 +26810,7 @@
     "mvrvZscore": 2.3231,
     "nupl": 0.5625,
     "sthSopr": 1.0262937157,
-    "sthSoprMa3": 1.011750965533334,
+    "sthSoprMa3": 1.0117509655333337,
     "sthMvrv": 1.1183,
     "puellMultiple": 0.824,
     "signalPriceMa200w": false,
@@ -26891,8 +26891,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -27065,8 +27065,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -27158,7 +27158,7 @@
     "mvrvZscore": 2.447,
     "nupl": 0.5754,
     "sthSopr": 1.0344407862,
-    "sthSoprMa3": 1.0303274100000006,
+    "sthSoprMa3": 1.0303274100000004,
     "sthMvrv": 1.1467,
     "puellMultiple": 0.82,
     "signalPriceMa200w": false,
@@ -27239,8 +27239,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -27332,7 +27332,7 @@
     "mvrvZscore": 2.4214,
     "nupl": 0.5722,
     "sthSopr": 1.0413635772,
-    "sthSoprMa3": 1.0353506971666675,
+    "sthSoprMa3": 1.035350697166667,
     "sthMvrv": 1.1372,
     "puellMultiple": 0.857,
     "signalPriceMa200w": false,
@@ -27413,8 +27413,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -27506,7 +27506,7 @@
     "mvrvZscore": 2.3303,
     "nupl": 0.5627,
     "sthSopr": 1.0152262028,
-    "sthSoprMa3": 1.0303435220666675,
+    "sthSoprMa3": 1.0303435220666672,
     "sthMvrv": 1.1124,
     "puellMultiple": 1.037,
     "signalPriceMa200w": false,
@@ -27587,8 +27587,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -27761,8 +27761,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -27935,8 +27935,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -28109,8 +28109,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -28202,7 +28202,7 @@
     "mvrvZscore": 2.1967,
     "nupl": 0.5481,
     "sthSopr": 0.9816039125,
-    "sthSoprMa3": 0.9992618838333339,
+    "sthSoprMa3": 0.9992618838333338,
     "sthMvrv": 1.0781,
     "puellMultiple": 0.865,
     "signalPriceMa200w": false,
@@ -28283,8 +28283,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -28376,7 +28376,7 @@
     "mvrvZscore": 2.2431,
     "nupl": 0.5539,
     "sthSopr": 1.0110500665,
-    "sthSoprMa3": 1.0015373448000007,
+    "sthSoprMa3": 1.0015373448000005,
     "sthMvrv": 1.0815,
     "puellMultiple": 0.84,
     "signalPriceMa200w": false,
@@ -28457,8 +28457,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -28550,7 +28550,7 @@
     "mvrvZscore": 2.1556,
     "nupl": 0.5437,
     "sthSopr": 1.0010628996,
-    "sthSoprMa3": 0.9979056262000006,
+    "sthSoprMa3": 0.9979056262000005,
     "sthMvrv": 1.0565,
     "puellMultiple": 0.733,
     "signalPriceMa200w": false,
@@ -28631,8 +28631,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -28724,7 +28724,7 @@
     "mvrvZscore": 2.1055,
     "nupl": 0.5386,
     "sthSopr": 1.0,
-    "sthSoprMa3": 1.0040376553666672,
+    "sthSoprMa3": 1.004037655366667,
     "sthMvrv": 1.0438,
     "puellMultiple": 0.769,
     "signalPriceMa200w": false,
@@ -28805,8 +28805,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -28979,8 +28979,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -29072,7 +29072,7 @@
     "mvrvZscore": 2.1382,
     "nupl": 0.5427,
     "sthSopr": 0.9999200486,
-    "sthSoprMa3": 0.9991596573666673,
+    "sthSoprMa3": 0.9991596573666671,
     "sthMvrv": 1.0467,
     "puellMultiple": 0.806,
     "signalPriceMa200w": false,
@@ -29153,8 +29153,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -29246,7 +29246,7 @@
     "mvrvZscore": 2.1271,
     "nupl": 0.5413,
     "sthSopr": 0.9976294479,
-    "sthSoprMa3": 0.998369473333334,
+    "sthSoprMa3": 0.9983694733333337,
     "sthMvrv": 1.0465,
     "puellMultiple": 0.857,
     "signalPriceMa200w": false,
@@ -29327,8 +29327,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -29420,7 +29420,7 @@
     "mvrvZscore": 2.0441,
     "nupl": 0.532,
     "sthSopr": 0.9939924887,
-    "sthSoprMa3": 0.997180661733334,
+    "sthSoprMa3": 0.9971806617333338,
     "sthMvrv": 1.0264,
     "puellMultiple": 0.769,
     "signalPriceMa200w": false,
@@ -29501,8 +29501,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -29594,7 +29594,7 @@
     "mvrvZscore": 2.0277,
     "nupl": 0.5303,
     "sthSopr": 1.0035489624,
-    "sthSoprMa3": 0.9983902996666673,
+    "sthSoprMa3": 0.9983902996666671,
     "sthMvrv": 1.022,
     "puellMultiple": 0.747,
     "signalPriceMa200w": false,
@@ -29675,8 +29675,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -29768,7 +29768,7 @@
     "mvrvZscore": 2.0268,
     "nupl": 0.5294,
     "sthSopr": 0.9987996514,
-    "sthSoprMa3": 0.9987803675000007,
+    "sthSoprMa3": 0.9987803675000005,
     "sthMvrv": 1.016,
     "puellMultiple": 0.776,
     "signalPriceMa200w": false,
@@ -29849,8 +29849,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -29942,7 +29942,7 @@
     "mvrvZscore": 1.976,
     "nupl": 0.5238,
     "sthSopr": 0.9950477189,
-    "sthSoprMa3": 0.9991321109000006,
+    "sthSoprMa3": 0.9991321109000005,
     "sthMvrv": 1.0077,
     "puellMultiple": 0.845,
     "signalPriceMa200w": false,
@@ -30023,8 +30023,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -30116,7 +30116,7 @@
     "mvrvZscore": 1.9792,
     "nupl": 0.5232,
     "sthSopr": 0.9988897392,
-    "sthSoprMa3": 0.9975790365000007,
+    "sthSoprMa3": 0.9975790365000005,
     "sthMvrv": 1.0,
     "puellMultiple": 0.614,
     "signalPriceMa200w": false,
@@ -30197,8 +30197,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -30290,7 +30290,7 @@
     "mvrvZscore": 1.9239,
     "nupl": 0.5153,
     "sthSopr": 0.9964491452,
-    "sthSoprMa3": 0.996795534433334,
+    "sthSoprMa3": 0.9967955344333337,
     "sthMvrv": 1.0022,
     "puellMultiple": 0.792,
     "signalPriceMa200w": false,
@@ -30371,8 +30371,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -30464,7 +30464,7 @@
     "mvrvZscore": 1.7426,
     "nupl": 0.4921,
     "sthSopr": 0.9860166467,
-    "sthSoprMa3": 0.993785177033334,
+    "sthSoprMa3": 0.9937851770333337,
     "sthMvrv": 0.9443,
     "puellMultiple": 0.663,
     "signalPriceMa200w": false,
@@ -30545,8 +30545,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -30638,7 +30638,7 @@
     "mvrvZscore": 1.828,
     "nupl": 0.5047,
     "sthSopr": 0.9915232986,
-    "sthSoprMa3": 0.9913296968333339,
+    "sthSoprMa3": 0.9913296968333337,
     "sthMvrv": 0.9647,
     "puellMultiple": 0.637,
     "signalPriceMa200w": false,
@@ -30719,8 +30719,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9926757654807489,
-        "deep": 0.9854242629788564
+        "trigger": 0.9926757654807488,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -30812,7 +30812,7 @@
     "mvrvZscore": 1.7713,
     "nupl": 0.497,
     "sthSopr": 0.9937805231,
-    "sthSoprMa3": 0.9904401561333339,
+    "sthSoprMa3": 0.9904401561333338,
     "sthMvrv": 0.9592,
     "puellMultiple": 0.693,
     "signalPriceMa200w": false,
@@ -30894,7 +30894,7 @@
       },
       "sthSopr": {
         "trigger": 0.9926522306611331,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -31067,8 +31067,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9925418560213393,
-        "deep": 0.9854242629788564
+        "trigger": 0.992541856021339,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -31160,7 +31160,7 @@
     "mvrvZscore": 1.7365,
     "nupl": 0.4919,
     "sthSopr": 0.9957186043,
-    "sthSoprMa3": 0.9950617306333339,
+    "sthSoprMa3": 0.9950617306333337,
     "sthMvrv": 0.9501,
     "puellMultiple": 0.827,
     "signalPriceMa200w": false,
@@ -31241,8 +31241,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9925418560213393,
-        "deep": 0.9854242629788564
+        "trigger": 0.992541856021339,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -31334,7 +31334,7 @@
     "mvrvZscore": 1.7693,
     "nupl": 0.4965,
     "sthSopr": 0.9980188695,
-    "sthSoprMa3": 0.9964745127666673,
+    "sthSoprMa3": 0.9964745127666671,
     "sthMvrv": 0.9489,
     "puellMultiple": 0.657,
     "signalPriceMa200w": false,
@@ -31415,8 +31415,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9925418560213393,
-        "deep": 0.9854242629788564
+        "trigger": 0.992541856021339,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -31508,7 +31508,7 @@
     "mvrvZscore": 1.877,
     "nupl": 0.511,
     "sthSopr": 0.9993826579,
-    "sthSoprMa3": 0.9977067105666673,
+    "sthSoprMa3": 0.9977067105666672,
     "sthMvrv": 0.9625,
     "puellMultiple": 0.767,
     "signalPriceMa200w": false,
@@ -31589,8 +31589,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9925418560213393,
-        "deep": 0.9854242629788564
+        "trigger": 0.992541856021339,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -31682,7 +31682,7 @@
     "mvrvZscore": 1.8785,
     "nupl": 0.5114,
     "sthSopr": 1.0045404267,
-    "sthSoprMa3": 1.000647318033334,
+    "sthSoprMa3": 1.0006473180333337,
     "sthMvrv": 0.9802,
     "puellMultiple": 0.795,
     "signalPriceMa200w": false,
@@ -31763,8 +31763,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9925418560213393,
-        "deep": 0.9854242629788564
+        "trigger": 0.992541856021339,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -31856,7 +31856,7 @@
     "mvrvZscore": 1.8301,
     "nupl": 0.5055,
     "sthSopr": 0.996929751,
-    "sthSoprMa3": 1.000284278533334,
+    "sthSoprMa3": 1.0002842785333337,
     "sthMvrv": 0.9704,
     "puellMultiple": 0.756,
     "signalPriceMa200w": false,
@@ -31937,8 +31937,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9925418560213393,
-        "deep": 0.9854242629788564
+        "trigger": 0.992541856021339,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -32030,7 +32030,7 @@
     "mvrvZscore": 1.7214,
     "nupl": 0.4891,
     "sthSopr": 0.9945092771,
-    "sthSoprMa3": 0.9986598182666673,
+    "sthSoprMa3": 0.9986598182666672,
     "sthMvrv": 0.9427,
     "puellMultiple": 0.696,
     "signalPriceMa200w": false,
@@ -32111,8 +32111,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9925418560213393,
-        "deep": 0.9854242629788564
+        "trigger": 0.992541856021339,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -32204,7 +32204,7 @@
     "mvrvZscore": 1.5583,
     "nupl": 0.461,
     "sthSopr": 0.9847822858,
-    "sthSoprMa3": 0.9920737713000006,
+    "sthSoprMa3": 0.9920737713000004,
     "sthMvrv": 0.9186,
     "puellMultiple": 0.595,
     "signalPriceMa200w": false,
@@ -32285,8 +32285,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9925418560213393,
-        "deep": 0.9854242629788564
+        "trigger": 0.992541856021339,
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -32378,7 +32378,7 @@
     "mvrvZscore": 1.5145,
     "nupl": 0.4573,
     "sthSopr": 0.9738463503,
-    "sthSoprMa3": 0.9843793044000005,
+    "sthSoprMa3": 0.9843793044000004,
     "sthMvrv": 0.8836,
     "puellMultiple": 0.833,
     "signalPriceMa200w": false,
@@ -32460,7 +32460,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925368623448428,
-        "deep": 0.9854242629788564
+        "deep": 0.9854337319003481
       },
       "sthMvrv": {
         "trigger": 0.91520073,
@@ -32552,7 +32552,7 @@
     "mvrvZscore": 1.603,
     "nupl": 0.4722,
     "sthSopr": 1.0201429025,
-    "sthSoprMa3": 0.9929238462000006,
+    "sthSoprMa3": 0.9929238462000004,
     "sthMvrv": 0.9126,
     "puellMultiple": 0.686,
     "signalPriceMa200w": false,
@@ -32634,7 +32634,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.914365,
@@ -32808,7 +32808,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91389951,
@@ -32982,7 +32982,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91384449,
@@ -33074,7 +33074,7 @@
     "mvrvZscore": 1.5842,
     "nupl": 0.4705,
     "sthSopr": 0.9977235983,
-    "sthSoprMa3": 0.9942875524666673,
+    "sthSoprMa3": 0.9942875524666671,
     "sthMvrv": 0.9135,
     "puellMultiple": 0.681,
     "signalPriceMa200w": false,
@@ -33156,7 +33156,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91319916,
@@ -33248,7 +33248,7 @@
     "mvrvZscore": 1.5674,
     "nupl": 0.4672,
     "sthSopr": 0.9983635621,
-    "sthSoprMa3": 0.9946854515666672,
+    "sthSoprMa3": 0.9946854515666671,
     "sthMvrv": 0.9079,
     "puellMultiple": 0.696,
     "signalPriceMa200w": false,
@@ -33330,7 +33330,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91319916,
@@ -33422,7 +33422,7 @@
     "mvrvZscore": 1.5426,
     "nupl": 0.4638,
     "sthSopr": 0.9968216086,
-    "sthSoprMa3": 0.997636256333334,
+    "sthSoprMa3": 0.9976362563333337,
     "sthMvrv": 0.9065,
     "puellMultiple": 0.753,
     "signalPriceMa200w": false,
@@ -33504,7 +33504,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91318184,
@@ -33596,7 +33596,7 @@
     "mvrvZscore": 1.5732,
     "nupl": 0.4687,
     "sthSopr": 0.9962212511,
-    "sthSoprMa3": 0.997135473933334,
+    "sthSoprMa3": 0.9971354739333339,
     "sthMvrv": 0.9083,
     "puellMultiple": 0.793,
     "signalPriceMa200w": false,
@@ -33678,7 +33678,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.913065,
@@ -33770,7 +33770,7 @@
     "mvrvZscore": 1.6567,
     "nupl": 0.4803,
     "sthSopr": 1.0016528929,
-    "sthSoprMa3": 0.9982319175333338,
+    "sthSoprMa3": 0.9982319175333337,
     "sthMvrv": 0.9278,
     "puellMultiple": 0.883,
     "signalPriceMa200w": false,
@@ -33852,7 +33852,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -33944,7 +33944,7 @@
     "mvrvZscore": 1.7527,
     "nupl": 0.4936,
     "sthSopr": 1.0048314429,
-    "sthSoprMa3": 1.0009018623000006,
+    "sthSoprMa3": 1.0009018623000003,
     "sthMvrv": 0.965,
     "puellMultiple": 0.859,
     "signalPriceMa200w": false,
@@ -34026,7 +34026,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -34200,7 +34200,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -34374,7 +34374,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -34466,7 +34466,7 @@
     "mvrvZscore": 1.9251,
     "nupl": 0.5176,
     "sthSopr": 1.004480212,
-    "sthSoprMa3": 1.0075182030666674,
+    "sthSoprMa3": 1.0075182030666672,
     "sthMvrv": 1.0079,
     "puellMultiple": 0.715,
     "signalPriceMa200w": false,
@@ -34548,7 +34548,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -34640,7 +34640,7 @@
     "mvrvZscore": 1.9093,
     "nupl": 0.5163,
     "sthSopr": 1.0017542395,
-    "sthSoprMa3": 1.004466579433334,
+    "sthSoprMa3": 1.0044665794333338,
     "sthMvrv": 0.9988,
     "puellMultiple": 0.85,
     "signalPriceMa200w": false,
@@ -34722,7 +34722,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -34814,7 +34814,7 @@
     "mvrvZscore": 2.0631,
     "nupl": 0.5349,
     "sthSopr": 1.0063776567,
-    "sthSoprMa3": 1.0042040360666673,
+    "sthSoprMa3": 1.004204036066667,
     "sthMvrv": 1.0452,
     "puellMultiple": 0.959,
     "signalPriceMa200w": false,
@@ -34896,7 +34896,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -35070,7 +35070,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -35162,7 +35162,7 @@
     "mvrvZscore": 2.1325,
     "nupl": 0.5445,
     "sthSopr": 1.0056868561,
-    "sthSoprMa3": 1.0064311782666673,
+    "sthSoprMa3": 1.006431178266667,
     "sthMvrv": 1.0642,
     "puellMultiple": 1.044,
     "signalPriceMa200w": false,
@@ -35244,7 +35244,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -35336,7 +35336,7 @@
     "mvrvZscore": 2.0989,
     "nupl": 0.5397,
     "sthSopr": 1.0076543621,
-    "sthSoprMa3": 1.006856746733334,
+    "sthSoprMa3": 1.0068567467333338,
     "sthMvrv": 1.0557,
     "puellMultiple": 0.962,
     "signalPriceMa200w": false,
@@ -35418,7 +35418,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -35592,7 +35592,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -35766,7 +35766,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -35858,7 +35858,7 @@
     "mvrvZscore": 1.9823,
     "nupl": 0.5257,
     "sthSopr": 0.9937594694,
-    "sthSoprMa3": 0.9992087106000006,
+    "sthSoprMa3": 0.9992087106000005,
     "sthMvrv": 1.0231,
     "puellMultiple": 0.937,
     "signalPriceMa200w": false,
@@ -35940,7 +35940,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -36114,7 +36114,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -36206,7 +36206,7 @@
     "mvrvZscore": 2.11,
     "nupl": 0.5393,
     "sthSopr": 1.0070120446,
-    "sthSoprMa3": 1.005433859233334,
+    "sthSoprMa3": 1.0054338592333336,
     "sthMvrv": 1.066,
     "puellMultiple": 0.869,
     "signalPriceMa200w": false,
@@ -36288,7 +36288,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -36462,7 +36462,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -36554,7 +36554,7 @@
     "mvrvZscore": 2.0347,
     "nupl": 0.5307,
     "sthSopr": 1.0118509292,
-    "sthSoprMa3": 1.0066109672666672,
+    "sthSoprMa3": 1.006610967266667,
     "sthMvrv": 1.0423,
     "puellMultiple": 0.854,
     "signalPriceMa200w": false,
@@ -36636,7 +36636,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -36728,7 +36728,7 @@
     "mvrvZscore": 1.9931,
     "nupl": 0.5262,
     "sthSopr": 0.9947597193,
-    "sthSoprMa3": 1.002526858833334,
+    "sthSoprMa3": 1.0025268588333338,
     "sthMvrv": 1.0265,
     "puellMultiple": 0.785,
     "signalPriceMa200w": false,
@@ -36810,7 +36810,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -36984,7 +36984,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -37076,7 +37076,7 @@
     "mvrvZscore": 1.9305,
     "nupl": 0.5198,
     "sthSopr": 0.9900550951,
-    "sthSoprMa3": 0.9948104405666672,
+    "sthSoprMa3": 0.994810440566667,
     "sthMvrv": 1.0033,
     "puellMultiple": 0.662,
     "signalPriceMa200w": false,
@@ -37158,7 +37158,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -37332,7 +37332,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -37424,7 +37424,7 @@
     "mvrvZscore": 1.6726,
     "nupl": 0.4831,
     "sthSopr": 0.9923517138,
-    "sthSoprMa3": 0.9933996051666673,
+    "sthSoprMa3": 0.9933996051666671,
     "sthMvrv": 0.9356,
     "puellMultiple": 0.717,
     "signalPriceMa200w": false,
@@ -37506,7 +37506,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -37598,7 +37598,7 @@
     "mvrvZscore": 1.5362,
     "nupl": 0.4606,
     "sthSopr": 0.9907066754,
-    "sthSoprMa3": 0.9936167986000006,
+    "sthSoprMa3": 0.9936167986000003,
     "sthMvrv": 0.9066,
     "puellMultiple": 0.73,
     "signalPriceMa200w": false,
@@ -37680,7 +37680,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91259545,
@@ -37772,7 +37772,7 @@
     "mvrvZscore": 1.3136,
     "nupl": 0.4212,
     "sthSopr": 0.9600696291,
-    "sthSoprMa3": 0.9810426727666672,
+    "sthSoprMa3": 0.9810426727666671,
     "sthMvrv": 0.8501,
     "puellMultiple": 0.675,
     "signalPriceMa200w": false,
@@ -37854,7 +37854,7 @@
       },
       "sthSopr": {
         "trigger": 0.9925148184883638,
-        "deep": 0.9853926769222696
+        "deep": 0.9854242629788564
       },
       "sthMvrv": {
         "trigger": 0.91246955,
@@ -37946,7 +37946,7 @@
     "mvrvZscore": 1.4113,
     "nupl": 0.4422,
     "sthSopr": 0.989592949,
-    "sthSoprMa3": 0.9801230845000006,
+    "sthSoprMa3": 0.9801230845000005,
     "sthMvrv": 0.8819,
     "puellMultiple": 0.579,
     "signalPriceMa200w": false,
@@ -38028,7 +38028,7 @@
       },
       "sthSopr": {
         "trigger": 0.9923585343610934,
-        "deep": 0.9853750684814329
+        "deep": 0.9853926769222696
       },
       "sthMvrv": {
         "trigger": 0.911558,
@@ -38120,7 +38120,7 @@
     "mvrvZscore": 1.3585,
     "nupl": 0.4331,
     "sthSopr": 0.9957304254,
-    "sthSoprMa3": 0.9817976678333339,
+    "sthSoprMa3": 0.9817976678333338,
     "sthMvrv": 0.868,
     "puellMultiple": 0.688,
     "signalPriceMa200w": false,
@@ -38201,8 +38201,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9923419633400008,
-        "deep": 0.9853394507549316
+        "trigger": 0.9923419633400007,
+        "deep": 0.9853750684814329
       },
       "sthMvrv": {
         "trigger": 0.9109910400000001,
@@ -38294,7 +38294,7 @@
     "mvrvZscore": 1.7407,
     "nupl": 0.4929,
     "sthSopr": 1.0022705832,
-    "sthSoprMa3": 0.995864652533334,
+    "sthSoprMa3": 0.9958646525333338,
     "sthMvrv": 0.9573,
     "puellMultiple": 0.68,
     "signalPriceMa200w": false,
@@ -38375,8 +38375,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.91085296,
@@ -38549,8 +38549,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.91085296,
@@ -38642,7 +38642,7 @@
     "mvrvZscore": 1.6758,
     "nupl": 0.4853,
     "sthSopr": 1.0005533417,
-    "sthSoprMa3": 1.0029947895666673,
+    "sthSoprMa3": 1.002994789566667,
     "sthMvrv": 0.954,
     "puellMultiple": 0.816,
     "signalPriceMa200w": false,
@@ -38723,8 +38723,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.91085296,
@@ -38897,8 +38897,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.91085296,
@@ -38990,7 +38990,7 @@
     "mvrvZscore": 1.59,
     "nupl": 0.4716,
     "sthSopr": 0.998184232,
-    "sthSoprMa3": 0.9990950558000006,
+    "sthSoprMa3": 0.9990950558000004,
     "sthMvrv": 0.9223,
     "puellMultiple": 0.777,
     "signalPriceMa200w": false,
@@ -39071,8 +39071,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.91085296,
@@ -39164,7 +39164,7 @@
     "mvrvZscore": 1.6538,
     "nupl": 0.4825,
     "sthSopr": 0.9918055056,
-    "sthSoprMa3": 0.9961791104333338,
+    "sthSoprMa3": 0.9961791104333337,
     "sthMvrv": 0.9595,
     "puellMultiple": 0.669,
     "signalPriceMa200w": false,
@@ -39245,8 +39245,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.91085296,
@@ -39338,7 +39338,7 @@
     "mvrvZscore": 1.5576,
     "nupl": 0.4658,
     "sthSopr": 0.9982899544,
-    "sthSoprMa3": 0.9960932306666672,
+    "sthSoprMa3": 0.9960932306666669,
     "sthMvrv": 0.9248,
     "puellMultiple": 0.795,
     "signalPriceMa200w": false,
@@ -39419,8 +39419,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.91085296,
@@ -39593,8 +39593,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.91085296,
@@ -39686,7 +39686,7 @@
     "mvrvZscore": 1.561,
     "nupl": 0.4676,
     "sthSopr": 0.9957757226,
-    "sthSoprMa3": 0.995383927933334,
+    "sthSoprMa3": 0.9953839279333337,
     "sthMvrv": 0.9288,
     "puellMultiple": 0.763,
     "signalPriceMa200w": false,
@@ -39767,8 +39767,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -39860,7 +39860,7 @@
     "mvrvZscore": 1.5876,
     "nupl": 0.4731,
     "sthSopr": 0.9986255343,
-    "sthSoprMa3": 0.9954957879000005,
+    "sthSoprMa3": 0.9954957879000004,
     "sthMvrv": 0.9333,
     "puellMultiple": 0.79,
     "signalPriceMa200w": false,
@@ -39941,8 +39941,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -40115,8 +40115,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -40208,7 +40208,7 @@
     "mvrvZscore": 1.5851,
     "nupl": 0.4726,
     "sthSopr": 0.9953896251,
-    "sthSoprMa3": 0.9982090723000004,
+    "sthSoprMa3": 0.9982090723000003,
     "sthMvrv": 0.9316,
     "puellMultiple": 0.764,
     "signalPriceMa200w": false,
@@ -40289,8 +40289,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -40382,7 +40382,7 @@
     "mvrvZscore": 1.5681,
     "nupl": 0.4687,
     "sthSopr": 0.9992415303,
-    "sthSoprMa3": 0.9984144043000005,
+    "sthSoprMa3": 0.9984144043000004,
     "sthMvrv": 0.9415,
     "puellMultiple": 0.774,
     "signalPriceMa200w": false,
@@ -40463,8 +40463,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -40556,7 +40556,7 @@
     "mvrvZscore": 1.6797,
     "nupl": 0.4871,
     "sthSopr": 0.9980496136,
-    "sthSoprMa3": 0.9975602563333338,
+    "sthSoprMa3": 0.9975602563333337,
     "sthMvrv": 0.9712,
     "puellMultiple": 0.832,
     "signalPriceMa200w": false,
@@ -40637,8 +40637,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -40811,8 +40811,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -40985,8 +40985,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -41159,8 +41159,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -41333,8 +41333,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -41426,7 +41426,7 @@
     "mvrvZscore": 1.7727,
     "nupl": 0.4993,
     "sthSopr": 1.0027505986,
-    "sthSoprMa3": 1.0060109541000006,
+    "sthSoprMa3": 1.0060109541000004,
     "sthMvrv": 1.0009,
     "puellMultiple": 0.726,
     "signalPriceMa200w": false,
@@ -41507,8 +41507,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -41681,8 +41681,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -41774,7 +41774,7 @@
     "mvrvZscore": 1.5531,
     "nupl": 0.4676,
     "sthSopr": 0.989125247,
-    "sthSoprMa3": 0.9970148729333338,
+    "sthSoprMa3": 0.9970148729333337,
     "sthMvrv": 0.9413,
     "puellMultiple": 0.672,
     "signalPriceMa200w": false,
@@ -41855,8 +41855,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -41948,7 +41948,7 @@
     "mvrvZscore": 1.5656,
     "nupl": 0.4697,
     "sthSopr": 0.9962298096,
-    "sthSoprMa3": 0.9948412766000004,
+    "sthSoprMa3": 0.9948412766000003,
     "sthMvrv": 0.9482,
     "puellMultiple": 0.72,
     "signalPriceMa200w": false,
@@ -42029,8 +42029,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -42122,7 +42122,7 @@
     "mvrvZscore": 1.5536,
     "nupl": 0.4675,
     "sthSopr": 0.9964447262,
-    "sthSoprMa3": 0.9939332609333338,
+    "sthSoprMa3": 0.9939332609333337,
     "sthMvrv": 0.9424,
     "puellMultiple": 0.743,
     "signalPriceMa200w": false,
@@ -42203,8 +42203,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -42296,7 +42296,7 @@
     "mvrvZscore": 1.542,
     "nupl": 0.4663,
     "sthSopr": 0.9995533688,
-    "sthSoprMa3": 0.9974093015333337,
+    "sthSoprMa3": 0.9974093015333336,
     "sthMvrv": 0.9433,
     "puellMultiple": 0.698,
     "signalPriceMa200w": false,
@@ -42377,8 +42377,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -42470,7 +42470,7 @@
     "mvrvZscore": 1.4511,
     "nupl": 0.4509,
     "sthSopr": 0.9960663733,
-    "sthSoprMa3": 0.9973548227666672,
+    "sthSoprMa3": 0.997354822766667,
     "sthMvrv": 0.9332,
     "puellMultiple": 0.847,
     "signalPriceMa200w": false,
@@ -42551,8 +42551,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -42725,8 +42725,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9922924735123135,
-        "deep": 0.9852427530213795
+        "trigger": 0.9922924735123134,
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -42818,7 +42818,7 @@
     "mvrvZscore": 1.4663,
     "nupl": 0.4525,
     "sthSopr": 0.9794844448,
-    "sthSoprMa3": 0.9847068688666671,
+    "sthSoprMa3": 0.984706868866667,
     "sthMvrv": 0.9324,
     "puellMultiple": 0.75,
     "signalPriceMa200w": false,
@@ -42900,7 +42900,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922874558366159,
-        "deep": 0.9852427530213795
+        "deep": 0.9853394507549316
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -42992,7 +42992,7 @@
     "mvrvZscore": 1.4873,
     "nupl": 0.4572,
     "sthSopr": 0.9772455476,
-    "sthSoprMa3": 0.9784332603000006,
+    "sthSoprMa3": 0.9784332603000004,
     "sthMvrv": 0.9327,
     "puellMultiple": 0.745,
     "signalPriceMa200w": false,
@@ -43074,7 +43074,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922580559322302,
-        "deep": 0.9850845996181457
+        "deep": 0.9852427530213795
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -43248,7 +43248,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922406256442657,
-        "deep": 0.9850483344638388
+        "deep": 0.9850845996181457
       },
       "sthMvrv": {
         "trigger": 0.910586,
@@ -43340,7 +43340,7 @@
     "mvrvZscore": 1.2531,
     "nupl": 0.4176,
     "sthSopr": 0.9613393319,
-    "sthSoprMa3": 0.9703649855000006,
+    "sthSoprMa3": 0.9703649855000004,
     "sthMvrv": 0.8675,
     "puellMultiple": 0.731,
     "signalPriceMa200w": false,
@@ -43422,7 +43422,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922406256442657,
-        "deep": 0.9850116395587322
+        "deep": 0.9850483344638388
       },
       "sthMvrv": {
         "trigger": 0.910386,
@@ -43514,7 +43514,7 @@
     "mvrvZscore": 1.2655,
     "nupl": 0.4196,
     "sthSopr": 0.9633508557,
-    "sthSoprMa3": 0.9657334215333339,
+    "sthSoprMa3": 0.9657334215333337,
     "sthMvrv": 0.8708,
     "puellMultiple": 0.784,
     "signalPriceMa200w": false,
@@ -43596,7 +43596,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922406256442657,
-        "deep": 0.9850116395587322
+        "deep": 0.9850483344638388
       },
       "sthMvrv": {
         "trigger": 0.91016199,
@@ -43770,7 +43770,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922406256442657,
-        "deep": 0.9850116395587322
+        "deep": 0.9850483344638388
       },
       "sthMvrv": {
         "trigger": 0.90964321,
@@ -43944,7 +43944,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922406256442657,
-        "deep": 0.9850116395587322
+        "deep": 0.9850483344638388
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -44036,7 +44036,7 @@
     "mvrvZscore": 1.4633,
     "nupl": 0.4543,
     "sthSopr": 0.9813306115,
-    "sthSoprMa3": 0.9764368782666671,
+    "sthSoprMa3": 0.976436878266667,
     "sthMvrv": 0.9304,
     "puellMultiple": 0.53,
     "signalPriceMa200w": false,
@@ -44118,7 +44118,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922406256442657,
-        "deep": 0.9848627420081149
+        "deep": 0.985011639558732
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -44210,7 +44210,7 @@
     "mvrvZscore": 1.4483,
     "nupl": 0.4515,
     "sthSopr": 0.978688,
-    "sthSoprMa3": 0.9801662199666672,
+    "sthSoprMa3": 0.9801662199666671,
     "sthMvrv": 0.929,
     "puellMultiple": 0.756,
     "signalPriceMa200w": false,
@@ -44292,7 +44292,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922406256442657,
-        "deep": 0.9848540600137266
+        "deep": 0.9848627420081149
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -44384,7 +44384,7 @@
     "mvrvZscore": 1.4869,
     "nupl": 0.4588,
     "sthSopr": 0.995285351,
-    "sthSoprMa3": 0.9851013208333339,
+    "sthSoprMa3": 0.9851013208333338,
     "sthMvrv": 0.9385,
     "puellMultiple": 0.637,
     "signalPriceMa200w": false,
@@ -44466,7 +44466,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922406256442657,
-        "deep": 0.984823966362981
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -44558,7 +44558,7 @@
     "mvrvZscore": 1.6177,
     "nupl": 0.4798,
     "sthSopr": 1.0,
-    "sthSoprMa3": 0.9913244503333338,
+    "sthSoprMa3": 0.9913244503333337,
     "sthMvrv": 0.976,
     "puellMultiple": 0.714,
     "signalPriceMa200w": false,
@@ -44640,7 +44640,7 @@
       },
       "sthSopr": {
         "trigger": 0.9922406256442657,
-        "deep": 0.984823966362981
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -44732,7 +44732,7 @@
     "mvrvZscore": 1.5869,
     "nupl": 0.4749,
     "sthSopr": 1.0,
-    "sthSoprMa3": 0.9984284503333338,
+    "sthSoprMa3": 0.9984284503333337,
     "sthMvrv": 0.972,
     "puellMultiple": 0.764,
     "signalPriceMa200w": false,
@@ -44813,8 +44813,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -44987,8 +44987,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -45080,7 +45080,7 @@
     "mvrvZscore": 1.4856,
     "nupl": 0.4585,
     "sthSopr": 0.9959613031,
-    "sthSoprMa3": 0.9986537677000005,
+    "sthSoprMa3": 0.9986537677000004,
     "sthMvrv": 0.9407,
     "puellMultiple": 0.773,
     "signalPriceMa200w": false,
@@ -45161,8 +45161,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -45254,7 +45254,7 @@
     "mvrvZscore": 1.5955,
     "nupl": 0.477,
     "sthSopr": 1.0,
-    "sthSoprMa3": 0.9986537677000005,
+    "sthSoprMa3": 0.9986537677000004,
     "sthMvrv": 0.9782,
     "puellMultiple": 0.724,
     "signalPriceMa200w": false,
@@ -45335,8 +45335,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -45428,7 +45428,7 @@
     "mvrvZscore": 1.6523,
     "nupl": 0.489,
     "sthSopr": 1.0,
-    "sthSoprMa3": 0.9986537677000005,
+    "sthSoprMa3": 0.9986537677000004,
     "sthMvrv": 0.9752,
     "puellMultiple": 0.658,
     "signalPriceMa200w": false,
@@ -45509,8 +45509,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -45683,8 +45683,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -45857,8 +45857,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -46031,8 +46031,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -46205,8 +46205,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -46379,8 +46379,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -46553,8 +46553,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -46727,8 +46727,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -46901,8 +46901,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -47075,8 +47075,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -47168,7 +47168,7 @@
     "mvrvZscore": 1.871,
     "nupl": 0.516,
     "sthSopr": 1.0134248083,
-    "sthSoprMa3": 1.0044749361000005,
+    "sthSoprMa3": 1.0044749361000003,
     "sthMvrv": 1.0476,
     "puellMultiple": 0.867,
     "signalPriceMa200w": false,
@@ -47249,8 +47249,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -47342,7 +47342,7 @@
     "mvrvZscore": 1.8607,
     "nupl": 0.5139,
     "sthSopr": 1.0013893974,
-    "sthSoprMa3": 1.0049380685666673,
+    "sthSoprMa3": 1.004938068566667,
     "sthMvrv": 1.0504,
     "puellMultiple": 0.739,
     "signalPriceMa200w": false,
@@ -47423,8 +47423,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -47597,8 +47597,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -47690,7 +47690,7 @@
     "mvrvZscore": 1.5966,
     "nupl": 0.4754,
     "sthSopr": 0.9977987575,
-    "sthSoprMa3": 0.9992955897333339,
+    "sthSoprMa3": 0.9992955897333337,
     "sthMvrv": 0.9779,
     "puellMultiple": 0.802,
     "signalPriceMa200w": false,
@@ -47771,8 +47771,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -47945,8 +47945,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -48038,7 +48038,7 @@
     "mvrvZscore": 1.59,
     "nupl": 0.4751,
     "sthSopr": 1.0000234834,
-    "sthSoprMa3": 0.9973729324333339,
+    "sthSoprMa3": 0.9973729324333337,
     "sthMvrv": 0.9743,
     "puellMultiple": 0.893,
     "signalPriceMa200w": false,
@@ -48119,8 +48119,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -48212,7 +48212,7 @@
     "mvrvZscore": 1.6587,
     "nupl": 0.4862,
     "sthSopr": 1.000569138,
-    "sthSoprMa3": 0.9982963926000005,
+    "sthSoprMa3": 0.9982963926000004,
     "sthMvrv": 0.9974,
     "puellMultiple": 0.797,
     "signalPriceMa200w": false,
@@ -48293,8 +48293,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -48467,8 +48467,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -48560,7 +48560,7 @@
     "mvrvZscore": 1.6963,
     "nupl": 0.4919,
     "sthSopr": 1.0009570297,
-    "sthSoprMa3": 1.001097408033334,
+    "sthSoprMa3": 1.0010974080333337,
     "sthMvrv": 0.9979,
     "puellMultiple": 0.823,
     "signalPriceMa200w": false,
@@ -48641,8 +48641,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -48815,8 +48815,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -48908,7 +48908,7 @@
     "mvrvZscore": 1.6421,
     "nupl": 0.4815,
     "sthSopr": 0.9987262232,
-    "sthSoprMa3": 1.0012983984666672,
+    "sthSoprMa3": 1.001298398466667,
     "sthMvrv": 1.0001,
     "puellMultiple": 0.655,
     "signalPriceMa200w": false,
@@ -48989,8 +48989,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -49163,8 +49163,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -49256,7 +49256,7 @@
     "mvrvZscore": 1.5367,
     "nupl": 0.4659,
     "sthSopr": 0.9921854025,
-    "sthSoprMa3": 0.9965491264000006,
+    "sthSoprMa3": 0.9965491264000003,
     "sthMvrv": 0.9664,
     "puellMultiple": 0.744,
     "signalPriceMa200w": false,
@@ -49337,8 +49337,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -49430,7 +49430,7 @@
     "mvrvZscore": 1.6529,
     "nupl": 0.4837,
     "sthSopr": 1.0040168937,
-    "sthSoprMa3": 0.9983126832333339,
+    "sthSoprMa3": 0.9983126832333337,
     "sthMvrv": 1.0081,
     "puellMultiple": 0.769,
     "signalPriceMa200w": false,
@@ -49511,8 +49511,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -49604,7 +49604,7 @@
     "mvrvZscore": 1.6917,
     "nupl": 0.4888,
     "sthSopr": 1.0033145646,
-    "sthSoprMa3": 0.9998389536000004,
+    "sthSoprMa3": 0.9998389536000003,
     "sthMvrv": 1.0137,
     "puellMultiple": 0.736,
     "signalPriceMa200w": false,
@@ -49685,8 +49685,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -49859,8 +49859,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -49952,7 +49952,7 @@
     "mvrvZscore": 1.8443,
     "nupl": 0.5103,
     "sthSopr": 1.010061659,
-    "sthSoprMa3": 1.0047893638333338,
+    "sthSoprMa3": 1.0047893638333336,
     "sthMvrv": 1.052,
     "puellMultiple": 0.887,
     "signalPriceMa200w": false,
@@ -50033,8 +50033,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -50207,8 +50207,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -50300,7 +50300,7 @@
     "mvrvZscore": 1.9206,
     "nupl": 0.5196,
     "sthSopr": 1.0141356042,
-    "sthSoprMa3": 1.0131401614000006,
+    "sthSoprMa3": 1.0131401614000004,
     "sthMvrv": 1.075,
     "puellMultiple": 0.898,
     "signalPriceMa200w": false,
@@ -50381,8 +50381,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -50474,7 +50474,7 @@
     "mvrvZscore": 1.8996,
     "nupl": 0.5177,
     "sthSopr": 1.0071027164,
-    "sthSoprMa3": 1.0121538472000007,
+    "sthSoprMa3": 1.0121538472000002,
     "sthMvrv": 1.0661,
     "puellMultiple": 0.79,
     "signalPriceMa200w": false,
@@ -50555,8 +50555,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -50648,7 +50648,7 @@
     "mvrvZscore": 1.9536,
     "nupl": 0.5242,
     "sthSopr": 1.0096264816,
-    "sthSoprMa3": 1.0102882674000007,
+    "sthSoprMa3": 1.0102882674000002,
     "sthMvrv": 1.0852,
     "puellMultiple": 1.003,
     "signalPriceMa200w": false,
@@ -50729,8 +50729,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -50822,7 +50822,7 @@
     "mvrvZscore": 1.949,
     "nupl": 0.5235,
     "sthSopr": 1.0052805453,
-    "sthSoprMa3": 1.0073365811000006,
+    "sthSoprMa3": 1.0073365811000004,
     "sthMvrv": 1.0812,
     "puellMultiple": 1.012,
     "signalPriceMa200w": false,
@@ -50903,8 +50903,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -51077,8 +51077,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -51170,7 +51170,7 @@
     "mvrvZscore": 1.8872,
     "nupl": 0.5138,
     "sthSopr": 1.0061746017,
-    "sthSoprMa3": 1.0045489222000006,
+    "sthSoprMa3": 1.0045489222000004,
     "sthMvrv": 1.0725,
     "puellMultiple": 0.789,
     "signalPriceMa200w": false,
@@ -51251,8 +51251,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -51344,7 +51344,7 @@
     "mvrvZscore": 1.8836,
     "nupl": 0.5137,
     "sthSopr": 1.0042240431,
-    "sthSoprMa3": 1.0041967548000006,
+    "sthSoprMa3": 1.0041967548000004,
     "sthMvrv": 1.067,
     "puellMultiple": 0.853,
     "signalPriceMa200w": false,
@@ -51425,8 +51425,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -51599,8 +51599,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -51773,8 +51773,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -51947,8 +51947,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -52040,7 +52040,7 @@
     "mvrvZscore": 1.8527,
     "nupl": 0.51,
     "sthSopr": 1.0003077768,
-    "sthSoprMa3": 1.0036858115000005,
+    "sthSoprMa3": 1.0036858115000002,
     "sthMvrv": 1.0575,
     "puellMultiple": 0.928,
     "signalPriceMa200w": false,
@@ -52121,8 +52121,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -52214,7 +52214,7 @@
     "mvrvZscore": 1.9035,
     "nupl": 0.5165,
     "sthSopr": 1.0022903997,
-    "sthSoprMa3": 1.0026264352666672,
+    "sthSoprMa3": 1.002626435266667,
     "sthMvrv": 1.0704,
     "puellMultiple": 0.994,
     "signalPriceMa200w": false,
@@ -52295,8 +52295,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -52469,8 +52469,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -52643,8 +52643,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -52736,7 +52736,7 @@
     "mvrvZscore": 2.1287,
     "nupl": 0.5433,
     "sthSopr": 1.0072007209,
-    "sthSoprMa3": 1.0119731906000007,
+    "sthSoprMa3": 1.0119731906000005,
     "sthMvrv": 1.1275,
     "puellMultiple": 0.941,
     "signalPriceMa200w": false,
@@ -52817,8 +52817,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -52910,7 +52910,7 @@
     "mvrvZscore": 2.0133,
     "nupl": 0.529,
     "sthSopr": 1.0049003951,
-    "sthSoprMa3": 1.0106531862666672,
+    "sthSoprMa3": 1.010653186266667,
     "sthMvrv": 1.0973,
     "puellMultiple": 0.9,
     "signalPriceMa200w": false,
@@ -52991,8 +52991,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -53165,8 +53165,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -53258,7 +53258,7 @@
     "mvrvZscore": 1.947,
     "nupl": 0.5227,
     "sthSopr": 1.0007446965,
-    "sthSoprMa3": 1.0029243020666672,
+    "sthSoprMa3": 1.002924302066667,
     "sthMvrv": 1.082,
     "puellMultiple": 0.768,
     "signalPriceMa200w": false,
@@ -53339,8 +53339,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -53432,7 +53432,7 @@
     "mvrvZscore": 1.9183,
     "nupl": 0.5184,
     "sthSopr": 0.9988694668,
-    "sthSoprMa3": 1.000913992633334,
+    "sthSoprMa3": 1.0009139926333337,
     "sthMvrv": 1.0732,
     "puellMultiple": 0.867,
     "signalPriceMa200w": false,
@@ -53513,8 +53513,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -53687,8 +53687,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -53861,8 +53861,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -53954,7 +53954,7 @@
     "mvrvZscore": 2.2738,
     "nupl": 0.5591,
     "sthSopr": 1.0198381491,
-    "sthSoprMa3": 1.0094484809000006,
+    "sthSoprMa3": 1.0094484809000004,
     "sthMvrv": 1.166,
     "puellMultiple": 1.003,
     "signalPriceMa200w": false,
@@ -54035,8 +54035,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -54209,8 +54209,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -54383,8 +54383,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -54557,8 +54557,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -54650,7 +54650,7 @@
     "mvrvZscore": 2.5017,
     "nupl": 0.5819,
     "sthSopr": 1.0180085987,
-    "sthSoprMa3": 1.0122512176000005,
+    "sthSoprMa3": 1.0122512176000003,
     "sthMvrv": 1.2232,
     "puellMultiple": 1.023,
     "signalPriceMa200w": false,
@@ -54731,8 +54731,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -54824,7 +54824,7 @@
     "mvrvZscore": 2.9345,
     "nupl": 0.6186,
     "sthSopr": 1.0273269774,
-    "sthSoprMa3": 1.0171160622666673,
+    "sthSoprMa3": 1.017116062266667,
     "sthMvrv": 1.3111,
     "puellMultiple": 1.087,
     "signalPriceMa200w": false,
@@ -54905,8 +54905,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -54998,7 +54998,7 @@
     "mvrvZscore": 2.8754,
     "nupl": 0.6126,
     "sthSopr": 1.0278621878,
-    "sthSoprMa3": 1.024399254633334,
+    "sthSoprMa3": 1.0243992546333336,
     "sthMvrv": 1.3058,
     "puellMultiple": 1.054,
     "signalPriceMa200w": false,
@@ -55079,8 +55079,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -55172,7 +55172,7 @@
     "mvrvZscore": 2.9819,
     "nupl": 0.6205,
     "sthSopr": 1.0253281649,
-    "sthSoprMa3": 1.0268391100333338,
+    "sthSoprMa3": 1.0268391100333336,
     "sthMvrv": 1.3053,
     "puellMultiple": 0.936,
     "signalPriceMa200w": false,
@@ -55253,8 +55253,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -55427,8 +55427,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -55520,7 +55520,7 @@
     "mvrvZscore": 2.9934,
     "nupl": 0.6184,
     "sthSopr": 1.0156080116,
-    "sthSoprMa3": 1.0191194003333337,
+    "sthSoprMa3": 1.0191194003333335,
     "sthMvrv": 1.3038,
     "puellMultiple": 1.2,
     "signalPriceMa200w": false,
@@ -55601,8 +55601,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -55775,8 +55775,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -55868,7 +55868,7 @@
     "mvrvZscore": 2.9055,
     "nupl": 0.6124,
     "sthSopr": 1.0055304976,
-    "sthSoprMa3": 1.0112255397000005,
+    "sthSoprMa3": 1.0112255397000003,
     "sthMvrv": 1.2757,
     "puellMultiple": 1.191,
     "signalPriceMa200w": false,
@@ -55949,8 +55949,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -56123,8 +56123,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -56216,7 +56216,7 @@
     "mvrvZscore": 3.0114,
     "nupl": 0.619,
     "sthSopr": 1.0128314596,
-    "sthSoprMa3": 1.012065001933334,
+    "sthSoprMa3": 1.0120650019333337,
     "sthMvrv": 1.2947,
     "puellMultiple": 1.165,
     "signalPriceMa200w": false,
@@ -56297,8 +56297,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -56390,7 +56390,7 @@
     "mvrvZscore": 3.0961,
     "nupl": 0.6248,
     "sthSopr": 1.0163372829,
-    "sthSoprMa3": 1.0156672637000006,
+    "sthSoprMa3": 1.0156672637000004,
     "sthMvrv": 1.3165,
     "puellMultiple": 1.193,
     "signalPriceMa200w": false,
@@ -56471,8 +56471,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -56645,8 +56645,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -56819,8 +56819,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -56993,8 +56993,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -57167,8 +57167,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -57260,7 +57260,7 @@
     "mvrvZscore": 2.9676,
     "nupl": 0.6067,
     "sthSopr": 1.0101353197,
-    "sthSoprMa3": 1.0175303531000006,
+    "sthSoprMa3": 1.0175303531000004,
     "sthMvrv": 1.2664,
     "puellMultiple": 1.071,
     "signalPriceMa200w": false,
@@ -57341,8 +57341,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -57434,7 +57434,7 @@
     "mvrvZscore": 2.8814,
     "nupl": 0.6015,
     "sthSopr": 1.0075770776,
-    "sthSoprMa3": 1.010616064133334,
+    "sthSoprMa3": 1.0106160641333337,
     "sthMvrv": 1.2293,
     "puellMultiple": 1.07,
     "signalPriceMa200w": false,
@@ -57515,8 +57515,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -57608,7 +57608,7 @@
     "mvrvZscore": 3.0842,
     "nupl": 0.6166,
     "sthSopr": 1.0116875265,
-    "sthSoprMa3": 1.0097999746000006,
+    "sthSoprMa3": 1.0097999746000004,
     "sthMvrv": 1.2807,
     "puellMultiple": 1.138,
     "signalPriceMa200w": false,
@@ -57689,8 +57689,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -57782,7 +57782,7 @@
     "mvrvZscore": 3.0613,
     "nupl": 0.6146,
     "sthSopr": 1.0082850804,
-    "sthSoprMa3": 1.0091832281666673,
+    "sthSoprMa3": 1.009183228166667,
     "sthMvrv": 1.2725,
     "puellMultiple": 0.987,
     "signalPriceMa200w": false,
@@ -57863,8 +57863,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -58037,8 +58037,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -58130,7 +58130,7 @@
     "mvrvZscore": 3.0813,
     "nupl": 0.6163,
     "sthSopr": 1.0058835465,
-    "sthSoprMa3": 1.0111455798000006,
+    "sthSoprMa3": 1.0111455798000002,
     "sthMvrv": 1.2743,
     "puellMultiple": 1.287,
     "signalPriceMa200w": false,
@@ -58211,8 +58211,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -58304,7 +58304,7 @@
     "mvrvZscore": 3.1258,
     "nupl": 0.6191,
     "sthSopr": 1.0227760097,
-    "sthSoprMa3": 1.0159758895666673,
+    "sthSoprMa3": 1.015975889566667,
     "sthMvrv": 1.2861,
     "puellMultiple": 1.016,
     "signalPriceMa200w": false,
@@ -58385,8 +58385,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -58478,7 +58478,7 @@
     "mvrvZscore": 3.0247,
     "nupl": 0.6122,
     "sthSopr": 1.0114274214,
-    "sthSoprMa3": 1.0133623258666673,
+    "sthSoprMa3": 1.013362325866667,
     "sthMvrv": 1.2516,
     "puellMultiple": 1.259,
     "signalPriceMa200w": false,
@@ -58559,8 +58559,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -58652,7 +58652,7 @@
     "mvrvZscore": 3.0279,
     "nupl": 0.6112,
     "sthSopr": 1.0054760011,
-    "sthSoprMa3": 1.0132264774000006,
+    "sthSoprMa3": 1.0132264774000004,
     "sthMvrv": 1.2565,
     "puellMultiple": 1.214,
     "signalPriceMa200w": false,
@@ -58733,8 +58733,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -58907,8 +58907,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -59000,7 +59000,7 @@
     "mvrvZscore": 3.0403,
     "nupl": 0.6095,
     "sthSopr": 1.0249092591,
-    "sthSoprMa3": 1.0180967164000005,
+    "sthSoprMa3": 1.0180967164000003,
     "sthMvrv": 1.2353,
     "puellMultiple": 1.133,
     "signalPriceMa200w": false,
@@ -59081,8 +59081,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -59174,7 +59174,7 @@
     "mvrvZscore": 3.1726,
     "nupl": 0.6179,
     "sthSopr": 1.0096440937,
-    "sthSoprMa3": 1.0194860806000006,
+    "sthSoprMa3": 1.0194860806000003,
     "sthMvrv": 1.2626,
     "puellMultiple": 1.183,
     "signalPriceMa200w": false,
@@ -59255,8 +59255,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -59348,7 +59348,7 @@
     "mvrvZscore": 3.166,
     "nupl": 0.6176,
     "sthSopr": 0.9981958529,
-    "sthSoprMa3": 1.0109164019000005,
+    "sthSoprMa3": 1.0109164019000003,
     "sthMvrv": 1.249,
     "puellMultiple": 1.226,
     "signalPriceMa200w": false,
@@ -59429,8 +59429,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -59522,7 +59522,7 @@
     "mvrvZscore": 3.2001,
     "nupl": 0.6219,
     "sthSopr": 1.0044774639,
-    "sthSoprMa3": 1.0041058035000006,
+    "sthSoprMa3": 1.0041058035000003,
     "sthMvrv": 1.2544,
     "puellMultiple": 1.354,
     "signalPriceMa200w": false,
@@ -59603,8 +59603,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -59696,7 +59696,7 @@
     "mvrvZscore": 3.0066,
     "nupl": 0.604,
     "sthSopr": 1.0342224291,
-    "sthSoprMa3": 1.0122985819666672,
+    "sthSoprMa3": 1.012298581966667,
     "sthMvrv": 1.1996,
     "puellMultiple": 1.241,
     "signalPriceMa200w": false,
@@ -59777,8 +59777,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -59951,8 +59951,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -60125,8 +60125,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -60218,7 +60218,7 @@
     "mvrvZscore": 3.1086,
     "nupl": 0.6108,
     "sthSopr": 1.0169986359,
-    "sthSoprMa3": 1.018981049733334,
+    "sthSoprMa3": 1.0189810497333338,
     "sthMvrv": 1.2207,
     "puellMultiple": 1.429,
     "signalPriceMa200w": false,
@@ -60299,8 +60299,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -60392,7 +60392,7 @@
     "mvrvZscore": 3.1586,
     "nupl": 0.6153,
     "sthSopr": 1.008386617,
-    "sthSoprMa3": 1.0117923157333342,
+    "sthSoprMa3": 1.0117923157333337,
     "sthMvrv": 1.2259,
     "puellMultiple": 1.337,
     "signalPriceMa200w": false,
@@ -60473,8 +60473,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -60566,7 +60566,7 @@
     "mvrvZscore": 3.1548,
     "nupl": 0.6147,
     "sthSopr": 1.0062448028,
-    "sthSoprMa3": 1.0105433519000007,
+    "sthSoprMa3": 1.0105433519000002,
     "sthMvrv": 1.222,
     "puellMultiple": 1.188,
     "signalPriceMa200w": false,
@@ -60647,8 +60647,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -60740,7 +60740,7 @@
     "mvrvZscore": 3.3056,
     "nupl": 0.6252,
     "sthSopr": 1.0066834263,
-    "sthSoprMa3": 1.0071049487000006,
+    "sthSoprMa3": 1.0071049487000003,
     "sthMvrv": 1.2443,
     "puellMultiple": 1.298,
     "signalPriceMa200w": false,
@@ -60821,8 +60821,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -60914,7 +60914,7 @@
     "mvrvZscore": 3.3543,
     "nupl": 0.6292,
     "sthSopr": 1.0256228453,
-    "sthSoprMa3": 1.012850358133334,
+    "sthSoprMa3": 1.0128503581333337,
     "sthMvrv": 1.2649,
     "puellMultiple": 1.196,
     "signalPriceMa200w": false,
@@ -60995,8 +60995,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -61088,7 +61088,7 @@
     "mvrvZscore": 3.35,
     "nupl": 0.6272,
     "sthSopr": 1.0185790563,
-    "sthSoprMa3": 1.0169617759666674,
+    "sthSoprMa3": 1.0169617759666671,
     "sthMvrv": 1.2583,
     "puellMultiple": 1.199,
     "signalPriceMa200w": false,
@@ -61169,8 +61169,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -61262,7 +61262,7 @@
     "mvrvZscore": 3.0559,
     "nupl": 0.6037,
     "sthSopr": 1.0089353811,
-    "sthSoprMa3": 1.0177124275666671,
+    "sthSoprMa3": 1.017712427566667,
     "sthMvrv": 1.2002,
     "puellMultiple": 1.173,
     "signalPriceMa200w": false,
@@ -61343,8 +61343,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -61436,7 +61436,7 @@
     "mvrvZscore": 2.9001,
     "nupl": 0.5898,
     "sthSopr": 1.0062250053,
-    "sthSoprMa3": 1.0112464809000006,
+    "sthSoprMa3": 1.0112464809000004,
     "sthMvrv": 1.1618,
     "puellMultiple": 1.22,
     "signalPriceMa200w": false,
@@ -61517,8 +61517,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -61610,7 +61610,7 @@
     "mvrvZscore": 2.8847,
     "nupl": 0.5903,
     "sthSopr": 1.0028401535,
-    "sthSoprMa3": 1.0060001799666674,
+    "sthSoprMa3": 1.006000179966667,
     "sthMvrv": 1.1472,
     "puellMultiple": 1.166,
     "signalPriceMa200w": false,
@@ -61691,8 +61691,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -61784,7 +61784,7 @@
     "mvrvZscore": 2.8532,
     "nupl": 0.5878,
     "sthSopr": 1.0007978452,
-    "sthSoprMa3": 1.0032876680000007,
+    "sthSoprMa3": 1.0032876680000005,
     "sthMvrv": 1.1431,
     "puellMultiple": 1.221,
     "signalPriceMa200w": false,
@@ -61865,8 +61865,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -62039,8 +62039,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -62132,7 +62132,7 @@
     "mvrvZscore": 2.7127,
     "nupl": 0.5734,
     "sthSopr": 1.0275998972,
-    "sthSoprMa3": 1.0087159977666673,
+    "sthSoprMa3": 1.008715997766667,
     "sthMvrv": 1.1175,
     "puellMultiple": 1.078,
     "signalPriceMa200w": false,
@@ -62213,8 +62213,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -62306,7 +62306,7 @@
     "mvrvZscore": 2.8919,
     "nupl": 0.5887,
     "sthSopr": 1.0033061066,
-    "sthSoprMa3": 1.0095520849000008,
+    "sthSoprMa3": 1.0095520849000004,
     "sthMvrv": 1.1562,
     "puellMultiple": 1.24,
     "signalPriceMa200w": false,
@@ -62387,8 +62387,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -62561,8 +62561,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -62654,7 +62654,7 @@
     "mvrvZscore": 2.7307,
     "nupl": 0.5756,
     "sthSopr": 0.9968703642,
-    "sthSoprMa3": 1.001947607833334,
+    "sthSoprMa3": 1.0019476078333338,
     "sthMvrv": 1.1196,
     "puellMultiple": 1.036,
     "signalPriceMa200w": false,
@@ -62735,8 +62735,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -62909,8 +62909,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -63002,7 +63002,7 @@
     "mvrvZscore": 2.6937,
     "nupl": 0.573,
     "sthSopr": 0.9988949207,
-    "sthSoprMa3": 0.9983542573666672,
+    "sthSoprMa3": 0.998354257366667,
     "sthMvrv": 1.1131,
     "puellMultiple": 1.124,
     "signalPriceMa200w": false,
@@ -63083,8 +63083,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -63176,7 +63176,7 @@
     "mvrvZscore": 2.6055,
     "nupl": 0.5644,
     "sthSopr": 0.9999479083,
-    "sthSoprMa3": 0.9993801054000007,
+    "sthSoprMa3": 0.9993801054000006,
     "sthMvrv": 1.0872,
     "puellMultiple": 1.219,
     "signalPriceMa200w": false,
@@ -63257,8 +63257,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -63350,7 +63350,7 @@
     "mvrvZscore": 2.55,
     "nupl": 0.5585,
     "sthSopr": 0.9988320977,
-    "sthSoprMa3": 0.9992249755666672,
+    "sthSoprMa3": 0.999224975566667,
     "sthMvrv": 1.0813,
     "puellMultiple": 1.214,
     "signalPriceMa200w": false,
@@ -63431,8 +63431,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
@@ -63605,8 +63605,8 @@
         "deep": 0.00057477883
       },
       "sthSopr": {
-        "trigger": 0.9921983220606738,
-        "deep": 0.984823966362981
+        "trigger": 0.9921983220606737,
+        "deep": 0.9848540600137266
       },
       "sthMvrv": {
         "trigger": 0.9094501300000001,
