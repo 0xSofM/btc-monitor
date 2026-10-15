@@ -4654,20 +4654,29 @@
   },
   {
     "d": "2026-10-14",
-    "generatedAt": "2026-10-14T21:37:59.563257+00:00",
-    "mnav": 1.0865,
+    "mnav": 1.12,
+    "mnavBand": "low_premium",
+    "riskFlag": "normal",
+    "source": "strategy_official_timeseries",
+    "sourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav",
+    "observationType": "official_daily_close"
+  },
+  {
+    "d": "2026-10-15",
+    "generatedAt": "2026-10-15T04:31:13.971643+00:00",
+    "mnav": 1.0927,
     "mnavBand": "low_premium",
     "riskFlag": "normal",
     "enterpriseValueUsdM": 75420.0,
-    "btcReserveUsdM": 69416.0,
+    "btcReserveUsdM": 69020.0,
     "marketCapUsdM": 60476.0,
-    "equityPremium": 0.8712,
+    "equityPremium": 0.8762,
     "mstrPrice": 143.24,
-    "btcPrice": 81835.0,
+    "btcPrice": 81367.0,
     "btcHoldings": 848250.0,
     "satsPerShare": 187750.4202,
     "mstrTimestampUtc": "2026-10-14T20:00:00",
-    "btcTimestamp": "2026-10-14T21:37:00",
+    "btcTimestamp": "2026-10-15T04:31:00",
     "source": "strategy_official_api"
   }
 ]
