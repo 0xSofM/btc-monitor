@@ -4699,20 +4699,20 @@
   },
   {
     "d": "2026-10-18",
-    "generatedAt": "2026-10-18T04:25:06.364662+00:00",
-    "mnav": 1.0473,
+    "generatedAt": "2026-10-18T10:58:54.800073+00:00",
+    "mnav": 1.0455,
     "mnavBand": "low_premium",
     "riskFlag": "normal",
     "enterpriseValueUsdM": 72713.0,
-    "btcReserveUsdM": 69430.0,
+    "btcReserveUsdM": 69549.0,
     "marketCapUsdM": 57769.0,
-    "equityPremium": 0.832,
+    "equityPremium": 0.8306,
     "mstrPrice": 136.83,
-    "btcPrice": 81851.0,
+    "btcPrice": 81991.0,
     "btcHoldings": 848250.0,
     "satsPerShare": 187750.4202,
     "mstrTimestampUtc": "2026-10-16T20:00:00",
-    "btcTimestamp": "2026-10-18T04:24:00",
+    "btcTimestamp": "2026-10-18T10:58:00",
     "source": "strategy_official_api"
   }
 ]
