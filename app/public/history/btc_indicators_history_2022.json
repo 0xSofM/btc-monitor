@@ -52223,14 +52223,14 @@
     "priceMa200wRatio": 0.8260987703077475,
     "priceRealizedRatio": 0.9262616322681003,
     "reserveRisk": 0.000994,
-    "lthMvrv": 0.9332,
-    "lthSopr": 0.6177778081,
-    "lthSoprMa3": 0.6283326076341397,
-    "mvrvZscore": -0.1089,
-    "nupl": -0.0775,
-    "sthSopr": 0.9872921544,
-    "sthSoprMa3": 0.9933363557667337,
-    "sthMvrv": 0.9116,
+    "lthMvrv": 0.925169,
+    "lthSopr": 0.6278704783776543,
+    "lthSoprMa3": 0.6316968310600243,
+    "mvrvZscore": null,
+    "nupl": null,
+    "sthSopr": 0.9983212438167,
+    "sthSoprMa3": 0.9970127189056338,
+    "sthMvrv": 0.925351,
     "puellMultiple": 0.5347142857,
     "signalPriceMa200w": true,
     "signalPriceRealized": true,
@@ -52238,11 +52238,11 @@
     "signalSthSopr": false,
     "signalSthMvrv": false,
     "signalSthGroup": false,
-    "signalReserveRiskV4": true,
-    "signalMvrvZscoreCore": true,
-    "signalNupl": true,
-    "signalNuplCore": true,
-    "signalValuationBlendV6": true,
+    "signalReserveRiskV4": false,
+    "signalMvrvZscoreCore": false,
+    "signalNupl": false,
+    "signalNuplCore": false,
+    "signalValuationBlendV6": false,
     "signalLthMvrv": true,
     "signalLthSopr": true,
     "signalSthSoprTrigger": false,
@@ -52250,23 +52250,23 @@
     "signalPuell": true,
     "signalCount": 4,
     "activeIndicatorCount": 5,
-    "signalCountV4": 6,
-    "activeIndicatorCountV4": 7,
-    "signalCountV6": 6,
+    "signalCountV4": 5,
+    "activeIndicatorCountV4": 6,
+    "signalCountV6": 4,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 2,
     "scorePriceRealized": 1,
     "scoreReserveRisk": 2,
-    "scoreReserveRiskV4": 1,
+    "scoreReserveRiskV4": 0,
     "scoreReserveRiskPrimary": 2,
     "scoreReserveRiskReplacement": 1,
     "scoreLthMvrv": 1,
     "scoreLthSopr": 2,
-    "scoreMvrvZscore": 1,
-    "scoreMvrvZscoreCore": 1,
-    "scoreNupl": 2,
-    "scoreNuplCore": 2,
-    "valuationBlendScoreV6": 2,
+    "scoreMvrvZscore": 0,
+    "scoreMvrvZscoreCore": 0,
+    "scoreNupl": 0,
+    "scoreNuplCore": 0,
+    "valuationBlendScoreV6": 0,
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
@@ -52276,34 +52276,34 @@
     "signalScoreV2Min3d": 6.0,
     "signalConfirmed3d": true,
     "signalBandV2": "accumulate",
-    "valuationScore": 5,
-    "maxValuationScore": 8,
+    "valuationScore": 4,
+    "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
     "confirmationScore": 3,
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 8,
-    "maxTotalScoreV4": 14,
+    "totalScoreV4": 7,
+    "maxTotalScoreV4": 12,
     "totalScoreV4Min3d": 6.0,
     "signalConfirmed3dV4": false,
-    "signalBandV4": "focus",
-    "valuationScoreV6": 6,
+    "signalBandV4": "accumulate",
+    "valuationScoreV6": 3,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 3,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 9,
+    "totalScoreV6": 6,
     "maxTotalScoreV6": 14,
     "totalScoreV6Min3d": 5.0,
     "signalConfirmed3dV6": false,
-    "signalBandV6": "accumulate",
-    "signalConfidence": 0.6357,
-    "signalConfidenceV6": 0.6714,
-    "dataFreshnessScore": 1.0,
-    "dataFreshnessScoreV6": 1.0,
+    "signalBandV6": "focus",
+    "signalConfidence": 0.4042,
+    "signalConfidenceV6": 0.2893,
+    "dataFreshnessScore": 0.875,
+    "dataFreshnessScoreV6": 0.75,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017842,
@@ -52337,9 +52337,9 @@
     "signalsV6": {
       "priceMa200w": true,
       "priceRealized": true,
-      "mvrvZscore": true,
-      "nupl": true,
-      "valuationBlend": true,
+      "mvrvZscore": false,
+      "nupl": false,
+      "valuationBlend": false,
       "sthMvrv": false,
       "sthSoprTrigger": false,
       "lthMvrv": true,
@@ -52353,12 +52353,15 @@
     "reserveRiskLagDays": 0,
     "reserveRiskPrimaryLagDays": -1461,
     "reserveRiskReplacementLagDays": 0,
-    "reserveRiskSourceModeV4": "compat_mvrv_zscore",
+    "reserveRiskSourceModeV4": "inactive",
     "reserveRiskSoftFallbackActive": false,
     "reserveRiskFallbackLagDaysV4": null,
-    "fallbackMode": "none",
-    "fallbackModeV6": "none",
-    "staleIndicators": [],
+    "fallbackMode": "mvrv_zscore_inactive",
+    "fallbackModeV6": "valuation_metrics_inactive",
+    "staleIndicators": [
+      "mvrvZscore",
+      "nupl"
+    ],
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
     "scoringModelVersion": "core8_independent_valuation_current",
@@ -52369,8 +52372,8 @@
       "reserve_risk": "2022-10-23",
       "lth_mvrv": "2022-10-23",
       "lth_sopr": "2022-10-23",
-      "mvrv_zscore": "2022-10-23",
-      "nupl": "2022-10-23",
+      "mvrv_zscore": null,
+      "nupl": null,
       "sth_sopr": "2022-10-23",
       "sth_mvrv": "2022-10-23",
       "puell": "2022-10-23"
@@ -52381,8 +52384,8 @@
       "reserveRisk": "2022-10-23",
       "lthMvrv": "2022-10-23",
       "lthSopr": "2022-10-23",
-      "mvrvZscore": "2022-10-23",
-      "nupl": "2022-10-23",
+      "mvrvZscore": null,
+      "nupl": null,
       "sthSopr": "2022-10-23",
       "sthMvrv": "2022-10-23",
       "puell": "2022-10-23"
@@ -52399,11 +52402,11 @@
     "reserveRisk": 0.0005106322,
     "lthMvrv": 0.9252,
     "lthSopr": 0.6571836479,
-    "lthSoprMa3": 0.6346051818581541,
+    "lthSoprMa3": 0.6379694052840389,
     "mvrvZscore": -0.1243,
     "nupl": -0.0912,
     "sthSopr": 0.9901009197,
-    "sthSoprMa3": 0.9915976872444673,
+    "sthSoprMa3": 0.9952740503833674,
     "sthMvrv": 0.904,
     "puellMultiple": 0.5064,
     "signalPriceMa200w": true,
@@ -52573,11 +52576,11 @@
     "reserveRisk": 0.0005309169,
     "lthMvrv": 0.9661,
     "lthSopr": 1.1099533929,
-    "lthSoprMa3": 0.7949716163000001,
+    "lthSoprMa3": 0.798335839725885,
     "mvrvZscore": -0.0721,
     "nupl": -0.0505,
     "sthSopr": 0.9980942936,
-    "sthSoprMa3": 0.9918291225666672,
+    "sthSoprMa3": 0.9955054857055673,
     "sthMvrv": 0.9446,
     "puellMultiple": 0.46,
     "signalPriceMa200w": true,
@@ -52634,7 +52637,7 @@
     "maxAuxiliaryScore": 2,
     "totalScoreV4": 8,
     "maxTotalScoreV4": 14,
-    "totalScoreV4Min3d": 8.0,
+    "totalScoreV4Min3d": 7.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "focus",
     "valuationScoreV6": 7,
@@ -52645,11 +52648,11 @@
     "maxConfirmationScoreV6": 4,
     "totalScoreV6": 9,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 9.0,
-    "signalConfirmed3dV6": true,
+    "totalScoreV6Min3d": 6.0,
+    "signalConfirmed3dV6": false,
     "signalBandV6": "accumulate",
     "signalConfidence": 0.6357,
-    "signalConfidenceV6": 0.7714,
+    "signalConfidenceV6": 0.6714,
     "dataFreshnessScore": 1.0,
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
@@ -52747,7 +52750,7 @@
     "reserveRisk": 0.0005463521,
     "lthMvrv": 0.991,
     "lthSopr": 0.5569325104,
-    "lthSoprMa3": 0.7746898504,
+    "lthSoprMa3": 0.7746898504000003,
     "mvrvZscore": -0.0237,
     "nupl": -0.0156,
     "sthSopr": 1.0015754557,
@@ -54059,7 +54062,7 @@
       },
       "lthSopr": {
         "trigger": 0.8121523110742165,
-        "deep": 0.6382130766609672
+        "deep": 0.6382765950891887
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -54233,7 +54236,7 @@
       },
       "lthSopr": {
         "trigger": 0.8121523110742165,
-        "deep": 0.6382130766609672
+        "deep": 0.6382765950891887
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -54407,7 +54410,7 @@
       },
       "lthSopr": {
         "trigger": 0.8121523110742165,
-        "deep": 0.6382130766609672
+        "deep": 0.6382765950891887
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -54581,7 +54584,7 @@
       },
       "lthSopr": {
         "trigger": 0.8123445646848858,
-        "deep": 0.6382130766609672
+        "deep": 0.6382765950891887
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -54755,7 +54758,7 @@
       },
       "lthSopr": {
         "trigger": 0.8128535880920188,
-        "deep": 0.6382130766609672
+        "deep": 0.6382765950891887
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -54929,7 +54932,7 @@
       },
       "lthSopr": {
         "trigger": 0.8135509386842671,
-        "deep": 0.6382130766609672
+        "deep": 0.6382765950891887
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -55103,7 +55106,7 @@
       },
       "lthSopr": {
         "trigger": 0.8128535880920188,
-        "deep": 0.6372179032226877
+        "deep": 0.6379058868558174
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -55277,7 +55280,7 @@
       },
       "lthSopr": {
         "trigger": 0.8123445646848858,
-        "deep": 0.6361189679954671
+        "deep": 0.6372179032226877
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -55451,7 +55454,7 @@
       },
       "lthSopr": {
         "trigger": 0.8121523110742165,
-        "deep": 0.6355457801402812
+        "deep": 0.6361189679954671
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -55625,7 +55628,7 @@
       },
       "lthSopr": {
         "trigger": 0.8120075843415704,
-        "deep": 0.6344837098594079
+        "deep": 0.635424308141535
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -56321,7 +56324,7 @@
       },
       "lthSopr": {
         "trigger": 0.807869580246166,
-        "deep": 0.6318905265363788
+        "deep": 0.6319367640171738
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -56495,7 +56498,7 @@
       },
       "lthSopr": {
         "trigger": 0.806509527728276,
-        "deep": 0.6310747812796437
+        "deep": 0.6316505935792293
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -56669,7 +56672,7 @@
       },
       "lthSopr": {
         "trigger": 0.8059810872059501,
-        "deep": 0.6296290938371095
+        "deep": 0.6310747812796437
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -56843,7 +56846,7 @@
       },
       "lthSopr": {
         "trigger": 0.8046113621318112,
-        "deep": 0.6294419921612238
+        "deep": 0.6296290938371095
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -57017,7 +57020,7 @@
       },
       "lthSopr": {
         "trigger": 0.8039902672526711,
-        "deep": 0.6284433952828035
+        "deep": 0.6294419921612238
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -57191,7 +57194,7 @@
       },
       "lthSopr": {
         "trigger": 0.8032146925160554,
-        "deep": 0.6282938200085798
+        "deep": 0.6284046076572436
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -59626,7 +59629,7 @@
         "deep": 0.796195615
       },
       "lthSopr": {
-        "trigger": 0.800548012823604,
+        "trigger": 0.8006563175826849,
         "deep": 0.6168591383879546
       },
       "mvrvZscoreCore": {
@@ -59800,7 +59803,7 @@
         "deep": 0.796231705
       },
       "lthSopr": {
-        "trigger": 0.7975788477822187,
+        "trigger": 0.7982275349668041,
         "deep": 0.6165082673391785
       },
       "mvrvZscoreCore": {
@@ -59974,7 +59977,7 @@
         "deep": 0.796714535
       },
       "lthSopr": {
-        "trigger": 0.7966826833976849,
+        "trigger": 0.7975788477822187,
         "deep": 0.6158829932429705
       },
       "mvrvZscoreCore": {
@@ -60148,7 +60151,7 @@
         "deep": 0.79706203
       },
       "lthSopr": {
-        "trigger": 0.7963432632320602,
+        "trigger": 0.7966826833976849,
         "deep": 0.6149829527542037
       },
       "mvrvZscoreCore": {
@@ -60322,7 +60325,7 @@
         "deep": 0.7973249
       },
       "lthSopr": {
-        "trigger": 0.7954217242466669,
+        "trigger": 0.7963432632320602,
         "deep": 0.6143490559020615
       },
       "mvrvZscoreCore": {
@@ -60496,7 +60499,7 @@
         "deep": 0.797371635
       },
       "lthSopr": {
-        "trigger": 0.7944418295705541,
+        "trigger": 0.7948919375172209,
         "deep": 0.6142832580639597
       },
       "mvrvZscoreCore": {
