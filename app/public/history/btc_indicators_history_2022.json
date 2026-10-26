@@ -52577,14 +52577,14 @@
     "priceMa200wRatio": 0.8476535033696477,
     "priceRealizedRatio": 0.9511953129002347,
     "reserveRisk": 0.00102,
-    "lthMvrv": 0.9661,
-    "lthSopr": 1.1099533929,
-    "lthSoprMa3": 0.7898636257860341,
-    "mvrvZscore": -0.0721,
-    "nupl": -0.0505,
-    "sthSopr": 0.9980942936,
-    "sthSoprMa3": 0.9981206697750172,
-    "sthMvrv": 0.9446,
+    "lthMvrv": 0.952462,
+    "lthSopr": 0.6933816553203916,
+    "lthSoprMa3": 0.6510063799261646,
+    "mvrvZscore": null,
+    "nupl": null,
+    "sthSopr": 1.002494935954175,
+    "sthSoprMa3": 0.9995875505597422,
+    "sthMvrv": 0.954527,
     "puellMultiple": 0.5248857143,
     "signalPriceMa200w": true,
     "signalPriceRealized": true,
@@ -52592,11 +52592,11 @@
     "signalSthSopr": false,
     "signalSthMvrv": false,
     "signalSthGroup": false,
-    "signalReserveRiskV4": true,
-    "signalMvrvZscoreCore": true,
-    "signalNupl": true,
-    "signalNuplCore": true,
-    "signalValuationBlendV6": true,
+    "signalReserveRiskV4": false,
+    "signalMvrvZscoreCore": false,
+    "signalNupl": false,
+    "signalNuplCore": false,
+    "signalValuationBlendV6": false,
     "signalLthMvrv": true,
     "signalLthSopr": true,
     "signalSthSoprTrigger": false,
@@ -52604,23 +52604,23 @@
     "signalPuell": true,
     "signalCount": 4,
     "activeIndicatorCount": 5,
-    "signalCountV4": 6,
-    "activeIndicatorCountV4": 7,
-    "signalCountV6": 6,
+    "signalCountV4": 5,
+    "activeIndicatorCountV4": 6,
+    "signalCountV6": 4,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 2,
     "scorePriceRealized": 1,
     "scoreReserveRisk": 2,
-    "scoreReserveRiskV4": 1,
+    "scoreReserveRiskV4": 0,
     "scoreReserveRiskPrimary": 2,
     "scoreReserveRiskReplacement": 1,
     "scoreLthMvrv": 1,
     "scoreLthSopr": 1,
-    "scoreMvrvZscore": 1,
-    "scoreMvrvZscoreCore": 1,
-    "scoreNupl": 2,
-    "scoreNuplCore": 2,
-    "valuationBlendScoreV6": 2,
+    "scoreMvrvZscore": 0,
+    "scoreMvrvZscoreCore": 0,
+    "scoreNupl": 0,
+    "scoreNuplCore": 0,
+    "valuationBlendScoreV6": 0,
     "scoreSthSopr": 0,
     "scoreSthMvrv": 0,
     "scoreSthGroup": 0,
@@ -52630,34 +52630,34 @@
     "signalScoreV2Min3d": 6.0,
     "signalConfirmed3d": true,
     "signalBandV2": "accumulate",
-    "valuationScore": 5,
-    "maxValuationScore": 8,
+    "valuationScore": 4,
+    "maxValuationScore": 6,
     "triggerScore": 0,
     "maxTriggerScore": 2,
     "confirmationScore": 2,
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 7,
-    "maxTotalScoreV4": 14,
-    "totalScoreV4Min3d": 7.0,
+    "totalScoreV4": 6,
+    "maxTotalScoreV4": 12,
+    "totalScoreV4Min3d": 6.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "focus",
-    "valuationScoreV6": 6,
+    "valuationScoreV6": 3,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
     "confirmationScoreV6": 2,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 8,
+    "totalScoreV6": 5,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 6.0,
+    "totalScoreV6Min3d": 5.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "focus",
-    "signalConfidence": 0.6,
-    "signalConfidenceV6": 0.6357,
-    "dataFreshnessScore": 1.0,
-    "dataFreshnessScoreV6": 1.0,
+    "signalConfidence": 0.3625,
+    "signalConfidenceV6": 0.2536,
+    "dataFreshnessScore": 0.875,
+    "dataFreshnessScoreV6": 0.75,
     "thresholds": {
       "reserveRisk": {
         "trigger": 0.0017798,
@@ -52691,9 +52691,9 @@
     "signalsV6": {
       "priceMa200w": true,
       "priceRealized": true,
-      "mvrvZscore": true,
-      "nupl": true,
-      "valuationBlend": true,
+      "mvrvZscore": false,
+      "nupl": false,
+      "valuationBlend": false,
       "sthMvrv": false,
       "sthSoprTrigger": false,
       "lthMvrv": true,
@@ -52707,12 +52707,15 @@
     "reserveRiskLagDays": 0,
     "reserveRiskPrimaryLagDays": -1461,
     "reserveRiskReplacementLagDays": 0,
-    "reserveRiskSourceModeV4": "compat_mvrv_zscore",
+    "reserveRiskSourceModeV4": "inactive",
     "reserveRiskSoftFallbackActive": false,
     "reserveRiskFallbackLagDaysV4": null,
-    "fallbackMode": "none",
-    "fallbackModeV6": "none",
-    "staleIndicators": [],
+    "fallbackMode": "mvrv_zscore_inactive",
+    "fallbackModeV6": "valuation_metrics_inactive",
+    "staleIndicators": [
+      "mvrvZscore",
+      "nupl"
+    ],
     "indicatorSet": "core8_bottom_independent_valuation_current",
     "coreIndicatorSet": "core8_bottom_independent_valuation_current",
     "scoringModelVersion": "core8_independent_valuation_current",
@@ -52723,8 +52726,8 @@
       "reserve_risk": "2022-10-25",
       "lth_mvrv": "2022-10-25",
       "lth_sopr": "2022-10-25",
-      "mvrv_zscore": "2022-10-25",
-      "nupl": "2022-10-25",
+      "mvrv_zscore": null,
+      "nupl": null,
       "sth_sopr": "2022-10-25",
       "sth_mvrv": "2022-10-25",
       "puell": "2022-10-25"
@@ -52735,8 +52738,8 @@
       "reserveRisk": "2022-10-25",
       "lthMvrv": "2022-10-25",
       "lthSopr": "2022-10-25",
-      "mvrvZscore": "2022-10-25",
-      "nupl": "2022-10-25",
+      "mvrvZscore": null,
+      "nupl": null,
       "sthSopr": "2022-10-25",
       "sthMvrv": "2022-10-25",
       "puell": "2022-10-25"
@@ -52753,11 +52756,11 @@
     "reserveRisk": 0.0005463521,
     "lthMvrv": 0.991,
     "lthSopr": 0.5569325104,
-    "lthSoprMa3": 0.7662176364601493,
+    "lthSoprMa3": 0.6273603906002799,
     "mvrvZscore": -0.0237,
     "nupl": -0.0156,
     "sthSopr": 1.0015754557,
-    "sthSoprMa3": 0.9992054070694506,
+    "sthSoprMa3": 1.0006722878541756,
     "sthMvrv": 0.964,
     "puellMultiple": 0.6152,
     "signalPriceMa200w": true,
@@ -52789,7 +52792,7 @@
     "scoreReserveRiskPrimary": 2,
     "scoreReserveRiskReplacement": 1,
     "scoreLthMvrv": 1,
-    "scoreLthSopr": 1,
+    "scoreLthSopr": 2,
     "scoreMvrvZscore": 1,
     "scoreMvrvZscoreCore": 1,
     "scoreNupl": 2,
@@ -52808,28 +52811,28 @@
     "maxValuationScore": 8,
     "triggerScore": 0,
     "maxTriggerScore": 2,
-    "confirmationScore": 2,
+    "confirmationScore": 3,
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 5,
+    "totalScoreV4": 6,
     "maxTotalScoreV4": 14,
-    "totalScoreV4Min3d": 5.0,
+    "totalScoreV4Min3d": 6.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "focus",
     "valuationScoreV6": 4,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
-    "confirmationScoreV6": 2,
+    "confirmationScoreV6": 3,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 6,
+    "totalScoreV6": 7,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 6.0,
+    "totalScoreV6Min3d": 5.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "focus",
-    "signalConfidence": 0.5286,
-    "signalConfidenceV6": 0.5643,
+    "signalConfidence": 0.5643,
+    "signalConfidenceV6": 0.6,
     "dataFreshnessScore": 1.0,
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
@@ -52927,11 +52930,11 @@
     "reserveRisk": 0.0005359063,
     "lthMvrv": 0.975,
     "lthSopr": 0.9628622929,
-    "lthSoprMa3": 0.8765827320666668,
+    "lthSoprMa3": 0.7377254862067973,
     "mvrvZscore": -0.0596,
     "nupl": -0.04,
     "sthSopr": 1.0069289124,
-    "sthSoprMa3": 1.0021995539000006,
+    "sthSoprMa3": 1.0036664346847257,
     "sthMvrv": 0.9499,
     "puellMultiple": 0.5424,
     "signalPriceMa200w": true,
@@ -52946,15 +52949,15 @@
     "signalNuplCore": true,
     "signalValuationBlendV6": true,
     "signalLthMvrv": true,
-    "signalLthSopr": false,
+    "signalLthSopr": true,
     "signalSthSoprTrigger": false,
     "signalSthSoprAux": false,
     "signalPuell": true,
     "signalCount": 4,
     "activeIndicatorCount": 5,
-    "signalCountV4": 5,
+    "signalCountV4": 6,
     "activeIndicatorCountV4": 7,
-    "signalCountV6": 5,
+    "signalCountV6": 6,
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 1,
     "scorePriceRealized": 1,
@@ -52963,7 +52966,7 @@
     "scoreReserveRiskPrimary": 2,
     "scoreReserveRiskReplacement": 1,
     "scoreLthMvrv": 1,
-    "scoreLthSopr": 0,
+    "scoreLthSopr": 1,
     "scoreMvrvZscore": 1,
     "scoreMvrvZscoreCore": 1,
     "scoreNupl": 2,
@@ -52982,28 +52985,28 @@
     "maxValuationScore": 8,
     "triggerScore": 0,
     "maxTriggerScore": 2,
-    "confirmationScore": 1,
+    "confirmationScore": 2,
     "maxConfirmationScore": 4,
     "auxiliaryScore": 0,
     "maxAuxiliaryScore": 2,
-    "totalScoreV4": 5,
+    "totalScoreV4": 6,
     "maxTotalScoreV4": 14,
-    "totalScoreV4Min3d": 5.0,
+    "totalScoreV4Min3d": 6.0,
     "signalConfirmed3dV4": false,
     "signalBandV4": "focus",
     "valuationScoreV6": 5,
     "maxValuationScoreV6": 8,
     "triggerScoreV6": 0,
     "maxTriggerScoreV6": 2,
-    "confirmationScoreV6": 1,
+    "confirmationScoreV6": 2,
     "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 6,
+    "totalScoreV6": 7,
     "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 6.0,
+    "totalScoreV6Min3d": 5.0,
     "signalConfirmed3dV6": false,
     "signalBandV6": "focus",
-    "signalConfidence": 0.4786,
-    "signalConfidenceV6": 0.5143,
+    "signalConfidence": 0.5643,
+    "signalConfidenceV6": 0.6,
     "dataFreshnessScore": 1.0,
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
@@ -53021,7 +53024,7 @@
       },
       "lthSopr": {
         "trigger": 0.8120075843415704,
-        "deep": 0.6400332682980505
+        "deep": 0.6390138466809367
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -53045,7 +53048,7 @@
       "sthMvrv": false,
       "sthSoprTrigger": false,
       "lthMvrv": true,
-      "lthSopr": false,
+      "lthSopr": true,
       "puell": true
     },
     "reserveRiskActive": true,
@@ -53194,8 +53197,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8121523110742165,
-        "deep": 0.6400332682980505
+        "trigger": 0.8120075843415704,
+        "deep": 0.6390138466809367
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -53368,8 +53371,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8121523110742165,
-        "deep": 0.6400332682980505
+        "trigger": 0.8120075843415704,
+        "deep": 0.6390138466809367
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -53449,7 +53452,7 @@
     "reserveRisk": 0.0005407203,
     "lthMvrv": 0.9836,
     "lthSopr": 0.5083290471,
-    "lthSoprMa3": 0.6007640685666668,
+    "lthSoprMa3": 0.6007640685666669,
     "mvrvZscore": -0.0357,
     "nupl": -0.0228,
     "sthSopr": 1.0049044671,
@@ -53542,8 +53545,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8121523110742165,
-        "deep": 0.6400332682980505
+        "trigger": 0.8120075843415704,
+        "deep": 0.6390138466809367
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -53627,7 +53630,7 @@
     "mvrvZscore": -0.0442,
     "nupl": -0.0291,
     "sthSopr": 1.012660909,
-    "sthSoprMa3": 1.0043440673000008,
+    "sthSoprMa3": 1.0043440673000006,
     "sthMvrv": 0.9552,
     "puellMultiple": 0.6993,
     "signalPriceMa200w": true,
@@ -53716,8 +53719,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8121523110742165,
-        "deep": 0.6390138466809367
+        "trigger": 0.8120075843415704,
+        "deep": 0.6383445563630784
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -53801,7 +53804,7 @@
     "mvrvZscore": -0.0442,
     "nupl": -0.0298,
     "sthSopr": 1.0053971129,
-    "sthSoprMa3": 1.0076541630000007,
+    "sthSoprMa3": 1.0076541630000004,
     "sthMvrv": 0.9564,
     "puellMultiple": 0.584,
     "signalPriceMa200w": true,
@@ -53890,8 +53893,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8121523110742165,
-        "deep": 0.6383445563630784
+        "trigger": 0.8120075843415704,
+        "deep": 0.6382130766609672
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -53975,7 +53978,7 @@
     "mvrvZscore": -0.0672,
     "nupl": -0.0456,
     "sthSopr": 0.9916980436,
-    "sthSoprMa3": 1.003252021833334,
+    "sthSoprMa3": 1.0032520218333338,
     "sthMvrv": 0.9413,
     "puellMultiple": 0.4948,
     "signalPriceMa200w": true,
@@ -54064,8 +54067,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8121523110742165,
-        "deep": 0.6382130766609672
+        "trigger": 0.8120075843415704,
+        "deep": 0.6372179032226877
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -54238,8 +54241,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8121523110742165,
-        "deep": 0.6382130766609672
+        "trigger": 0.8120075843415704,
+        "deep": 0.6372179032226877
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -54319,11 +54322,11 @@
     "reserveRisk": 0.0005553417,
     "lthMvrv": 1.0106,
     "lthSopr": 1.5513486621,
-    "lthSoprMa3": 1.0754734363000003,
+    "lthSoprMa3": 1.0754734363,
     "mvrvZscore": 0.0015,
     "nupl": 0.002,
     "sthSopr": 0.9936550878,
-    "sthSoprMa3": 0.9954990717333341,
+    "sthSoprMa3": 0.995499071733334,
     "sthMvrv": 0.9905,
     "puellMultiple": 0.533,
     "signalPriceMa200w": true,
@@ -54412,8 +54415,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8121523110742165,
-        "deep": 0.6382130766609672
+        "trigger": 0.8120075843415704,
+        "deep": 0.6372179032226877
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -54497,7 +54500,7 @@
     "mvrvZscore": 0.0105,
     "nupl": 0.0091,
     "sthSopr": 0.9899376588,
-    "sthSoprMa3": 0.9949122768000008,
+    "sthSoprMa3": 0.9949122768000006,
     "sthMvrv": 0.9961,
     "puellMultiple": 0.646,
     "signalPriceMa200w": true,
@@ -54586,8 +54589,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8123445646848858,
-        "deep": 0.6382130766609672
+        "trigger": 0.8121523110742165,
+        "deep": 0.6372179032226877
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -54667,11 +54670,11 @@
     "reserveRisk": 0.0005535201,
     "lthMvrv": 1.0088,
     "lthSopr": 0.5303810607,
-    "lthSoprMa3": 0.9698838777666667,
+    "lthSoprMa3": 0.9698838777666668,
     "mvrvZscore": -0.0127,
     "nupl": -0.0091,
     "sthSopr": 0.9831496286,
-    "sthSoprMa3": 0.9889141250666674,
+    "sthSoprMa3": 0.9889141250666672,
     "sthMvrv": 0.9895,
     "puellMultiple": 0.5855,
     "signalPriceMa200w": true,
@@ -54760,8 +54763,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8128535880920188,
-        "deep": 0.6382130766609672
+        "trigger": 0.8123445646848858,
+        "deep": 0.6372179032226877
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -54845,7 +54848,7 @@
     "mvrvZscore": -0.0353,
     "nupl": -0.022,
     "sthSopr": 1.0152326454,
-    "sthSoprMa3": 0.9961066442666674,
+    "sthSoprMa3": 0.9961066442666672,
     "sthMvrv": 0.962,
     "puellMultiple": 0.6053,
     "signalPriceMa200w": true,
@@ -54934,8 +54937,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8135509386842671,
-        "deep": 0.6382130766609672
+        "trigger": 0.8128535880920188,
+        "deep": 0.6372179032226877
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -55019,7 +55022,7 @@
     "mvrvZscore": -0.1755,
     "nupl": -0.1318,
     "sthSopr": 1.0131233908,
-    "sthSoprMa3": 1.0038352216000008,
+    "sthSoprMa3": 1.0038352216000006,
     "sthMvrv": 0.8746,
     "puellMultiple": 0.648,
     "signalPriceMa200w": true,
@@ -55108,8 +55111,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8128535880920188,
-        "deep": 0.6372179032226877
+        "trigger": 0.8123445646848858,
+        "deep": 0.6361189679954671
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -55282,8 +55285,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8123445646848858,
-        "deep": 0.6361189679954671
+        "trigger": 0.8121523110742165,
+        "deep": 0.635424308141535
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -55456,8 +55459,8 @@
         "deep": 0.79190717
       },
       "lthSopr": {
-        "trigger": 0.8121523110742165,
-        "deep": 0.635424308141535
+        "trigger": 0.8120075843415704,
+        "deep": 0.6333225895508283
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -55541,7 +55544,7 @@
     "mvrvZscore": -0.2753,
     "nupl": -0.2216,
     "sthSopr": 0.9221661208,
-    "sthSoprMa3": 0.9604944591666674,
+    "sthSoprMa3": 0.9604944591666672,
     "sthMvrv": 0.8242,
     "puellMultiple": 0.47,
     "signalPriceMa200w": true,
@@ -55630,8 +55633,8 @@
         "deep": 0.79190717
       },
       "lthSopr": {
-        "trigger": 0.8120075843415704,
-        "deep": 0.6333225895508283
+        "trigger": 0.8115191001414086,
+        "deep": 0.6326577624758325
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -55715,7 +55718,7 @@
     "mvrvZscore": -0.2819,
     "nupl": -0.2343,
     "sthSopr": 0.9739767741,
-    "sthSoprMa3": 0.9543802683333341,
+    "sthSoprMa3": 0.9543802683333339,
     "sthMvrv": 0.8244,
     "puellMultiple": 0.58,
     "signalPriceMa200w": true,
@@ -55804,8 +55807,8 @@
         "deep": 0.79190717
       },
       "lthSopr": {
-        "trigger": 0.8115191001414086,
-        "deep": 0.6326577624758325
+        "trigger": 0.8100470959986187,
+        "deep": 0.6321511213623998
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -55889,7 +55892,7 @@
     "mvrvZscore": -0.3124,
     "nupl": -0.2709,
     "sthSopr": 0.9714215369,
-    "sthSoprMa3": 0.9558548106000009,
+    "sthSoprMa3": 0.9558548106000005,
     "sthMvrv": 0.8089,
     "puellMultiple": 0.4448,
     "signalPriceMa200w": true,
@@ -55978,8 +55981,8 @@
         "deep": 0.79190717
       },
       "lthSopr": {
-        "trigger": 0.8100470959986187,
-        "deep": 0.6321511213623998
+        "trigger": 0.8095002828793483,
+        "deep": 0.6319367640171738
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -56063,7 +56066,7 @@
     "mvrvZscore": -0.2886,
     "nupl": -0.2465,
     "sthSopr": 0.9447443731,
-    "sthSoprMa3": 0.9633808947000008,
+    "sthSoprMa3": 0.9633808947000007,
     "sthMvrv": 0.813,
     "puellMultiple": 0.4198,
     "signalPriceMa200w": true,
@@ -56152,8 +56155,8 @@
         "deep": 0.79190717
       },
       "lthSopr": {
-        "trigger": 0.8095002828793483,
-        "deep": 0.6319367640171738
+        "trigger": 0.807869580246166,
+        "deep": 0.6316505935792293
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -56237,7 +56240,7 @@
     "mvrvZscore": -0.2703,
     "nupl": -0.2244,
     "sthSopr": 0.9414414922,
-    "sthSoprMa3": 0.9525358007333341,
+    "sthSoprMa3": 0.952535800733334,
     "sthMvrv": 0.84,
     "puellMultiple": 0.5444,
     "signalPriceMa200w": true,
@@ -56326,8 +56329,8 @@
         "deep": 0.79190717
       },
       "lthSopr": {
-        "trigger": 0.807869580246166,
-        "deep": 0.6316505935792293
+        "trigger": 0.806509527728276,
+        "deep": 0.6310747812796437
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -56411,7 +56414,7 @@
     "mvrvZscore": -0.2807,
     "nupl": -0.2384,
     "sthSopr": 0.9420668806,
-    "sthSoprMa3": 0.9427509153000008,
+    "sthSoprMa3": 0.9427509153000005,
     "sthMvrv": 0.8363,
     "puellMultiple": 0.5249,
     "signalPriceMa200w": true,
@@ -56500,8 +56503,8 @@
         "deep": 0.79190717
       },
       "lthSopr": {
-        "trigger": 0.806509527728276,
-        "deep": 0.6310747812796437
+        "trigger": 0.8059810872059501,
+        "deep": 0.6296290938371095
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -56585,7 +56588,7 @@
     "mvrvZscore": -0.2736,
     "nupl": -0.2314,
     "sthSopr": 0.9239551993,
-    "sthSoprMa3": 0.9358211907000008,
+    "sthSoprMa3": 0.9358211907000006,
     "sthMvrv": 0.8454,
     "puellMultiple": 0.4818,
     "signalPriceMa200w": true,
@@ -56674,8 +56677,8 @@
         "deep": 0.79190717
       },
       "lthSopr": {
-        "trigger": 0.8059810872059501,
-        "deep": 0.6296290938371095
+        "trigger": 0.8046113621318112,
+        "deep": 0.6295461407934883
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -56759,7 +56762,7 @@
     "mvrvZscore": -0.2588,
     "nupl": -0.2167,
     "sthSopr": 0.9667373169,
-    "sthSoprMa3": 0.9442531322666673,
+    "sthSoprMa3": 0.9442531322666672,
     "sthMvrv": 0.8508,
     "puellMultiple": 0.4912,
     "signalPriceMa200w": true,
@@ -56848,8 +56851,8 @@
         "deep": 0.79190717
       },
       "lthSopr": {
-        "trigger": 0.8046113621318112,
-        "deep": 0.6295461407934883
+        "trigger": 0.8039902672526711,
+        "deep": 0.6293930427119238
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -56933,7 +56936,7 @@
     "mvrvZscore": -0.2557,
     "nupl": -0.2157,
     "sthSopr": 0.9841185328,
-    "sthSoprMa3": 0.9582703496666674,
+    "sthSoprMa3": 0.9582703496666672,
     "sthMvrv": 0.8558,
     "puellMultiple": 0.518,
     "signalPriceMa200w": true,
@@ -57022,8 +57025,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8039902672526711,
-        "deep": 0.6293930427119238
+        "trigger": 0.8032146925160554,
+        "deep": 0.6284046076572436
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -57107,7 +57110,7 @@
     "mvrvZscore": -0.2861,
     "nupl": -0.247,
     "sthSopr": 0.9721448485,
-    "sthSoprMa3": 0.9743335660666674,
+    "sthSoprMa3": 0.9743335660666673,
     "sthMvrv": 0.8358,
     "puellMultiple": 0.526,
     "signalPriceMa200w": true,
@@ -57196,8 +57199,8 @@
         "deep": 0.7925173
       },
       "lthSopr": {
-        "trigger": 0.8032146925160554,
-        "deep": 0.6284046076572436
+        "trigger": 0.802944671433978,
+        "deep": 0.6278862973007147
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -57281,7 +57284,7 @@
     "mvrvZscore": -0.3163,
     "nupl": -0.2839,
     "sthSopr": 0.9733766694,
-    "sthSoprMa3": 0.9765466835666673,
+    "sthSoprMa3": 0.9765466835666672,
     "sthMvrv": 0.8116,
     "puellMultiple": 0.4415,
     "signalPriceMa200w": true,
@@ -57370,8 +57373,8 @@
         "deep": 0.7932309049999999
       },
       "lthSopr": {
-        "trigger": 0.8032146925160554,
-        "deep": 0.6278340386310887
+        "trigger": 0.802944671433978,
+        "deep": 0.6273081319306539
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -57544,7 +57547,7 @@
         "deep": 0.7938137700000001
       },
       "lthSopr": {
-        "trigger": 0.8032146925160554,
+        "trigger": 0.802944671433978,
         "deep": 0.626822109333182
       },
       "mvrvZscoreCore": {
@@ -57629,7 +57632,7 @@
     "mvrvZscore": -0.2594,
     "nupl": -0.2188,
     "sthSopr": 0.9456311718,
-    "sthSoprMa3": 0.955283458033334,
+    "sthSoprMa3": 0.9552834580333339,
     "sthMvrv": 0.8594,
     "puellMultiple": 0.4979,
     "signalPriceMa200w": true,
@@ -57718,7 +57721,7 @@
         "deep": 0.793873565
       },
       "lthSopr": {
-        "trigger": 0.8032146925160554,
+        "trigger": 0.802944671433978,
         "deep": 0.6266472083322692
       },
       "mvrvZscoreCore": {
@@ -57803,7 +57806,7 @@
     "mvrvZscore": -0.258,
     "nupl": -0.2188,
     "sthSopr": 0.9593815138,
-    "sthSoprMa3": 0.9506184061666675,
+    "sthSoprMa3": 0.9506184061666673,
     "sthMvrv": 0.8667,
     "puellMultiple": 0.4614,
     "signalPriceMa200w": true,
@@ -57892,7 +57895,7 @@
         "deep": 0.794101775
       },
       "lthSopr": {
-        "trigger": 0.8032146925160554,
+        "trigger": 0.802944671433978,
         "deep": 0.6266472083322692
       },
       "mvrvZscoreCore": {
@@ -57977,7 +57980,7 @@
     "mvrvZscore": -0.2612,
     "nupl": -0.224,
     "sthSopr": 0.9766189599,
-    "sthSoprMa3": 0.9605438818333342,
+    "sthSoprMa3": 0.960543881833334,
     "sthMvrv": 0.864,
     "puellMultiple": 0.4388,
     "signalPriceMa200w": true,
@@ -58066,7 +58069,7 @@
         "deep": 0.7941466699999999
       },
       "lthSopr": {
-        "trigger": 0.8032146925160554,
+        "trigger": 0.802944671433978,
         "deep": 0.6266472083322692
       },
       "mvrvZscoreCore": {
@@ -58151,7 +58154,7 @@
     "mvrvZscore": -0.2657,
     "nupl": -0.2273,
     "sthSopr": 0.9869506636,
-    "sthSoprMa3": 0.9743170457666674,
+    "sthSoprMa3": 0.9743170457666673,
     "sthMvrv": 0.8594,
     "puellMultiple": 0.3916,
     "signalPriceMa200w": true,
@@ -58240,7 +58243,7 @@
         "deep": 0.79446259
       },
       "lthSopr": {
-        "trigger": 0.8039902672526711,
+        "trigger": 0.8032146925160554,
         "deep": 0.6266472083322692
       },
       "mvrvZscoreCore": {
@@ -58414,7 +58417,7 @@
         "deep": 0.7944904049999999
       },
       "lthSopr": {
-        "trigger": 0.8039902672526711,
+        "trigger": 0.8032146925160554,
         "deep": 0.6263407340348367
       },
       "mvrvZscoreCore": {
@@ -58499,7 +58502,7 @@
     "mvrvZscore": -0.2801,
     "nupl": -0.2447,
     "sthSopr": 0.9841099509,
-    "sthSoprMa3": 0.9850170299000007,
+    "sthSoprMa3": 0.9850170299000006,
     "sthMvrv": 0.8524,
     "puellMultiple": 0.492,
     "signalPriceMa200w": true,
@@ -58588,7 +58591,7 @@
         "deep": 0.7946068
       },
       "lthSopr": {
-        "trigger": 0.8039902672526711,
+        "trigger": 0.8032146925160554,
         "deep": 0.6262913981204691
       },
       "mvrvZscoreCore": {
@@ -58673,7 +58676,7 @@
     "mvrvZscore": -0.2633,
     "nupl": -0.227,
     "sthSopr": 0.9610595421,
-    "sthSoprMa3": 0.9763866560666674,
+    "sthSoprMa3": 0.9763866560666673,
     "sthMvrv": 0.8686,
     "puellMultiple": 0.4709,
     "signalPriceMa200w": true,
@@ -58762,7 +58765,7 @@
         "deep": 0.79481365
       },
       "lthSopr": {
-        "trigger": 0.8039902672526711,
+        "trigger": 0.8032146925160554,
         "deep": 0.6258988202640212
       },
       "mvrvZscoreCore": {
@@ -58847,7 +58850,7 @@
     "mvrvZscore": -0.2113,
     "nupl": -0.1754,
     "sthSopr": 0.9738099385,
-    "sthSoprMa3": 0.972993143833334,
+    "sthSoprMa3": 0.9729931438333339,
     "sthMvrv": 0.9051,
     "puellMultiple": 0.5117,
     "signalPriceMa200w": true,
@@ -58936,7 +58939,7 @@
         "deep": 0.7953971049999999
       },
       "lthSopr": {
-        "trigger": 0.8039902672526711,
+        "trigger": 0.8032146925160554,
         "deep": 0.6235312437549343
       },
       "mvrvZscoreCore": {
@@ -59021,7 +59024,7 @@
     "mvrvZscore": -0.2258,
     "nupl": -0.1874,
     "sthSopr": 0.9853349311,
-    "sthSoprMa3": 0.9734014705666674,
+    "sthSoprMa3": 0.9734014705666673,
     "sthMvrv": 0.8973,
     "puellMultiple": 0.5762,
     "signalPriceMa200w": true,
@@ -59110,7 +59113,7 @@
         "deep": 0.795882165
       },
       "lthSopr": {
-        "trigger": 0.8032146925160554,
+        "trigger": 0.802944671433978,
         "deep": 0.6215380790588274
       },
       "mvrvZscoreCore": {
@@ -59284,7 +59287,7 @@
         "deep": 0.79594339
       },
       "lthSopr": {
-        "trigger": 0.802944671433978,
+        "trigger": 0.8025432616683082,
         "deep": 0.618754051365546
       },
       "mvrvZscoreCore": {
@@ -59369,7 +59372,7 @@
     "mvrvZscore": -0.2289,
     "nupl": -0.1933,
     "sthSopr": 0.9955584336,
-    "sthSoprMa3": 0.9929156007333341,
+    "sthSoprMa3": 0.9929156007333338,
     "sthMvrv": 0.8964,
     "puellMultiple": 0.4946,
     "signalPriceMa200w": true,
@@ -59458,7 +59461,7 @@
         "deep": 0.7961766
       },
       "lthSopr": {
-        "trigger": 0.8025432616683082,
+        "trigger": 0.800548012823604,
         "deep": 0.6182505360305108
       },
       "mvrvZscoreCore": {
@@ -59543,7 +59546,7 @@
     "mvrvZscore": -0.2126,
     "nupl": -0.1767,
     "sthSopr": 0.998352246,
-    "sthSoprMa3": 0.9972547057000006,
+    "sthSoprMa3": 0.9972547057000005,
     "sthMvrv": 0.9079,
     "puellMultiple": 0.5313,
     "signalPriceMa200w": true,
@@ -59632,7 +59635,7 @@
         "deep": 0.796195615
       },
       "lthSopr": {
-        "trigger": 0.800548012823604,
+        "trigger": 0.7975788477822187,
         "deep": 0.6168591383879546
       },
       "mvrvZscoreCore": {
@@ -59806,7 +59809,7 @@
         "deep": 0.796231705
       },
       "lthSopr": {
-        "trigger": 0.7975788477822187,
+        "trigger": 0.7966826833976849,
         "deep": 0.6165082673391785
       },
       "mvrvZscoreCore": {
@@ -59891,7 +59894,7 @@
     "mvrvZscore": -0.2108,
     "nupl": -0.1736,
     "sthSopr": 1.0083946306,
-    "sthSoprMa3": 0.9988957028333342,
+    "sthSoprMa3": 0.998895702833334,
     "sthMvrv": 0.9033,
     "puellMultiple": 0.5155,
     "signalPriceMa200w": true,
@@ -59980,7 +59983,7 @@
         "deep": 0.796714535
       },
       "lthSopr": {
-        "trigger": 0.7966826833976849,
+        "trigger": 0.7963432632320602,
         "deep": 0.6158829932429705
       },
       "mvrvZscoreCore": {
@@ -60065,7 +60068,7 @@
     "mvrvZscore": -0.2261,
     "nupl": -0.191,
     "sthSopr": 0.9870643968,
-    "sthSoprMa3": 0.9951330864333342,
+    "sthSoprMa3": 0.995133086433334,
     "sthMvrv": 0.8974,
     "puellMultiple": 0.6549,
     "signalPriceMa200w": true,
@@ -60154,7 +60157,7 @@
         "deep": 0.79706203
       },
       "lthSopr": {
-        "trigger": 0.7963432632320602,
+        "trigger": 0.7948919375172209,
         "deep": 0.6149829527542037
       },
       "mvrvZscoreCore": {
@@ -60239,7 +60242,7 @@
     "mvrvZscore": -0.1987,
     "nupl": -0.1638,
     "sthSopr": 0.9943423776,
-    "sthSoprMa3": 0.9966004683333342,
+    "sthSoprMa3": 0.9966004683333339,
     "sthMvrv": 0.9171,
     "puellMultiple": 0.6391,
     "signalPriceMa200w": true,
@@ -60328,7 +60331,7 @@
         "deep": 0.7973249
       },
       "lthSopr": {
-        "trigger": 0.7948919375172209,
+        "trigger": 0.7920276885848682,
         "deep": 0.6143490559020615
       },
       "mvrvZscoreCore": {
@@ -60502,7 +60505,7 @@
         "deep": 0.797371635
       },
       "lthSopr": {
-        "trigger": 0.7920276885848682,
+        "trigger": 0.7907906254102687,
         "deep": 0.6142832580639597
       },
       "mvrvZscoreCore": {
@@ -60587,7 +60590,7 @@
     "mvrvZscore": -0.2049,
     "nupl": -0.1691,
     "sthSopr": 0.9992286411,
-    "sthSoprMa3": 0.9910852625000007,
+    "sthSoprMa3": 0.9910852625000005,
     "sthMvrv": 0.9144,
     "puellMultiple": 0.6014,
     "signalPriceMa200w": true,
@@ -60676,7 +60679,7 @@
         "deep": 0.7974492350000001
       },
       "lthSopr": {
-        "trigger": 0.7907906254102687,
+        "trigger": 0.7901523944472195,
         "deep": 0.6138330337054376
       },
       "mvrvZscoreCore": {
@@ -60761,7 +60764,7 @@
     "mvrvZscore": -0.2066,
     "nupl": -0.1716,
     "sthSopr": 1.0000386829,
-    "sthSoprMa3": 0.9929840309333341,
+    "sthSoprMa3": 0.992984030933334,
     "sthMvrv": 0.9132,
     "puellMultiple": 0.5757,
     "signalPriceMa200w": true,
@@ -60850,7 +60853,7 @@
         "deep": 0.79751569
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6138330337054376
       },
       "mvrvZscoreCore": {
@@ -61024,7 +61027,7 @@
         "deep": 0.797881805
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6138330337054376
       },
       "mvrvZscoreCore": {
@@ -61109,7 +61112,7 @@
     "mvrvZscore": -0.1579,
     "nupl": -0.1252,
     "sthSopr": 0.984208053,
-    "sthSoprMa3": 0.9963766573666674,
+    "sthSoprMa3": 0.9963766573666671,
     "sthMvrv": 0.9492,
     "puellMultiple": 0.6625,
     "signalPriceMa200w": true,
@@ -61198,7 +61201,7 @@
         "deep": 0.7982539799999999
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6138330337054376
       },
       "mvrvZscoreCore": {
@@ -61372,7 +61375,7 @@
         "deep": 0.798599925
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6134881544190112
       },
       "mvrvZscoreCore": {
@@ -61457,7 +61460,7 @@
     "mvrvZscore": -0.1865,
     "nupl": -0.1511,
     "sthSopr": 1.0089518867,
-    "sthSoprMa3": 0.9983608311666674,
+    "sthSoprMa3": 0.9983608311666673,
     "sthMvrv": 0.9292,
     "puellMultiple": 0.5638,
     "signalPriceMa200w": true,
@@ -61546,7 +61549,7 @@
         "deep": 0.79869499
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6119274180957998
       },
       "mvrvZscoreCore": {
@@ -61631,7 +61634,7 @@
     "mvrvZscore": -0.2374,
     "nupl": -0.2009,
     "sthSopr": 1.0105049562,
-    "sthSoprMa3": 1.0071264655666674,
+    "sthSoprMa3": 1.0071264655666672,
     "sthMvrv": 0.8991,
     "puellMultiple": 0.5161,
     "signalPriceMa200w": true,
@@ -61720,7 +61723,7 @@
         "deep": 0.7991351449999999
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6104709353861942
       },
       "mvrvZscoreCore": {
@@ -61805,7 +61808,7 @@
     "mvrvZscore": -0.2252,
     "nupl": -0.1895,
     "sthSopr": 0.9891528316,
-    "sthSoprMa3": 1.0028698915000007,
+    "sthSoprMa3": 1.0028698915000005,
     "sthMvrv": 0.9004,
     "puellMultiple": 0.5342,
     "signalPriceMa200w": true,
@@ -61894,7 +61897,7 @@
         "deep": 0.799211795
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6089993709622072
       },
       "mvrvZscoreCore": {
@@ -61979,7 +61982,7 @@
     "mvrvZscore": -0.2248,
     "nupl": -0.1923,
     "sthSopr": 0.9824809147,
-    "sthSoprMa3": 0.9940462341666674,
+    "sthSoprMa3": 0.994046234166667,
     "sthMvrv": 0.9018,
     "puellMultiple": 0.564,
     "signalPriceMa200w": true,
@@ -62068,7 +62071,7 @@
         "deep": 0.799259355
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6089993709622072
       },
       "mvrvZscoreCore": {
@@ -62153,7 +62156,7 @@
     "mvrvZscore": -0.2474,
     "nupl": -0.2123,
     "sthSopr": 0.9106092211,
-    "sthSoprMa3": 0.9607476558000007,
+    "sthSoprMa3": 0.9607476558000005,
     "sthMvrv": 0.8841,
     "puellMultiple": 0.5295,
     "signalPriceMa200w": true,
@@ -62242,7 +62245,7 @@
         "deep": 0.79942505
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6104709353861942
       },
       "mvrvZscoreCore": {
@@ -62327,7 +62330,7 @@
     "mvrvZscore": -0.2136,
     "nupl": -0.179,
     "sthSopr": 0.9911261353,
-    "sthSoprMa3": 0.9614054237000006,
+    "sthSoprMa3": 0.9614054237000005,
     "sthMvrv": 0.9082,
     "puellMultiple": 0.5489,
     "signalPriceMa200w": true,
@@ -62416,7 +62419,7 @@
         "deep": 0.79942505
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6104709353861942
       },
       "mvrvZscoreCore": {
@@ -62501,7 +62504,7 @@
     "mvrvZscore": -0.2197,
     "nupl": -0.1834,
     "sthSopr": 0.983443091,
-    "sthSoprMa3": 0.9617261491333341,
+    "sthSoprMa3": 0.9617261491333339,
     "sthMvrv": 0.9042,
     "puellMultiple": 0.5647,
     "signalPriceMa200w": true,
@@ -62590,7 +62593,7 @@
         "deep": 0.7996867249999999
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6104709353861942
       },
       "mvrvZscoreCore": {
@@ -62675,7 +62678,7 @@
     "mvrvZscore": -0.2183,
     "nupl": -0.183,
     "sthSopr": 0.9973391199,
-    "sthSoprMa3": 0.9906361154000006,
+    "sthSoprMa3": 0.9906361154000005,
     "sthMvrv": 0.9079,
     "puellMultiple": 0.5327,
     "signalPriceMa200w": true,
@@ -62764,7 +62767,7 @@
         "deep": 0.799729775
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6104709353861942
       },
       "mvrvZscoreCore": {
@@ -62938,7 +62941,7 @@
         "deep": 0.7998159199999999
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6104709353861942
       },
       "mvrvZscoreCore": {
@@ -63023,7 +63026,7 @@
     "mvrvZscore": -0.2158,
     "nupl": -0.1814,
     "sthSopr": 0.996713013,
-    "sthSoprMa3": 0.9885938002666674,
+    "sthSoprMa3": 0.9885938002666673,
     "sthMvrv": 0.9106,
     "puellMultiple": 0.3551,
     "signalPriceMa200w": true,
@@ -63112,7 +63115,7 @@
         "deep": 0.7998159199999999
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6104709353861942
       },
       "mvrvZscoreCore": {
@@ -63286,7 +63289,7 @@
         "deep": 0.80004288
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6105568546119623
       },
       "mvrvZscoreCore": {
@@ -63371,7 +63374,7 @@
     "mvrvZscore": -0.2119,
     "nupl": -0.1747,
     "sthSopr": 0.9917663756,
-    "sthSoprMa3": 0.9946981743333341,
+    "sthSoprMa3": 0.994698174333334,
     "sthMvrv": 0.9139,
     "puellMultiple": 0.5186,
     "signalPriceMa200w": true,
@@ -63460,7 +63463,7 @@
         "deep": 0.80013785
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6105568546119623
       },
       "mvrvZscoreCore": {
@@ -63545,7 +63548,7 @@
     "mvrvZscore": -0.2239,
     "nupl": -0.1888,
     "sthSopr": 0.9943812629,
-    "sthSoprMa3": 0.9939209243000007,
+    "sthSoprMa3": 0.9939209243000006,
     "sthMvrv": 0.9071,
     "puellMultiple": 0.4629,
     "signalPriceMa200w": true,
@@ -63634,7 +63637,7 @@
         "deep": 0.800392865
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6105568546119623
       },
       "mvrvZscoreCore": {
@@ -63719,7 +63722,7 @@
     "mvrvZscore": -0.2333,
     "nupl": -0.1985,
     "sthSopr": 0.9907304336,
-    "sthSoprMa3": 0.9922926907000007,
+    "sthSoprMa3": 0.9922926907000006,
     "sthMvrv": 0.8998,
     "puellMultiple": 0.6717,
     "signalPriceMa200w": true,
@@ -63808,7 +63811,7 @@
         "deep": 0.800392865
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6105568546119623
       },
       "mvrvZscoreCore": {
@@ -63893,7 +63896,7 @@
     "mvrvZscore": -0.2254,
     "nupl": -0.1912,
     "sthSopr": 0.9929190437,
-    "sthSoprMa3": 0.9926769134000005,
+    "sthSoprMa3": 0.9926769134000004,
     "sthMvrv": 0.9071,
     "puellMultiple": 0.5633,
     "signalPriceMa200w": true,
@@ -63982,7 +63985,7 @@
         "deep": 0.800392865
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6105568546119623
       },
       "mvrvZscoreCore": {
@@ -64156,7 +64159,7 @@
         "deep": 0.8007040449999999
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6105568546119623
       },
       "mvrvZscoreCore": {
@@ -64241,7 +64244,7 @@
     "mvrvZscore": -0.2295,
     "nupl": -0.1956,
     "sthSopr": 0.9887538812,
-    "sthSoprMa3": 0.9895467454000006,
+    "sthSoprMa3": 0.9895467454000005,
     "sthMvrv": 0.9043,
     "puellMultiple": 0.6256,
     "signalPriceMa200w": true,
@@ -64330,7 +64333,7 @@
         "deep": 0.800895455
       },
       "lthSopr": {
-        "trigger": 0.7904225473958468,
+        "trigger": 0.7877548964090894,
         "deep": 0.6105568546119623
       },
       "mvrvZscoreCore": {

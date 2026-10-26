@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-26T04:39:57.505103+00:00",
+  "generatedAt": "2026-10-26T12:52:18.221009+00:00",
   "latestDate": "2026-10-26",
-  "lastUpdated": "2026-10-26T04:39:57.476175+00:00",
+  "lastUpdated": "2026-10-26T12:52:18.205291+00:00",
   "historyRows": 6508,
   "historyLightRows": 922,
   "historyFiles": {
@@ -123,7 +123,7 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.9965330343190005,
+      "trigger": 0.9965330343190004,
       "deep": 0.9914208835250006,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
@@ -144,7 +144,7 @@
     },
     "lthSopr": {
       "trigger": 0.9555462879866669,
-      "deep": 0.7953586444966669,
+      "deep": 0.7936703654800003,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
       "minHistoryDays": 365,
@@ -166,7 +166,7 @@
   },
   "sourceHealth": {
     "btc_price": {
-      "source": "https://charts.bgeometrics.com/files/moving_average_price.json + live (blockchain_info_stats)",
+      "source": "https://charts.bgeometrics.com/files/moving_average_price.json + live (blockchain_info_stats, updated)",
       "rows": 6508,
       "nonNullRows": 5203,
       "latestDate": "2026-10-26",
@@ -176,9 +176,9 @@
     "realized_price": {
       "source": "https://charts.bgeometrics.com/files/realized_price.json",
       "rows": 6508,
-      "nonNullRows": 5615,
+      "nonNullRows": 5616,
       "latestDate": "2026-10-26",
-      "latestNonNullDate": "2026-10-24",
+      "latestNonNullDate": "2026-10-25",
       "status": "healthy"
     },
     "lth_mvrv": {
@@ -192,7 +192,7 @@
     "mvrv_zscore": {
       "source": "https://charts.bgeometrics.com/files/mvrv_zscore_data.json + https://bitcoin-data.com/v1/mvrv-zscore + derived_from_bgeometrics_caps",
       "rows": 6508,
-      "nonNullRows": 1463,
+      "nonNullRows": 1462,
       "latestDate": "2026-10-26",
       "latestNonNullDate": "2026-10-26",
       "status": "healthy"
@@ -200,7 +200,7 @@
     "nupl": {
       "source": "https://charts.bgeometrics.com/files/nupl_data.json + https://bitcoin-data.com/v1/nupl + https://bitcoin-data.com/v1/nupl/1 + derived_from_bgeometrics_caps",
       "rows": 6508,
-      "nonNullRows": 1463,
+      "nonNullRows": 1462,
       "latestDate": "2026-10-26",
       "latestNonNullDate": "2026-10-26",
       "status": "healthy"
@@ -258,7 +258,7 @@
     "indicatorLagDays": {
       "btcPrice": 0.0,
       "ma200w": 0.0,
-      "realizedPrice": 2.0,
+      "realizedPrice": 1.0,
       "reserveRisk": 1.0,
       "lthMvrv": 0.0,
       "lthSopr": 0.0,
@@ -389,11 +389,11 @@
     "officialHistoryRows": 92,
     "historySource": "strategy_official_timeseries",
     "historySourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav",
-    "mnav": 1.1307,
+    "mnav": 1.1258,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
     "mstrTimestampUtc": "2026-10-23T20:00:00",
-    "btcTimestamp": "2026-10-26T04:39:00"
+    "btcTimestamp": "2026-10-26T12:52:00"
   }
 }
