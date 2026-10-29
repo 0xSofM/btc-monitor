@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-29T05:41:07.220182+00:00",
+  "generatedAt": "2026-10-29T12:54:39.649247+00:00",
   "latestDate": "2026-10-29",
-  "lastUpdated": "2026-10-29T05:41:07.190860+00:00",
+  "lastUpdated": "2026-10-29T12:54:39.620697+00:00",
   "historyRows": 6511,
   "historyLightRows": 922,
   "historyFiles": {
@@ -166,7 +166,7 @@
   },
   "sourceHealth": {
     "btc_price": {
-      "source": "https://charts.bgeometrics.com/files/moving_average_price.json + live (blockchain_info_stats)",
+      "source": "https://charts.bgeometrics.com/files/moving_average_price.json + live (blockchain_info_stats, updated)",
       "rows": 6511,
       "nonNullRows": 5206,
       "latestDate": "2026-10-29",
@@ -192,7 +192,7 @@
     "mvrv_zscore": {
       "source": "https://charts.bgeometrics.com/files/mvrv_zscore_data.json + https://bitcoin-data.com/v1/mvrv-zscore + derived_from_bgeometrics_caps",
       "rows": 6511,
-      "nonNullRows": 1463,
+      "nonNullRows": 1462,
       "latestDate": "2026-10-29",
       "latestNonNullDate": "2026-10-29",
       "status": "healthy"
@@ -389,11 +389,11 @@
     "officialHistoryRows": 95,
     "historySource": "strategy_official_timeseries",
     "historySourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav",
-    "mnav": 1.1212,
+    "mnav": 1.125,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
     "mstrTimestampUtc": "2026-10-28T20:00:00",
-    "btcTimestamp": "2026-10-29T05:40:00"
+    "btcTimestamp": "2026-10-29T12:54:00"
   }
 }
