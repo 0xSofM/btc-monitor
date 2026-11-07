@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-07T05:52:49.477423+00:00",
+  "generatedAt": "2026-11-07T12:54:11.922594+00:00",
   "latestDate": "2026-11-07",
-  "lastUpdated": "2026-11-07T05:52:49.458973+00:00",
+  "lastUpdated": "2026-11-07T12:54:11.903881+00:00",
   "historyRows": 6520,
   "historyLightRows": 923,
   "historyFiles": {
@@ -123,7 +123,7 @@
       "deepQuantile": 0.1
     },
     "sthSopr": {
-      "trigger": 0.996548549555667,
+      "trigger": 0.9965873144137086,
       "deep": 0.9914268973275004,
       "method": "rolling_quantile_no_lookahead",
       "windowDays": 1460,
@@ -166,7 +166,7 @@
   },
   "sourceHealth": {
     "btc_price": {
-      "source": "https://charts.bgeometrics.com/files/moving_average_price.json + live (blockchain_info_stats)",
+      "source": "https://charts.bgeometrics.com/files/moving_average_price.json + live (blockchain_info_stats, updated)",
       "rows": 6520,
       "nonNullRows": 5215,
       "latestDate": "2026-11-07",
@@ -192,7 +192,7 @@
     "mvrv_zscore": {
       "source": "https://charts.bgeometrics.com/files/mvrv_zscore_data.json + https://bitcoin-data.com/v1/mvrv-zscore + derived_from_bgeometrics_caps",
       "rows": 6520,
-      "nonNullRows": 1463,
+      "nonNullRows": 1462,
       "latestDate": "2026-11-07",
       "latestNonNullDate": "2026-11-07",
       "status": "healthy"
@@ -389,11 +389,11 @@
     "officialHistoryRows": 102,
     "historySource": "strategy_official_timeseries",
     "historySourceUrl": "https://api.strategy.com/btc/timeSeries?tickers=MSTR&metrics=mNav",
-    "mnav": 1.078,
+    "mnav": 1.0802,
     "band": "low_premium",
     "riskFlag": "normal",
     "isStale": false,
     "mstrTimestampUtc": "2026-11-06T21:00:00",
-    "btcTimestamp": "2026-11-07T05:52:00"
+    "btcTimestamp": "2026-11-07T12:53:00"
   }
 }
