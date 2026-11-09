@@ -1261,6 +1261,7 @@ async function fetchRuntimeInputs(request) {
     sthSoprPoint,
     sthMvrvPoint,
     puellPoint,
+    puellBackupPoint,
     derivedValuationPoints,
   ] = await Promise.all([
     fetchStaticLatestSnapshot(request),
@@ -1307,7 +1308,9 @@ async function fetchRuntimeInputs(request) {
   // Backup tiers: only consult them when a primary point is missing or older
   // than the trigger window (avoids extra upstream load otherwise).
   // Tier 1: light bitcoin-data.com latest-point endpoints; tier 2: heavy
-  // checkonchain pages (only for keys tier 1 could not resolve).
+  // checkonchain pages. Both tiers are fetched concurrently: bitcoin-data.com
+  // paywalls the latest week and still answers with a *delayed* D-7 point, so
+  // a tier-1 "hit" must never short-circuit the heavier tier-2 source.
   const primaryByKey = {
     lthMvrv: lthMvrvPoint,
     lthSopr: lthSoprPoint,
@@ -1319,18 +1322,22 @@ async function fetchRuntimeInputs(request) {
     const lagDays = daysBetween(todayUtc, primaryByKey[key]?.d);
     return lagDays === null || lagDays > CHECKONCHAIN_STALE_TRIGGER_DAYS;
   });
-  const bitcoinDataPoints = staleKeys.length > 0
-    ? await fetchBitcoinDataBackupPoints(staleKeys)
-    : {};
-  const stillNeededKeys = staleKeys.filter((key) => !bitcoinDataPoints[key]);
-  const checkonchainPoints = stillNeededKeys.length > 0
-    ? await fetchCheckonchainBackupPoints(stillNeededKeys)
-    : {};
-  const backupByKey = { ...checkonchainPoints, ...bitcoinDataPoints };
-  const resolvedLthMvrvPoint = pickNewerPoint(lthMvrvPoint, backupByKey.lthMvrv ?? null);
-  const resolvedLthSoprPoint = pickNewerPoint(lthSoprPoint, backupByKey.lthSopr ?? null);
-  const resolvedSthSoprPoint = pickNewerPoint(sthSoprPoint, backupByKey.sthSopr ?? null);
-  const resolvedSthMvrvPoint = pickNewerPoint(sthMvrvPoint, backupByKey.sthMvrv ?? null);
+  const needsBackup = staleKeys.length > 0;
+  const [bitcoinDataPoints, checkonchainPoints] = await Promise.all([
+    needsBackup ? fetchBitcoinDataBackupPoints(staleKeys) : {},
+    needsBackup ? fetchCheckonchainBackupPoints(staleKeys) : {},
+  ]);
+  // Resolve every candidate by date. A delayed tier-1 point (or a stale
+  // primary) can then never beat a same-day checkonchain observation.
+  const resolveLthSthPoint = (primary, key) => pickFreshestPoint(
+    primary,
+    bitcoinDataPoints[key] ?? null,
+    checkonchainPoints[key] ?? null,
+  );
+  const resolvedLthMvrvPoint = resolveLthSthPoint(lthMvrvPoint, 'lthMvrv');
+  const resolvedLthSoprPoint = resolveLthSthPoint(lthSoprPoint, 'lthSopr');
+  const resolvedSthSoprPoint = resolveLthSthPoint(sthSoprPoint, 'sthSopr');
+  const resolvedSthMvrvPoint = resolveLthSthPoint(sthMvrvPoint, 'sthMvrv');
 
   return {
     staticLatest,
@@ -1998,14 +2005,20 @@ async function fetchIndicatorRoute(path, request) {
   } else if (['lthMvrv', 'lthSopr', 'sthSopr', 'sthMvrv'].includes(routeConfig.seriesKey)) {
     const key = routeConfig.seriesKey;
     const primary = await fetchLatestFilePoint(key);
-    // Consult backups only when the primary lags; light tier first, then heavy.
+    // Consult backups only when the primary lags. Fetch both tiers in parallel:
+    // a paywalled bitcoin-data.com point is delayed (D-7), so it must not
+    // suppress the same-day checkonchain fallback.
     const lagDays = daysBetween(getTodayUtcDate(), primary?.d);
     if (lagDays === null || lagDays > CHECKONCHAIN_STALE_TRIGGER_DAYS) {
-      const bdPoints = await fetchBitcoinDataBackupPoints([key]);
-      const backup = bdPoints[key]
-        ?? (await fetchCheckonchainBackupPoints([key]))[key]
-        ?? null;
-      point = pickNewerPoint(primary, backup);
+      const [bdPoints, cocPoints] = await Promise.all([
+        fetchBitcoinDataBackupPoints([key]),
+        fetchCheckonchainBackupPoints([key]),
+      ]);
+      point = pickFreshestPoint(
+        primary,
+        bdPoints[key] ?? null,
+        cocPoints[key] ?? null,
+      );
     } else {
       point = primary;
     }
