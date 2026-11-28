@@ -91,12 +91,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9938648626030004,
-        "deep": 0.9878832165912802
+        "deep": 0.9880153302501778
       },
       "sthMvrv": {
         "trigger": 0.915,
@@ -265,12 +265,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9938716052773339,
-        "deep": 0.9879094767400294
+        "deep": 0.9880304269916084
       },
       "sthMvrv": {
         "trigger": 0.915,
@@ -439,12 +439,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9939174831116673,
-        "deep": 0.9879094767400294
+        "deep": 0.9880304269916084
       },
       "sthMvrv": {
         "trigger": 0.915,
@@ -613,12 +613,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9939268627840007,
-        "deep": 0.9879094767400294
+        "deep": 0.9880304269916084
       },
       "sthMvrv": {
         "trigger": 0.915186,
@@ -787,12 +787,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9939328443516671,
-        "deep": 0.9880153302501778
+        "deep": 0.9882022184707419
       },
       "sthMvrv": {
         "trigger": 0.9152,
@@ -961,12 +961,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9939345277350142,
-        "deep": 0.9880304269916084
+        "deep": 0.9882461066217779
       },
       "sthMvrv": {
         "trigger": 0.91560269,
@@ -1135,12 +1135,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9939756504710563,
-        "deep": 0.9882022184707419
+        "deep": 0.9882605024290133
       },
       "sthMvrv": {
         "trigger": 0.91567113,
@@ -1309,12 +1309,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9939897406285361,
-        "deep": 0.9882461066217779
+        "deep": 0.9882835633661671
       },
       "sthMvrv": {
         "trigger": 0.9157911799999999,
@@ -1483,12 +1483,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9940141108159184,
-        "deep": 0.9882605024290133
+        "deep": 0.9883154244669021
       },
       "sthMvrv": {
         "trigger": 0.916079,
@@ -1657,12 +1657,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9940342050710005,
-        "deep": 0.9882835633661671
+        "deep": 0.9883590224159857
       },
       "sthMvrv": {
         "trigger": 0.91629158,
@@ -1831,12 +1831,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9940454886666671,
-        "deep": 0.9883154244669021
+        "deep": 0.9883795114132276
       },
       "sthMvrv": {
         "trigger": 0.9165078099999999,
@@ -2005,12 +2005,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9940595220996671,
-        "deep": 0.9883590224159857
+        "deep": 0.9884584141084752
       },
       "sthMvrv": {
         "trigger": 0.91668761,
@@ -2179,12 +2179,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9940595220996671,
-        "deep": 0.9883590224159857
+        "deep": 0.9884584141084752
       },
       "sthMvrv": {
         "trigger": 0.9167920700000001,
@@ -2353,12 +2353,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9940841281776673,
-        "deep": 0.9883590224159857
+        "deep": 0.9884584141084752
       },
       "sthMvrv": {
         "trigger": 0.9170789300000001,
@@ -2527,12 +2527,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9941025419105013,
-        "deep": 0.9883590224159857
+        "deep": 0.9884584141084752
       },
       "sthMvrv": {
         "trigger": 0.917193,
@@ -2701,12 +2701,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.994154571055919,
-        "deep": 0.9883590224159857
+        "deep": 0.9884584141084752
       },
       "sthMvrv": {
         "trigger": 0.9172,
@@ -2875,12 +2875,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9942142907411313,
-        "deep": 0.9883590224159857
+        "deep": 0.9884584141084752
       },
       "sthMvrv": {
         "trigger": 0.91724836,
@@ -3049,12 +3049,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9942404738099755,
-        "deep": 0.9883590224159857
+        "deep": 0.9884584141084752
       },
       "sthMvrv": {
         "trigger": 0.91738964,
@@ -3223,12 +3223,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9942571213906976,
-        "deep": 0.9883795114132276
+        "deep": 0.9885354465024961
       },
       "sthMvrv": {
         "trigger": 0.91748835,
@@ -3397,12 +3397,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9942639453773338,
-        "deep": 0.9885326096730005
+        "deep": 0.988565006191085
       },
       "sthMvrv": {
         "trigger": 0.91842965,
@@ -3571,12 +3571,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
-        "deep": 0.9885918520710006
+        "deep": 0.9885928265819035
       },
       "sthMvrv": {
         "trigger": 0.91842965,
@@ -3745,8 +3745,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -3919,8 +3919,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -4093,8 +4093,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -4267,8 +4267,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -4441,8 +4441,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -4615,8 +4615,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9942789776347654,
@@ -4789,8 +4789,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.994286964972011,
@@ -4963,8 +4963,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9943942087240037,
@@ -5137,8 +5137,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9944281398910045,
@@ -5311,8 +5311,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9944281398910045,
@@ -5485,8 +5485,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068854884,
-        "deep": 0.00059046939
+        "trigger": 0.00068872122,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9944281398910045,
@@ -5659,8 +5659,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068784164,
-        "deep": 0.00059046939
+        "trigger": 0.00068854884,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9944281398910045,
@@ -5833,8 +5833,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068784164,
-        "deep": 0.00059046939
+        "trigger": 0.00068854884,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9944281398910045,
@@ -6007,8 +6007,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006875274,
-        "deep": 0.00059046939
+        "trigger": 0.00068784164,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9944281398910045,
@@ -6181,8 +6181,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006873313199999999,
-        "deep": 0.00059046939
+        "trigger": 0.0006875274,
+        "deep": 0.0005907820399999999
       },
       "sthSopr": {
         "trigger": 0.9943942087240037,
@@ -6355,8 +6355,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068667582,
-        "deep": 0.00059031641
+        "trigger": 0.0006873313199999999,
+        "deep": 0.00059046939
       },
       "sthSopr": {
         "trigger": 0.994286964972011,
@@ -6529,8 +6529,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068621722,
-        "deep": 0.00059031641
+        "trigger": 0.00068667582,
+        "deep": 0.00059046939
       },
       "sthSopr": {
         "trigger": 0.9942789776347654,
@@ -6703,8 +6703,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068593032,
-        "deep": 0.00059031641
+        "trigger": 0.00068621722,
+        "deep": 0.00059046939
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -6877,8 +6877,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068558066,
-        "deep": 0.00059031641
+        "trigger": 0.00068593032,
+        "deep": 0.00059046939
       },
       "sthSopr": {
         "trigger": 0.9942639453773338,
@@ -7051,8 +7051,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.000685375,
-        "deep": 0.00059031641
+        "trigger": 0.00068558066,
+        "deep": 0.00059046939
       },
       "sthSopr": {
         "trigger": 0.9942571213906976,
@@ -7225,8 +7225,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068515484,
-        "deep": 0.00059031641
+        "trigger": 0.000685375,
+        "deep": 0.00059046939
       },
       "sthSopr": {
         "trigger": 0.9942404738099755,
@@ -7399,8 +7399,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068487568,
-        "deep": 0.0005890476300000001
+        "trigger": 0.00068515484,
+        "deep": 0.00059031641
       },
       "sthSopr": {
         "trigger": 0.9942142907411313,
@@ -7573,8 +7573,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068392322,
-        "deep": 0.00058881519
+        "trigger": 0.00068487568,
+        "deep": 0.0005890476300000001
       },
       "sthSopr": {
         "trigger": 0.994154571055919,
@@ -7747,12 +7747,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068362914,
-        "deep": 0.00058881519
+        "trigger": 0.00068392322,
+        "deep": 0.0005890476300000001
       },
       "sthSopr": {
         "trigger": 0.9941025419105013,
-        "deep": 0.9885918520710006
+        "deep": 0.9885928265819035
       },
       "sthMvrv": {
         "trigger": 0.920286,
@@ -7921,12 +7921,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068344624,
-        "deep": 0.00058881519
+        "trigger": 0.00068362914,
+        "deep": 0.0005890476300000001
       },
       "sthSopr": {
         "trigger": 0.9940841281776673,
-        "deep": 0.9885918520710006
+        "deep": 0.9885928265819035
       },
       "sthMvrv": {
         "trigger": 0.920286,
@@ -8095,12 +8095,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068332084,
-        "deep": 0.00058881519
+        "trigger": 0.00068344624,
+        "deep": 0.0005890476300000001
       },
       "sthSopr": {
         "trigger": 0.9940841281776673,
-        "deep": 0.9885918520710006
+        "deep": 0.9885928265819035
       },
       "sthMvrv": {
         "trigger": 0.920286,
@@ -8269,12 +8269,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068266344,
-        "deep": 0.00058881519
+        "trigger": 0.00068332084,
+        "deep": 0.0005890476300000001
       },
       "sthSopr": {
         "trigger": 0.9940841281776673,
-        "deep": 0.9885918520710006
+        "deep": 0.9885928265819035
       },
       "sthMvrv": {
         "trigger": 0.920286,
@@ -8443,12 +8443,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006816915000000001,
-        "deep": 0.00058848674
+        "trigger": 0.00068266344,
+        "deep": 0.00058881519
       },
       "sthSopr": {
         "trigger": 0.9940841281776673,
-        "deep": 0.9885918520710006
+        "deep": 0.9885928265819035
       },
       "sthMvrv": {
         "trigger": 0.920286,
@@ -8617,12 +8617,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068139172,
-        "deep": 0.00058804201
+        "trigger": 0.0006816915000000001,
+        "deep": 0.00058848674
       },
       "sthSopr": {
         "trigger": 0.9940841281776673,
-        "deep": 0.9885918520710006
+        "deep": 0.9885928265819035
       },
       "sthMvrv": {
         "trigger": 0.920286,
@@ -8791,12 +8791,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006809375199999999,
-        "deep": 0.00058794478
+        "trigger": 0.00068139172,
+        "deep": 0.00058804201
       },
       "sthSopr": {
         "trigger": 0.9940841281776673,
-        "deep": 0.9885918520710006
+        "deep": 0.9885928265819035
       },
       "sthMvrv": {
         "trigger": 0.920286,
@@ -8965,12 +8965,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006805923799999999,
-        "deep": 0.00058794478
+        "trigger": 0.0006809375199999999,
+        "deep": 0.00058804201
       },
       "sthSopr": {
         "trigger": 0.9940841281776673,
-        "deep": 0.9885918520710006
+        "deep": 0.9885928265819035
       },
       "sthMvrv": {
         "trigger": 0.920286,
@@ -9139,8 +9139,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00068016014,
-        "deep": 0.00058794478
+        "trigger": 0.0006805923799999999,
+        "deep": 0.00058804201
       },
       "sthSopr": {
         "trigger": 0.9940841281776673,
@@ -9313,8 +9313,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067985336,
-        "deep": 0.00058771682
+        "trigger": 0.00068016014,
+        "deep": 0.00058794478
       },
       "sthSopr": {
         "trigger": 0.9941025419105013,
@@ -9487,8 +9487,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006795816800000001,
-        "deep": 0.00058714745
+        "trigger": 0.00067985336,
+        "deep": 0.00058771682
       },
       "sthSopr": {
         "trigger": 0.9941025419105013,
@@ -9661,8 +9661,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006790999200000001,
-        "deep": 0.00058593818
+        "trigger": 0.0006795816800000001,
+        "deep": 0.00058714745
       },
       "sthSopr": {
         "trigger": 0.9941025419105013,
@@ -9835,8 +9835,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067744186,
-        "deep": 0.00058593818
+        "trigger": 0.0006790999200000001,
+        "deep": 0.00058714745
       },
       "sthSopr": {
         "trigger": 0.9941025419105013,
@@ -10009,8 +10009,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067721818,
-        "deep": 0.00058555106
+        "trigger": 0.00067744186,
+        "deep": 0.00058593818
       },
       "sthSopr": {
         "trigger": 0.9941025419105013,
@@ -10183,8 +10183,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067684558,
-        "deep": 0.00058429009
+        "trigger": 0.00067721818,
+        "deep": 0.00058555106
       },
       "sthSopr": {
         "trigger": 0.994154571055919,
@@ -10357,8 +10357,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006756438,
-        "deep": 0.00058386757
+        "trigger": 0.00067684558,
+        "deep": 0.00058429009
       },
       "sthSopr": {
         "trigger": 0.994154571055919,
@@ -10531,8 +10531,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067506768,
-        "deep": 0.00058377147
+        "trigger": 0.0006756438,
+        "deep": 0.00058386757
       },
       "sthSopr": {
         "trigger": 0.994154571055919,
@@ -10705,8 +10705,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006744057,
-        "deep": 0.00058377147
+        "trigger": 0.00067506768,
+        "deep": 0.00058386757
       },
       "sthSopr": {
         "trigger": 0.994154571055919,
@@ -10879,8 +10879,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067411514,
-        "deep": 0.00058377147
+        "trigger": 0.0006744057,
+        "deep": 0.00058386757
       },
       "sthSopr": {
         "trigger": 0.994154571055919,
@@ -11053,8 +11053,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067399708,
-        "deep": 0.00058377147
+        "trigger": 0.00067411514,
+        "deep": 0.00058386757
       },
       "sthSopr": {
         "trigger": 0.994154571055919,
@@ -11227,8 +11227,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067381754,
-        "deep": 0.00058377147
+        "trigger": 0.00067399708,
+        "deep": 0.00058386757
       },
       "sthSopr": {
         "trigger": 0.994154571055919,
@@ -11401,8 +11401,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067370166,
-        "deep": 0.00058377147
+        "trigger": 0.00067381754,
+        "deep": 0.00058386757
       },
       "sthSopr": {
         "trigger": 0.9942142907411313,
@@ -11575,8 +11575,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067328788,
-        "deep": 0.0005832023400000001
+        "trigger": 0.00067370166,
+        "deep": 0.00058377147
       },
       "sthSopr": {
         "trigger": 0.9942142907411313,
@@ -11749,8 +11749,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.000672691,
-        "deep": 0.00058299891
+        "trigger": 0.00067328788,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9942142907411313,
@@ -11923,8 +11923,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067212758,
-        "deep": 0.00058299891
+        "trigger": 0.000672691,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9942322948670004,
@@ -12097,8 +12097,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006716913600000001,
-        "deep": 0.00058299891
+        "trigger": 0.00067212758,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9942565057713337,
@@ -12271,8 +12271,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00067127142,
-        "deep": 0.00058299891
+        "trigger": 0.0006716913600000001,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9942639453773338,
@@ -12445,8 +12445,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066910712,
-        "deep": 0.00058299891
+        "trigger": 0.00067127142,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -12619,8 +12619,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066692264,
-        "deep": 0.00058299891
+        "trigger": 0.00066910712,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9942789776347654,
@@ -12793,8 +12793,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066579506,
-        "deep": 0.00058299891
+        "trigger": 0.00066692264,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.994286964972011,
@@ -12967,8 +12967,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006650599599999999,
-        "deep": 0.00058299891
+        "trigger": 0.00066579506,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9943921286726671,
@@ -13141,8 +13141,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066495584,
-        "deep": 0.00058299891
+        "trigger": 0.0006650599599999999,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9944020800513371,
@@ -13315,8 +13315,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066449902,
-        "deep": 0.00058299891
+        "trigger": 0.00066495584,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9944281398910045,
@@ -13489,8 +13489,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066265194,
-        "deep": 0.00058299891
+        "trigger": 0.00066449902,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -13663,8 +13663,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066165308,
-        "deep": 0.00058299891
+        "trigger": 0.00066265194,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -13837,8 +13837,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006614682600000001,
-        "deep": 0.00058299891
+        "trigger": 0.00066165308,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -14011,8 +14011,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006610259000000001,
-        "deep": 0.00058299891
+        "trigger": 0.0006614682600000001,
+        "deep": 0.0005832023400000001
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -14185,8 +14185,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00066008178,
-        "deep": 0.00058294936
+        "trigger": 0.0006610259000000001,
+        "deep": 0.00058299891
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -14359,8 +14359,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065824904,
-        "deep": 0.00058294936
+        "trigger": 0.00066008178,
+        "deep": 0.00058299891
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -14533,8 +14533,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065805618,
-        "deep": 0.00058294936
+        "trigger": 0.00065824904,
+        "deep": 0.00058299891
       },
       "sthSopr": {
         "trigger": 0.9944281398910045,
@@ -14707,8 +14707,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065756824,
-        "deep": 0.00058294936
+        "trigger": 0.00065805618,
+        "deep": 0.00058299891
       },
       "sthSopr": {
         "trigger": 0.9944020800513371,
@@ -14881,8 +14881,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.000657444,
-        "deep": 0.00058294936
+        "trigger": 0.00065756824,
+        "deep": 0.00058299891
       },
       "sthSopr": {
         "trigger": 0.9943921286726671,
@@ -15055,8 +15055,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006567131000000001,
-        "deep": 0.00058252195
+        "trigger": 0.000657444,
+        "deep": 0.00058294936
       },
       "sthSopr": {
         "trigger": 0.994286964972011,
@@ -15229,8 +15229,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065558738,
-        "deep": 0.0005823991
+        "trigger": 0.0006567131000000001,
+        "deep": 0.00058252195
       },
       "sthSopr": {
         "trigger": 0.9942789776347654,
@@ -15403,8 +15403,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065536086,
-        "deep": 0.00058233127
+        "trigger": 0.00065558738,
+        "deep": 0.0005823991
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -15577,8 +15577,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065506898,
-        "deep": 0.00058214767
+        "trigger": 0.00065536086,
+        "deep": 0.00058233127
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -15751,8 +15751,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.000654604,
-        "deep": 0.00058201923
+        "trigger": 0.00065506898,
+        "deep": 0.00058214767
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -15925,8 +15925,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065436894,
-        "deep": 0.00058169675
+        "trigger": 0.000654604,
+        "deep": 0.00058201923
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -16099,8 +16099,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065376044,
-        "deep": 0.0005814677200000001
+        "trigger": 0.00065436894,
+        "deep": 0.00058169675
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -16273,8 +16273,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006537193,
-        "deep": 0.00058097523
+        "trigger": 0.00065376044,
+        "deep": 0.0005814677200000001
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -16447,8 +16447,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065365338,
-        "deep": 0.0005808796099999999
+        "trigger": 0.0006537193,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -16621,8 +16621,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065338566,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00065365338,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -16795,8 +16795,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065305314,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00065338566,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9942757060136228,
@@ -16969,8 +16969,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006529907999999999,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00065305314,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9942789776347654,
@@ -17143,8 +17143,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065276704,
-        "deep": 0.0005808796099999999
+        "trigger": 0.0006529907999999999,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.994286964972011,
@@ -17317,8 +17317,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065262694,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00065276704,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.994286964972011,
@@ -17491,8 +17491,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065229052,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00065262694,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9943921286726671,
@@ -17665,8 +17665,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065190968,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00065229052,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944020800513371,
@@ -17839,8 +17839,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065136754,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00065190968,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944281398910045,
@@ -18013,8 +18013,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00065047706,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00065136754,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -18187,8 +18187,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006498777,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00065047706,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -18361,8 +18361,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064965618,
-        "deep": 0.0005808796099999999
+        "trigger": 0.0006498777,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -18535,8 +18535,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064907108,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064965618,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -18709,8 +18709,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064886954,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064907108,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -18883,8 +18883,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064847338,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064886954,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -19057,8 +19057,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064806928,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064847338,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -19231,8 +19231,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006476036200000001,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064806928,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -19405,8 +19405,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006458319199999999,
-        "deep": 0.0005808796099999999
+        "trigger": 0.0006476036200000001,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -19579,8 +19579,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006458319199999999,
-        "deep": 0.0005808796099999999
+        "trigger": 0.0006476036200000001,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -19753,8 +19753,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006458319199999999,
-        "deep": 0.0005808796099999999
+        "trigger": 0.0006476036200000001,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -19927,8 +19927,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006458319199999999,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064754466,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -20101,8 +20101,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006458319199999999,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064754466,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -20275,8 +20275,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006458319199999999,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064754466,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944443168330005,
@@ -20449,8 +20449,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064566776,
-        "deep": 0.0005808796099999999
+        "trigger": 0.0006458319199999999,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944651771390005,
@@ -20623,8 +20623,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064521112,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064566776,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944651771390005,
@@ -20797,8 +20797,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064392772,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064521112,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9944651771390005,
@@ -20971,8 +20971,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9945039960296671,
@@ -21145,8 +21145,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9945742791266672,
@@ -21319,8 +21319,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9946018528856674,
@@ -21493,8 +21493,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9946094324086672,
@@ -21667,8 +21667,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9946164738476673,
@@ -21841,8 +21841,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9946305022480005,
@@ -22015,8 +22015,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9946598034306672,
@@ -22189,8 +22189,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9946639698411742,
@@ -22363,8 +22363,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9946739927002833,
@@ -22537,8 +22537,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9946847014465631,
@@ -22711,8 +22711,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9946972837396673,
@@ -22885,8 +22885,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9947409959353339,
@@ -23059,8 +23059,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9947960953346673,
@@ -23233,8 +23233,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9948097097270003,
@@ -23407,8 +23407,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9948130512626673,
@@ -23581,8 +23581,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.994839314581667,
@@ -23755,8 +23755,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064320448,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064392772,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9948475277500005,
@@ -23929,8 +23929,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006417316,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064320448,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9948781044436673,
@@ -24103,8 +24103,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006409499400000001,
-        "deep": 0.0005808796099999999
+        "trigger": 0.0006417316,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.994898772385332,
@@ -24277,8 +24277,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00064071072,
-        "deep": 0.0005808796099999999
+        "trigger": 0.0006409499400000001,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949061727071438,
@@ -24451,8 +24451,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063997306,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00064071072,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.994907756904667,
@@ -24625,8 +24625,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063954276,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00063997306,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949149729036671,
@@ -24799,8 +24799,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063892802,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00063954276,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949163067983338,
@@ -24973,8 +24973,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063823518,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00063892802,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949194831060005,
@@ -25147,8 +25147,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006372219600000001,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00063823518,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.994931343410667,
@@ -25321,8 +25321,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006370735,
-        "deep": 0.0005808796099999999
+        "trigger": 0.0006372219600000001,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949523787896671,
@@ -25495,8 +25495,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063694304,
-        "deep": 0.0005808796099999999
+        "trigger": 0.0006370735,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949640045583339,
@@ -25669,8 +25669,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063674884,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00063694304,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949665335780005,
@@ -25843,8 +25843,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063632346,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00063674884,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949665335780005,
@@ -26017,8 +26017,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063623678,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00063632346,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949665335780005,
@@ -26191,8 +26191,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063590726,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00063623678,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949640045583339,
@@ -26365,8 +26365,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063560462,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00063590726,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949640045583339,
@@ -26539,8 +26539,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063447648,
-        "deep": 0.0005808796099999999
+        "trigger": 0.00063560462,
+        "deep": 0.00058097523
       },
       "sthSopr": {
         "trigger": 0.9949640045583339,
@@ -26713,8 +26713,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063429644,
-        "deep": 0.00058055395
+        "trigger": 0.00063447648,
+        "deep": 0.0005808796099999999
       },
       "sthSopr": {
         "trigger": 0.9949640045583339,
@@ -26887,8 +26887,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063412278,
-        "deep": 0.00058047633
+        "trigger": 0.00063429644,
+        "deep": 0.00058055395
       },
       "sthSopr": {
         "trigger": 0.9949640045583339,
@@ -27061,8 +27061,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063396468,
-        "deep": 0.00058018829
+        "trigger": 0.00063412278,
+        "deep": 0.00058047633
       },
       "sthSopr": {
         "trigger": 0.9949640045583339,
@@ -27235,8 +27235,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006339520199999999,
-        "deep": 0.00057992944
+        "trigger": 0.00063396468,
+        "deep": 0.00058018829
       },
       "sthSopr": {
         "trigger": 0.9949640045583339,
@@ -27409,8 +27409,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063386406,
-        "deep": 0.00057944728
+        "trigger": 0.0006339520199999999,
+        "deep": 0.00057992944
       },
       "sthSopr": {
         "trigger": 0.9949640045583339,
@@ -27583,8 +27583,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063351742,
-        "deep": 0.00057944103
+        "trigger": 0.00063386406,
+        "deep": 0.00057944728
       },
       "sthSopr": {
         "trigger": 0.9949640045583339,
@@ -27757,8 +27757,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006327746999999999,
-        "deep": 0.0005793886499999999
+        "trigger": 0.00063351742,
+        "deep": 0.00057944103
       },
       "sthSopr": {
         "trigger": 0.9949665335780005,
@@ -27931,8 +27931,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063252892,
-        "deep": 0.00057933038
+        "trigger": 0.0006327746999999999,
+        "deep": 0.0005793886499999999
       },
       "sthSopr": {
         "trigger": 0.9949894728706673,
@@ -28105,8 +28105,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063251694,
-        "deep": 0.00057926853
+        "trigger": 0.00063252892,
+        "deep": 0.00057933038
       },
       "sthSopr": {
         "trigger": 0.9949894728706673,
@@ -28279,8 +28279,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006325074599999999,
-        "deep": 0.00057916238
+        "trigger": 0.00063251694,
+        "deep": 0.00057926853
       },
       "sthSopr": {
         "trigger": 0.9949894728706673,
@@ -28453,8 +28453,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063245336,
-        "deep": 0.0005790912
+        "trigger": 0.0006325074599999999,
+        "deep": 0.00057916238
       },
       "sthSopr": {
         "trigger": 0.9949894728706673,
@@ -28627,8 +28627,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006322357,
-        "deep": 0.00057883076
+        "trigger": 0.00063245336,
+        "deep": 0.0005790912
       },
       "sthSopr": {
         "trigger": 0.9949983071596671,
@@ -28801,8 +28801,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006319559400000001,
-        "deep": 0.00057880646
+        "trigger": 0.0006322357,
+        "deep": 0.00057883076
       },
       "sthSopr": {
         "trigger": 0.9950573284920003,
@@ -28975,8 +28975,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063154006,
-        "deep": 0.0005787273100000001
+        "trigger": 0.0006319559400000001,
+        "deep": 0.00057880646
       },
       "sthSopr": {
         "trigger": 0.9950625397643338,
@@ -29149,8 +29149,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063133674,
-        "deep": 0.00057840684
+        "trigger": 0.00063154006,
+        "deep": 0.0005787273100000001
       },
       "sthSopr": {
         "trigger": 0.9950664607045782,
@@ -29323,8 +29323,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006311979,
-        "deep": 0.0005782591800000001
+        "trigger": 0.00063133674,
+        "deep": 0.00057840684
       },
       "sthSopr": {
         "trigger": 0.9950677419631552,
@@ -29497,8 +29497,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00063098336,
-        "deep": 0.00057824907
+        "trigger": 0.0006311979,
+        "deep": 0.0005782591800000001
       },
       "sthSopr": {
         "trigger": 0.9950677419631552,
@@ -29671,8 +29671,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.000630451,
-        "deep": 0.00057818989
+        "trigger": 0.00063098336,
+        "deep": 0.00057824907
       },
       "sthSopr": {
         "trigger": 0.9950677419631552,
@@ -29845,8 +29845,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00062956696,
-        "deep": 0.00057805582
+        "trigger": 0.000630451,
+        "deep": 0.00057818989
       },
       "sthSopr": {
         "trigger": 0.9950957139603338,
@@ -30019,8 +30019,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006285017,
-        "deep": 0.00057702719
+        "trigger": 0.00062956696,
+        "deep": 0.00057805582
       },
       "sthSopr": {
         "trigger": 0.9951076732546671,
@@ -30193,11 +30193,11 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00062827974,
-        "deep": 0.00057701678
+        "trigger": 0.0006285017,
+        "deep": 0.00057702719
       },
       "sthSopr": {
-        "trigger": 0.9951313594586672,
+        "trigger": 0.9951313594586673,
         "deep": 0.9896592656266873
       },
       "sthMvrv": {
@@ -30367,8 +30367,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00062813322,
-        "deep": 0.00057694613
+        "trigger": 0.00062827974,
+        "deep": 0.00057701678
       },
       "sthSopr": {
         "trigger": 0.9951347756233337,
@@ -30541,8 +30541,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00062799758,
-        "deep": 0.00057641134
+        "trigger": 0.00062813322,
+        "deep": 0.00057694613
       },
       "sthSopr": {
         "trigger": 0.9951347756233337,
@@ -30715,8 +30715,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00062763374,
-        "deep": 0.00057633255
+        "trigger": 0.00062799758,
+        "deep": 0.00057641134
       },
       "sthSopr": {
         "trigger": 0.9951347756233337,
@@ -30889,8 +30889,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006268278600000001,
-        "deep": 0.00057609036
+        "trigger": 0.00062763374,
+        "deep": 0.00057633255
       },
       "sthSopr": {
         "trigger": 0.9951347756233337,
@@ -31063,8 +31063,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006254086,
-        "deep": 0.0005760134700000001
+        "trigger": 0.0006268278600000001,
+        "deep": 0.00057609036
       },
       "sthSopr": {
         "trigger": 0.9951347756233337,
@@ -31237,8 +31237,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006248446,
-        "deep": 0.00057592373
+        "trigger": 0.0006254086,
+        "deep": 0.0005760134700000001
       },
       "sthSopr": {
         "trigger": 0.9951448851076672,
@@ -31411,8 +31411,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00062447548,
-        "deep": 0.00057566136
+        "trigger": 0.0006248446,
+        "deep": 0.00057592373
       },
       "sthSopr": {
         "trigger": 0.995178542656667,
@@ -31585,8 +31585,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00062429578,
-        "deep": 0.0005752621
+        "trigger": 0.00062447548,
+        "deep": 0.00057566136
       },
       "sthSopr": {
         "trigger": 0.995178542656667,
@@ -31759,8 +31759,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00062339068,
-        "deep": 0.00057492568
+        "trigger": 0.00062429578,
+        "deep": 0.0005752621
       },
       "sthSopr": {
         "trigger": 0.995178542656667,
@@ -31933,8 +31933,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006220049600000001,
-        "deep": 0.00057477883
+        "trigger": 0.00062339068,
+        "deep": 0.00057492568
       },
       "sthSopr": {
         "trigger": 0.9951811096456674,
@@ -32107,8 +32107,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00062083212,
-        "deep": 0.00057431641
+        "trigger": 0.0006220049600000001,
+        "deep": 0.00057477883
       },
       "sthSopr": {
         "trigger": 0.9951827214273339,
@@ -32281,8 +32281,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006201137200000001,
-        "deep": 0.00057430598
+        "trigger": 0.00062083212,
+        "deep": 0.00057431641
       },
       "sthSopr": {
         "trigger": 0.995225150165334,
@@ -32455,8 +32455,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006192250200000001,
-        "deep": 0.00057424923
+        "trigger": 0.0006201137200000001,
+        "deep": 0.00057430598
       },
       "sthSopr": {
         "trigger": 0.9953097906363337,
@@ -32629,8 +32629,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006187788400000001,
-        "deep": 0.00057385968
+        "trigger": 0.0006192250200000001,
+        "deep": 0.00057424923
       },
       "sthSopr": {
         "trigger": 0.9953321145213339,
@@ -32803,8 +32803,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061735246,
-        "deep": 0.00057383243
+        "trigger": 0.0006187788400000001,
+        "deep": 0.00057385968
       },
       "sthSopr": {
         "trigger": 0.995349237356334,
@@ -32977,8 +32977,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061647988,
-        "deep": 0.0005737162600000001
+        "trigger": 0.00061735246,
+        "deep": 0.00057383243
       },
       "sthSopr": {
         "trigger": 0.9953815833883337,
@@ -33151,8 +33151,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061635318,
-        "deep": 0.00057346288
+        "trigger": 0.00061647988,
+        "deep": 0.0005737162600000001
       },
       "sthSopr": {
         "trigger": 0.9954321101483339,
@@ -33325,8 +33325,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061618404,
-        "deep": 0.0005732731799999999
+        "trigger": 0.00061635318,
+        "deep": 0.00057346288
       },
       "sthSopr": {
         "trigger": 0.995488219363667,
@@ -33499,8 +33499,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061558956,
-        "deep": 0.0005727907400000001
+        "trigger": 0.00061618404,
+        "deep": 0.0005732731799999999
       },
       "sthSopr": {
         "trigger": 0.995495534623667,
@@ -33673,8 +33673,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061516158,
-        "deep": 0.0005725719400000001
+        "trigger": 0.00061558956,
+        "deep": 0.0005727907400000001
       },
       "sthSopr": {
         "trigger": 0.9955415585010006,
@@ -33847,8 +33847,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061497916,
-        "deep": 0.00057248996
+        "trigger": 0.00061516158,
+        "deep": 0.0005725719400000001
       },
       "sthSopr": {
         "trigger": 0.9955415585010006,
@@ -34021,8 +34021,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061450498,
-        "deep": 0.0005718594
+        "trigger": 0.00061497916,
+        "deep": 0.00057248996
       },
       "sthSopr": {
         "trigger": 0.9955415585010006,
@@ -34195,8 +34195,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061376944,
-        "deep": 0.00057179152
+        "trigger": 0.00061450498,
+        "deep": 0.0005718594
       },
       "sthSopr": {
         "trigger": 0.9955415585010006,
@@ -34369,8 +34369,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006132116,
-        "deep": 0.00057140656
+        "trigger": 0.00061376944,
+        "deep": 0.00057179152
       },
       "sthSopr": {
         "trigger": 0.9955580080690004,
@@ -34543,8 +34543,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061294584,
-        "deep": 0.0005712689099999999
+        "trigger": 0.0006132116,
+        "deep": 0.00057140656
       },
       "sthSopr": {
         "trigger": 0.9955602897474783,
@@ -34717,8 +34717,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061237324,
-        "deep": 0.00057071944
+        "trigger": 0.00061294584,
+        "deep": 0.0005712689099999999
       },
       "sthSopr": {
         "trigger": 0.9955602897474783,
@@ -34891,8 +34891,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061204546,
-        "deep": 0.00057039279
+        "trigger": 0.00061237324,
+        "deep": 0.00057071944
       },
       "sthSopr": {
         "trigger": 0.9955602897474783,
@@ -35065,8 +35065,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061182604,
-        "deep": 0.000570259
+        "trigger": 0.00061204546,
+        "deep": 0.00057039279
       },
       "sthSopr": {
         "trigger": 0.9955602897474783,
@@ -35239,8 +35239,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061129368,
-        "deep": 0.00057010054
+        "trigger": 0.00061182604,
+        "deep": 0.000570259
       },
       "sthSopr": {
         "trigger": 0.9955602897474783,
@@ -35413,8 +35413,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006103234,
-        "deep": 0.00056942669
+        "trigger": 0.00061129368,
+        "deep": 0.00057010054
       },
       "sthSopr": {
         "trigger": 0.9955602897474783,
@@ -35587,8 +35587,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006103111,
-        "deep": 0.00056924038
+        "trigger": 0.0006103234,
+        "deep": 0.00056942669
       },
       "sthSopr": {
         "trigger": 0.9955602897474783,
@@ -35761,8 +35761,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00061003666,
-        "deep": 0.00056891949
+        "trigger": 0.0006103111,
+        "deep": 0.00056924038
       },
       "sthSopr": {
         "trigger": 0.9955602897474783,
@@ -35935,8 +35935,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060909886,
-        "deep": 0.00056855715
+        "trigger": 0.00061003666,
+        "deep": 0.00056891949
       },
       "sthSopr": {
         "trigger": 0.9955609591927891,
@@ -36109,8 +36109,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060897162,
-        "deep": 0.00056836261
+        "trigger": 0.00060909886,
+        "deep": 0.00056855715
       },
       "sthSopr": {
         "trigger": 0.9955847524780006,
@@ -36283,8 +36283,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060884016,
-        "deep": 0.00056811644
+        "trigger": 0.00060897162,
+        "deep": 0.00056836261
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -36457,8 +36457,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060880658,
-        "deep": 0.0005675489299999999
+        "trigger": 0.00060884016,
+        "deep": 0.00056811644
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -36631,8 +36631,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060878398,
-        "deep": 0.00056749813
+        "trigger": 0.00060880658,
+        "deep": 0.0005675489299999999
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -36805,8 +36805,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060871294,
-        "deep": 0.00056730983
+        "trigger": 0.00060878398,
+        "deep": 0.00056749813
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -36979,8 +36979,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006084231999999999,
-        "deep": 0.00056706009
+        "trigger": 0.00060871294,
+        "deep": 0.00056730983
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -37153,8 +37153,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060814218,
-        "deep": 0.00056642661
+        "trigger": 0.0006084231999999999,
+        "deep": 0.00056706009
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -37327,8 +37327,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060760616,
-        "deep": 0.00056616742
+        "trigger": 0.00060814218,
+        "deep": 0.00056642661
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -37501,8 +37501,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006070157599999999,
-        "deep": 0.00056607426
+        "trigger": 0.00060760616,
+        "deep": 0.00056616742
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -37675,8 +37675,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060691394,
-        "deep": 0.00056595537
+        "trigger": 0.0006070157599999999,
+        "deep": 0.00056607426
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -37849,8 +37849,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060654406,
-        "deep": 0.00056513269
+        "trigger": 0.00060691394,
+        "deep": 0.00056595537
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -38023,8 +38023,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006062643,
-        "deep": 0.00056489529
+        "trigger": 0.00060654406,
+        "deep": 0.00056513269
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -38197,8 +38197,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060571434,
-        "deep": 0.00056459671
+        "trigger": 0.0006062643,
+        "deep": 0.00056489529
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -38371,8 +38371,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006051888,
-        "deep": 0.0005641596799999999
+        "trigger": 0.00060571434,
+        "deep": 0.00056459671
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -38545,8 +38545,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060503874,
-        "deep": 0.00056359673
+        "trigger": 0.0006051888,
+        "deep": 0.0005641596799999999
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -38719,8 +38719,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006048767,
-        "deep": 0.00056330696
+        "trigger": 0.00060503874,
+        "deep": 0.00056359673
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -38893,8 +38893,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006043361800000001,
-        "deep": 0.00056319707
+        "trigger": 0.0006048767,
+        "deep": 0.00056330696
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -39067,8 +39067,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006039748400000001,
-        "deep": 0.0005629089500000001
+        "trigger": 0.0006043361800000001,
+        "deep": 0.00056319707
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -39241,8 +39241,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006038683199999999,
-        "deep": 0.00056049935
+        "trigger": 0.0006039748400000001,
+        "deep": 0.0005629089500000001
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -39415,8 +39415,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006036244,
-        "deep": 0.00055985555
+        "trigger": 0.0006038683199999999,
+        "deep": 0.00056049935
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -39589,8 +39589,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060302844,
-        "deep": 0.0005550302
+        "trigger": 0.0006036244,
+        "deep": 0.00055985555
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -39763,8 +39763,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060277506,
-        "deep": 0.0005539876199999999
+        "trigger": 0.00060302844,
+        "deep": 0.0005550302
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -39937,8 +39937,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060230734,
-        "deep": 0.00055370172
+        "trigger": 0.00060277506,
+        "deep": 0.0005539876199999999
       },
       "sthSopr": {
         "trigger": 0.9955990578093339,
@@ -40111,8 +40111,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060183954,
-        "deep": 0.00055337469
+        "trigger": 0.00060230734,
+        "deep": 0.00055370172
       },
       "sthSopr": {
         "trigger": 0.9956560541265734,
@@ -40285,8 +40285,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006016652,
-        "deep": 0.00055165291
+        "trigger": 0.00060183954,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.995665998097807,
@@ -40459,8 +40459,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9956666500300004,
@@ -40633,8 +40633,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9956776684426671,
@@ -40807,8 +40807,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.995698494757334,
@@ -40981,8 +40981,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9957310000000005,
@@ -41155,8 +41155,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9957380818513338,
@@ -41329,8 +41329,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9957394463326672,
@@ -41503,8 +41503,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.995770921940334,
@@ -41677,8 +41677,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9957818135286671,
@@ -41851,8 +41851,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9958184906703339,
@@ -42025,8 +42025,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9958394881640005,
@@ -42199,8 +42199,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9958629873686671,
@@ -42373,8 +42373,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9958665256773338,
@@ -42547,8 +42547,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060158254,
-        "deep": 0.00055165291
+        "trigger": 0.0006016652,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9958883347676672,
@@ -42721,8 +42721,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060128688,
-        "deep": 0.00055165291
+        "trigger": 0.00060158254,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9959162582880006,
@@ -42895,8 +42895,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060128688,
-        "deep": 0.00055165291
+        "trigger": 0.00060158254,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9959210670420005,
@@ -43069,8 +43069,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060128688,
-        "deep": 0.00055165291
+        "trigger": 0.00060158254,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9959482129573339,
@@ -43243,12 +43243,12 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060128688,
-        "deep": 0.00055165291
+        "trigger": 0.00060158254,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9960087648496674,
-        "deep": 0.9910846740893338
+        "deep": 0.9910846740893339
       },
       "sthMvrv": {
         "trigger": 0.933293,
@@ -43417,8 +43417,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060128688,
-        "deep": 0.00055165291
+        "trigger": 0.00060158254,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9960508745823339,
@@ -43591,8 +43591,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060128688,
-        "deep": 0.00055165291
+        "trigger": 0.00060158254,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9960576427776672,
@@ -43765,8 +43765,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060128688,
-        "deep": 0.00055165291
+        "trigger": 0.00060158254,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9960729156610004,
@@ -43939,8 +43939,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060128688,
-        "deep": 0.00055165291
+        "trigger": 0.00060158254,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9960729156610004,
@@ -44113,8 +44113,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060110806,
-        "deep": 0.00055165291
+        "trigger": 0.00060128688,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9960729156610004,
@@ -44287,8 +44287,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060104516,
-        "deep": 0.00055165291
+        "trigger": 0.00060110806,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9960729156610004,
@@ -44461,8 +44461,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060087322,
-        "deep": 0.00055165291
+        "trigger": 0.00060104516,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9960729156610004,
@@ -44635,8 +44635,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060084108,
-        "deep": 0.00055165291
+        "trigger": 0.00060087322,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9960911788056671,
@@ -44809,8 +44809,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00060084108,
-        "deep": 0.00055165291
+        "trigger": 0.00060087322,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9960931773220002,
@@ -44983,8 +44983,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006006954000000001,
-        "deep": 0.00055165291
+        "trigger": 0.00060084108,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9961305261466671,
@@ -45157,8 +45157,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0006003463,
-        "deep": 0.00055165291
+        "trigger": 0.0006006954000000001,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9961581757103338,
@@ -45331,8 +45331,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996166203189667,
@@ -45505,8 +45505,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9961720818396671,
@@ -45679,8 +45679,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9961786469633337,
@@ -45853,8 +45853,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996229537730334,
@@ -46027,8 +46027,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9962512398633339,
@@ -46201,8 +46201,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9962623773426671,
@@ -46375,8 +46375,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9962641465000004,
@@ -46549,8 +46549,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9962655106070005,
@@ -46723,8 +46723,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9963285925203339,
@@ -46897,8 +46897,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9963639109583338,
@@ -47071,8 +47071,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9963666348750005,
@@ -47245,11 +47245,11 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
-        "trigger": 0.9963759580176673,
+        "trigger": 0.9963759580176671,
         "deep": 0.9914208835250006
       },
       "sthMvrv": {
@@ -47419,8 +47419,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9963842628756671,
@@ -47593,8 +47593,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9963989384733337,
@@ -47767,8 +47767,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964000000000005,
@@ -47941,8 +47941,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964230118270004,
@@ -48115,8 +48115,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964230118270004,
@@ -48289,8 +48289,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964230118270004,
@@ -48463,8 +48463,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964230118270004,
@@ -48637,8 +48637,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964230118270004,
@@ -48811,8 +48811,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964230118270004,
@@ -48985,8 +48985,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964230118270004,
@@ -49159,8 +49159,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964230118270004,
@@ -49333,8 +49333,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964327320730005,
@@ -49507,8 +49507,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964713931493338,
@@ -49681,8 +49681,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964744949236671,
@@ -49855,8 +49855,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964818331996673,
@@ -50029,8 +50029,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9964843451670006,
@@ -50203,8 +50203,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9965259418746671,
@@ -50377,8 +50377,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9965259418746671,
@@ -50551,8 +50551,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9965259418746671,
@@ -50725,8 +50725,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9965259418746671,
@@ -50899,8 +50899,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9965330343190004,
@@ -51073,8 +51073,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9965403570963338,
@@ -51247,8 +51247,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -51421,8 +51421,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -51595,8 +51595,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -51769,8 +51769,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -51943,8 +51943,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -52117,8 +52117,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -52291,8 +52291,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -52465,8 +52465,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059988114,
-        "deep": 0.00055165291
+        "trigger": 0.0006003463,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -52639,8 +52639,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059979976,
-        "deep": 0.00055165291
+        "trigger": 0.00059988114,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -52813,8 +52813,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059951724,
-        "deep": 0.00055165291
+        "trigger": 0.00059979976,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -52987,8 +52987,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059941904,
-        "deep": 0.00055165291
+        "trigger": 0.00059951724,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -53161,8 +53161,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059914302,
-        "deep": 0.00055165291
+        "trigger": 0.00059941904,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -53335,8 +53335,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059900484,
-        "deep": 0.00055165291
+        "trigger": 0.00059914302,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -53509,8 +53509,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059850314,
-        "deep": 0.00055165291
+        "trigger": 0.00059900484,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -53683,8 +53683,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059850314,
-        "deep": 0.00055165291
+        "trigger": 0.00059900484,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -53857,8 +53857,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005983428200000001,
-        "deep": 0.00055165291
+        "trigger": 0.00059850314,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -54031,8 +54031,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005979153000000001,
-        "deep": 0.00055165291
+        "trigger": 0.0005983428200000001,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -54205,8 +54205,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059774986,
-        "deep": 0.00055165291
+        "trigger": 0.0005979153000000001,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -54379,8 +54379,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059771174,
-        "deep": 0.00055165291
+        "trigger": 0.00059774986,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.996548549555667,
@@ -54553,8 +54553,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059759178,
-        "deep": 0.00055165291
+        "trigger": 0.00059771174,
+        "deep": 0.00055337469
       },
       "sthSopr": {
         "trigger": 0.9965713851750008,
@@ -54677,9 +54677,9 @@
     "activeIndicatorCountV6": 8,
     "scorePriceMa200w": 0,
     "scorePriceRealized": 0,
-    "scoreReserveRisk": 1,
+    "scoreReserveRisk": 2,
     "scoreReserveRiskV4": 0,
-    "scoreReserveRiskPrimary": 1,
+    "scoreReserveRiskPrimary": 2,
     "scoreReserveRiskReplacement": 0,
     "scoreLthMvrv": 0,
     "scoreLthSopr": 0,
@@ -54692,7 +54692,7 @@
     "scoreSthMvrv": 0,
     "scoreSthGroup": 1,
     "scorePuell": 0,
-    "signalScoreV2": 2,
+    "signalScoreV2": 3,
     "maxSignalScoreV2": 10,
     "signalScoreV2Min3d": 1.0,
     "signalConfirmed3d": false,
@@ -54727,8 +54727,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059730312,
-        "deep": 0.00055144258
+        "trigger": 0.00059759178,
+        "deep": 0.00055165291
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -54901,8 +54901,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059697034,
-        "deep": 0.00055136581
+        "trigger": 0.00059730312,
+        "deep": 0.00055157157
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -55042,7 +55042,7 @@
     "scorePuell": 0,
     "signalScoreV2": 4,
     "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 2.0,
+    "signalScoreV2Min3d": 3.0,
     "signalConfirmed3d": false,
     "signalBandV2": "focus",
     "valuationScore": 0,
@@ -55075,8 +55075,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059673666,
-        "deep": 0.0005500717
+        "trigger": 0.00059697034,
+        "deep": 0.00055136581
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -55249,8 +55249,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059657964,
-        "deep": 0.0005485569
+        "trigger": 0.00059673666,
+        "deep": 0.0005500717
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -55423,8 +55423,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005964049,
-        "deep": 0.00054567443
+        "trigger": 0.00059657964,
+        "deep": 0.0005485569
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -55597,8 +55597,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005960112600000001,
-        "deep": 0.00054528838
+        "trigger": 0.0005964049,
+        "deep": 0.00054567443
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -55771,8 +55771,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059518128,
-        "deep": 0.00054491101
+        "trigger": 0.0005960112600000001,
+        "deep": 0.00054528838
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -55945,8 +55945,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059442638,
-        "deep": 0.00054470729
+        "trigger": 0.00059518128,
+        "deep": 0.00054491101
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -56119,8 +56119,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059380812,
-        "deep": 0.00054427004
+        "trigger": 0.00059442638,
+        "deep": 0.00054470729
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -56293,8 +56293,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059357524,
-        "deep": 0.00054286218
+        "trigger": 0.00059380812,
+        "deep": 0.00054427004
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -56385,14 +56385,188 @@
     "priceRealizedRatio": 1.1305365328476005,
     "reserveRisk": 0.0004469749,
     "lthMvrv": 1.244888,
-    "lthSopr": 0.8566049183121017,
-    "lthSoprMa3": 0.7570349727707009,
-    "mvrvZscore": 0.22520372940525604,
-    "nupl": 0.11546423229579716,
-    "sthSopr": 0.9655262088349158,
-    "sthSoprMa3": 0.9782754029449725,
+    "lthSopr": 0.7738,
+    "lthSoprMa3": 0.7294333333333336,
+    "mvrvZscore": 0.2298,
+    "nupl": 0.1179,
+    "sthSopr": 0.9867,
+    "sthSoprMa3": 0.9853333333333337,
     "sthMvrv": 0.828453,
-    "puellMultiple": 0.8923664303290555,
+    "puellMultiple": 0.8895,
+    "signalPriceMa200w": true,
+    "signalPriceRealized": false,
+    "signalReserveRisk": true,
+    "signalSthSopr": true,
+    "signalSthMvrv": true,
+    "signalSthGroup": true,
+    "signalReserveRiskV4": false,
+    "signalMvrvZscoreCore": false,
+    "signalNupl": true,
+    "signalNuplCore": true,
+    "signalValuationBlendV6": true,
+    "signalLthMvrv": false,
+    "signalLthSopr": true,
+    "signalSthSoprTrigger": true,
+    "signalSthSoprAux": true,
+    "signalPuell": false,
+    "signalCount": 3,
+    "activeIndicatorCount": 5,
+    "signalCountV4": 3,
+    "activeIndicatorCountV4": 7,
+    "signalCountV6": 5,
+    "activeIndicatorCountV6": 8,
+    "scorePriceMa200w": 1,
+    "scorePriceRealized": 0,
+    "scoreReserveRisk": 2,
+    "scoreReserveRiskV4": 0,
+    "scoreReserveRiskPrimary": 2,
+    "scoreReserveRiskReplacement": 0,
+    "scoreLthMvrv": 0,
+    "scoreLthSopr": 2,
+    "scoreMvrvZscore": 0,
+    "scoreMvrvZscoreCore": 0,
+    "scoreNupl": 1,
+    "scoreNuplCore": 1,
+    "valuationBlendScoreV6": 1,
+    "scoreSthSopr": 2,
+    "scoreSthMvrv": 2,
+    "scoreSthGroup": 2,
+    "scorePuell": 0,
+    "signalScoreV2": 5,
+    "maxSignalScoreV2": 10,
+    "signalScoreV2Min3d": 5.0,
+    "signalConfirmed3d": false,
+    "signalBandV2": "focus",
+    "valuationScore": 1,
+    "maxValuationScore": 8,
+    "triggerScore": 2,
+    "maxTriggerScore": 2,
+    "confirmationScore": 2,
+    "maxConfirmationScore": 4,
+    "auxiliaryScore": 2,
+    "maxAuxiliaryScore": 2,
+    "totalScoreV4": 5,
+    "maxTotalScoreV4": 14,
+    "totalScoreV4Min3d": 5.0,
+    "signalConfirmed3dV4": false,
+    "signalBandV4": "focus",
+    "valuationScoreV6": 2,
+    "maxValuationScoreV6": 8,
+    "triggerScoreV6": 2,
+    "maxTriggerScoreV6": 2,
+    "confirmationScoreV6": 2,
+    "maxConfirmationScoreV6": 4,
+    "totalScoreV6": 6,
+    "maxTotalScoreV6": 14,
+    "totalScoreV6Min3d": 6.0,
+    "signalConfirmed3dV6": false,
+    "signalBandV6": "focus",
+    "signalConfidence": 0.5786,
+    "signalConfidenceV6": 0.6143,
+    "dataFreshnessScore": 1.0,
+    "dataFreshnessScoreV6": 1.0,
+    "thresholds": {
+      "reserveRisk": {
+        "trigger": 0.00059357524,
+        "deep": 0.00054286218
+      },
+      "sthSopr": {
+        "trigger": 0.9965873144137086,
+        "deep": 0.991694166666667
+      },
+      "sthMvrv": {
+        "trigger": 0.947572,
+        "deep": 0.903186
+      },
+      "lthSopr": {
+        "trigger": 0.9711180771866669,
+        "deep": 0.8133951702143964
+      },
+      "mvrvZscoreCore": {
+        "trigger": 0.0,
+        "deep": -0.5
+      },
+      "nuplCore": {
+        "trigger": 0.15,
+        "deep": 0.0
+      },
+      "nupl": {
+        "trigger": 0.15,
+        "deep": 0.0
+      }
+    },
+    "signalsV6": {
+      "priceMa200w": true,
+      "priceRealized": false,
+      "mvrvZscore": false,
+      "nupl": true,
+      "valuationBlend": true,
+      "sthMvrv": true,
+      "sthSoprTrigger": true,
+      "lthMvrv": false,
+      "lthSopr": true,
+      "puell": false
+    },
+    "reserveRiskActive": true,
+    "reserveRiskReplacementActive": false,
+    "reserveRiskReplacementSource": null,
+    "reserveRiskSourceMode": "primary",
+    "reserveRiskLagDays": 0,
+    "reserveRiskPrimaryLagDays": -5,
+    "reserveRiskReplacementLagDays": 0,
+    "reserveRiskSourceModeV4": "compat_mvrv_zscore",
+    "reserveRiskSoftFallbackActive": false,
+    "reserveRiskFallbackLagDaysV4": null,
+    "fallbackMode": "none",
+    "fallbackModeV6": "none",
+    "staleIndicators": [],
+    "indicatorSet": "core8_bottom_independent_valuation_current",
+    "coreIndicatorSet": "core8_bottom_independent_valuation_current",
+    "scoringModelVersion": "core8_independent_valuation_current",
+    "legacyScoringModelVersion": "v3_no_lookahead_replacement",
+    "api_data_date": {
+      "price_ma200w": "2026-11-21",
+      "price_realized": "2026-11-21",
+      "reserve_risk": "2026-11-21",
+      "lth_mvrv": "2026-11-21",
+      "lth_sopr": "2026-11-21",
+      "mvrv_zscore": "2026-11-21",
+      "nupl": "2026-11-21",
+      "sth_sopr": "2026-11-21",
+      "sth_mvrv": "2026-11-21",
+      "puell": "2026-11-21"
+    },
+    "indicatorDates": {
+      "priceMa200w": "2026-11-21",
+      "priceRealized": "2026-11-21",
+      "reserveRisk": "2026-11-21",
+      "lthMvrv": "2026-11-21",
+      "lthSopr": "2026-11-21",
+      "mvrvZscore": "2026-11-21",
+      "nupl": "2026-11-21",
+      "sthSopr": "2026-11-21",
+      "sthMvrv": "2026-11-21",
+      "puell": "2026-11-21"
+    }
+  },
+  {
+    "d": "2026-11-22",
+    "unixTs": 1795305600,
+    "btcPrice": 61103.7072912858,
+    "ma200w": 68118.77441356303,
+    "realizedPrice": 53175.35,
+    "priceMa200wRatio": 0.8970171265899863,
+    "priceRealizedRatio": 1.149098356499502,
+    "reserveRisk": 0.0004544921,
+    "lthMvrv": 1.260261,
+    "lthSopr": 0.855689772273089,
+    "lthSoprMa3": 0.7569965907576965,
+    "mvrvZscore": 0.25750012796439503,
+    "nupl": 0.12975247563115522,
+    "sthSopr": 0.980384939417458,
+    "sthSoprMa3": 0.9825283131391531,
+    "sthMvrv": 0.838654,
+    "puellMultiple": 0.8906885247294893,
     "signalPriceMa200w": true,
     "signalPriceRealized": false,
     "signalReserveRisk": true,
@@ -56512,180 +56686,6 @@
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
     "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": -5,
-    "reserveRiskReplacementLagDays": 0,
-    "reserveRiskSourceModeV4": "compat_mvrv_zscore",
-    "reserveRiskSoftFallbackActive": false,
-    "reserveRiskFallbackLagDaysV4": null,
-    "fallbackMode": "none",
-    "fallbackModeV6": "none",
-    "staleIndicators": [],
-    "indicatorSet": "core8_bottom_independent_valuation_current",
-    "coreIndicatorSet": "core8_bottom_independent_valuation_current",
-    "scoringModelVersion": "core8_independent_valuation_current",
-    "legacyScoringModelVersion": "v3_no_lookahead_replacement",
-    "api_data_date": {
-      "price_ma200w": "2026-11-21",
-      "price_realized": "2026-11-21",
-      "reserve_risk": "2026-11-21",
-      "lth_mvrv": "2026-11-21",
-      "lth_sopr": "2026-11-21",
-      "mvrv_zscore": "2026-11-21",
-      "nupl": "2026-11-21",
-      "sth_sopr": "2026-11-21",
-      "sth_mvrv": "2026-11-21",
-      "puell": "2026-11-21"
-    },
-    "indicatorDates": {
-      "priceMa200w": "2026-11-21",
-      "priceRealized": "2026-11-21",
-      "reserveRisk": "2026-11-21",
-      "lthMvrv": "2026-11-21",
-      "lthSopr": "2026-11-21",
-      "mvrvZscore": "2026-11-21",
-      "nupl": "2026-11-21",
-      "sthSopr": "2026-11-21",
-      "sthMvrv": "2026-11-21",
-      "puell": "2026-11-21"
-    }
-  },
-  {
-    "d": "2026-11-22",
-    "unixTs": 1795305600,
-    "btcPrice": 61103.7072912858,
-    "ma200w": 68118.77441356303,
-    "realizedPrice": 53175.35,
-    "priceMa200wRatio": 0.8970171265899863,
-    "priceRealizedRatio": 1.149098356499502,
-    "reserveRisk": 0.0004544921,
-    "lthMvrv": 1.260261,
-    "lthSopr": 0.855689772273089,
-    "lthSoprMa3": 0.7845982301950638,
-    "mvrvZscore": 0.25750012796439503,
-    "nupl": 0.12975247563115522,
-    "sthSopr": 0.980384939417458,
-    "sthSoprMa3": 0.9754703827507917,
-    "sthMvrv": 0.838654,
-    "puellMultiple": 0.8906885247294893,
-    "signalPriceMa200w": true,
-    "signalPriceRealized": false,
-    "signalReserveRisk": true,
-    "signalSthSopr": true,
-    "signalSthMvrv": true,
-    "signalSthGroup": true,
-    "signalReserveRiskV4": false,
-    "signalMvrvZscoreCore": false,
-    "signalNupl": true,
-    "signalNuplCore": true,
-    "signalValuationBlendV6": true,
-    "signalLthMvrv": false,
-    "signalLthSopr": true,
-    "signalSthSoprTrigger": true,
-    "signalSthSoprAux": true,
-    "signalPuell": false,
-    "signalCount": 3,
-    "activeIndicatorCount": 5,
-    "signalCountV4": 3,
-    "activeIndicatorCountV4": 7,
-    "signalCountV6": 5,
-    "activeIndicatorCountV6": 8,
-    "scorePriceMa200w": 1,
-    "scorePriceRealized": 0,
-    "scoreReserveRisk": 2,
-    "scoreReserveRiskV4": 0,
-    "scoreReserveRiskPrimary": 2,
-    "scoreReserveRiskReplacement": 0,
-    "scoreLthMvrv": 0,
-    "scoreLthSopr": 2,
-    "scoreMvrvZscore": 0,
-    "scoreMvrvZscoreCore": 0,
-    "scoreNupl": 1,
-    "scoreNuplCore": 1,
-    "valuationBlendScoreV6": 1,
-    "scoreSthSopr": 2,
-    "scoreSthMvrv": 2,
-    "scoreSthGroup": 2,
-    "scorePuell": 0,
-    "signalScoreV2": 5,
-    "maxSignalScoreV2": 10,
-    "signalScoreV2Min3d": 5.0,
-    "signalConfirmed3d": false,
-    "signalBandV2": "focus",
-    "valuationScore": 1,
-    "maxValuationScore": 8,
-    "triggerScore": 2,
-    "maxTriggerScore": 2,
-    "confirmationScore": 2,
-    "maxConfirmationScore": 4,
-    "auxiliaryScore": 2,
-    "maxAuxiliaryScore": 2,
-    "totalScoreV4": 5,
-    "maxTotalScoreV4": 14,
-    "totalScoreV4Min3d": 5.0,
-    "signalConfirmed3dV4": false,
-    "signalBandV4": "focus",
-    "valuationScoreV6": 2,
-    "maxValuationScoreV6": 8,
-    "triggerScoreV6": 2,
-    "maxTriggerScoreV6": 2,
-    "confirmationScoreV6": 2,
-    "maxConfirmationScoreV6": 4,
-    "totalScoreV6": 6,
-    "maxTotalScoreV6": 14,
-    "totalScoreV6Min3d": 6.0,
-    "signalConfirmed3dV6": false,
-    "signalBandV6": "focus",
-    "signalConfidence": 0.5786,
-    "signalConfidenceV6": 0.6143,
-    "dataFreshnessScore": 1.0,
-    "dataFreshnessScoreV6": 1.0,
-    "thresholds": {
-      "reserveRisk": {
-        "trigger": 0.00059293734,
-        "deep": 0.00054037119
-      },
-      "sthSopr": {
-        "trigger": 0.9965873144137086,
-        "deep": 0.991694166666667
-      },
-      "sthMvrv": {
-        "trigger": 0.947572,
-        "deep": 0.903186
-      },
-      "lthSopr": {
-        "trigger": 0.9711180771866669,
-        "deep": 0.8133951702143964
-      },
-      "mvrvZscoreCore": {
-        "trigger": 0.0,
-        "deep": -0.5
-      },
-      "nuplCore": {
-        "trigger": 0.15,
-        "deep": 0.0
-      },
-      "nupl": {
-        "trigger": 0.15,
-        "deep": 0.0
-      }
-    },
-    "signalsV6": {
-      "priceMa200w": true,
-      "priceRealized": false,
-      "mvrvZscore": false,
-      "nupl": true,
-      "valuationBlend": true,
-      "sthMvrv": true,
-      "sthSoprTrigger": true,
-      "lthMvrv": false,
-      "lthSopr": true,
-      "puell": false
-    },
-    "reserveRiskActive": true,
-    "reserveRiskReplacementActive": false,
-    "reserveRiskReplacementSource": null,
-    "reserveRiskSourceMode": "primary",
-    "reserveRiskLagDays": 0,
     "reserveRiskPrimaryLagDays": -4,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
@@ -56734,11 +56734,11 @@
     "reserveRisk": 0.0004540451,
     "lthMvrv": 1.264055,
     "lthSopr": 0.8322986207389528,
-    "lthSoprMa3": 0.8481977704413816,
+    "lthSoprMa3": 0.8205961310040143,
     "mvrvZscore": 0.26318295307538436,
     "nupl": 0.13275003816973863,
     "sthSopr": 0.9830178697087291,
-    "sthSoprMa3": 0.9763096726537013,
+    "sthSoprMa3": 0.9833676030420628,
     "sthMvrv": 0.841817,
     "puellMultiple": 0.961198613313514,
     "signalPriceMa200w": true,
@@ -56815,8 +56815,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.0005925189600000001,
-        "deep": 0.00054005183
+        "trigger": 0.00059293734,
+        "deep": 0.00054037119
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -56989,8 +56989,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059213954,
-        "deep": 0.00053942252
+        "trigger": 0.0005925189600000001,
+        "deep": 0.00054005183
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -57163,8 +57163,8 @@
     "dataFreshnessScoreV6": 1.0,
     "thresholds": {
       "reserveRisk": {
-        "trigger": 0.00059134876,
-        "deep": 0.0005378671
+        "trigger": 0.00059213954,
+        "deep": 0.00053942252
       },
       "sthSopr": {
         "trigger": 0.9965873144137086,
@@ -57256,13 +57256,187 @@
     "reserveRisk": 0.0004477523,
     "lthMvrv": 1.250082,
     "lthSopr": 0.8267382864911343,
-    "lthSoprMa3": 0.8186537532449097,
+    "lthSoprMa3": 0.8186537532449099,
     "mvrvZscore": 0.24027137282440786,
     "nupl": 0.12285921949547574,
     "sthSopr": 0.9871729712135912,
     "sthSoprMa3": 0.9811572828317131,
     "sthMvrv": 0.836052,
     "puellMultiple": 0.7489277132605237,
+    "signalPriceMa200w": true,
+    "signalPriceRealized": false,
+    "signalReserveRisk": true,
+    "signalSthSopr": true,
+    "signalSthMvrv": true,
+    "signalSthGroup": true,
+    "signalReserveRiskV4": false,
+    "signalMvrvZscoreCore": false,
+    "signalNupl": true,
+    "signalNuplCore": true,
+    "signalValuationBlendV6": true,
+    "signalLthMvrv": false,
+    "signalLthSopr": true,
+    "signalSthSoprTrigger": true,
+    "signalSthSoprAux": true,
+    "signalPuell": false,
+    "signalCount": 3,
+    "activeIndicatorCount": 5,
+    "signalCountV4": 3,
+    "activeIndicatorCountV4": 7,
+    "signalCountV6": 5,
+    "activeIndicatorCountV6": 8,
+    "scorePriceMa200w": 1,
+    "scorePriceRealized": 0,
+    "scoreReserveRisk": 2,
+    "scoreReserveRiskV4": 0,
+    "scoreReserveRiskPrimary": 2,
+    "scoreReserveRiskReplacement": 0,
+    "scoreLthMvrv": 0,
+    "scoreLthSopr": 1,
+    "scoreMvrvZscore": 0,
+    "scoreMvrvZscoreCore": 0,
+    "scoreNupl": 1,
+    "scoreNuplCore": 1,
+    "valuationBlendScoreV6": 1,
+    "scoreSthSopr": 2,
+    "scoreSthMvrv": 2,
+    "scoreSthGroup": 2,
+    "scorePuell": 0,
+    "signalScoreV2": 5,
+    "maxSignalScoreV2": 10,
+    "signalScoreV2Min3d": 5.0,
+    "signalConfirmed3d": false,
+    "signalBandV2": "focus",
+    "valuationScore": 1,
+    "maxValuationScore": 8,
+    "triggerScore": 2,
+    "maxTriggerScore": 2,
+    "confirmationScore": 1,
+    "maxConfirmationScore": 4,
+    "auxiliaryScore": 2,
+    "maxAuxiliaryScore": 2,
+    "totalScoreV4": 4,
+    "maxTotalScoreV4": 14,
+    "totalScoreV4Min3d": 4.0,
+    "signalConfirmed3dV4": false,
+    "signalBandV4": "watch",
+    "valuationScoreV6": 2,
+    "maxValuationScoreV6": 8,
+    "triggerScoreV6": 2,
+    "maxTriggerScoreV6": 2,
+    "confirmationScoreV6": 1,
+    "maxConfirmationScoreV6": 4,
+    "totalScoreV6": 5,
+    "maxTotalScoreV6": 14,
+    "totalScoreV6Min3d": 5.0,
+    "signalConfirmed3dV6": false,
+    "signalBandV6": "focus",
+    "signalConfidence": 0.5429,
+    "signalConfidenceV6": 0.5786,
+    "dataFreshnessScore": 1.0,
+    "dataFreshnessScoreV6": 1.0,
+    "thresholds": {
+      "reserveRisk": {
+        "trigger": 0.00059134876,
+        "deep": 0.0005378671
+      },
+      "sthSopr": {
+        "trigger": 0.9965873144137086,
+        "deep": 0.991694166666667
+      },
+      "sthMvrv": {
+        "trigger": 0.947572,
+        "deep": 0.903186
+      },
+      "lthSopr": {
+        "trigger": 0.9711180771866669,
+        "deep": 0.8161242607966669
+      },
+      "mvrvZscoreCore": {
+        "trigger": 0.0,
+        "deep": -0.5
+      },
+      "nuplCore": {
+        "trigger": 0.15,
+        "deep": 0.0
+      },
+      "nupl": {
+        "trigger": 0.15,
+        "deep": 0.0
+      }
+    },
+    "signalsV6": {
+      "priceMa200w": true,
+      "priceRealized": false,
+      "mvrvZscore": false,
+      "nupl": true,
+      "valuationBlend": true,
+      "sthMvrv": true,
+      "sthSoprTrigger": true,
+      "lthMvrv": false,
+      "lthSopr": true,
+      "puell": false
+    },
+    "reserveRiskActive": true,
+    "reserveRiskReplacementActive": false,
+    "reserveRiskReplacementSource": null,
+    "reserveRiskSourceMode": "primary",
+    "reserveRiskLagDays": 0,
+    "reserveRiskPrimaryLagDays": 0,
+    "reserveRiskReplacementLagDays": 0,
+    "reserveRiskSourceModeV4": "compat_mvrv_zscore",
+    "reserveRiskSoftFallbackActive": false,
+    "reserveRiskFallbackLagDaysV4": null,
+    "fallbackMode": "none",
+    "fallbackModeV6": "none",
+    "staleIndicators": [],
+    "indicatorSet": "core8_bottom_independent_valuation_current",
+    "coreIndicatorSet": "core8_bottom_independent_valuation_current",
+    "scoringModelVersion": "core8_independent_valuation_current",
+    "legacyScoringModelVersion": "v3_no_lookahead_replacement",
+    "api_data_date": {
+      "price_ma200w": "2026-11-26",
+      "price_realized": "2026-11-26",
+      "reserve_risk": "2026-11-26",
+      "lth_mvrv": "2026-11-26",
+      "lth_sopr": "2026-11-26",
+      "mvrv_zscore": "2026-11-26",
+      "nupl": "2026-11-26",
+      "sth_sopr": "2026-11-26",
+      "sth_mvrv": "2026-11-26",
+      "puell": "2026-11-26"
+    },
+    "indicatorDates": {
+      "priceMa200w": "2026-11-26",
+      "priceRealized": "2026-11-26",
+      "reserveRisk": "2026-11-26",
+      "lthMvrv": "2026-11-26",
+      "lthSopr": "2026-11-26",
+      "mvrvZscore": "2026-11-26",
+      "nupl": "2026-11-26",
+      "sthSopr": "2026-11-26",
+      "sthMvrv": "2026-11-26",
+      "puell": "2026-11-26"
+    }
+  },
+  {
+    "d": "2026-11-27",
+    "unixTs": 1795737600,
+    "btcPrice": 59804.1151065809,
+    "ma200w": 68259.18562811746,
+    "realizedPrice": 52954.51,
+    "priceMa200wRatio": 0.8761328538608623,
+    "priceRealizedRatio": 1.1293488525638495,
+    "reserveRisk": 0.0004477523,
+    "lthMvrv": 1.236599,
+    "lthSopr": 0.8192923569297426,
+    "lthSoprMa3": 0.8191014474226295,
+    "mvrvZscore": 0.22194095737883832,
+    "nupl": 0.11453400981477213,
+    "sthSopr": 0.9846965856067955,
+    "sthSoprMa3": 0.9825396497491901,
+    "sthMvrv": 0.828123,
+    "puellMultiple": 0.7647729601837779,
     "signalPriceMa200w": true,
     "signalPriceRealized": false,
     "signalReserveRisk": true,
@@ -57350,7 +57524,7 @@
       },
       "lthSopr": {
         "trigger": 0.9711180771866669,
-        "deep": 0.8161242607966669
+        "deep": 0.8162533333333336
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -57381,8 +57555,8 @@
     "reserveRiskReplacementActive": false,
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
-    "reserveRiskLagDays": 0,
-    "reserveRiskPrimaryLagDays": 0,
+    "reserveRiskLagDays": 1,
+    "reserveRiskPrimaryLagDays": 1,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -57395,48 +57569,48 @@
     "scoringModelVersion": "core8_independent_valuation_current",
     "legacyScoringModelVersion": "v3_no_lookahead_replacement",
     "api_data_date": {
-      "price_ma200w": "2026-11-26",
-      "price_realized": "2026-11-26",
+      "price_ma200w": "2026-11-27",
+      "price_realized": "2026-11-27",
       "reserve_risk": "2026-11-26",
-      "lth_mvrv": "2026-11-26",
-      "lth_sopr": "2026-11-26",
-      "mvrv_zscore": "2026-11-26",
-      "nupl": "2026-11-26",
-      "sth_sopr": "2026-11-26",
-      "sth_mvrv": "2026-11-26",
-      "puell": "2026-11-26"
+      "lth_mvrv": "2026-11-27",
+      "lth_sopr": "2026-11-27",
+      "mvrv_zscore": "2026-11-27",
+      "nupl": "2026-11-27",
+      "sth_sopr": "2026-11-27",
+      "sth_mvrv": "2026-11-27",
+      "puell": "2026-11-27"
     },
     "indicatorDates": {
-      "priceMa200w": "2026-11-26",
-      "priceRealized": "2026-11-26",
+      "priceMa200w": "2026-11-27",
+      "priceRealized": "2026-11-27",
       "reserveRisk": "2026-11-26",
-      "lthMvrv": "2026-11-26",
-      "lthSopr": "2026-11-26",
-      "mvrvZscore": "2026-11-26",
-      "nupl": "2026-11-26",
-      "sthSopr": "2026-11-26",
-      "sthMvrv": "2026-11-26",
-      "puell": "2026-11-26"
+      "lthMvrv": "2026-11-27",
+      "lthSopr": "2026-11-27",
+      "mvrvZscore": "2026-11-27",
+      "nupl": "2026-11-27",
+      "sthSopr": "2026-11-27",
+      "sthMvrv": "2026-11-27",
+      "puell": "2026-11-27"
     }
   },
   {
-    "d": "2026-11-27",
-    "unixTs": 1795737600,
-    "btcPrice": 59882.65,
-    "ma200w": 68259.2417244699,
-    "realizedPrice": 52992.81,
-    "priceMa200wRatio": 0.8772826724580062,
-    "priceRealizedRatio": 1.1300146189643463,
+    "d": "2026-11-28",
+    "unixTs": 1795824000,
+    "btcPrice": 59670.82,
+    "ma200w": 68286.75633282083,
+    "realizedPrice": 52954.51,
+    "priceMa200wRatio": 0.8738271255581701,
+    "priceRealizedRatio": 1.1268316900675692,
     "reserveRisk": 0.0004477523,
-    "lthMvrv": 1.244754,
-    "lthSopr": 0.8240813806797426,
-    "lthSoprMa3": 0.8206977886726294,
-    "mvrvZscore": 0.2230165307250566,
-    "nupl": 0.11505569643294011,
-    "sthSopr": 0.9920158356067956,
-    "sthSoprMa3": 0.9849793997491901,
-    "sthMvrv": 0.832456,
-    "puellMultiple": 0.8527708580180963,
+    "lthMvrv": 1.244288,
+    "lthSopr": 0.8121305548135247,
+    "lthSoprMa3": 0.8193870660781343,
+    "mvrvZscore": 0.21761278307998955,
+    "nupl": 0.11255601984353492,
+    "sthSopr": 0.9807721428033978,
+    "sthSoprMa3": 0.9842138998745953,
+    "sthMvrv": 0.833343,
+    "puellMultiple": 0.8413526176344327,
     "signalPriceMa200w": true,
     "signalPriceRealized": false,
     "signalReserveRisk": true,
@@ -57524,7 +57698,7 @@
       },
       "lthSopr": {
         "trigger": 0.9711180771866669,
-        "deep": 0.8162533333333336
+        "deep": 0.8173766666666669
       },
       "mvrvZscoreCore": {
         "trigger": 0.0,
@@ -57555,8 +57729,8 @@
     "reserveRiskReplacementActive": false,
     "reserveRiskReplacementSource": null,
     "reserveRiskSourceMode": "primary",
-    "reserveRiskLagDays": 1,
-    "reserveRiskPrimaryLagDays": 1,
+    "reserveRiskLagDays": 2,
+    "reserveRiskPrimaryLagDays": 2,
     "reserveRiskReplacementLagDays": 0,
     "reserveRiskSourceModeV4": "compat_mvrv_zscore",
     "reserveRiskSoftFallbackActive": false,
@@ -57569,28 +57743,28 @@
     "scoringModelVersion": "core8_independent_valuation_current",
     "legacyScoringModelVersion": "v3_no_lookahead_replacement",
     "api_data_date": {
-      "price_ma200w": "2026-11-27",
-      "price_realized": "2026-11-26",
+      "price_ma200w": "2026-11-28",
+      "price_realized": "2026-11-27",
       "reserve_risk": "2026-11-26",
-      "lth_mvrv": "2026-11-27",
-      "lth_sopr": "2026-11-27",
-      "mvrv_zscore": "2026-11-27",
-      "nupl": "2026-11-27",
-      "sth_sopr": "2026-11-27",
-      "sth_mvrv": "2026-11-27",
-      "puell": "2026-11-27"
+      "lth_mvrv": "2026-11-28",
+      "lth_sopr": "2026-11-28",
+      "mvrv_zscore": "2026-11-28",
+      "nupl": "2026-11-28",
+      "sth_sopr": "2026-11-28",
+      "sth_mvrv": "2026-11-28",
+      "puell": "2026-11-28"
     },
     "indicatorDates": {
-      "priceMa200w": "2026-11-27",
-      "priceRealized": "2026-11-26",
+      "priceMa200w": "2026-11-28",
+      "priceRealized": "2026-11-27",
       "reserveRisk": "2026-11-26",
-      "lthMvrv": "2026-11-27",
-      "lthSopr": "2026-11-27",
-      "mvrvZscore": "2026-11-27",
-      "nupl": "2026-11-27",
-      "sthSopr": "2026-11-27",
-      "sthMvrv": "2026-11-27",
-      "puell": "2026-11-27"
+      "lthMvrv": "2026-11-28",
+      "lthSopr": "2026-11-28",
+      "mvrvZscore": "2026-11-28",
+      "nupl": "2026-11-28",
+      "sthSopr": "2026-11-28",
+      "sthMvrv": "2026-11-28",
+      "puell": "2026-11-28"
     }
   }
 ]
